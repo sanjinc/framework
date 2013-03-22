@@ -14,13 +14,13 @@ namespace WF\StdLib\StdObject\StringObject;
  * String standard object.
  *
  * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		String
+ * @category        StdLib
+ * @subcategory        String
  */
 
 class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 {
-	use Manipulator, Validator;
+	use ManipulatorTrait, ValidatorTrait;
 
 	/**
 	 * @var string
@@ -34,9 +34,8 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 *
 	 * @param mixed $value
 	 */
-	public function __construct(&$value)
-	{
-		$this->_wfString = (string) $value;
+	public function __construct(&$value) {
+		$this->_wfString = (string)$value;
 	}
 
 	/**
@@ -44,8 +43,7 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 *
 	 * @return int
 	 */
-	public function length()
-	{
+	public function length() {
 		return strlen($this->getValue());
 	}
 
@@ -54,8 +52,7 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 *
 	 * @return string
 	 */
-	public function getValue()
-	{
+	public function getValue() {
 		return $this->_wfString;
 	}
 
@@ -64,8 +61,7 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 *
 	 * @return string
 	 */
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->getValue();
 	}
 
@@ -73,8 +69,7 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 * Returns the current standard object instance.
 	 * @return $this
 	 */
-	public function getObject()
-	{
+	public function getObject() {
 		return $this;
 	}
 
@@ -82,8 +77,7 @@ class StringObject implements \WF\StdLib\StdObject\StdObjectInterface
 	 * The update value method is called after each modifier method.
 	 * It updates the current value of the standard object.
 	 */
-	public function updateValue(&$value)
-	{
+	public function updateValue(&$value) {
 		$this->_wfString = $value;
 	}
 }

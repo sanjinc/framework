@@ -17,14 +17,9 @@ namespace WF\StdLib\StdObject\StringObject;
  * @subcategory		String
  */
 
-trait Validator
+trait ValidatorTrait
 {
 	use \WF\StdLib\StdObject\StdObjectValidatorTrait;
-
-	/**
-	 * @return StringObject
-	 */
-	abstract function getObject();
 
 	/**
 	 * Checks if a string contains the given $char.
@@ -52,7 +47,7 @@ trait Validator
 	 * @param int $offset
 	 * @return int|bool
 	 */
-	public function getStringPosition($string, $offset=0)
+	public function stringPosition($string, $offset=0)
 	{
 		return stripos($this->getValue(), $string, $offset);
 	}
@@ -78,7 +73,7 @@ trait Validator
 	 * Preg matches current string against the given regular expression.
 	 *
 	 * @param string 	$regEx		Regular expression to match.
-	 * @param booelan 	$matchAll	Use preg_match_all, or just preg_match. Default is preg_match_all.
+	 * @param bool 	$matchAll	Use preg_match_all, or just preg_match. Default is preg_match_all.
 	 * @return array|bool	If there are matches, an array with the the $matches is returned, else, false is returned.
 	 */
 	public function matches($regEx, $matchAll=true)

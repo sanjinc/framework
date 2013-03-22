@@ -23,11 +23,6 @@ trait Validator
 	use \WF\StdLib\StdObject\StdObjectValidatorTrait;
 
 	/**
-	 * @return ArrayObject
-	 */
-	abstract function getObject();
-
-	/**
 	 * Checks if the $key is present inside the current array.
 	 * If the key is present, the value under that key is returned, else the $default is returned.
 	 *

@@ -14,11 +14,11 @@ namespace WF\StdLib\StdObject\StringObject;
  * String manipulators.
  *
  * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		String
+ * @category        StdLib
+ * @subcategory        String
  */
- 
-trait Manipulator
+
+trait ManipulatorTrait
 {
 	use \WF\StdLib\StdObject\StdObjectManipulatorTrait;
 
@@ -32,12 +32,14 @@ trait Manipulator
 	/**
 	 * Strip whitespace (or other characters) from the beginning and end of a string.
 	 *
+	 * @param string|null $char - char you want to trim
+	 *
 	 * @return StringObject
 	 */
-	public function trim()
-	{
-		$value = trim($this->getValue());
+	public function trim($char = null) {
+		$value = trim($this->getValue(), $char);
 		$this->getObject()->updateValue($value);
+
 		return $this;
 	}
 
@@ -46,10 +48,10 @@ trait Manipulator
 	 *
 	 * @return StringObject
 	 */
-	public function lower()
-	{
+	public function lower() {
 		$value = strtolower($this->getValue());
 		$this->getObject()->updateValue($value);
+
 		return $this;
 	}
 
@@ -58,10 +60,10 @@ trait Manipulator
 	 *
 	 * @return StringObject
 	 */
-	public function upper()
-	{
+	public function upper() {
 		$value = strtoupper($this->getValue());
 		$this->getObject()->updateValue($value);
+
 		return $this;
 	}
 
@@ -70,10 +72,10 @@ trait Manipulator
 	 *
 	 * @return StringObject
 	 */
-	public function stripTrailingSlash()
-	{
+	public function stripTrailingSlash() {
 		$value = rtrim($this->getValue(), '/');
 		$this->getObject()->updateValue($value);
+
 		return $this;
 	}
 
@@ -82,10 +84,10 @@ trait Manipulator
 	 *
 	 * @return StringObject
 	 */
-	public function stripStartingSlash()
-	{
+	public function stripStartingSlash() {
 		$value = ltrim($this->getValue(), '/');
 		$this->getObject()->updateValue($value);
+
 		return $this;
 	}
 
@@ -95,11 +97,12 @@ trait Manipulator
 	 *
 	 * @param int $startPosition
 	 * @param int $endPosition
+	 *
 	 * @return StringObject
 	 */
-	public function subString($startPosition, $endPosition)
-	{
+	public function subString($startPosition, $endPosition) {
 		$value = substr($this->getValue(), $startPosition, $endPosition);
+
 		return new StringObject($value);
 	}
 
@@ -109,11 +112,12 @@ trait Manipulator
 	 *
 	 * @param string|array $search
 	 * @param string|array $replace
+	 *
 	 * @return StringObject
 	 */
-	public function replace($search, $replace)
-	{
+	public function replace($search, $replace) {
 		$value = str_replace($search, $replace, $this->getValue());
+
 		return new StringObject($value);
 	}
 }
