@@ -14,10 +14,10 @@ namespace WF\StdLib\StdObject;
  * Standard object manipulator trait.
  *
  * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		StdObject
+ * @category        StdLib
+ * @subcategory        StdObject
  */
- 
+
 trait StdObjectManipulatorTrait
 {
 

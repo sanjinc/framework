@@ -1,10 +1,12 @@
 <?php
 namespace WF\Test\WkfTest;
 
-class OfferCRUD extends CRUD{
+class OfferCRUD extends CRUD
+{
 
     public $status = array(
-        'draft' => 'Confirm', // Show label of action you want to perform
+        'draft'     => 'Confirm',
+        // Show label of action you want to perform
         'confirmed' => 'Confirmed'
     );
 
@@ -13,16 +15,16 @@ class OfferCRUD extends CRUD{
      */
 
 
-    function wkfDraft(){
+    function wkfDraft() {
         // Will be executed each time an offer is loaded in DRAFT state
         $this->_getForm();
     }
 
-    function wkfDraftToConfirmed(){
+    function wkfDraftToConfirmed() {
         // Will be executed once - when transition from DRAFT to CONFIRMED state is VALID
     }
 
-    function wkfConfirmed(){
+    function wkfConfirmed() {
         // Will be executed each time an offer is loaded in CONFIRMED state
     }
 
@@ -38,7 +40,7 @@ class OfferCRUD extends CRUD{
         // TODO: Implement populate() method.
     }
 
-    function save(){
+    function save() {
         // TODO: Implement save() method.
     }
 
@@ -46,7 +48,7 @@ class OfferCRUD extends CRUD{
      * PRIVATE METHODS
      */
 
-    private function _getForm(){
+    private function _getForm() {
         // Return FORM
     }
 }

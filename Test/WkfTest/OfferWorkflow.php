@@ -1,7 +1,8 @@
 <?php
 namespace WF\Test\WkfTest;
 
-class OfferWorkflow {
+class OfferWorkflow
+{
     use Workflow;
 
     public function createWorkflow() {

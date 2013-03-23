@@ -14,11 +14,11 @@ namespace WF\Tools\SystemHandler;
  * Exception handler interface.
  *
  * @package         WebinyFramework
- * @category		Tools
- * @subcategory		SystemHandler
+ * @category        Tools
+ * @subcategory        SystemHandler
  */
- 
+
 interface ExceptionInterface
 {
-	static function exception(Exception $ex);
+    static function exception(Exception $ex);
 }

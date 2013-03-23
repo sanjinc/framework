@@ -7,11 +7,17 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace WF\
+namespace WF\StdLib\StdObject;
 
 /**
- * Description
+ * Standard object exception handler
  *
- * @package		 WebinyFramework
+ * @package         WF\StdLib\StdObject
  */
- 
+
+class StdObjectException extends \WF\StdLib\Exception\ExceptionAbstract
+{
+    function __construct($message) {
+        parent::__construct('StdObjectException: ' . $message);
+    }
+}

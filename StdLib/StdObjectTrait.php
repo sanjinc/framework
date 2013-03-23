@@ -13,54 +13,53 @@ namespace WF\StdLib;
 /**
  * WebinyFramework standard object trait. Use this functions whenever you want to create a standard object.
  *
- * @package         WebinyFramework
- * @category        StdLib
+ * @package         WF\StdLib
  */
 
 trait StdObjectTrait
 {
-	/**
-	 * Creates an instance of String Standard Object.
-	 *
-	 * @param string $string
-	 *
-	 * @return StdObject\StringObject\StringObject
-	 */
-	static public function str($string) {
-		return new StdObject\StringObject\StringObject($string);
-	}
+    /**
+     * Creates an instance of String Standard Object.
+     *
+     * @param string $string
+     *
+     * @return StdObject\StringObject\StringObject
+     */
+    static public function str($string) {
+        return new StdObject\StringObject\StringObject($string);
+    }
 
-	/**
-	 * Creates an instance of Array Standard Object.
-	 *
-	 * @param array $array
-	 *
-	 * @return StdObject\ArrayObject\ArrayObject
-	 */
-	static public function arr(&$array = null) {
-		return new StdObject\ArrayObject\ArrayObject($array);
-	}
+    /**
+     * Creates an instance of Array Standard Object.
+     *
+     * @param array $array
+     *
+     * @return StdObject\ArrayObject\ArrayObject
+     */
+    static public function arr(&$array = null) {
+        return new StdObject\ArrayObject\ArrayObject($array);
+    }
 
-	/**
-	 * Creates an instance of Url Standard Object.
-	 *
-	 * @param $url
-	 *
-	 * @return StdObject\UrlObject\UrlObject
-	 */
-	static public function url(&$url) {
-		return new StdObject\UrlObject\UrlObject($url);
-	}
+    /**
+     * Creates an instance of Url Standard Object.
+     *
+     * @param $url
+     *
+     * @return StdObject\UrlObject\UrlObject
+     */
+    static public function url(&$url) {
+        return new StdObject\UrlObject\UrlObject($url);
+    }
 
-	static function file() {
-		/**
-		 * @TODO
-		 */
-	}
+    static function file() {
+        /**
+         * @TODO
+         */
+    }
 
-	static function date() {
-		/**
-		 * @TODO
-		 */
-	}
+    static function date() {
+        /**
+         * @TODO
+         */
+    }
 }

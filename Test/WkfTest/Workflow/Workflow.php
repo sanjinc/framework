@@ -1,7 +1,8 @@
 <?php
 namespace WF\Test\WkfTest\Workflow;
 
-class Workflow {
+class Workflow
+{
     use \WF\StdLib\Singleton;
 
     private $_activities = array();
@@ -15,19 +16,19 @@ class Workflow {
      *
      * @return $this
      */
-    static function getInstance(){
+    static function getInstance() {
         return self::_getInstance();
     }
 
-    public function activate(){
+    public function activate() {
         echo "activate()";
     }
 
-    public function addActivity($activity){
+    public function addActivity($activity) {
         $this->_activities[] = $activity;
     }
 
-    public function addTransition($transition){
+    public function addTransition($transition) {
         $this->_transitions[] = $transition;
     }
 

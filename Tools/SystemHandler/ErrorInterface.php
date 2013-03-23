@@ -15,21 +15,22 @@ namespace WF\Tools\SystemHandler;
  * All registered error callbacks must implement this interface.
  *
  * @package         WebinyFramework
- * @category		Tools
- * @subcategory		SystemHandler
+ * @category        Tools
+ * @subcategory        SystemHandler
  */
- 
+
 interface ErrorInterface
 {
-	/**
-	 * Triggered when an error occurs.
-	 * @link http://www.php.net/manual/en/function.set-error-handler.php
-	 *
-	 * @param $errno
-	 * @param $errstr
-	 * @param $errfile
-	 * @param $errline
-	 * @return mixed
-	 */
-	static function error($errno, $errstr, $errfile, $errline);
+    /**
+     * Triggered when an error occurs.
+     * @link http://www.php.net/manual/en/function.set-error-handler.php
+     *
+     * @param $errno
+     * @param $errstr
+     * @param $errfile
+     * @param $errline
+     *
+     * @return mixed
+     */
+    static function error($errno, $errstr, $errfile, $errline);
 }

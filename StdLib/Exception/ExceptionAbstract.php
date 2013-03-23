@@ -14,11 +14,9 @@ namespace WF\StdLib\Exception;
  * Exception abstract class.
  * Extend this class if you wish do create your own exception type.
  *
- * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		Exception
+ * @package         WF\StdLib\Exception
  */
- 
+
 abstract class ExceptionAbstract extends \Exception implements ExceptionInterface
 {
 

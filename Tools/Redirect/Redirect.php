@@ -14,77 +14,70 @@ namespace WF\Tools\Redirect;
  * Class for building HTTP requests.
  *
  * @package         WebinyFramework
- * @category		Architecture
- * @subcategory		Environment
+ * @category        Architecture
+ * @subcategory        Environment
  */
- 
+
 class Redirect
 {
-	use \WF\Architecture\Environment,
-		\WF\StdLib\StdLib;
+    use \WF\Architecture\Environment,
+        \WF\StdLib\StdLib;
 
-	private $_url			= '';
-	private $_params		= array();
+    private $_url = '';
+    private $_params = array();
 
-	/**
-	 * Constructor.
-	 *
-	 * @param string $url Url to which to redirect.
-	 * @param array $params List of params that will be appended to the request.
-	 */
-	public function __construct($url, array $params)
-	{
-		$this->parseUrl($url);
-		$this->_params = array_merge($this->_params, $params);
+    /**
+     * Constructor.
+     *
+     * @param string $url    Url to which to redirect.
+     * @param array  $params List of params that will be appended to the request.
+     */
+    public function __construct($url, array $params) {
+        $this->parseUrl($url);
+        $this->_params = array_merge($this->_params, $params);
 
-		$this->_redirect();
-	}
+        $this->_redirect();
+    }
 
-	public function _redirect()
-	{
-		if($this->_url=='')
-		{
-			$this->exception('You must set the destination url before you can process a redirect.');
-		}
+    public function _redirect() {
+        if($this->_url == '') {
+            $this->exception('You must set the destination url before you can process a redirect.');
+        }
 
-		$url = $this->_buildUrl();
-		header('Location:'.$url);
-		die();
-	}
+        $url = $this->_buildUrl();
+        header('Location:' . $url);
+        die();
+    }
 
-	/**
-	 * Parses the current url and extracts the parameters from the base value.
-	 */
-	private function parseUrl($url)
-	{
-		$url = $this->str($url)->lower()->trim();
-		if(!$url->startsWith('https') && !$url->startsWith('http'))
-		{
+    /**
+     * Parses the current url and extracts the parameters from the base value.
+     */
+    private function parseUrl($url) {
+        $url = $this->str($url)->lower()->trim();
+        if(!$url->startsWith('https') && !$url->startsWith('http')) {
 
-			$this->_url = $this->getCurrentDomain().'/'.$url->stripStartingSlash();
-			if(!$url)
-			{
-				$this->exception('Unable to read current domain.');
-			}
-		}
+            $this->_url = $this->getCurrentDomain() . '/' . $url->stripStartingSlash();
+            if(!$url) {
+                $this->exception('Unable to read current domain.');
+            }
+        }
 
-		$urlData = $this->url($this->_url);
+        $urlData = $this->url($this->_url);
 
-		$this->_url 	= $urlData->getDomain().$urlData->getPath();
-		$this->_params 	= $urlData->getQuery();
-	}
+        $this->_url = $urlData->getDomain() . $urlData->getPath();
+        $this->_params = $urlData->getQuery();
+    }
 
-	/**
-	 * Builds the full redirect url.
-	 *
-	 * @return string
-	 */
-	private function _buildUrl()
-	{
-		return http_build_url($this->_url,
-			array(
-				 "query" => $this->_params
-			)
-		);
-	}
+    /**
+     * Builds the full redirect url.
+     *
+     * @return string
+     */
+    private function _buildUrl() {
+        return http_build_url($this->_url,
+                              array(
+                                   "query" => $this->_params
+                              )
+        );
+    }
 }

@@ -7,32 +7,34 @@
  * @license   http://www.webiny.com/framework/license
  * @package   WebinyFramework
  */
- namespace WF\StdLib;
+namespace WF\StdLib;
 
- /**
-  * Trait for issuing Exceptions.
-  *
-  * @category	WebinyFramework
-  * @package	Exception
-  */
- trait ExceptionTrait
- {
+use WF\StdLib\Exception\Exception;
+use WF\StdLib\Exception\ExceptionInterface;
 
-	 /**
-	  * Throw an exception with the given $message.
-	  * If exception $type is defined, the exception will be thrown using that type.
-	  *
-	  * @param string $message Exception message.
-	  * @param \WF\StdLib\Exception\ExceptionInterface|null $type
-	  * @return \WF\StdLib\Exception\Exception
-	  */
-	static public function exception($message, Exception\ExceptionInterface $type=null)
-	{
-		if(self::isNull($type))
-		{
-			throw new Exception\Exception($message);
-		}else{
-			throw new $type($message);
-		}
-	}
- }
+/**
+ * Trait for issuing Exceptions.
+ *
+ * @package    WF\StdLib
+ */
+trait ExceptionTrait
+{
+
+    /**
+     * Throw an exception with the given $message.
+     * If exception $type is defined, the exception will be thrown using that type.
+     *
+     * @param string             $message
+     * @param ExceptionInterface $type
+     *
+     * @throws Exception
+     * @throws \Exception
+     */
+    public function exception($message, Exception\ExceptionInterface $type = null) {
+        if(self::isNull($type)) {
+            throw new Exception\Exception($message);
+        } else {
+            throw new $type($message);
+        }
+    }
+}

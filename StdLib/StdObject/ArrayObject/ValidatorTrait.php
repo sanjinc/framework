@@ -10,33 +10,32 @@
 
 namespace WF\StdLib\StdObject\ArrayObject;
 
+use WF\StdLib\StdObject\StdObjectValidatorTrait;
+
 /**
  * Validator methods for array standard object.
  *
- * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		StdObject
+ * @package         WF\StdLib\StdObject\ArrayObject
  */
- 
-trait Validator
+
+trait ValidatorTrait
 {
-	use \WF\StdLib\StdObject\StdObjectValidatorTrait;
+    use StdObjectValidatorTrait;
 
-	/**
-	 * Checks if the $key is present inside the current array.
-	 * If the key is present, the value under that key is returned, else the $default is returned.
-	 *
-	 * @param string|int $key
-	 * @param mixed $default
-	 * @return bool|mixed
-	 */
-	public function key($key, $default=false)
-	{
-		if($this->val($this->getValue()[$key]))
-		{
-			return $this->getValue()[$key];
-		}
+    /**
+     * Checks if the $key is present inside the current array.
+     * If the key is present, the value under that key is returned, else the $default is returned.
+     *
+     * @param string|int $key
+     * @param mixed      $default
+     *
+     * @return bool|mixed
+     */
+    public function key($key, $default = false) {
+        if($this->val($this->getValue()[$key])) {
+            return $this->getValue()[$key];
+        }
 
-		return $default;
-	}
+        return $default;
+    }
 }

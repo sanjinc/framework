@@ -13,37 +13,37 @@ namespace WF\StdLib;
 /**
  * Description
  *
- * @package         WebinyFramework
- * @category		StdLib
+ * @package         WF\StdLib
  */
 
 trait SingletonTrait
 {
-	protected static $_wfInstance;
+    protected static $_wfInstance;
 
-	/**
-	 * Singleton trait.
-	 * NOTE: This function must be declared static.
-	 * This function must return:
-	 * self::_getInstance();
-	 *
-	 * @return $this
-	 */
-	abstract function getInstance();
+    /**
+     * Singleton trait.
+     * NOTE: This function must be declared static.
+     * This function must return:
+     * self::_getInstance();
+     *
+     * @return $this
+     */
+    abstract function getInstance();
 
-	/**
-	 * @return self;
-	 */
-	final private static function _getInstance()
-	{
-		return isset(static::$_wfInstance) ? static::$_wfInstance : static::$_wfInstance = new static;
-	}
+    /**
+     * @return self;
+     */
+    final private static function _getInstance() {
+        return isset(static::$_wfInstance) ? static::$_wfInstance : static::$_wfInstance = new static;
+    }
 
-	public function __construct()
-	{
-		#$this->exception('You cannot create a new instance of this object. Please use the getInstance static call.');
-	}
+    public function __construct() {
+        #$this->exception('You cannot create a new instance of this object. Please use the getInstance static call.');
+    }
 
-	final private function __wakeup() {}
-	final private function __clone() {}
+    final private function __wakeup() {
+    }
+
+    final private function __clone() {
+    }
 }

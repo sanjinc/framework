@@ -14,51 +14,47 @@ namespace WF\Architecture\Environment;
  * Description
  *
  * @package         WebinyFramework
- * @category		Architecture
- * @subcategory		Environment
+ * @category        Architecture
+ * @subcategory        Environment
  */
- 
+
 class Path
 {
-	use \WF\StdLib\Singleton,
-		\WF\Architecture\Environment,
-		\WF\StdLib\StdLib;
+    use \WF\StdLib\Singleton,
+        \WF\Architecture\Environment,
+        \WF\StdLib\StdLib;
 
-	private $_root;
+    private $_root;
 
-	/**
-	 * Returns absolute path to WF
-	 *
-	 * @return string
-	 */
-	public function absPath()
-	{
-		if($this->isNull($this->_root))
-		{
-			$path = dirname(__FILE__).$this->getDirectorySeparator().'..'.$this->getDirectorySeparator().'..'.$this->getDirectorySeparator();
-			$path = realpath($path);
-			if(!$path)
-			{
-				$this->exception('Unable to determine the current file path.');
-			}
+    /**
+     * Returns absolute path to WF
+     *
+     * @return string
+     */
+    public function absPath() {
+        if($this->isNull($this->_root)) {
+            $path = dirname(__FILE__) . $this->getDirectorySeparator() . '..' . $this->getDirectorySeparator() . '..' . $this->getDirectorySeparator();
+            $path = realpath($path);
+            if(!$path) {
+                $this->exception('Unable to determine the current file path.');
+            }
 
-			$this->_root = $path;
-		}
+            $this->_root = $path;
+        }
 
-		return $this->_root;
-	}
+        return $this->_root;
+    }
 
 
-	/**
-	 * Singleton trait.
-	 * NOTE: This function must be declared static.
-	 * This function must return:
-	 * self::_getInstance();
-	 *
-	 * @return Path
-	 */
-	static function getInstance()
-	{
-		return self::_getInstance();
-	}
+    /**
+     * Singleton trait.
+     * NOTE: This function must be declared static.
+     * This function must return:
+     * self::_getInstance();
+     *
+     * @return Path
+     */
+    static function getInstance() {
+        return self::_getInstance();
+    }
 }

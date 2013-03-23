@@ -7,11 +7,27 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace WF\
+namespace WF\StdLib\StdObject;
+
+use \WF\StdLib\StdObject\StdObjectException;
 
 /**
- * Description
+ * Standard object abstract class.
+ * Extend this class when you want to create your own standard object.
  *
- * @package		 WebinyFramework
+ * @package         WF\StdLib\StdObject
  */
- 
+
+abstract class StdObjectAbstract implements StdObjectInterface
+{
+    /**
+     * Throw a standard object exception.
+     *
+     * @param $message
+     *
+     * @return StdObjectException
+     */
+    function exception($message) {
+        return new StdObjectException($message);
+    }
+}

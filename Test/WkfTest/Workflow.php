@@ -1,21 +1,22 @@
 <?php
 namespace WF\Test\WkfTest;
 
-trait Workflow {
+trait Workflow
+{
 
-    static function getInstance(){
+    static function getInstance() {
         return \WF\Test\WkfTest\Workflow\Workflow::getInstance();
     }
 
-    public function addActivity($activity){
+    public function addActivity($activity) {
         Workflow\Workflow::getInstance()->addActivity($activity);
     }
 
-    public function addTransition($transition){
+    public function addTransition($transition) {
         Workflow\Workflow::getInstance()->addTransition($transition);
     }
 
-    public function activate(){
+    public function activate() {
         return Workflow\Workflow::getInstance()->activate();
     }
 

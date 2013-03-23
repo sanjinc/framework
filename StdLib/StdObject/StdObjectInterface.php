@@ -13,47 +13,45 @@ namespace WF\StdLib\StdObject;
 /**
  * Standard object interface.
  *
- * @package         WebinyFramework
- * @category        StdLib
- * @subcategory        StdObject
+ * @package         WF\StdLib\StdObject
  */
 
 interface StdObjectInterface
 {
-	/**
-	 * Constructor.
-	 * Set standard object value.
-	 *
-	 * @param mixed $value    Passed by reference.
-	 */
-	function __construct(&$value);
+    /**
+     * Constructor.
+     * Set standard object value.
+     *
+     * @param mixed $value
+     */
+    function __construct($value);
 
-	/**
-	 * Return current standard objects value.
-	 *
-	 * @return mixed
-	 */
-	function getValue();
+    /**
+     * Return current standard objects value.
+     *
+     * @return mixed
+     */
+    function getValue();
 
-	/**
-	 * Returns the current standard object instance.
-	 *
-	 * @return mixed
-	 */
-	function getObject();
+    /**
+     * Returns the current standard object instance.
+     *
+     * @return mixed
+     */
+    function getObject();
 
-	/**
-	 * The update value method is called after each modifier method.
-	 * It updates the current value of the standard object.
-	 *
-	 * @param mixed $value    Passed by reference.
-	 */
-	function updateValue(&$value);
+    /**
+     * The update value method is called after each modifier method.
+     * It updates the current value of the standard object.
+     *
+     * @param mixed $value    Passed by reference.
+     */
+    function updateValue(&$value);
 
-	/**
-	 * To string implementation.
-	 *
-	 * @return mixed
-	 */
-	function __toString();
+    /**
+     * To string implementation.
+     *
+     * @return mixed
+     */
+    function __toString();
 }

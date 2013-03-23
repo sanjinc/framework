@@ -14,16 +14,16 @@ namespace WF\Tools\SystemHandler;
  * Shutdown interface
  *
  * @package         WebinyFramework
- * @category		Tools
- * @subcategory		SystemHandler
+ * @category        Tools
+ * @subcategory        SystemHandler
  */
- 
+
 interface ShutdownInterface
 {
-	/**
-	 * Triggered at the end of execution of current request.
-	 *
-	 * @return mixed
-	 */
-	static function shutdown();
+    /**
+     * Triggered at the end of execution of current request.
+     *
+     * @return mixed
+     */
+    static function shutdown();
 }

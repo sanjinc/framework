@@ -10,64 +10,119 @@
 
 namespace WF\StdLib\StdObject\ArrayObject;
 
+use WF\StdLib\StdObject\StdObjectManipulatorTrait;
+use WF\StdLib\StdObject\StringObject\StringObject;
+
 /**
  * Manipulator methods for array standard object.
  *
- * @package         WebinyFramework
- * @category		StdLib
- * @subcategory		StdObject
+ * @package         WF\StdLib\StdObject\ArrayObject
  */
- 
-trait Manipulator
+trait ManipulatorTrait
 {
-	use \WF\StdLib\StdObject\StdObjectManipulatorTrait;
+    use StdObjectManipulatorTrait;
 
-	abstract function getValue();
+    abstract function getValue();
 
-	/**
-	 * @return ArrayObject
-	 */
-	abstract function getObject();
+    /**
+     * @return ArrayObject
+     */
+    abstract function getObject();
 
-	/**
-	 * Inserts an element to the end of the array.
-	 * If you set both params, that first param is the key, and second is the value, else first param is the value, and the second is ignored.
-	 *
-	 * @param mixed $k
-	 * @param mixed $v
-	 */
-	public function append($k, $v=null)
-	{
-		$array = $this->getValue();
+    /**
+     * Inserts an element to the end of the array.
+     * If you set both params, that first param is the key, and second is the value, else first param is the value, and the second is ignored.
+     *
+     * @param mixed $k
+     * @param mixed $v
+     *
+     * @return $this
+     */
+    public function append($k, $v = null) {
+        $array = $this->getValue();
 
-		if(!$this->isNull($v))
-		{
-			$array[$k] = $v;
-		}else{
-			$array[] = $k;
-		}
+        if(!$this->isNull($v)) {
+            $array[$k] = $v;
+        } else {
+            $array[] = $k;
+        }
 
-		$this->updateValue($array);
-	}
+        $this->updateValue($array);
 
-	/**
-	 * Inserts an element at the beginning of the array.
-	 * If you set both params, that first param is the key, and second is the value, else first param is the value, and the second is ignored.
-	 *
-	 * @param mixed $k
-	 * @param mixed $v
-	 */
-	public function prepend($k, $v=null)
-	{
-		$array = $this->getValue();
+        return $this;
+    }
 
-		if(!$this->isNull($v))
-		{
-			$array = [$k, $v]+$array;
-		}else{
-			$array = $k+$array;
-		}
+    /**
+     * Inserts an element at the beginning of the array.
+     * If you set both params, that first param is the key, and second is the value, else first param is the value, and the second is ignored.
+     *
+     * @param mixed $k
+     * @param mixed $v
+     *
+     * @return $this
+     */
+    public function prepend($k, $v = null) {
+        $array = $this->getValue();
 
-		$this->updateValue($array);
-	}
+        if(!$this->isNull($v)) {
+            $array = [
+                $k,
+                $v
+            ] + $array;
+        } else {
+            $array = $k + $array;
+        }
+
+        $this->updateValue($array);
+
+        return $this;
+    }
+
+    /**
+     * Removes the first element from the array.
+     *
+     * @return $this
+     */
+    public function removeFirst() {
+        array_shift($this->getValue());
+
+        return $this;
+    }
+
+    /**
+     * Removes the last element from the array.
+     *
+     * @return $this
+     */
+    public function removeLast() {
+        array_pop($this->getValue());
+
+        return $this;
+    }
+
+    /**
+     * Remove the element from the array under the given $key.
+     *
+     * @param $key
+     *
+     * @return $this
+     */
+    public function removeKey($key) {
+        if($this->key($key)) {
+            unset($this->getValue()[$key]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Implode the array with the given $glue.
+     *
+     * @param $glue
+     *
+     * @return StringObject
+     */
+    public function implode($glue) {
+        return new StringObject(implode($glue, $this->getValue()));
+    }
 }
