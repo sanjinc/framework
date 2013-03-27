@@ -2,75 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="503f76ca-de59-47a6-ba96-20db972e4f20" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ValidatorTrait.php" />
-      <change type="DELETED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject\Manipulator.php" afterPath="" />
-      <change type="DELETED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject\Validator.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/AutoLoader/AutoLoader.php" afterPath="$PROJECT_DIR$/Tools/AutoLoader/AutoLoader.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/CRUD.php" afterPath="$PROJECT_DIR$/Test/WkfTest/CRUD.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Architecture/Environment.php" afterPath="$PROJECT_DIR$/Architecture/Environment.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/SystemHandler/ErrorInterface.php" afterPath="$PROJECT_DIR$/Tools/SystemHandler/ErrorInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/Exception/Exception.php" afterPath="$PROJECT_DIR$/StdLib/Exception/Exception.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/Exception/ExceptionAbstract.php" afterPath="$PROJECT_DIR$/StdLib/Exception/ExceptionAbstract.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/Exception/ExceptionInterface.php" afterPath="$PROJECT_DIR$/StdLib/Exception/ExceptionInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/SystemHandler/ExceptionInterface.php" afterPath="$PROJECT_DIR$/Tools/SystemHandler/ExceptionInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/ExceptionTrait.php" afterPath="$PROJECT_DIR$/StdLib/ExceptionTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferCRUD.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferCRUD.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferController.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferWorkflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferWorkflow.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Architecture/Environment/Os.php" afterPath="$PROJECT_DIR$/Architecture/Environment/Os.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Architecture/Environment/Path.php" afterPath="$PROJECT_DIR$/Architecture/Environment/Path.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Architecture/Environment/Php.php" afterPath="$PROJECT_DIR$/Architecture/Environment/Php.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/Redirect/Redirect.php" afterPath="$PROJECT_DIR$/Tools/Redirect/Redirect.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Architecture/Environment/Request.php" afterPath="$PROJECT_DIR$/Architecture/Environment/Request.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/SystemHandler/ShutdownInterface.php" afterPath="$PROJECT_DIR$/Tools/SystemHandler/ShutdownInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/SingletonTrait.php" afterPath="$PROJECT_DIR$/StdLib/SingletonTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdLibTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectManipulatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObjectTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObjectTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/SystemHandler/SystemHandler.php" afterPath="$PROJECT_DIR$/Tools/SystemHandler/SystemHandler.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/Test.php" afterPath="$PROJECT_DIR$/Test/Test.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/Test2.php" afterPath="$PROJECT_DIR$/Test/Test2.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tools/ToolsTrait.php" afterPath="$PROJECT_DIR$/Tools/ToolsTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/ValidatorTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebinyFramework.php" afterPath="$PROJECT_DIR$/WebinyFramework.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/Workflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/Workflow.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/Workflow/Workflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/Workflow/Workflow.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="framework.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364046364894" ignored="false" />
+    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364372448811" ignored="false" />
     <file path="/StdObjectTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1363960573708" ignored="false" />
     <file path="/a.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364064894773" ignored="false" />
     <file path="/StdObjectValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364055375851" ignored="false" />
     <file path="/StdObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1363962498713" ignored="false" />
-    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364062220660" ignored="false" />
-    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364068978918" ignored="false" />
-    <file path="/StringObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364066704808" ignored="false" />
-    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364065276263" ignored="false" />
-    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364065318909" ignored="false" />
-    <file path="/README.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364056464663" ignored="false" />
+    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364288564895" ignored="false" />
+    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364394653645" ignored="false" />
+    <file path="/StringObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364389841876" ignored="false" />
+    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364390512255" ignored="false" />
+    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364394486175" ignored="false" />
+    <file path="/README.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364386575716" ignored="false" />
     <file path="/StdObjectException.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364052216302" ignored="false" />
     <file path="/StdObjectAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364061302189" ignored="false" />
     <file path="/UrlObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364061695313" ignored="false" />
-    <file path="/Test.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364069042927" ignored="false" />
+    <file path="/Test.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364392491784" ignored="false" />
     <file path="/WebinyFramework.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364054515605" ignored="false" />
     <file path="/ExceptionTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364054113139" ignored="false" />
-    <file path="/FileObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364068635606" ignored="false" />
+    <file path="/FileObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364218988913" ignored="false" />
     <file path="/FileObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364060236689" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,10 +60,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="21" selection-start="2935" selection-end="2935" vertical-scroll-proportion="-14.2">
+            <state line="556" column="9" selection-start="13006" selection-end="13006" vertical-scroll-proportion="0.37338045">
               <folding>
                 <element signature="e#6#307#0" expanded="true" />
                 <element signature="e#354#402#0" expanded="true" />
@@ -103,67 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FileObject.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="189" column="64" selection-start="4932" selection-end="4932" vertical-scroll-proportion="-143.64">
-              <folding>
-                <element signature="e#6#277#0" expanded="true" />
-                <element signature="e#322#340#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="21" selection-start="4451" selection-end="4451" vertical-scroll-proportion="-27.88">
-              <folding>
-                <element signature="e#322#365#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Test.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Test/Test.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="24" selection-start="211" selection-end="211" vertical-scroll-proportion="0.17903416">
+            <state line="26" column="7" selection-start="670" selection-end="670" vertical-scroll-proportion="64.08">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WebinyFramework.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebinyFramework.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="23" selection-start="477" selection-end="488" vertical-scroll-proportion="-6.84">
-              <folding>
-                <element signature="e#6#307#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="50" selection-start="403" selection-end="403" vertical-scroll-proportion="-9.12">
-              <folding>
-                <element signature="e#6#307#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="48" selection-start="401" selection-end="401" vertical-scroll-proportion="-8.8">
-              <folding>
-                <element signature="e#6#307#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -171,11 +84,26 @@
       <file leaf-file-name="ArrayObject.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="20" selection-start="897" selection-end="897" vertical-scroll-proportion="14.04">
-              <folding>
-                <element signature="e#6#307#0" expanded="true" />
-                <element signature="e#353#395#0" expanded="true" />
-              </folding>
+            <state line="153" column="25" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-98.04">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FileObject.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="153" column="25" selection-start="3975" selection-end="3975" vertical-scroll-proportion="-13.68">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StdLib/ValidatorTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="61" column="32" selection-start="1202" selection-end="1202" vertical-scroll-proportion="-39.28">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,7 +111,48 @@
       <file leaf-file-name="StringObject.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="85" column="0" selection-start="1826" selection-end="1826" vertical-scroll-proportion="-34.64">
+            <state line="103" column="32" selection-start="2276" selection-end="2276" vertical-scroll-proportion="-13.18">
+              <folding>
+                <element signature="e#6#307#0" expanded="true" />
+                <element signature="e#354#402#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StdObjectInterface.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="25" selection-start="1073" selection-end="1073" vertical-scroll-proportion="-23.32">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="74" column="34" selection-start="1814" selection-end="1828" vertical-scroll-proportion="-27.28">
+              <folding>
+                <element signature="e#354#402#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Test.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Test/Test.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="20" selection-start="331" selection-end="331" vertical-scroll-proportion="-7.6">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="406" column="25" selection-start="9957" selection-end="9957" vertical-scroll-proportion="0.62">
               <folding />
             </state>
           </provider>
@@ -207,22 +176,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/StdLib/ExceptionTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObjectInterface.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" />
         <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" />
         <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
+        <option value="$PROJECT_DIR$/StdLib/ValidatorTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" />
         <option value="$PROJECT_DIR$/Test/Test.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
       </list>
     </option>
   </component>
@@ -368,6 +337,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -383,6 +366,86 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StringObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ArrayObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Exception" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -423,6 +486,9 @@
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value="ALPHA_COMPARATOR" />
+  </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
     <option name="USER" value="" />
     <option name="PASSWORD" value="" />
@@ -456,8 +522,8 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27908218" sideWeight="0.67" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21237993" sideWeight="0.67" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -532,103 +598,50 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/StdLib/ExceptionTrait.php">
+    <entry file="file://$PROJECT_DIR$/StdLib/Exception/Exception.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="20" selection-start="787" selection-end="787" vertical-scroll-proportion="-19.0">
-          <folding>
-            <element signature="e#330#364#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="15" column="28" selection-start="417" selection-end="417" vertical-scroll-proportion="0.17903416" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObjectTrait.php">
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="48" selection-start="975" selection-end="975" vertical-scroll-proportion="-25.08">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="29" column="21" selection-start="730" selection-end="730" vertical-scroll-proportion="0.5147232" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php">
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="23" selection-start="712" selection-end="712" vertical-scroll-proportion="41.32">
-          <folding>
-            <element signature="e#351#394#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdLibTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="20" selection-start="952" selection-end="952" vertical-scroll-proportion="2.52">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="1" selection-start="766" selection-end="766" vertical-scroll-proportion="-17.48">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ValidatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="6" selection-start="1290" selection-end="1290" vertical-scroll-proportion="-44.84">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebinyFramework.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="23" selection-start="477" selection-end="488" vertical-scroll-proportion="-6.84">
-          <folding>
-            <element signature="e#6#307#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="50" selection-start="403" selection-end="403" vertical-scroll-proportion="-9.12">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="20" column="13" selection-start="509" selection-end="509" vertical-scroll-proportion="0.3133098" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="48" selection-start="401" selection-end="401" vertical-scroll-proportion="-8.8">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-          </folding>
+        <state line="53" column="5" selection-start="1416" selection-end="1416" vertical-scroll-proportion="0.95524144" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdLibTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="5" selection-start="958" selection-end="958" vertical-scroll-proportion="0.8433451">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="20" selection-start="897" selection-end="897" vertical-scroll-proportion="14.04">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-            <element signature="e#353#395#0" expanded="true" />
-          </folding>
+        <state line="14" column="15" selection-start="412" selection-end="412" vertical-scroll-proportion="0.3043478">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/ValidatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="32" selection-start="1202" selection-end="1202" vertical-scroll-proportion="-39.28">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="0" selection-start="1826" selection-end="1826" vertical-scroll-proportion="-34.64">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="21" selection-start="2935" selection-end="2935" vertical-scroll-proportion="-14.2">
+        <state line="103" column="32" selection-start="2276" selection-end="2276" vertical-scroll-proportion="-13.18">
           <folding>
             <element signature="e#6#307#0" expanded="true" />
             <element signature="e#354#402#0" expanded="true" />
@@ -636,29 +649,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php">
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="21" selection-start="4451" selection-end="4451" vertical-scroll-proportion="-27.88">
-          <folding>
-            <element signature="e#322#365#0" expanded="true" />
-          </folding>
+        <state line="48" column="25" selection-start="1073" selection-end="1073" vertical-scroll-proportion="-23.32">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="189" column="64" selection-start="4932" selection-end="4932" vertical-scroll-proportion="-143.64">
+        <state line="74" column="34" selection-start="1814" selection-end="1828" vertical-scroll-proportion="-27.28">
           <folding>
-            <element signature="e#6#277#0" expanded="true" />
-            <element signature="e#322#340#0" expanded="true" />
+            <element signature="e#354#402#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Test/Test.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="24" selection-start="211" selection-end="211" vertical-scroll-proportion="0.17903416">
+        <state line="12" column="20" selection-start="331" selection-end="331" vertical-scroll-proportion="-7.6">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="406" column="25" selection-start="9957" selection-end="9957" vertical-scroll-proportion="0.62">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="153" column="25" selection-start="3975" selection-end="3975" vertical-scroll-proportion="-13.68">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="153" column="25" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-98.04">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="7" selection-start="670" selection-end="670" vertical-scroll-proportion="64.08">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="556" column="9" selection-start="13006" selection-end="13006" vertical-scroll-proportion="0.37338045">
+          <folding>
+            <element signature="e#6#307#0" expanded="true" />
+            <element signature="e#354#402#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
