@@ -10,6 +10,8 @@
 
 namespace WF\StdLib\StdObject;
 
+use WF\StdLib\ValidatorTrait;
+
 /**
  * Standard object validator trait.
  *
@@ -19,7 +21,7 @@ namespace WF\StdLib\StdObject;
  */
 trait StdObjectValidatorTrait
 {
-    use \WF\StdLib\ValidatorTrait;
+    use ValidatorTrait;
 
     abstract function getValue();
 

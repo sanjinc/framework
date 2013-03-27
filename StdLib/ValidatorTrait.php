@@ -50,4 +50,39 @@ trait ValidatorTrait
     static public function isArray(&$var) {
         return is_array($var);
     }
+
+	/**
+	 * Checks if value is a number.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static public function isNumber(&$var){
+		return is_numeric($var);
+	}
+
+	/**
+	 * Checks whenever resource is callable.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static public function isCallable(&$var)
+	{
+		return is_callable($var);
+	}
+
+	/**
+	 * Check if $instance if of $type.
+	 *
+	 * @param $instance
+	 * @param $type
+	 *
+	 * @return bool
+	 */
+	static public function isInstanceOf(&$instance, $type){
+		return ($instance instanceof $type);
+	}
 }

@@ -46,7 +46,7 @@ interface StdObjectInterface
      *
      * @param mixed $value    Passed by reference.
      */
-    function updateValue(&$value);
+    function updateValue($value);
 
     /**
      * To string implementation.

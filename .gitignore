@@ -164,3 +164,6 @@ pip-log.txt
 
 # SVN
 .svn
+
+# PHP Storm
+.idea\workspace.xml

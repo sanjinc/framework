@@ -42,7 +42,7 @@ class UrlObject extends StdObjectAbstract
      * @param string $value
      */
     public function __construct($value) {
-        $value = $this->str($value)->lower()->trim();
+        $value = $this->str($value)->caseLower()->trim();
         $this->_url = $value->getValue();
         $this->_validateUrl();
     }
@@ -140,7 +140,7 @@ class UrlObject extends StdObjectAbstract
     private function _validateUrl() {
         $urlData = parse_url($this->getValue());
         if(!$urlData || !$this->isArray($urlData)) {
-            throw $this->exception("Unable to create a Url Standard Object from the given value. The value isn't a valid URL");
+            throw new StdObjectException("Unable to create a Url Standard Object from the given value. The value isn't a valid URL");
         }
 
         // extract parts

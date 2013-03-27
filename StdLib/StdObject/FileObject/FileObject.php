@@ -62,13 +62,13 @@ class FileObject extends StdObjectAbstract
      */
     function getSize() {
         if(!$this->_fileExists) {
-            throw $this->exception('FileObject: Unable to get file size because the file doesn\'t exist: ' . $this->_path);
+            throw new StdObjectException('FileObject: Unable to get file size because the file doesn\'t exist: ' . $this->_path);
         }
 
         try {
             return $this->_getHandler()->getSize();
         } catch (\Exception $e) {
-            throw $this->exception('FileObject: Unable to get file size for file: ' . $this->_path . "\n " . $e->getMessage());
+            throw new StdObjectException('FileObject: Unable to get file size for file: ' . $this->_path . "\n " . $e->getMessage());
         }
 
     }
@@ -97,7 +97,7 @@ class FileObject extends StdObjectAbstract
         if(!$this->_fileExists) {
             $fileName = new StringObject($this->_path);
 
-            return strtolower($fileName->explode('.')->last());
+            return $fileName->explode('.')->last()->caseLower();
         }
 
         return $this->_getHandler()->getExtension();
@@ -111,7 +111,7 @@ class FileObject extends StdObjectAbstract
      */
     function getMTime() {
         if(!$this->_fileExists) {
-            throw $this->exception('FileObject: Unable to get last modified time because the file doesn\'t exist: '
+            throw new StdObjectException('FileObject: Unable to get last modified time because the file doesn\'t exist: '
                                        . $this->_path);
         }
 
@@ -120,7 +120,7 @@ class FileObject extends StdObjectAbstract
 
     function getPath() {
         if(!$this->_fileExists) {
-            throw $this->exception('FileObject: Unable to get file path because the file doesn\'t exist: ' . $this->_path);
+            throw new StdObjectException('FileObject: Unable to get file path because the file doesn\'t exist: ' . $this->_path);
         }
 
         return $this->_getHandler()->getPath();
@@ -151,7 +151,7 @@ class FileObject extends StdObjectAbstract
      *
      * @param mixed $value    Passed by reference.
      */
-    function updateValue(&$value) {
+    function updateValue($value) {
         $this->_path = $value;
         $this->_handler = null;
     }
@@ -162,7 +162,7 @@ class FileObject extends StdObjectAbstract
      * @return mixed
      */
     function __toString() {
-        return $this->truncate();
+        return $this->_path;
     }
 
     /**
@@ -176,7 +176,7 @@ class FileObject extends StdObjectAbstract
             try {
                 $this->_handler = new SplFileObject($this->_path, 'w');
             } catch (\ErrorException $e) {
-                throw $this->exception($this->_path . 'FileObject: Unable to open file handler.
+                throw new StdObjectException($this->_path . 'FileObject: Unable to open file handler.
 									Please check that the file exists and that you have
 									the necessary permissions for the location: "' . '"' .
                                            "\n " . $e->getMessage());

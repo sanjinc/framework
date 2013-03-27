@@ -38,16 +38,4 @@ trait StdLibTrait
 
         return $var;
     }
-
-    /**
-     * Generate a hash value of the given string using the defined algorithm.
-     *
-     * @param string $string      String from which the hash will be calculated.
-     * @param string $algo        Name of the algorithm used for calculation (md5, sh1, ripemd160,...).
-     *
-     * @return string
-     */
-    static public function hash($string, $algo = 'sh1') {
-        return hash($algo, $string);
-    }
 }

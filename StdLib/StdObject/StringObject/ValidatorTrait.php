@@ -10,6 +10,7 @@
 
 namespace WF\StdLib\StdObject\StringObject;
 
+use WF\StdLib\StdObject\ArrayObject\ArrayObject;
 use WF\StdLib\StdObject\StdObjectValidatorTrait;
 
 /**
@@ -39,6 +40,27 @@ trait ValidatorTrait
 
         return false;
     }
+
+	/**
+	 * Check if $string is equal to current string.
+	 * Note that this comparison is case sensitive and binary safe.
+	 *
+	 * @param string|StringObject $string String to compare.
+	 *
+	 * @return bool
+	 */
+	public function equals($string){
+		if($this->isInstanceOf($string, self)){
+			$string = $string->getValue();
+		}
+
+		$result = strcmp($string, $this->getValue());
+		if($result!==0){
+			return false;
+		}
+
+		return true;
+	}
 
     /**
      * Returns the position of the given $string inside the current string object.
@@ -76,12 +98,17 @@ trait ValidatorTrait
      * @param string $regEx        Regular expression to match.
      * @param bool   $matchAll     Use preg_match_all, or just preg_match. Default is preg_match_all.
      *
-     * @return array|bool    If there are matches, an array with the the $matches is returned, else, false is returned.
+     * @return ArrayObject|bool    If there are matches, an array with the the $matches is returned, else, false is returned.
      */
     public function matches($regEx, $matchAll = true) {
-        preg_match_all('|\[(.*?)\]|', $this->getValue(), $matches);
+		if($matchAll){
+			preg_match_all($regEx, $this->getValue(), $matches);
+		}else{
+			preg_match($regEx, $this->getValue(), $matches);
+		}
+
         if(count($matches) > 0) {
-            return $matches;
+            return new ArrayObject($matches);
         }
 
         return false;

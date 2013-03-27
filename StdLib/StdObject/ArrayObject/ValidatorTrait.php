@@ -10,6 +10,7 @@
 
 namespace WF\StdLib\StdObject\ArrayObject;
 
+use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StdObjectValidatorTrait;
 
 /**
@@ -20,22 +21,35 @@ use WF\StdLib\StdObject\StdObjectValidatorTrait;
 
 trait ValidatorTrait
 {
-    use StdObjectValidatorTrait;
+	use StdObjectValidatorTrait;
 
-    /**
-     * Checks if the $key is present inside the current array.
-     * If the key is present, the value under that key is returned, else the $default is returned.
-     *
-     * @param string|int $key
-     * @param mixed      $default
-     *
-     * @return bool|mixed
-     */
-    public function key($key, $default = false) {
-        if($this->val($this->getValue()[$key])) {
-            return $this->getValue()[$key];
-        }
+	/**
+	 * Search the array for the given $value.
+	 * If $strict is true, both values must be of the same instance type.
+	 *
+	 * @param mixed $value
+	 * @param bool  $strict
+	 *
+	 * @return bool|key Returns the key under which the $value is found, or false.
+	 */
+	public function search($value, $strict = false) {
+		return array_search($value, $this->getValue(), $strict);
+	}
 
-        return $default;
-    }
+	/**
+	 * Return a value from the array for the given key.
+	 * If the $key doesn't exist, $default is returned.
+	 *
+	 * @param string $key     Array key.
+	 * @param mixed  $default If key is not found, $default is returned.
+	 *
+	 * @return mixed|StringObject
+	 */
+	public function key($key, $default = false) {
+		if(isset($this->getValue()[$key])) {
+			return new StringObject($this->getValue()[$key]);
+		}
+
+		return $default;
+	}
 }

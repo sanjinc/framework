@@ -9,13 +9,14 @@
 
 namespace WF\StdLib\StdObject;
 
+use WF\StdLib\Exception\ExceptionAbstract;
+
 /**
  * Standard object exception handler
  *
  * @package         WF\StdLib\StdObject
  */
-
-class StdObjectException extends \WF\StdLib\Exception\ExceptionAbstract
+class StdObjectException extends ExceptionAbstract
 {
     function __construct($message) {
         parent::__construct('StdObjectException: ' . $message);
