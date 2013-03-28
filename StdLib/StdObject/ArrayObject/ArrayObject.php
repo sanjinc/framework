@@ -33,24 +33,29 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * Constructor.
 	 * Set standard object value.
 	 *
-	 * @param null|array $value
-	 * @param null|array $keys     - Array of keys that will be combined with array $value.
-	 *                             See http://www.php.net/manual/en/function.array-combine.php for more info.
+	 * @param null|array $array
+	 * @param null|array $values      - Array of values that will be combined with $array.
+	 *                                See http://www.php.net/manual/en/function.array-combine.php for more info.
+	 * 								  $array param is used as key array.
 	 *
 	 * @throws StdObjectException
 	 */
-	public function __construct($value = null, $keys = null) {
-		if(!$this->isArray($value)) {
-			if($this->isNull($value)) {
+	public function __construct($array = null, $values = null) {
+		if(!$this->isArray($array)) {
+			if($this->isNull($array)) {
 				$this->_array = array();
 			} else {
-				throw new StdObjectException('Array standard object can only be created from an array.');
+				throw new StdObjectException('ArrrayObject: Array standard object can only be created from an array.');
 			}
 		} else {
-			if($this->isArray($keys)) {
-				$this->_array = array_combine($keys, $value);
+			if($this->isArray($values)) {
+				// check if both arrays have the same number of values
+				if(count($array) != count($values)){
+					throw new StdObjectException('ArrayObject: Both arrays must have equal number of items');
+				}
+				$this->_array = array_combine($array, $values);
 			} else {
-				$this->_array = $value;
+				$this->_array = $array;
 			}
 		}
 	}
@@ -99,7 +104,9 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return StringObject
 	 */
 	public function first() {
-		return new StringObject(reset($this->getValue()));
+		$arr = $this->getValue();
+
+		return new StringObject(reset($arr));
 	}
 
 	/**
@@ -113,11 +120,23 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 
 	/**
 	 * Counts the occurrences of the same array values and groups them into an associate array.
+	 * NOTE: This function can only count array values that are type of STRING of INTEGER.
 	 *
+	 * @throws StdObjectException
 	 * @return ArrayObject
 	 */
 	public function countValues() {
-		return new ArrayObject(array_count_values($this->getValue()));
+		try{
+			/**
+			 * We must mute errors in this function because it throws a E_WARNING message if array contains something
+			 * else than STRING or INTEGER.
+			 */
+			@$result = array_count_values($this->getValue());
+			return new ArrayObject($result);
+		}catch (\ErrorException $e){
+			throw new StdObjectException('ArrayObject: countValues() can only count STRING and INTEGER values');
+		}
+
 	}
 
 	/**

@@ -68,12 +68,11 @@ trait ManipulatorTrait
 		$array = $this->getValue();
 
 		if(!$this->isNull($v)) {
-			$array = [
-				$k,
-				$v
-			] + $array;
+			$array = array_reverse($array, true);
+			$array[$k] = $v;
+			$array = array_reverse($array, true);
 		} else {
-			$array = $k + $array;
+			array_unshift($array, $k);
 		}
 
 		$this->updateValue($array);
@@ -87,7 +86,10 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function removeFirst() {
-		array_shift($this->getValue());
+		$array = $this->getValue();
+		array_shift($array);
+
+		$this->updateValue($array);
 
 		return $this;
 	}
@@ -98,7 +100,10 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function removeLast() {
-		array_pop($this->getValue());
+		$array = $this->getValue();
+		array_pop($array);
+
+		$this->updateValue($array);
 
 		return $this;
 	}
@@ -112,7 +117,10 @@ trait ManipulatorTrait
 	 */
 	public function removeKey($key) {
 		if($this->key($key)) {
-			unset($this->getValue()[$key]);
+			$array = $this->getValue();
+			unset($array[$key]);
+
+			$this->updateValue($array);
 		}
 
 		return $this;
@@ -126,16 +134,22 @@ trait ManipulatorTrait
 	 * @return StringObject
 	 */
 	public function implode($glue) {
-		return new StringObject(implode($glue, $this->getValue()));
+		$array = $this->getValue();
+		/**
+		 * In case of a multi-dimensional array the implode function throws an E_NOTICE.
+		 */
+		@$string = implode($glue, $array);
+
+		return new StringObject($string);
 	}
 
 	/**
 	 * Split an array into chunks.
 	 *
-	 * @param      $size          Chunk size.
+	 * @param int  $size          Chunk size.
 	 * @param bool $preserve_keys Do you want ot preserve keys.
 	 *
-	 * @return $this
+	 * @return ArrayObject
 	 * @throws StdObjectException
 	 */
 	public function chunk($size, $preserve_keys = false) {
@@ -145,9 +159,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($chunk);
-
-		return $this;
+		return new ArrayObject($chunk);
 	}
 
 	/**
@@ -179,14 +191,20 @@ trait ManipulatorTrait
 	}
 
 	/**
-	 * Fill current array keys with the given value.
+	 * Use current array as keys and will them with $value.
+	 * @link http://php.net/manual/en/function.array-fill-keys.php
 	 *
 	 * @param mixed $value Value to use for filling.
 	 *
 	 * @return $this
 	 */
 	public function fillKeys($value) {
-		$this->updateValue(array_fill_keys($this->getValue(), $value));
+		/**
+		 * Mute errors because this function can throw E_NOTICE in case of a multi-dimensional array.
+		 */
+		@$arr = array_fill_keys($this->getValue(), $value);
+
+		$this->updateValue($arr);
 
 		return $this;
 	}

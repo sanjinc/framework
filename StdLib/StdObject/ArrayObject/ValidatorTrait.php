@@ -12,6 +12,7 @@ namespace WF\StdLib\StdObject\ArrayObject;
 
 use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StdObjectValidatorTrait;
+use WF\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Validator methods for array standard object.
@@ -46,7 +47,7 @@ trait ValidatorTrait
 	 * @return mixed|StringObject
 	 */
 	public function key($key, $default = false) {
-		if(isset($this->getValue()[$key])) {
+		if(array_key_exists($key, $this->getValue())) {
 			return new StringObject($this->getValue()[$key]);
 		}
 

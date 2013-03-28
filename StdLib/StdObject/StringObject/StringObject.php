@@ -39,7 +39,7 @@ class StringObject extends StdObjectAbstract
 	 * @param mixed $value
 	 */
 	public function __construct($value) {
-		$this->_wfString = (string)$value;
+		$this->_wfString = $value;
 	}
 
 	/**

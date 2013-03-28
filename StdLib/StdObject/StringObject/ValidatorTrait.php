@@ -50,7 +50,7 @@ trait ValidatorTrait
 	 * @return bool
 	 */
 	public function equals($string){
-		if($this->isInstanceOf($string, self)){
+		if($this->isInstanceOf($string, $this)){
 			$string = $string->getValue();
 		}
 
