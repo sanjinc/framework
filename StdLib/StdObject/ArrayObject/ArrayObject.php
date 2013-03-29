@@ -89,24 +89,36 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 
 	/**
 	 * Return the last element in the array.
+	 * If the element is array, ArrayObject is returned, else StringObject is returned.
 	 *
-	 * @return StringObject
+	 * @return StringObject|ArrayObject
 	 */
 	public function last() {
 		$arr = $this->getValue();
+		$last = end($arr);
 
-		return new StringObject(end($arr));
+		if($this->isArray($last)){
+			return new ArrayObject($last);
+		}else{
+			return new StringObject($last);
+		}
 	}
 
 	/**
 	 * Returns the first element in the array.
+	 * If the element is array, ArrayObject is returned, else StringObject is returned.
 	 *
-	 * @return StringObject
+	 * @return StringObject|ArrayObject
 	 */
 	public function first() {
 		$arr = $this->getValue();
+		$first = reset($arr);
 
-		return new StringObject(reset($arr));
+		if($this->isArray($first)){
+			return new ArrayObject($first);
+		}else{
+			return new StringObject($first);
+		}
 	}
 
 	/**

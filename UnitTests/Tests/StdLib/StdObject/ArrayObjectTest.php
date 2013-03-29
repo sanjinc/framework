@@ -4,48 +4,76 @@ namespace WF\UnitTests\Tests\StdLib\StdObject;
 require_once '../../../../WebinyFramework.php';
 
 use WF\StdLib\StdObject\ArrayObject\ArrayObject;
+use WF\StdLib\StdObject\StdObjectException;
 
-class ArrayObjectText extends \PHPUnit_Framework_TestCase{
+class ArrayObjectText extends \PHPUnit_Framework_TestCase
+{
 
 	/**
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 */
-	public function testConstructorException(){
+	public function testConstructorException() {
 		$a = new ArrayObject('value');
 	}
 
 	/**
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 */
-	public function testConstructorException2(){
+	public function testConstructorException2() {
 		$a = new ArrayObject('key', 'value');
 	}
 
-	public function testConstructorKeyOnly(){
+	public function testConstructorKeyOnly() {
 		$a = new ArrayObject(['key']);
 		$this->assertSame(array('key'), $a->getValue());
 	}
 
-	public function testConstructorKeyValue(){
-		$a = new ArrayObject(['key'=>'value']);
-		$this->assertSame(array('key'=>'value'), $a->getValue());
+	public function testConstructorKeyValue() {
+		$a = new ArrayObject(['key' => 'value']);
+		$this->assertSame(array('key' => 'value'), $a->getValue());
 	}
 
-	public function testConstructorCombine(){
-		$a = new ArrayObject(['key1', 'key2'], ['value1', 'value2']);
-		$this->assertSame(array('key1'=>'value1', 'key2'=>'value2'), $a->getValue());
+	public function testConstructorCombine() {
+		$a = new ArrayObject([
+							 'key1',
+							 'key2'
+							 ], [
+								'value1',
+								'value2'
+								]);
+		$this->assertSame(array(
+							   'key1' => 'value1',
+							   'key2' => 'value2'
+						  ), $a->getValue());
 	}
 
 	/**
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 */
-	public function testConstructorCombine2(){
-		$a = new ArrayObject(['key1', 'key2', ''], ['value1', 'value2', 'value3', 'value4', 'value5']);
-		$this->assertSame(array('key1'=>'value1', 'key2'=>'value2'), $a->getValue());
+	public function testConstructorCombine2() {
+		$a = new ArrayObject([
+							 'key1',
+							 'key2',
+							 ''
+							 ], [
+								'value1',
+								'value2',
+								'value3',
+								'value4',
+								'value5'
+								]);
+		$this->assertSame(array(
+							   'key1' => 'value1',
+							   'key2' => 'value2'
+						  ), $a->getValue());
 	}
 
-	public function testSum(){
-		$a = new ArrayObject([1, 2, 3]);
+	public function testSum() {
+		$a = new ArrayObject([
+							 1,
+							 2,
+							 3
+							 ]);
 		$sum = $a->sum();
 		$this->assertSame(6, $sum);
 	}
@@ -53,7 +81,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testKeys($array){
+	public function testKeys($array) {
 		$a = new ArrayObject($array);
 		$keys = $a->keys();
 
@@ -63,7 +91,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testValues($array){
+	public function testValues($array) {
 		$a = new ArrayObject($array);
 		$values = $a->values();
 
@@ -73,7 +101,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testLast($array){
+	public function testLast($array) {
 		$a = new ArrayObject($array);
 		$last = $a->last();
 
@@ -83,7 +111,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testFirst($array){
+	public function testFirst($array) {
 		$a = new ArrayObject($array);
 		$last = $a->first();
 
@@ -94,7 +122,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testCount($array){
+	public function testCount($array) {
 		$a = new ArrayObject($array);
 		$count = $a->count();
 
@@ -104,7 +132,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet2
 	 */
-	public function testCountValues($array){
+	public function testCountValues($array) {
 		$a = new ArrayObject($array);
 		$valueCount = $a->countValues();
 
@@ -114,7 +142,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testGetValue($array){
+	public function testGetValue($array) {
 		$a = new ArrayObject($array);
 
 		$this->assertSame($array, $a->getValue());
@@ -123,17 +151,23 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testUpdateValue($array){
+	public function testUpdateValue($array) {
 		$a = new ArrayObject($array);
-		$a->updateValue(['k1', 'k2'=>'v2']);
+		$a->updateValue([
+						'k1',
+						'k2' => 'v2'
+						]);
 
-		$this->assertSame(['k1', 'k2'=>'v2'], $a->getValue());
+		$this->assertSame([
+						  'k1',
+						  'k2' => 'v2'
+						  ], $a->getValue());
 	}
 
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testAppend($array){
+	public function testAppend($array) {
 		$a = new ArrayObject($array);
 		$a->append('k512');
 
@@ -144,7 +178,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testPrepend($array){
+	public function testPrepend($array) {
 		$a = new ArrayObject($array);
 		$a->prepend('k512');
 
@@ -155,18 +189,18 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet2
 	 */
-	public function testPrepend2($array){
+	public function testPrepend2($array) {
 		$a = new ArrayObject($array);
 		$a->prepend('k512', 'val');
 
-		$array = array('k512'=>'val')+$array;
+		$array = array('k512' => 'val') + $array;
 		$this->assertSame($array, $a->getValue());
 	}
 
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testRemoveFirst($array){
+	public function testRemoveFirst($array) {
 		$a = new ArrayObject($array);
 		$a->removeFirst();
 
@@ -177,7 +211,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testRemoveLast($array){
+	public function testRemoveLast($array) {
 		$a = new ArrayObject($array);
 		$a->removeLast();
 
@@ -185,8 +219,12 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 		$this->assertSame($array, $a->getValue());
 	}
 
-	public function testRemoveKey(){
-		$array = ['k1'=>'val', 'k2'=>null, 'k3'=>false];
+	public function testRemoveKey() {
+		$array = [
+			'k1' => 'val',
+			'k2' => null,
+			'k3' => false
+		];
 		$a = new ArrayObject($array);
 		$a->removeKey('k2');
 
@@ -197,7 +235,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testImplode($array){
+	public function testImplode($array) {
 		$a = new ArrayObject($array);
 		$string = $a->implode(' ');
 
@@ -208,7 +246,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testChunk($array){
+	public function testChunk($array) {
 		$a = new ArrayObject($array);
 		$chunk = $a->chunk(2, true);
 
@@ -219,7 +257,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testChangeKeyCase($array){
+	public function testChangeKeyCase($array) {
 		$a = new ArrayObject($array);
 		$a->changeKeyCase('upper');
 
@@ -230,7 +268,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 */
-	public function testChangeKeyCase2(){
+	public function testChangeKeyCase2() {
 		$a = new ArrayObject(['k1']);
 		$a->changeKeyCase('mid-case');
 	}
@@ -238,7 +276,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testFillKeys($array){
+	public function testFillKeys($array) {
 		$a = new ArrayObject($array);
 		$a->fillKeys('value');
 
@@ -246,32 +284,497 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase{
 		$this->assertSame($array, $a->getValue());
 	}
 
+	public function testFill() {
+		$array = [
+			'test1',
+			'test2'
+		];
+		$a = new ArrayObject($array);
+		$a->fill(2, 2, 'value');
+
+		@$array = array_fill(2, 2, 'value');
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @expectedException WF\StdLib\StdObject\StdObjectException
+	 */
+	public function testFilter() {
+		$a = new ArrayObject([]);
+		$a->filter('notCallable');
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testFilter2($array) {
+		// callback function used for filtering
+		$callable = function ($item) {
+			if(is_string($item) && strpos($item, 'v') !== false) {
+				return $item;
+			}
+
+			return false;
+		};
+
+		$a = new ArrayObject($array);
+		$a->filter($callable);
+
+		$array = array_filter($array, $callable);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testFlip($array) {
+		$a = new ArrayObject($array);
+		@$a->flip();
+
+		@$array = array_flip($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testIntersect($array) {
+		$compare = [
+			'v1',
+			'v2',
+			'v3',
+			'vv1',
+			'vvv2',
+			'vvv3'
+		];
+		$a = new ArrayObject($array);
+		@$a->intersect($compare);
+
+		@$array = array_intersect($array, $compare);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testIntersectAssoc($array) {
+		$compare = [
+			'k1' => 'v1',
+			'k2' => 'v2',
+			'k3' => 'v3',
+			'vv1',
+			'vvv2',
+			'vvv3'
+		];
+		$a = new ArrayObject($array);
+		@$a->intersectAssoc($compare);
+
+		@$array = array_intersect_assoc($array, $compare);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testIntersectAssoc2($array) {
+		$compare = ['k1' => 'v1'];
+
+		// callback function used for filtering
+		$callable = function ($a, $b) {
+			if($a == $b) {
+				return 0;
+			}
+
+			return 1;
+		};
+
+		$a = new ArrayObject($array);
+		@$a->intersectAssoc($compare, $callable);
+
+		@$array = array_intersect_uassoc($array, $compare, $callable);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testIntersectKey($array) {
+		$compare = [
+			'k1' => 'v1',
+			'k2' => 'v2',
+			'k3' => 'v3',
+			'vv1',
+			'vvv2',
+			'vvv3'
+		];
+		$a = new ArrayObject($array);
+		@$a->intersectKey($compare);
+
+		@$array = array_intersect_key($array, $compare);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testIntersectKey2($array) {
+		$compare = ['k1' => 'v1'];
+
+		// callback function used for filtering
+		$callable = function ($a, $b) {
+			if($a == $b) {
+				return 0;
+			}
+
+			return 1;
+		};
+
+		$a = new ArrayObject($array);
+		@$a->intersectKey($compare, $callable);
+
+		@$array = array_intersect_ukey($array, $compare, $callable);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testMap($array) {
+		// callback function used for mapping
+		$callable = function ($item) {
+			if(is_array($item)) {
+				$item['new'] = 'value';
+			} else {
+				$item = $item . '_appended';
+			}
+
+			return $item;
+		};
+
+		$a = new ArrayObject($array);
+		$a->map($callable);
+
+		$array = array_map($callable, $array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testMerge($array) {
+		$a = new ArrayObject($array);
+		$a->merge($array);
+
+		$array = array_merge($array, $array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSortAssoc($array) {
+		$a = new ArrayObject($array);
+		$a->sortAssoc();
+
+		asort($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSortAssoc2($array) {
+		$a = new ArrayObject($array);
+		@$a->sortAssoc(SORT_DESC);
+
+		arsort($array);
+		$this->assertSame($array, $a->getValue());
+	}
 
 
-	public function arraySet1(){
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSortKey($array) {
+		$a = new ArrayObject($array);
+		$a->sortKey();
+
+		ksort($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSortKey2($array) {
+		$a = new ArrayObject($array);
+		@$a->sortKey(SORT_DESC);
+
+		krsort($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	public function testSortField() {
+		$array = [
+			1 => ['order' => 3],
+			2 => ['order' => 2],
+			3 => ['order' => 1]
+		];
+
+		$a = new ArrayObject($array);
+		$a->sortField('order');
+
+		$sortedArray = [
+			3 => ['order' => 1],
+			2 => ['order' => 2],
+			1 => ['order' => 3],
+		];
+
+		$this->assertSame($sortedArray, $a->getValue());
+	}
+
+	public function testSortField2() {
+		$array = [
+			1 => ['order' => 3],
+			2 => ['order' => 2],
+			3 => ['order' => 1]
+		];
+
+		$a = new ArrayObject($array);
+		$a->sortField('order', SORT_DESC);
+
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testPad($array) {
+		$a = new ArrayObject($array);
+		$a->pad(10, 'testValue');
+
+		$array = array_pad($array, 10, 'testValue');
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testReplace($array) {
+		$replacements = [
+			'k1' => 'test',
+			'k2' => 'test'
+		];
+
+		$a = new ArrayObject($array);
+		$a->replace($replacements);
+
+		$array = array_replace($array, $replacements);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testReverse($array) {
+
+		$a = new ArrayObject($array);
+		$a->reverse();
+
+		$array = array_reverse($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSlice($array) {
+		$a = new ArrayObject($array);
+		$a->slice(0, 1);
+
+		$array = array_slice($array, 0, 1, true);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSplice($array) {
+		$a = new ArrayObject($array);
+		@$a->splice(0, -1, 'replacement');
+
+		$array = array_splice($array, 0, -1, 'replacement');
+		$this->assertSame($array, $a->getValue());
+	}
+
+	public function testUnique(){
+		$array = ['v1', 'v2', 'v1'];
+		$a = new ArrayObject($array);
+		$a->unique();
+
+		$array = array_unique($array);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testWalk($array){
+		// callback function used for mapping
+		$callable = function ($item) {
+			if(is_array($item)) {
+				$item['new'] = 'value';
+			} else {
+				$item = $item . '_appended';
+			}
+
+			return $item;
+		};
+
+		$a = new ArrayObject($array);
+		$a->walk($callable);
+
+		array_walk($array, $callable);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testDiff($array){
+		$compareArray = ['v1', 'v2'];
+
+		$a = new ArrayObject($array);
+		@$a->diff($compareArray);
+
+		@$array = array_diff($array, $compareArray);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testDiff2($array){
+		$compareArray = ['v1', 'v2'];
+
+		$a = new ArrayObject($array);
+		@$a->diff($compareArray, true);
+
+		@$array = array_diff_assoc($array, $compareArray);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testDiffKeys($array){
+		$compareArray = ['k1', 'k2'];
+
+		$a = new ArrayObject($array);
+		@$a->diffKeys($compareArray);
+
+		@$array = array_diff_key($array, $compareArray);
+		$this->assertSame($array, $a->getValue());
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSearch($array){
+		$a = new ArrayObject($array);
+		$searchResult = $a->search('youCantFindMe');
+
+		$this->assertSame(false, $searchResult);
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testSearch2($array){
+		$a = new ArrayObject($array);
+		$searchResult = $a->search('v1');
+
+		$key = array_search('v1', $array);
+		$this->assertSame($key, $searchResult);
+	}
+
+	/**
+	 * @dataProvider arraySet1
+	 */
+	public function testKey($array){
+		$a = new ArrayObject($array);
+		$searchResult = $a->key('NonExistingKey');
+
+		$this->assertSame(false, $searchResult);
+	}
+
+	public function arraySet1() {
 		return array(
 			[[]],
 			[['k1']],
-			[['k1'=>'']],
-			[[''=>'v1']],
-			[['k1'=>false]],
-			[['k1'=>null, false]],
-			[[''=>null]],
-			[[''=>false, null]],
-			[['k1', 'k2', 'k3']],
-			[['k1'=>'v1', 'k2'=>'v2', 'k3'=>'v3']],
-			[['k1' => ['kk1'=>'v1', 'kk2'=>'v2'], 'k2'=>'v2', 'kk3'=>['vv3'=>['kk33'=>'vvv3']]]]
+			[['k1' => '']],
+			[['' => 'v1']],
+			[['k1' => false]],
+			[
+				[
+					'k1' => null,
+					false
+				]
+			],
+			[['' => null]],
+			[
+				[
+					'' => false,
+					null
+				]
+			],
+			[
+				[
+					'k1',
+					'k2',
+					'k3'
+				]
+			],
+			[
+				[
+					'k1' => 'v1',
+					'k2' => 'v2',
+					'k3' => 'v3'
+				]
+			],
+			[
+				[
+					'k1' => [
+						'kk1' => 'v1',
+						'kk2' => 'v2'
+					],
+					'k2' => 'v2',
+					'kk3' => ['vv3' => ['kk33' => 'vvv3']]
+				]
+			]
 		);
 	}
 
-	public function arraySet2(){
+	public function arraySet2() {
 		return array(
 			[[]],
 			[['k1']],
-			[['k1'=>'']],
-			[[''=>'v1']],
-			[['k1', 'k2', 'k3']],
-			[['k1'=>'v1', 'k2'=>'v2', 'k3'=>'v3']]
+			[['k1' => '']],
+			[['' => 'v1']],
+			[
+				[
+					'k1',
+					'k2',
+					'k3'
+				]
+			],
+			[
+				[
+					'k1' => 'v1',
+					'k2' => 'v2',
+					'k3' => 'v3'
+				]
+			]
 		);
 	}
 

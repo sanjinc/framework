@@ -47,7 +47,7 @@ trait ValidatorTrait
      *
      * @return bool
      */
-    static public function isArray(&$var) {
+    static public function isArray($var) {
         return is_array($var);
     }
 

@@ -196,13 +196,19 @@ trait ManipulatorTrait
 	 *
 	 * @param mixed $value Value to use for filling.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function fillKeys($value) {
 		/**
 		 * Mute errors because this function can throw E_NOTICE in case of a multi-dimensional array.
 		 */
-		@$arr = array_fill_keys($this->getValue(), $value);
+		try {
+			@$arr = array_fill_keys($this->getValue(), $value);
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
+		}
+
 
 		$this->updateValue($arr);
 
@@ -212,6 +218,7 @@ trait ManipulatorTrait
 	/**
 	 * Fill array with values.
 	 * Number of items is defined by $num param, and start index is defined by $start param.
+	 * If you have items in your current array, they will be removed.
 	 *
 	 * @param int   $start The first index of the returned array.
 	 * @param int   $num   Number of elements to insert. Must be greater than zero.
@@ -254,11 +261,19 @@ trait ManipulatorTrait
 
 	/**
 	 * Exchanges all keys with their associated values in the array.
+	 * Note: This function can only flip STRING and INTEGER values. Other types will throw a E_WARNING
+	 * (no exceptions, sorry :( )
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function flip() {
-		$this->updateValue(array_flip($this->getValue()));
+		try {
+			$this->updateValue(array_flip($this->getValue()));
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
+		}
+
 
 		return $this;
 	}
@@ -294,9 +309,9 @@ trait ManipulatorTrait
 			}
 
 			$this->updateValue(array_intersect_uassoc($this->getValue(), $array, $callback));
+		} else {
+			$this->updateValue(array_intersect_assoc($this->getValue(), $array));
 		}
-
-		$this->updateValue(array_intersect_assoc($this->getValue(), $array));
 
 		return $this;
 	}
@@ -311,16 +326,16 @@ trait ManipulatorTrait
 	 * @return $this
 	 * @throws StdObjectException
 	 */
-	public function intersectKey($array, $callback) {
+	public function intersectKey($array, $callback = '') {
 		if($callback != '') {
 			if(!$this->isCallable($callback)) {
 				throw new StdObjectException('ArrayObject: $callback must be a callable function or a method.');
 			}
 
 			$this->updateValue(array_intersect_ukey($this->getValue(), $array, $callback));
+		} else {
+			$this->updateValue(array_intersect_key($this->getValue(), $array));
 		}
-
-		$this->updateValue(array_intersect_key($this->getValue(), $array));
 
 		return $this;
 	}
@@ -328,7 +343,7 @@ trait ManipulatorTrait
 	/**
 	 * Apply the $callback function to all elements of current array.
 	 *
-	 * @param $callback A callable function.
+	 * @param string $callback A callable function.
 	 *
 	 * @return $this
 	 * @throws StdObjectException
@@ -351,7 +366,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function merge($array) {
-		if($this->isInstanceOf($array, self)) {
+		if($this->isInstanceOf($array, $this)) {
 			$array = $array->getValue();
 		}
 
@@ -375,7 +390,11 @@ trait ManipulatorTrait
 
 		try {
 			$arr = $this->getValue();
-			array_multisort($arr, $direction, $sortFlag);
+			if($direction == SORT_ASC) {
+				asort($arr, $sortFlag);
+			} else {
+				arsort($arr, $sortFlag);
+			}
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
@@ -402,9 +421,7 @@ trait ManipulatorTrait
 			if($direction == SORT_DESC) {
 				krsort($arr, $sortFlag);
 			} else {
-				if($direction == SORT_DESC) {
-					ksort($arr, $sortFlag);
-				}
+				ksort($arr, $sortFlag);
 			}
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
@@ -426,8 +443,13 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function sortField($field, $direction = SORT_ASC, $sortFlag = SORT_NUMERIC) {
+		// check array
+		if(!$this->isArray($this->first()->getValue())) {
+			throw new StdObjectException('ArrayObject: You can only sort a multi-dimensional array.');
+		}
+
 		// check if key is present in the array
-		if(!$this->key($field)) {
+		if(!$this->first()->key($field)) {
 			throw new StdObjectException('ArrayObject: $field is not present in the current array.');
 		}
 
@@ -462,8 +484,8 @@ trait ManipulatorTrait
 	/**
 	 * Pad array to the specified length with a value.
 	 *
-	 * @param $size  New size of the array
-	 * @param $value Value to pad if array is smaller than pad_size.
+	 * @param int   $size  New size of the array
+	 * @param mixed $value Value to pad if array is smaller than pad_size.
 	 *
 	 * @return $this
 	 * @throws StdObjectException
@@ -481,7 +503,7 @@ trait ManipulatorTrait
 	}
 
 	/**
-	 * Returns random elements for current array.
+	 * Returns random elements from current array.
 	 *
 	 * @param int $num How many object you want to return.
 	 *
@@ -503,7 +525,7 @@ trait ManipulatorTrait
 	}
 
 	/**
-	 * This method replaces the values of the first array with the same values from all the following arrays.
+	 * This method replaces the values of current array with the values from $array for the matching keys.
 	 * If a key from the current array exists in the $replacements array, its value will be replaced by the value
 	 * from $replacements.
 	 * If the key exists in $replacements, and not in the current array, it will be created in the current array.
@@ -519,7 +541,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function replace($replacements, $recursive = false) {
-		if($this->isInstanceOf($replacements, self)) {
+		if($this->isInstanceOf($replacements, $this)) {
 			$replacements = $replacements->getValue();
 		} else {
 			if(!$this->isArray($replacements)) {
@@ -549,7 +571,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function reverse() {
-		$this->updateValue(array_reverse($this->getValue));
+		$this->updateValue(array_reverse($this->getValue()));
 
 		return $this;
 	}
@@ -615,18 +637,18 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function unique($sortFlag = SORT_STRING) {
-		$this->updateValue(array_unique($this->getValue()));
+		$this->updateValue(array_unique($this->getValue(), $sortFlag));
 
 		return $this;
 	}
 
 	/**
-	 * Applies the user-defined function funcname to each element of the input array.
+	 * Applies the user-defined function to each element of the input array.
 	 * If $recursive the function will recurse into deeper arrays.
 	 *
-	 * @param      $function  Which function will be called for each array value.
-	 * @param bool $recursive Go into deeper levels of the array. Default: false.
-	 * @param null $userData  Optional data that can be passed along to the user callable $function.
+	 * @param mixed $function  Which function will be called for each array value.
+	 * @param bool  $recursive Go into deeper levels of the array. Default: false.
+	 * @param null  $userData  Optional data that can be passed along to the user callable $function.
 	 *
 	 * @return $this
 	 * @throws StdObjectException
@@ -674,7 +696,7 @@ trait ManipulatorTrait
 	 * @throws StdObjectException
 	 */
 	public function diff($array, $compareKeys = false) {
-		if($this->isInstanceOf($array, self)) {
+		if($this->isInstanceOf($array, $this)) {
 			$array = $array->getValue();
 		} else {
 			if(!$this->isArray($array)) {
@@ -703,7 +725,7 @@ trait ManipulatorTrait
 	 * @throws StdObjectException
 	 */
 	public function diffKeys($array) {
-		if($this->isInstanceOf($array, self)) {
+		if($this->isInstanceOf($array, $this)) {
 			$array = $array->getValue();
 		} else {
 			if(!$this->isArray($array)) {
