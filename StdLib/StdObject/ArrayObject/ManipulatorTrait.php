@@ -135,10 +135,7 @@ trait ManipulatorTrait
 	 */
 	public function implode($glue) {
 		$array = $this->getValue();
-		/**
-		 * In case of a multi-dimensional array the implode function throws an E_NOTICE.
-		 */
-		@$string = implode($glue, $array);
+		$string = implode($glue, $array);
 
 		return new StringObject($string);
 	}
@@ -200,11 +197,8 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function fillKeys($value) {
-		/**
-		 * Mute errors because this function can throw E_NOTICE in case of a multi-dimensional array.
-		 */
 		try {
-			@$arr = array_fill_keys($this->getValue(), $value);
+			$arr = array_fill_keys($this->getValue(), $value);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}

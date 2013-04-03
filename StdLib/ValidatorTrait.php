@@ -75,6 +75,28 @@ trait ValidatorTrait
 	}
 
 	/**
+	 * Checks if $var is type of string.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static public function isString(&$var){
+		return is_string($var);
+	}
+
+	/**
+	 * Checks if $var is type of boolean.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static public function isBool(&$var){
+		return is_bool($var);
+	}
+
+	/**
 	 * Check if $instance if of $type.
 	 *
 	 * @param $instance

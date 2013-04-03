@@ -37,12 +37,17 @@ trait ManipulatorTrait
 	 *
 	 * @param string|null $char  Char you want to trim.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function trim($char = null) {
 		if($this->isNull($char)) {
 			$value = trim($this->getValue());
 		} else {
+			if(!$this->isString($char)) {
+				throw new StdObjectException('StringObject: $char must be a string.');
+			}
+
 			$value = trim($this->getValue(), $char);
 		}
 
@@ -57,7 +62,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseLower() {
-		$this->updateValue(strtolower($this->getValue()));
+		$this->updateValue(mb_strtolower($this->getValue(), self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -68,7 +73,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseUpper() {
-		$this->updateValue(strtoupper($this->getValue()));
+		$this->updateValue(mb_strtoupper($this->getValue(), self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -79,7 +84,11 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseFirstUpper() {
-		$this->updateValue(ucfirst($this->getValue()));
+		$string = clone $this;
+		$string->subString(0, 1)->caseUpper()->getValue();
+		$this->subString(1, $this->length() - 1)->caseLower();
+
+		$this->updateValue($string . $this->getValue());
 
 		return $this;
 	}
@@ -90,7 +99,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseWordUpper() {
-		$this->updateValue(ucwords($this->getValue()));
+		$this->updateValue(mb_convert_case($this->getValue(), MB_CASE_TITLE, self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -137,6 +146,7 @@ trait ManipulatorTrait
 
 	/**
 	 * Strips trailing slash from the current string.
+	 * If there are two or more slashes at the end of the string, all of them will be stripped.
 	 *
 	 * @return $this
 	 */
@@ -148,6 +158,7 @@ trait ManipulatorTrait
 
 	/**
 	 * Strips a slash from the start of the string.
+	 * If there are two or more slashes at the begining of the string, all of them will be stripped.
 	 *
 	 * @return $this
 	 */
@@ -162,9 +173,13 @@ trait ManipulatorTrait
 	 *
 	 * @param string $char Char you want to trim.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function trimLeft($char) {
+		if(!$this->isString($char)) {
+			throw new StdObjectException('StringObject: $char must be a string.');
+		}
 		$this->updateValue(ltrim($this->getValue(), $char));
 
 		return $this;
@@ -175,9 +190,14 @@ trait ManipulatorTrait
 	 *
 	 * @param string $char Char you want to trim.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function trimRight($char) {
+		if(!$this->isString($char)) {
+			throw new StdObjectException('StringObject: $char must be a string.');
+		}
+
 		$this->updateValue(rtrim($this->getValue(), $char));
 
 		return $this;
@@ -187,17 +207,17 @@ trait ManipulatorTrait
 	 * Returns a substring from the current string.
 	 *
 	 * @param int $startPosition From which char position will the substring start.
-	 * @param int $endPosition   Where will the substring end.
+	 * @param int $length        Where will the substring end.
 	 *
 	 * @throws StdObjectException
 	 * @return $this
 	 */
-	public function subString($startPosition, $endPosition) {
-		if(!$this->isNumber($startPosition) || !$this->isNumber($endPosition)) {
-			throw new StdObjectException('StringObject: Both $startPosition and $endPosition must be integers.');
+	public function subString($startPosition, $length) {
+		if(!$this->isNumber($startPosition) || !$this->isNumber($length)) {
+			throw new StdObjectException('StringObject: Both $startPosition and $length must be integers.');
 		}
 
-		$value = substr($this->getValue(), $startPosition, $endPosition);
+		$value = mb_substr($this->getValue(), $startPosition, $length, self::DEF_ENCODING);
 		$this->updateValue($value);
 
 		return $this;
@@ -209,17 +229,17 @@ trait ManipulatorTrait
 	 *
 	 * @param string|array $search  String, or array of strings, that will replaced.
 	 * @param string|array $replace String, or array of strings, with whom $search occurrences will be replaced.
-	 * @param null|int     $count   Limit the number of replacements. Default is no limit.
 	 *
 	 * @throws StdObjectException
 	 * @return $this
 	 */
-	public function replace($search, $replace, $count = null) {
-		if(!$this->isNull($count) && !$this->isNumber($count)) {
-			throw new StdObjectException('StringObject: $count param must be either null or an integer.');
+	public function replace($search, $replace) {
+		try {
+			$value = str_ireplace($search, $replace, $this->getValue(), $count);
+			$this->updateValue($value);
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('StringObject: ' . $e->getMessage());
 		}
-		$value = str_ireplace($search, $replace, $this->getValue(), $count);
-		$this->updateValue($value);
 
 		return $this;
 	}
@@ -227,16 +247,24 @@ trait ManipulatorTrait
 	/**
 	 * Explode the current string with the given delimiter and return ArrayObject with the exploded values.
 	 *
-	 * @param string $delimiter String upon which the current string will be exploded.
-	 * @param null   $limit     Limit the number of exploded items.
+	 * @param string   $delimiter String upon which the current string will be exploded.
+	 * @param null|int $limit     Limit the number of exploded items.
 	 *
 	 * @return ArrayObject
 	 * @throws StdObjectException
 	 */
 	public function explode($delimiter, $limit = null) {
+		if(!$this->isString($delimiter)) {
+			throw new StdObjectException('StringObject: $delimiter must be a string.');
+		}
+
 		if($this->isNull($limit)) {
 			$arr = explode($delimiter, $this->getValue());
 		} else {
+			if(!$this->isNumber($limit)) {
+				throw new StdObjectException('StringObject: $limit must be an integer.');
+			}
+
 			$arr = explode($delimiter, $this->getValue(), $limit);
 		}
 
@@ -252,9 +280,14 @@ trait ManipulatorTrait
 	 *
 	 * @param int $chunkSize Size of each chunk. Set it to 1 if you want to get all the characters from the string.
 	 *
+	 * @throws StdObjectException
 	 * @return ArrayObject
 	 */
 	public function split($chunkSize = 1) {
+		if(!$this->isNumber($chunkSize)) {
+			throw new StdObjectException('StringObject: $chunkSize must be an integer.');
+		}
+
 		$arr = str_split($this->getValue(), $chunkSize);
 
 		return new ArrayObject($arr);
@@ -263,12 +296,12 @@ trait ManipulatorTrait
 	/**
 	 * Generate a hash value from the current string using the defined algorithm.
 	 *
-	 * @param string $algo        Name of the algorithm used for calculation (md5, sh1, ripemd160,...).
+	 * @param string $algo        Name of the algorithm used for calculation (md5, sha1, ripemd160,...).
 	 *
 	 * @throws StdObjectException
 	 * @return string
 	 */
-	public function hash($algo = 'sh1') {
+	public function hash($algo = 'sha1') {
 		$algos = new ArrayObject(hash_algos());
 		if(!$algos->search($algo)) {
 			throw new StdObjectException('StringObject: Invalid hash algorithm provided: "' . $algo . '"'
@@ -295,19 +328,30 @@ trait ManipulatorTrait
 	 * Convert all HTML entities to their applicable characters.
 	 * For more info visit: http://www.php.net/manual/en/function.htmlentities.php
 	 *
-	 * @param string $flags    Default flags are set to ENT_COMPAT | ENT_HTML401
-	 * @param string $encoding Which encoding will be used in the conversion. Default is UTF-8.
+	 * @param string|null $flags    Default flags are set to ENT_COMPAT | ENT_HTML401
+	 * @param string      $encoding Which encoding will be used in the conversion. Default is UTF-8.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
-	public function htmlEntityEncode($flags, $encoding = 'UTF-8') {
-		$this->updateValue(htmlentities($this->getValue(), $flags, $encoding));
+	public function htmlEntityEncode($flags = null, $encoding = 'UTF-8') {
+		try {
+			if($this->isNull($flags)) {
+				$this->updateValue(htmlentities($this->getValue(), ENT_COMPAT | ENT_HTML401, $encoding));
+			} else {
+				$this->updateValue(htmlentities($this->getValue(), $flags, $encoding));
+			}
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('StringObject: ' . $e->getMessage());
+		}
+
 
 		return $this;
 	}
 
 	/**
 	 * Quote string slashes.
+	 * To remove slashes use StringObject::stripSlashes().
 	 *
 	 * @return $this
 	 */
@@ -330,14 +374,30 @@ trait ManipulatorTrait
 
 	/**
 	 * Split the string into chunks with each chunk ending with $endChar.
+	 * This function is multi-byte safe.
 	 *
 	 * @param int    $chunkSize    Size of each chunk.
 	 * @param string $endChar      String that will be appended to the end of each chunk.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function chunkSplit($chunkSize = 76, $endChar = "\n") {
-		$this->updateValue(chunk_split($this->getValue(), $chunkSize, $endChar));
+		if(!$this->isNumber($chunkSize)) {
+			throw new StdObjectException('StringObject: $chunkSize must be an integer.');
+		}
+
+		if(!$this->isString($endChar)) {
+			throw new StdObjectException('StringObject: $endChar must be a string.');
+		}
+
+		$tmp = array_chunk(preg_split("//u", $this->getValue(), -1, PREG_SPLIT_NO_EMPTY), $chunkSize);
+		$str = "";
+		foreach ($tmp as $t) {
+			$str .= join("", $t) . $endChar;
+		}
+
+		$this->updateValue($str);
 
 		return $this;
 	}
@@ -359,7 +419,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function crc32() {
-		$this->hash('crc32');
+		$this->updateValue(crc32($this->getValue()));
 
 		return $this;
 	}
@@ -369,8 +429,8 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 */
-	public function sh1() {
-		$this->hash('sh1');
+	public function sha1() {
+		$this->hash('sha1');
 
 		return $this;
 	}
@@ -401,19 +461,19 @@ trait ManipulatorTrait
 	/**
 	 * Format the string according to the provided $format.
 	 *
-	 * @param string|array $format Format used for string formatting.
+	 * @param string|array $args   Arguments used for string formatting.
 	 *                             For more info visit http://www.php.net/manual/en/function.sprintf.php
 	 *
 	 * @return $this
 	 */
-	public function format($format) {
-		if($this->isArray($format)) {
-			$value = vsprintf($this->getValue(), $format);
+	public function format($args) {
+		if($this->isArray($args)) {
+			$value = vsprintf($this->getValue(), $args);
 		} else {
-			if($this->isInstanceOf($format, new ArrayObject([]))) {
-				$value = vsprintf($this->getValue(), $format->getValue());
+			if($this->isInstanceOf($args, new ArrayObject([]))) {
+				$value = vsprintf($this->getValue(), $args->getValue());
 			} else {
-				$value = sprintf($format, $this->getValue());
+				$value = sprintf($this->getValue(), $args);
 			}
 		}
 		$this->updateValue($value);
@@ -434,6 +494,11 @@ trait ManipulatorTrait
 		if(!$this->isNumber($length)) {
 			throw new StdObjectException('StringObject: $length param must be an integer.');
 		}
+
+		if(!$this->isString($padString)) {
+			throw new StdObjectException('StringObject: $padString must be a string.');
+		}
+
 		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_LEFT));
 
 		return $this;
@@ -452,6 +517,11 @@ trait ManipulatorTrait
 		if(!$this->isNumber($length)) {
 			throw new StdObjectException('StringObject: $length param must be an integer.');
 		}
+
+		if(!$this->isString($padString)) {
+			throw new StdObjectException('StringObject: $padString must be a string.');
+		}
+
 		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_RIGHT));
 
 		return $this;
@@ -470,6 +540,11 @@ trait ManipulatorTrait
 		if(!$this->isNumber($length)) {
 			throw new StdObjectException('StringObject: $length param must be an integer.');
 		}
+
+		if(!$this->isString($padString)) {
+			throw new StdObjectException('StringObject: $padString must be a string.');
+		}
+
 		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_BOTH));
 
 		return $this;
@@ -493,7 +568,7 @@ trait ManipulatorTrait
 	}
 
 	/**
-	 * Shuggle characters in current string.
+	 * Shuffle characters in current string.
 	 *
 	 * @return $this
 	 */
@@ -508,9 +583,14 @@ trait ManipulatorTrait
 	 *
 	 * @param string $whiteList A list of allowed HTML tags that you don't want to strip. Example: '<p><a>'
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
-	public function stripTags($whiteList) {
+	public function stripTags($whiteList = '') {
+		if(!$this->isString($whiteList)) {
+			throw new StdObjectException('StringObject: $whiteList param must be a string.');
+		}
+
 		$this->updateValue(strip_tags($this->getValue(), $whiteList));
 
 		return $this;
@@ -535,9 +615,21 @@ trait ManipulatorTrait
 	 * @param bool   $cut    If the cut is set to TRUE, the string is always wrapped at or before the specified width.
 	 *                       So if you have a word that is larger than the given width, it is broken apart.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
 	public function wordWrap($length, $break = "\n", $cut = false) {
+		if(!$this->isNumber($length)) {
+			throw new StdObjectException('StringObject: $length param must be an integer.');
+		}
+
+		if(!$this->isString($break)) {
+			throw new StdObjectException('StringObject: $break param must be a string.');
+		}
+
+		if(!$this->isBool($cut)) {
+			throw new StdObjectException('StringObject: $whiteList param must be a boolean.');
+		}
 		$this->updateValue(wordwrap($this->getValue(), $length, $break, $cut));
 
 		return $this;
@@ -546,25 +638,57 @@ trait ManipulatorTrait
 	/**
 	 * Truncate the string to the given length without breaking words.
 	 *
-	 * @param        $length
-	 * @param string $ellipsis
+	 * @param int    $length   Length to which you which to trim.
+	 * @param string $ellipsis Ellipsis is calculated in the string $length.
 	 *
+	 * @throws StdObjectException
 	 * @return $this
 	 */
-	public function truncate($length, $ellipsis='') {
-		if($this->length()<=$length){
+	public function truncate($length, $ellipsis = '') {
+		if(!$this->isNumber($length)) {
+			throw new StdObjectException('StringObject: $length param must be an integer.');
+		}
+
+		if(!$this->isString($ellipsis)) {
+			throw new StdObjectException('StringObject: $ellipsis param must be a string.');
+		}
+
+		if($this->length() <= $length) {
 			return $this;
 		}
 
-		if($ellipsis!=''){
+		if($ellipsis != '') {
 			$length = $length - strlen($ellipsis);
 		}
 
 		$this->wordWrap($length)->subString(0, $this->stringPosition("\n"));
 
-		$this->updateValue($this->getValue().$ellipsis);
+		$this->updateValue($this->getValue() . $ellipsis);
 
 		return $this;
+	}
+
+	/**
+	 * Preg matches current string against the given regular expression.
+	 * If you just wish if string is contained within the current string, use StringObject::contains().
+	 *
+	 * @param string $regEx        Regular expression to match.
+	 * @param bool   $matchAll     Use preg_match_all, or just preg_match. Default is preg_match_all.
+	 *
+	 * @return ArrayObject|bool    If there are matches, an array with the the $matches is returned, else, false is returned.
+	 */
+	public function match($regEx, $matchAll = true) {
+		if($matchAll) {
+			preg_match_all($regEx, $this->getValue(), $matches);
+		} else {
+			preg_match($regEx, $this->getValue(), $matches);
+		}
+
+		if(count($matches) > 0) {
+			return new ArrayObject($matches);
+		}
+
+		return false;
 	}
 
 	public function cryptEncode($key, $salt = '') {

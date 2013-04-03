@@ -12,6 +12,7 @@ namespace WF\StdLib\StdObject\StringObject;
 
 use WF\StdLib\StdObject\ArrayObject\ArrayObject;
 use WF\StdLib\StdObject\StdObjectAbstract;
+use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StringObject\ManipulatorTrait;
 use WF\StdLib\StdObject\StringObject\ValidatorTrait;
 
@@ -26,6 +27,8 @@ class StringObject extends StdObjectAbstract
 	use ManipulatorTrait,
 		ValidatorTrait;
 
+	const DEF_ENCODING = 'UTF-8';
+
 	/**
 	 * @var string
 	 */
@@ -36,10 +39,15 @@ class StringObject extends StdObjectAbstract
 	 * Constructor.
 	 * Set standard object value.
 	 *
-	 * @param mixed $value
+	 * @param string|int $value
+	 *
+	 * @throws StdObjectException
 	 */
 	public function __construct($value) {
-		$this->_wfString = $value;
+		if(!$this->isString($value) && !$this->isNumber($value)){
+			throw new StdObjectException('StringObject: Unable to create StringObject from the given $value. Only strings and integers are allowed.');
+		}
+		$this->_wfString = (string) $value;
 	}
 
 	/**
@@ -48,7 +56,7 @@ class StringObject extends StdObjectAbstract
 	 * @return int
 	 */
 	public function length() {
-		return strlen($this->getValue());
+		return mb_strlen($this->getValue(), self::DEF_ENCODING);
 	}
 
 	/**

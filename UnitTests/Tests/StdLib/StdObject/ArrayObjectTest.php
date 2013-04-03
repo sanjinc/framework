@@ -237,7 +237,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testImplode($array) {
 		$a = new ArrayObject($array);
-		$string = $a->implode(' ');
+		@$string = $a->implode(' ');
 
 		@$string2 = implode(' ', $array);
 		$this->assertSame($string2, $string->getValue());
@@ -278,7 +278,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testFillKeys($array) {
 		$a = new ArrayObject($array);
-		$a->fillKeys('value');
+		@$a->fillKeys('value');
 
 		@$array = array_fill_keys($array, 'value');
 		$this->assertSame($array, $a->getValue());
