@@ -27,16 +27,19 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	use ManipulatorTrait,
 		ValidatorTrait;
 
+	/**
+	 * @var array|null Current array.
+	 */
 	private $_array;
 
 	/**
 	 * Constructor.
 	 * Set standard object value.
 	 *
-	 * @param null|array $array
-	 * @param null|array $values      - Array of values that will be combined with $array.
-	 *                                See http://www.php.net/manual/en/function.array-combine.php for more info.
-	 * 								  $array param is used as key array.
+	 * @param null|array|ArrayObject $array
+	 * @param null|array             $values      - Array of values that will be combined with $array.
+	 *                                            See http://www.php.net/manual/en/function.array-combine.php for more info.
+	 *                                  $array param is used as key array.
 	 *
 	 * @throws StdObjectException
 	 */
@@ -48,14 +51,18 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 				throw new StdObjectException('ArrrayObject: Array standard object can only be created from an array.');
 			}
 		} else {
-			if($this->isArray($values)) {
-				// check if both arrays have the same number of values
-				if(count($array) != count($values)){
-					throw new StdObjectException('ArrayObject: Both arrays must have equal number of items');
-				}
-				$this->_array = array_combine($array, $values);
+			if($this->isInstanceOf($array, $this)) {
+				$this->updateValue($array->getValue());
 			} else {
-				$this->_array = $array;
+				if($this->isArray($values)) {
+					// check if both arrays have the same number of values
+					if(count($array) != count($values)) {
+						throw new StdObjectException('ArrayObject: Both arrays must have equal number of items');
+					}
+					$this->_array = array_combine($array, $values);
+				} else {
+					$this->_array = $array;
+				}
 			}
 		}
 	}
@@ -97,9 +104,9 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 		$arr = $this->getValue();
 		$last = end($arr);
 
-		if($this->isArray($last)){
+		if($this->isArray($last)) {
 			return new ArrayObject($last);
-		}else{
+		} else {
 			return new StringObject($last);
 		}
 	}
@@ -114,9 +121,9 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 		$arr = $this->getValue();
 		$first = reset($arr);
 
-		if($this->isArray($first)){
+		if($this->isArray($first)) {
 			return new ArrayObject($first);
-		}else{
+		} else {
 			return new StringObject($first);
 		}
 	}
@@ -138,14 +145,15 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return ArrayObject
 	 */
 	public function countValues() {
-		try{
+		try {
 			/**
 			 * We must mute errors in this function because it throws a E_WARNING message if array contains something
 			 * else than STRING or INTEGER.
 			 */
 			@$result = array_count_values($this->getValue());
+
 			return new ArrayObject($result);
-		}catch (\ErrorException $e){
+		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: countValues() can only count STRING and INTEGER values');
 		}
 

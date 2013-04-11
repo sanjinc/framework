@@ -63,6 +63,17 @@ trait ValidatorTrait
 	}
 
 	/**
+	 * Checks if value is an integer.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static public function isInteger(&$var){
+		return is_int($var);
+	}
+
+	/**
 	 * Checks whenever resource is callable.
 	 *
 	 * @param $var

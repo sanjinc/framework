@@ -702,4 +702,8 @@ trait ManipulatorTrait
 		 * @TODO: implement me
 		 */
 	}
+
+	public function baseConvert(){
+		// @TODO
+	}
 }

@@ -48,7 +48,12 @@ trait ValidatorTrait
 	 */
 	public function key($key, $default = false) {
 		if(array_key_exists($key, $this->getValue())) {
-			return new StringObject($this->getValue()[$key]);
+			if($this->isString($this->getValue()[$key]))
+			{
+				return new StringObject($this->getValue()[$key]);
+			}else{
+				return $this->getValue()[$key];
+			}
 		}
 
 		return $default;

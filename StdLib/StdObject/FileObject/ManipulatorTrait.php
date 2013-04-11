@@ -23,9 +23,9 @@ trait ManipulatorTrait
     use StdObjectManipulatorTrait;
 
     /**
-     * @return \SplFileObject
+     * @return \WF\StdLib\StdObject\FileObject\FileObjectDriverInterface
      */
-    abstract protected function _getHandler();
+    abstract protected function _getDriver();
 
     /**
      * Write the given string into the file.
@@ -60,9 +60,9 @@ trait ManipulatorTrait
                 $this->_fileExists = true;
             } else {
                 if($this->isNull($length)){
-                    $this->_getHandler()->fwrite($str);
+                    $this->_getDriver()->fwrite($str);
                 }else{
-                    $this->_getHandler()->fwrite($str, $length);
+                    $this->_getDriver()->fwrite($str, $length);
                 }
 
             }
@@ -87,7 +87,7 @@ trait ManipulatorTrait
         }
 
         try {
-            $this->_getHandler()->ftruncate($size);
+            $this->_getDriver()->ftruncate($size);
         } catch (\Exception $e) {
             throw new StdObjectException('FileObject: Unable to truncate the data from the given file: ' . $this->_path .
                                        "\n " . $e->getMessage());
@@ -99,26 +99,30 @@ trait ManipulatorTrait
     /**
      * Perform chmod on current file.
      *
-     * @param int $mode Must be in octal format. Example 0744
+     * @param int $mode Must be in format xxx. Example 0744
      *
      * @return $this
      * @throws StdObjectException
      */
     function chmod($mode = 0644) {
-        if(!$this->_fileExists) {
+		$modeDec = decoct($mode);
+
+		if(!$this->_fileExists) {
             throw new StdObjectException('FileObject: Unable to perform chmod because the file doesn\'t exist: ' . $this->_path);
         }
 
         // few $mode checks
-        $modCheck = new StringObject($mode);
-        if($modCheck->length() != 4) {
+		if(!$this->isInteger($mode))
+		{
+			throw new StdObjectException('FileObject: $mode must be an integer (octal).');
+		}
+
+        $modCheck = new StringObject($modeDec);
+		$modParts = $modCheck->split();
+        if($modParts->count() != 3) { // in octal we lose the zero (0).
             throw new StdObjectException('FileObject: The chmod $mode param must be exactly 4 chars.');
         }
-        if(!$modCheck->startsWith('0')) {
-            throw new StdObjectException('FileObject: The chmod $mode param must start with zero (0).');
-        }
-        $modeChunks = $modCheck->split();
-        if($modeChunks->key(1) > 7 || $modeChunks->key(2) > 7 || $modeChunks->key(3) > 7) {
+        if($modParts->key(0)->getValue() > 7 || $modParts->key(1)->getValue() > 7 || $modParts->key(2)->getValue() > 7) {
             throw new StdObjectException('FileObject: Invalid chmod $mode value.');
         }
 
@@ -147,4 +151,24 @@ trait ManipulatorTrait
 
         return $this;
     }
+
+	#########################
+	### pointer functions ###
+	#########################
+	function rewind(){
+		// @TODO
+	}
+
+	function seek(){
+		// @TODO
+	}
+
+	function current(){
+		// @TODO
+	}
+
+	function next(){
+		// @TODO
+	}
+
 }

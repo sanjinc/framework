@@ -27,6 +27,10 @@ class StringObject extends StdObjectAbstract
 	use ManipulatorTrait,
 		ValidatorTrait;
 
+	/**
+	 * Default file encoding.
+	 * Used by multibyte string functions.
+	 */
 	const DEF_ENCODING = 'UTF-8';
 
 	/**

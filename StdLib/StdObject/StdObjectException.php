@@ -18,7 +18,7 @@ use WF\StdLib\Exception\ExceptionAbstract;
  */
 class StdObjectException extends ExceptionAbstract
 {
-    function __construct($message) {
-        parent::__construct('StdObjectException: ' . $message);
-    }
+	function __construct($message, $code = 0, $prevException = null) {
+		parent::__construct('StdObjectException: ' . $message, $code, $prevException);
+	}
 }

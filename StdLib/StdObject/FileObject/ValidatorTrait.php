@@ -9,7 +9,10 @@
 
 namespace WF\StdLib\StdObject\FileObject;
 
+use WF\StdLib\StdObject\ArrayObject\ArrayObject;
+use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StdObjectValidatorTrait;
+use WF\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * File object validator trait.
@@ -18,55 +21,98 @@ use WF\StdLib\StdObject\StdObjectValidatorTrait;
  */
 trait ValidatorTrait
 {
-    use StdObjectValidatorTrait;
+	use StdObjectValidatorTrait;
 
-    /**
-     * @return \SplFileObject
-     */
-    abstract protected function _getHandler();
+	private $_imageMimeTypes = [
+		'image/bmp'           => 'bmp',
+		'image/x-windows-bmp' => 'bmp',
+		'image/gif'           => 'gif',
+		'image/x-icon'        => 'ico',
+		'image/jpeg'          => 'jpeg',
+		'image/png'           => 'png',
+		'image/tiff'          => 'tiff',
+		'image/x-tiff'        => 'tiff'
+	];
 
-    /**
-     * Does the file exist on the disk.
-     *
-     * @return bool
-     */
-    function exists() {
-        return $this->_fileExists;
-    }
+	/**
+	 * @return \SplFileObject
+	 */
+	abstract protected function _getDriver();
 
-    /**
-     * Tells if the object references a regular file.
-     *
-     * @return bool
-     */
-    function isFile() {
-        return $this->_getHandler()->isFile();
-    }
+	/**
+	 * Does the file exist on the disk.
+	 *
+	 * @return bool
+	 */
+	function exists() {
+		return $this->_fileExists;
+	}
 
-    /**
-     * Tells if the file is a link.
-     *
-     * @return bool
-     */
-    function isLink() {
-        return $this->_getHandler()->isLink();
-    }
+	/**
+	 * Tells if the object references a regular file.
+	 *
+	 * @return bool
+	 */
+	function isFile() {
+		return $this->_getDriver()->isFile();
+	}
 
-    /**
-     * Is file writable.
-     *
-     * @return bool
-     */
-    function isWritable(){
-        return $this->_getHandler()->isWritable();
-    }
+	/**
+	 * Tells if the file is a link.
+	 *
+	 * @return bool
+	 */
+	function isLink() {
+		return $this->_getDriver()->isLink();
+	}
 
-    /**
-     * If file readable.
-     *
-     * @return bool
-     */
-    function isReadable(){
-        return $this->_getHandler()->isReadable();
-    }
+	/**
+	 * Is file writable.
+	 *
+	 * @return bool
+	 */
+	function isWritable() {
+		return $this->_getDriver()->isWritable();
+	}
+
+	/**
+	 * If file readable.
+	 *
+	 * @return bool
+	 */
+	function isReadable() {
+		return $this->_getDriver()->isReadable();
+	}
+
+	/**
+	 * Checks if file is an image.
+	 * The check if based on file mime-type, NOT file extension.
+	 * You can optionally set a list o accepted image types to which the mime type will be matched.
+	 *
+	 * @param null|array|ArrayObject $types   The image must be of this type. Available types are: gif, jpeg, png, tiff,
+	 *                                        ico, bmp.
+	 *
+	 * @throws StdObjectException
+	 * @return bool|StringObject
+	 */
+	function isImage($types = null) {
+		try {
+			$mimeType = $this->getMimeType();
+			$arr = new ArrayObject($this->_imageMimeTypes);
+			if(($value = $arr->key($mimeType)) !== false) {
+				if($this->isNull($types)) {
+					return $value;
+				} else {
+					$arr = new ArrayObject($types);
+					if($arr->search($value)) {
+						return $value;
+					}
+				}
+			}
+
+			return false;
+		} catch (\Exception $e) {
+			throw new StdObjectException('FileInfo: Unable to perform a check if file is an image', 0, $e);
+		}
+	}
 }
