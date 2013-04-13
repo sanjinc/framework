@@ -25,13 +25,6 @@ trait ManipulatorTrait
 {
 	use StdObjectManipulatorTrait;
 
-	abstract function getValue();
-
-	/**
-	 * @return $this
-	 */
-	abstract function getObject();
-
 	/**
 	 * Strip whitespace (or other characters) from the beginning and end of a string.
 	 *
@@ -42,16 +35,16 @@ trait ManipulatorTrait
 	 */
 	public function trim($char = null) {
 		if($this->isNull($char)) {
-			$value = trim($this->getValue());
+			$value = trim($this->val());
 		} else {
 			if(!$this->isString($char)) {
 				throw new StdObjectException('StringObject: $char must be a string.');
 			}
 
-			$value = trim($this->getValue(), $char);
+			$value = trim($this->val(), $char);
 		}
 
-		$this->updateValue($value);
+		$this->val($value);
 
 		return $this;
 	}
@@ -62,7 +55,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseLower() {
-		$this->updateValue(mb_strtolower($this->getValue(), self::DEF_ENCODING));
+		$this->val(mb_strtolower($this->val(), self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -73,7 +66,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseUpper() {
-		$this->updateValue(mb_strtoupper($this->getValue(), self::DEF_ENCODING));
+		$this->val(mb_strtoupper($this->val(), self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -85,10 +78,10 @@ trait ManipulatorTrait
 	 */
 	public function caseFirstUpper() {
 		$string = clone $this;
-		$string->subString(0, 1)->caseUpper()->getValue();
+		$string->subString(0, 1)->caseUpper()->val();
 		$this->subString(1, $this->length() - 1)->caseLower();
 
-		$this->updateValue($string . $this->getValue());
+		$this->val($string . $this->val());
 
 		return $this;
 	}
@@ -99,7 +92,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseWordUpper() {
-		$this->updateValue(mb_convert_case($this->getValue(), MB_CASE_TITLE, self::DEF_ENCODING));
+		$this->val(mb_convert_case($this->val(), MB_CASE_TITLE, self::DEF_ENCODING));
 
 		return $this;
 	}
@@ -110,7 +103,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function caseFirstLower() {
-		$this->updateValue(lcfirst($this->getValue()));
+		$this->val(lcfirst($this->val()));
 
 		return $this;
 	}
@@ -121,7 +114,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function nl2br() {
-		$this->updateValue(nl2br($this->getValue()));
+		$this->val(nl2br($this->val()));
 
 		return $this;
 	}
@@ -151,7 +144,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function stripTrailingSlash() {
-		$this->updateValue(rtrim($this->getValue(), '/'));
+		$this->val(rtrim($this->val(), '/'));
 
 		return $this;
 	}
@@ -163,7 +156,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function stripStartingSlash() {
-		$this->updateValue(ltrim($this->getValue(), '/'));
+		$this->val(ltrim($this->val(), '/'));
 
 		return $this;
 	}
@@ -180,7 +173,7 @@ trait ManipulatorTrait
 		if(!$this->isString($char)) {
 			throw new StdObjectException('StringObject: $char must be a string.');
 		}
-		$this->updateValue(ltrim($this->getValue(), $char));
+		$this->val(ltrim($this->val(), $char));
 
 		return $this;
 	}
@@ -198,7 +191,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $char must be a string.');
 		}
 
-		$this->updateValue(rtrim($this->getValue(), $char));
+		$this->val(rtrim($this->val(), $char));
 
 		return $this;
 	}
@@ -217,8 +210,8 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: Both $startPosition and $length must be integers.');
 		}
 
-		$value = mb_substr($this->getValue(), $startPosition, $length, self::DEF_ENCODING);
-		$this->updateValue($value);
+		$value = mb_substr($this->val(), $startPosition, $length, self::DEF_ENCODING);
+		$this->val($value);
 
 		return $this;
 	}
@@ -235,8 +228,8 @@ trait ManipulatorTrait
 	 */
 	public function replace($search, $replace) {
 		try {
-			$value = str_ireplace($search, $replace, $this->getValue(), $count);
-			$this->updateValue($value);
+			$value = str_ireplace($search, $replace, $this->val(), $count);
+			$this->val($value);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('StringObject: ' . $e->getMessage());
 		}
@@ -259,13 +252,13 @@ trait ManipulatorTrait
 		}
 
 		if($this->isNull($limit)) {
-			$arr = explode($delimiter, $this->getValue());
+			$arr = explode($delimiter, $this->val());
 		} else {
 			if(!$this->isNumber($limit)) {
 				throw new StdObjectException('StringObject: $limit must be an integer.');
 			}
 
-			$arr = explode($delimiter, $this->getValue(), $limit);
+			$arr = explode($delimiter, $this->val(), $limit);
 		}
 
 		if(!$arr) {
@@ -288,7 +281,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $chunkSize must be an integer.');
 		}
 
-		$arr = str_split($this->getValue(), $chunkSize);
+		$arr = str_split($this->val(), $chunkSize);
 
 		return new ArrayObject($arr);
 	}
@@ -308,7 +301,7 @@ trait ManipulatorTrait
 											 . ' Visit http://www.php.net/manual/en/function.hash-algos.php for more information.');
 		}
 
-		$this->updateValue(hash($algo, $this->getValue()));
+		$this->val(hash($algo, $this->val()));
 
 		return $this;
 	}
@@ -319,7 +312,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function htmlEntityDecode() {
-		$this->updateValue(html_entity_decode($this->getValue()));
+		$this->val(html_entity_decode($this->val()));
 
 		return $this;
 	}
@@ -337,9 +330,9 @@ trait ManipulatorTrait
 	public function htmlEntityEncode($flags = null, $encoding = 'UTF-8') {
 		try {
 			if($this->isNull($flags)) {
-				$this->updateValue(htmlentities($this->getValue(), ENT_COMPAT | ENT_HTML401, $encoding));
+				$this->val(htmlentities($this->val(), ENT_COMPAT | ENT_HTML401, $encoding));
 			} else {
-				$this->updateValue(htmlentities($this->getValue(), $flags, $encoding));
+				$this->val(htmlentities($this->val(), $flags, $encoding));
 			}
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('StringObject: ' . $e->getMessage());
@@ -356,7 +349,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function addSlashes() {
-		$this->updateValue(addslashes($this->getValue()));
+		$this->val(addslashes($this->val()));
 
 		return $this;
 	}
@@ -367,7 +360,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function stripSlashes() {
-		$this->updateValue(stripslashes($this->getValue()));
+		$this->val(stripslashes($this->val()));
 
 		return $this;
 	}
@@ -391,13 +384,13 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $endChar must be a string.');
 		}
 
-		$tmp = array_chunk(preg_split("//u", $this->getValue(), -1, PREG_SPLIT_NO_EMPTY), $chunkSize);
+		$tmp = array_chunk(preg_split("//u", $this->val(), -1, PREG_SPLIT_NO_EMPTY), $chunkSize);
 		$str = "";
 		foreach ($tmp as $t) {
 			$str .= join("", $t) . $endChar;
 		}
 
-		$this->updateValue($str);
+		$this->val($str);
 
 		return $this;
 	}
@@ -419,7 +412,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function crc32() {
-		$this->updateValue(crc32($this->getValue()));
+		$this->val(crc32($this->val()));
 
 		return $this;
 	}
@@ -441,7 +434,7 @@ trait ManipulatorTrait
 	 * @return ArrayObject
 	 */
 	public function parseString() {
-		parse_str($this->getValue(), $arr);
+		parse_str($this->val(), $arr);
 
 		return new ArrayObject($arr);
 	}
@@ -453,7 +446,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function quoteMeta() {
-		$this->updateValue(quotemeta($this->getValue()));
+		$this->val(quotemeta($this->val()));
 
 		return $this;
 	}
@@ -468,15 +461,15 @@ trait ManipulatorTrait
 	 */
 	public function format($args) {
 		if($this->isArray($args)) {
-			$value = vsprintf($this->getValue(), $args);
+			$value = vsprintf($this->val(), $args);
 		} else {
 			if($this->isInstanceOf($args, new ArrayObject([]))) {
-				$value = vsprintf($this->getValue(), $args->getValue());
+				$value = vsprintf($this->val(), $args->val());
 			} else {
-				$value = sprintf($this->getValue(), $args);
+				$value = sprintf($this->val(), $args);
 			}
 		}
-		$this->updateValue($value);
+		$this->val($value);
 
 		return $this;
 	}
@@ -499,7 +492,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $padString must be a string.');
 		}
 
-		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_LEFT));
+		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_LEFT));
 
 		return $this;
 	}
@@ -522,7 +515,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $padString must be a string.');
 		}
 
-		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_RIGHT));
+		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_RIGHT));
 
 		return $this;
 	}
@@ -545,7 +538,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $padString must be a string.');
 		}
 
-		$this->updateValue(str_pad($this->getValue(), $length, $padString, STR_PAD_BOTH));
+		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_BOTH));
 
 		return $this;
 	}
@@ -562,7 +555,7 @@ trait ManipulatorTrait
 		if(!$this->isNumber($multiplier)) {
 			throw new StdObjectException('StringObject: $multiplier param must be an integer.');
 		}
-		$this->updateValue(str_repeat($this->getValue(), $multiplier));
+		$this->val(str_repeat($this->val(), $multiplier));
 
 		return $this;
 	}
@@ -573,7 +566,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function shuffle() {
-		$this->updateValue(str_shuffle($this->getValue()));
+		$this->val(str_shuffle($this->val()));
 
 		return $this;
 	}
@@ -591,7 +584,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('StringObject: $whiteList param must be a string.');
 		}
 
-		$this->updateValue(strip_tags($this->getValue(), $whiteList));
+		$this->val(strip_tags($this->val(), $whiteList));
 
 		return $this;
 	}
@@ -602,7 +595,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function reverse() {
-		$this->updateValue(strrev($this->getValue()));
+		$this->val(strrev($this->val()));
 
 		return $this;
 	}
@@ -630,7 +623,7 @@ trait ManipulatorTrait
 		if(!$this->isBool($cut)) {
 			throw new StdObjectException('StringObject: $whiteList param must be a boolean.');
 		}
-		$this->updateValue(wordwrap($this->getValue(), $length, $break, $cut));
+		$this->val(wordwrap($this->val(), $length, $break, $cut));
 
 		return $this;
 	}
@@ -663,7 +656,7 @@ trait ManipulatorTrait
 
 		$this->wordWrap($length)->subString(0, $this->stringPosition("\n"));
 
-		$this->updateValue($this->getValue() . $ellipsis);
+		$this->val($this->val() . $ellipsis);
 
 		return $this;
 	}
@@ -679,9 +672,9 @@ trait ManipulatorTrait
 	 */
 	public function match($regEx, $matchAll = true) {
 		if($matchAll) {
-			preg_match_all($regEx, $this->getValue(), $matches);
+			preg_match_all($regEx, $this->val(), $matches);
 		} else {
-			preg_match($regEx, $this->getValue(), $matches);
+			preg_match($regEx, $this->val(), $matches);
 		}
 
 		if(count($matches) > 0) {

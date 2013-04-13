@@ -18,7 +18,7 @@ if(!defined('WF_ENV_STATUS')) {
     function wf_autoload($class) {
         //$path = WF_ABS_PATH.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $class);
         //$path = str_replace('WF', 'wf', $path);
-        $path = WF_ABS_PATH . str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        $path = WF_ABS_PATH . '/' .str_replace('\\', DIRECTORY_SEPARATOR, $class);
         $path = str_replace('WF', '', $path);
         require_once $path . '.php'; // no validations nor error checks to make the script faster
     }

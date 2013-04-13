@@ -99,7 +99,7 @@ trait ValidatorTrait
 		try {
 			$mimeType = $this->getMimeType();
 			$arr = new ArrayObject($this->_imageMimeTypes);
-			if(($value = $arr->key($mimeType)) !== false) {
+			if(($value = $arr->keyExists($mimeType)) !== false) {
 				if($this->isNull($types)) {
 					return $value;
 				} else {

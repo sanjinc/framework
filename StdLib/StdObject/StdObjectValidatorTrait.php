@@ -23,10 +23,6 @@ trait StdObjectValidatorTrait
 {
     use ValidatorTrait;
 
-    abstract function getValue();
-
-    abstract function getObject();
-
     /**
      * Checks if base value is empty.
      * Trim() is always applied to the base value.
@@ -35,7 +31,7 @@ trait StdObjectValidatorTrait
      */
     public function isEmpty() {
 
-        $value = $this->getValue();
+        $value = $this->val();
         if(empty($value)) {
             return true;
         }
@@ -53,7 +49,7 @@ trait StdObjectValidatorTrait
      * @return bool
      */
     public function equals($compareValue, $typeCompare = false) {
-        if(($typeCompare && $this->getValue() === $compareValue) || (!$typeCompare && $this->getValue() == $compareValue)
+        if(($typeCompare && $this->val() === $compareValue) || (!$typeCompare && $this->val() == $compareValue)
         ) {
             return true;
         }

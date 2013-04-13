@@ -28,7 +28,7 @@ class UrlObject extends StdObjectAbstract
     use ValidatorTrait,
         StdObjectTrait;
 
-    private $_url;
+	protected $_value;
     private $_scheme = false;
     private $_host = false;
     private $_port = '';
@@ -43,7 +43,7 @@ class UrlObject extends StdObjectAbstract
      */
     public function __construct($value) {
         $value = $this->str($value)->caseLower()->trim();
-        $this->_url = $value->getValue();
+        $this->_value = $value->val();
         $this->_validateUrl();
     }
 
@@ -106,30 +106,12 @@ class UrlObject extends StdObjectAbstract
     }
 
     /**
-     * Return current standard objects value.
-     *
-     * @return mixed
-     */
-    public function getValue() {
-        return $this->_url;
-    }
-
-    /**
-     * Returns the current standard object instance.
-     *
-     * @return UrlObject
-     */
-    public function getObject() {
-        return $this;
-    }
-
-    /**
      * To string implementation.
      *
      * @return mixed
      */
     public function __toString() {
-        return $this->getValue();
+        return $this->val();
     }
 
     /**
@@ -138,7 +120,7 @@ class UrlObject extends StdObjectAbstract
      * @throws StdObjectException
      */
     private function _validateUrl() {
-        $urlData = parse_url($this->getValue());
+        $urlData = parse_url($this->val());
         if(!$urlData || !$this->isArray($urlData)) {
             throw new StdObjectException("Unable to create a Url Standard Object from the given value. The value isn't a valid URL");
         }
@@ -147,28 +129,20 @@ class UrlObject extends StdObjectAbstract
         $urlData = $this->arr($urlData);
 
         // scheme
-        $this->_scheme = $urlData->key('scheme');
+        $this->_scheme = $urlData->key('scheme', '', true);
         // host
-        $this->_host = $urlData->key('host');
+        $this->_host = $urlData->keyExists('host', '', true);
         // port
-        $this->_port = $urlData->key('port', '');
+        $this->_port = $urlData->keyExists('port', '', true);
         // path
-        $this->_path = $urlData->key('path', '');
+        $this->_path = $urlData->keyExists('path', '', true);
 
         // parse query string
-        if($urlData->key('query')) {
+        if($urlData->keyExists('query')) {
             parse_str($urlData->key('query'), $queryData);
             if($this->isArray($queryData)) {
                 $this->_query = $queryData;
             }
         }
-    }
-
-    /**
-     * The update value method is called after each modifier method.
-     * It updates the current value of the standard object.
-     */
-    function updateValue(&$value) {
-        $this->_url = $value;
     }
 }

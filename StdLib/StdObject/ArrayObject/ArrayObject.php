@@ -15,6 +15,7 @@ use WF\StdLib\StdObject\StdObjectAbstract;
 use WF\StdLib\StdObject\ArrayObject\ManipulatorTrait;
 use WF\StdLib\StdObject\ArrayObject\ValidatorTrait;
 use WF\StdLib\StdObject\StdObjectException;
+use WF\StdLib\StdObject\StdObjectWrapper;
 use WF\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -30,7 +31,7 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	/**
 	 * @var array|null Current array.
 	 */
-	private $_array;
+	protected $_value;
 
 	/**
 	 * Constructor.
@@ -46,22 +47,22 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	public function __construct($array = null, $values = null) {
 		if(!$this->isArray($array)) {
 			if($this->isNull($array)) {
-				$this->_array = array();
+				$this->_value = array();
 			} else {
 				throw new StdObjectException('ArrrayObject: Array standard object can only be created from an array.');
 			}
 		} else {
 			if($this->isInstanceOf($array, $this)) {
-				$this->updateValue($array->getValue());
+				$this->val($array->val());
 			} else {
 				if($this->isArray($values)) {
 					// check if both arrays have the same number of values
 					if(count($array) != count($values)) {
 						throw new StdObjectException('ArrayObject: Both arrays must have equal number of items');
 					}
-					$this->_array = array_combine($array, $values);
+					$this->_value = array_combine($array, $values);
 				} else {
-					$this->_array = $array;
+					$this->_value = $array;
 				}
 			}
 		}
@@ -73,7 +74,7 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return number
 	 */
 	public function sum() {
-		return array_sum($this->getValue());
+		return array_sum($this->val());
 	}
 
 	/**
@@ -82,7 +83,7 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return ArrayObject
 	 */
 	public function keys() {
-		return new ArrayObject(array_keys($this->getValue()));
+		return new ArrayObject(array_keys($this->val()));
 	}
 
 	/**
@@ -91,24 +92,20 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return ArrayObject
 	 */
 	public function values() {
-		return new ArrayObject(array_values($this->getValue()));
+		return new ArrayObject(array_values($this->val()));
 	}
 
 	/**
 	 * Return the last element in the array.
 	 * If the element is array, ArrayObject is returned, else StringObject is returned.
 	 *
-	 * @return StringObject|ArrayObject
+	 * @return StringObject|ArrayObject|StdObjectWrapper
 	 */
 	public function last() {
-		$arr = $this->getValue();
+		$arr = $this->val();
 		$last = end($arr);
 
-		if($this->isArray($last)) {
-			return new ArrayObject($last);
-		} else {
-			return new StringObject($last);
-		}
+		return StdObjectWrapper::returnStdObject($last);
 	}
 
 	/**
@@ -118,14 +115,10 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return StringObject|ArrayObject
 	 */
 	public function first() {
-		$arr = $this->getValue();
+		$arr = $this->val();
 		$first = reset($arr);
 
-		if($this->isArray($first)) {
-			return new ArrayObject($first);
-		} else {
-			return new StringObject($first);
-		}
+		return StdObjectWrapper::returnStdObject($first);
 	}
 
 	/**
@@ -134,7 +127,7 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * @return int
 	 */
 	public function count() {
-		return count($this->getValue());
+		return count($this->val());
 	}
 
 	/**
@@ -150,31 +143,13 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 			 * We must mute errors in this function because it throws a E_WARNING message if array contains something
 			 * else than STRING or INTEGER.
 			 */
-			@$result = array_count_values($this->getValue());
+			@$result = array_count_values($this->val());
 
 			return new ArrayObject($result);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: countValues() can only count STRING and INTEGER values');
 		}
 
-	}
-
-	/**
-	 * Return current standard objects value.
-	 *
-	 * @return array
-	 */
-	public function getValue() {
-		return $this->_array;
-	}
-
-	/**
-	 * Returns the current standard object instance.
-	 *
-	 * @return ArrayObject
-	 */
-	public function getObject() {
-		return $this;
 	}
 
 	/**
@@ -187,14 +162,6 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	}
 
 	/**
-	 * The update value method is called after each modifier method.
-	 * It updates the current value of the standard object.
-	 */
-	function updateValue($value) {
-		$this->_array = $value;
-	}
-
-	/**
 	 * (PHP 5 &gt;= 5.0.0)<br/>
 	 * Retrieve an external iterator
 	 * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
@@ -202,6 +169,6 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate
 	 * <b>Traversable</b>
 	 */
 	public function getIterator() {
-		return new \ArrayIterator($this->_array);
+		return new \ArrayIterator($this->_value);
 	}
 }

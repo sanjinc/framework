@@ -25,12 +25,12 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 
 	public function testConstructorKeyOnly() {
 		$a = new ArrayObject(['key']);
-		$this->assertSame(array('key'), $a->getValue());
+		$this->assertSame(array('key'), $a->val());
 	}
 
 	public function testConstructorKeyValue() {
 		$a = new ArrayObject(['key' => 'value']);
-		$this->assertSame(array('key' => 'value'), $a->getValue());
+		$this->assertSame(array('key' => 'value'), $a->val());
 	}
 
 	public function testConstructorCombine() {
@@ -44,7 +44,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$this->assertSame(array(
 							   'key1' => 'value1',
 							   'key2' => 'value2'
-						  ), $a->getValue());
+						  ), $a->val());
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$this->assertSame(array(
 							   'key1' => 'value1',
 							   'key2' => 'value2'
-						  ), $a->getValue());
+						  ), $a->val());
 	}
 
 	public function testSum() {
@@ -85,7 +85,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a = new ArrayObject($array);
 		$keys = $a->keys();
 
-		$this->assertSame(array_keys($array), $keys->getValue());
+		$this->assertSame(array_keys($array), $keys->val());
 	}
 
 	/**
@@ -95,7 +95,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a = new ArrayObject($array);
 		$values = $a->values();
 
-		$this->assertSame(array_values($array), $values->getValue());
+		$this->assertSame(array_values($array), $values->val());
 	}
 
 	/**
@@ -105,7 +105,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a = new ArrayObject($array);
 		$last = $a->last();
 
-		$this->assertSame(end($array), $last->getValue());
+		$this->assertSame(end($array), $last->val());
 	}
 
 	/**
@@ -116,7 +116,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$last = $a->first();
 
 		$firstValue = reset($array);
-		$this->assertSame($firstValue, $last->getValue());
+		$this->assertSame($firstValue, $last->val());
 	}
 
 	/**
@@ -136,7 +136,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a = new ArrayObject($array);
 		$valueCount = $a->countValues();
 
-		$this->assertSame(array_count_values($array), $valueCount->getValue());
+		$this->assertSame(array_count_values($array), $valueCount->val());
 	}
 
 	/**
@@ -145,7 +145,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	public function testGetValue($array) {
 		$a = new ArrayObject($array);
 
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -153,7 +153,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testUpdateValue($array) {
 		$a = new ArrayObject($array);
-		$a->updateValue([
+		$a->val([
 						'k1',
 						'k2' => 'v2'
 						]);
@@ -161,7 +161,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$this->assertSame([
 						  'k1',
 						  'k2' => 'v2'
-						  ], $a->getValue());
+						  ], $a->val());
 	}
 
 	/**
@@ -172,7 +172,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->append('k512');
 
 		array_push($array, 'k512');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -183,7 +183,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->prepend('k512');
 
 		array_unshift($array, 'k512');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -194,7 +194,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->prepend('k512', 'val');
 
 		$array = array('k512' => 'val') + $array;
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -205,7 +205,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->removeFirst();
 
 		array_shift($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -216,7 +216,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->removeLast();
 
 		array_pop($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	public function testRemoveKey() {
@@ -229,7 +229,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->removeKey('k2');
 
 		unset($array['k2']);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -240,7 +240,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$string = $a->implode(' ');
 
 		@$string2 = implode(' ', $array);
-		$this->assertSame($string2, $string->getValue());
+		$this->assertSame($string2, $string->val());
 	}
 
 	/**
@@ -251,7 +251,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$chunk = $a->chunk(2, true);
 
 		$chunk2 = array_chunk($array, 2, true);
-		$this->assertSame($chunk2, $chunk->getValue());
+		$this->assertSame($chunk2, $chunk->val());
 	}
 
 	/**
@@ -262,7 +262,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->changeKeyCase('upper');
 
 		$array = array_change_key_case($array, CASE_UPPER);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -281,7 +281,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->fillKeys('value');
 
 		@$array = array_fill_keys($array, 'value');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	public function testFill() {
@@ -293,7 +293,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->fill(2, 2, 'value');
 
 		@$array = array_fill(2, 2, 'value');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -321,7 +321,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->filter($callable);
 
 		$array = array_filter($array, $callable);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -332,7 +332,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->flip();
 
 		@$array = array_flip($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -351,7 +351,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->intersect($compare);
 
 		@$array = array_intersect($array, $compare);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -370,7 +370,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->intersectAssoc($compare);
 
 		@$array = array_intersect_assoc($array, $compare);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -392,7 +392,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->intersectAssoc($compare, $callable);
 
 		@$array = array_intersect_uassoc($array, $compare, $callable);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -411,7 +411,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->intersectKey($compare);
 
 		@$array = array_intersect_key($array, $compare);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -433,7 +433,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->intersectKey($compare, $callable);
 
 		@$array = array_intersect_ukey($array, $compare, $callable);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -455,7 +455,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->map($callable);
 
 		$array = array_map($callable, $array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -466,7 +466,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->merge($array);
 
 		$array = array_merge($array, $array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -477,7 +477,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->sortAssoc();
 
 		asort($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -488,7 +488,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->sortAssoc(SORT_DESC);
 
 		arsort($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 
@@ -500,7 +500,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->sortKey();
 
 		ksort($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -511,7 +511,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->sortKey(SORT_DESC);
 
 		krsort($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	public function testSortField() {
@@ -530,7 +530,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 			1 => ['order' => 3],
 		];
 
-		$this->assertSame($sortedArray, $a->getValue());
+		$this->assertSame($sortedArray, $a->val());
 	}
 
 	public function testSortField2() {
@@ -543,7 +543,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a = new ArrayObject($array);
 		$a->sortField('order', SORT_DESC);
 
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -554,7 +554,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->pad(10, 'testValue');
 
 		$array = array_pad($array, 10, 'testValue');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -570,7 +570,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->replace($replacements);
 
 		$array = array_replace($array, $replacements);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -582,7 +582,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->reverse();
 
 		$array = array_reverse($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -593,7 +593,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->slice(0, 1);
 
 		$array = array_slice($array, 0, 1, true);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -604,7 +604,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->splice(0, -1, 'replacement');
 
 		$array = array_splice($array, 0, -1, 'replacement');
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	public function testUnique(){
@@ -613,7 +613,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->unique();
 
 		$array = array_unique($array);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -635,7 +635,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$a->walk($callable);
 
 		array_walk($array, $callable);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -648,7 +648,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->diff($compareArray);
 
 		@$array = array_diff($array, $compareArray);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -661,7 +661,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->diff($compareArray, true);
 
 		@$array = array_diff_assoc($array, $compareArray);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -674,7 +674,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		@$a->diffKeys($compareArray);
 
 		@$array = array_diff_key($array, $compareArray);
-		$this->assertSame($array, $a->getValue());
+		$this->assertSame($array, $a->val());
 	}
 
 	/**
@@ -703,7 +703,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testKey($array){
 		$a = new ArrayObject($array);
-		$searchResult = $a->key('NonExistingKey');
+		$searchResult = $a->keyExists('NonExistingKey');
 
 		$this->assertSame(false, $searchResult);
 	}

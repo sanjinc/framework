@@ -42,10 +42,10 @@ trait ValidatorTrait
 		}
 
 		if($this->isInstanceOf($needle, $this)) {
-			$needle = $needle->getValue();
+			$needle = $needle->val();
 		}
 
-		if(stripos($this->getValue(), $needle) !== false) {
+		if(stripos($this->val(), $needle) !== false) {
 			return true;
 		}
 
@@ -63,14 +63,14 @@ trait ValidatorTrait
 	 */
 	public function equals($string) {
 		if($this->isInstanceOf($string, $this)) {
-			$string = $string->getValue();
+			$string = $string->val();
 		} else {
 			if(!$this->isString($string)) {
 				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
 			}
 		}
 
-		$result = strcmp($string, $this->getValue());
+		$result = strcmp($string, $this->val());
 		if($result !== 0) {
 			return false;
 		}
@@ -91,7 +91,7 @@ trait ValidatorTrait
 	 */
 	public function stringPosition($string, $offset = 0) {
 		if($this->isInstanceOf($string, $this)) {
-			$string = $string->getValue();
+			$string = $string->val();
 		} else {
 			if(!$this->isString($string)) {
 				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
@@ -102,7 +102,7 @@ trait ValidatorTrait
 			throw new StdObjectException('StringObject: $offset must be an integer.');
 		}
 
-		return stripos($this->getValue(), $string, $offset);
+		return stripos($this->val(), $string, $offset);
 	}
 
 	/**
@@ -115,7 +115,7 @@ trait ValidatorTrait
 	 */
 	public function startsWith($string) {
 		if($this->isInstanceOf($string, $this)) {
-			$string = $string->getValue();
+			$string = $string->val();
 		} else {
 			if(!$this->isString($string)) {
 				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
@@ -139,7 +139,7 @@ trait ValidatorTrait
 	 * @return bool
 	 */
 	public function longerThan($num, $inclusive = false) {
-		$length = strlen($this->getValue());
+		$length = strlen($this->val());
 		if($length > $num) {
 			return true;
 		} else {

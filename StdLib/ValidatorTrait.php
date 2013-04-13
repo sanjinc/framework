@@ -18,6 +18,14 @@ namespace WF\StdLib;
 
 trait ValidatorTrait
 {
+	static protected function is($var){
+		if(isset($var)){
+			return true;
+		}
+
+		return false;
+	}
+
     /**
      * Checks if given value is null.
      *
@@ -25,7 +33,7 @@ trait ValidatorTrait
      *
      * @return bool
      */
-    static public function isNull(&$var) {
+    static protected function isNull(&$var) {
         return is_null($var);
     }
 
@@ -36,7 +44,7 @@ trait ValidatorTrait
      *
      * @return bool
      */
-    static public function isObject(&$var) {
+    static protected function isObject(&$var) {
         return is_object($var);
     }
 
@@ -47,7 +55,7 @@ trait ValidatorTrait
      *
      * @return bool
      */
-    static public function isArray($var) {
+    static protected function isArray($var) {
         return is_array($var);
     }
 
@@ -58,7 +66,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isNumber(&$var){
+	static protected function isNumber(&$var){
 		return is_numeric($var);
 	}
 
@@ -69,7 +77,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isInteger(&$var){
+	static protected function isInteger(&$var){
 		return is_int($var);
 	}
 
@@ -80,7 +88,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isCallable(&$var)
+	static protected function isCallable(&$var)
 	{
 		return is_callable($var);
 	}
@@ -92,7 +100,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isString(&$var){
+	static protected function isString(&$var){
 		return is_string($var);
 	}
 
@@ -103,7 +111,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isBool(&$var){
+	static protected function isBool(&$var){
 		return is_bool($var);
 	}
 
@@ -115,7 +123,19 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static public function isInstanceOf(&$instance, $type){
+	static protected function isInstanceOf(&$instance, $type){
 		return ($instance instanceof $type);
+	}
+
+	/**
+	 * Checks if class exists.
+	 * This function autoloads classes to checks if they exist.
+	 *
+	 * @param string $className Class name with their full namespace.
+	 *
+	 * @return bool
+	 */
+	static protected function classExists($className){
+		return class_exists($className, true);
 	}
 }

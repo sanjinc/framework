@@ -36,7 +36,7 @@ class FileObject extends StdObjectAbstract
 	/**
 	 * @var string Absolute path to the file.
 	 */
-	private $_path = '';
+	protected $_value = '';
 
 	/**
 	 * @var bool Does the file already exist.
@@ -56,9 +56,9 @@ class FileObject extends StdObjectAbstract
 	 *
 	 * @throws StdObjectException
 	 */
-	function __construct($pathToFile) {
+	public function __construct($pathToFile) {
 		// assign file path
-		$this->_path = $pathToFile;
+		$this->_value = $pathToFile;
 
 		// correct directory separator
 		$this->_correctDirectorySeparator();
@@ -67,12 +67,12 @@ class FileObject extends StdObjectAbstract
 		$this->_getDriver();
 
 		// check if file already exists
-		$realPath = realpath($this->_path);
+		$realPath = realpath($this->_value);
 		if($realPath) {
 			$this->_fileExists = true;
-			$this->_path = $realPath;
+			$this->_value = $realPath;
 		} else {
-			throw new StdObjectException('FileObject: Unable to create, or access, file: ' . $this->_path);
+			throw new StdObjectException('FileObject: Unable to create, or access, file: ' . $this->_value);
 		}
 	}
 
@@ -82,11 +82,11 @@ class FileObject extends StdObjectAbstract
 	 * @throws StdObjectException
 	 * @return int
 	 */
-	function getSize() {
+	public function getSize() {
 		try {
 			return $this->_getDriver()->getSize();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to get file size for file: ' . $this->_path . "\n " . $e->getMessage(), 0, $e);
+			throw new StdObjectException('FileObject: Unable to get file size for file: ' . $this->_value . "\n " . $e->getMessage(), 0, $e);
 		}
 	}
 
@@ -96,11 +96,11 @@ class FileObject extends StdObjectAbstract
 	 * @throws StdObjectException
 	 * @return mixed|string
 	 */
-	function getBasename() {
+	public function getBasename() {
 		try {
 			return $this->_getDriver()->getBasename();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file basename for file "' . $this->_path . '"', 0, $e);
+			throw new StdObjectException('FileObject: Unable to read file basename for file "' . $this->_value . '"', 0, $e);
 		}
 	}
 
@@ -110,11 +110,19 @@ class FileObject extends StdObjectAbstract
 	 * @throws StdObjectException
 	 * @return string
 	 */
-	function getExtension() {
+	public function getExtension() {
 		try {
 			return $this->_getDriver()->getExtension();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file extension "' . $this->_path . '"', 0, $e);
+			throw new StdObjectException('FileObject: Unable to read file extension "' . $this->_value . '"', 0, $e);
+		}
+	}
+
+	public function getPath() {
+		try {
+			return $this->_getDriver()->getPath();
+		} catch (\Exception $e) {
+			throw new StdObjectException('FileObject: Unable to read file extension "' . $this->_value . '"', 0, $e);
 		}
 	}
 
@@ -124,26 +132,32 @@ class FileObject extends StdObjectAbstract
 	 * @return int
 	 * @throws StdObjectException
 	 */
-	function getMTime() {
+	public function getMTime() {
 		try {
 			return $this->_getDriver()->getMTime();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file last modified time "' . $this->_path . '"', 0, $e);
+			throw new StdObjectException('FileObject: Unable to read file last modified time "' . $this->_value . '"', 0, $e);
 		}
 	}
 
 	/**
-	 * Returns absolute path to the file.
-	 * The path doesn't contain a trailing slash.
+	 * Get current file path, or set a new file path for current file object.
 	 *
-	 * @return mixed
-	 * @throws StdObjectException
+	 * @param string|null $value
+	 *
+	 * @return array|\WF\StdLib\StdObject\ArrayObject\ArrayObject
+	 * @throws \WF\StdLib\StdObject\StdObjectException
 	 */
-	function getPath() {
+	public function val($value = null) {
+		if(!$this->isNull($value)) {
+			$this->_value = $value;
+			$this->_driver = null;
+		}
+
 		try {
-			return $this->_getDriver()->getPath();
+			return $this->_value;
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to get file path "' . $this->_path . '"', 0, $e);
+			throw new StdObjectException('FileObject: Unable to get file path "' . $this->_value . '"', 0, $e);
 		}
 	}
 
@@ -155,53 +169,23 @@ class FileObject extends StdObjectAbstract
 	 * @throws StdObjectException
 	 * @return string
 	 */
-	function getMimeType() {
+	public function getMimeType() {
 		try {
 			$fi = finfo_open(FILEINFO_MIME_TYPE);
-			$info = finfo_file($fi, $this->_path);
+			$info = finfo_file($fi, $this->_value);
 			finfo_close($fi);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileInfo: Unable to read mime type for file: ' . $this->_path);
+			throw new StdObjectException('FileInfo: Unable to read mime type for file: ' . $this->_value);
 		}
 
 		return $info;
 	}
 
 	/**
-	 * Return current standard objects value.
-	 * Returns the path to the file.
-	 *
-	 * @return string
-	 */
-	function getValue() {
-		return $this->_path;
-	}
-
-	/**
-	 * Returns the current standard object instance.
-	 *
-	 * @return $this
-	 */
-	function getObject() {
-		return $this;
-	}
-
-	/**
-	 * The update value method is called after each modifier method.
-	 * It updates the current value of the standard object.
-	 *
-	 * @param mixed $value    Passed by reference.
-	 */
-	function updateValue($value) {
-		$this->_path = $value;
-		$this->_driver = null;
-	}
-
-	/**
 	 * Outputs file content to the browser.
 	 */
-	function outputFileContent() {
-		readfile($this->_path);
+	public function outputFileContent() {
+		readfile($this->_value);
 	}
 
 	/**
@@ -209,8 +193,8 @@ class FileObject extends StdObjectAbstract
 	 *
 	 * @return string
 	 */
-	function getFileContent() {
-		return file_get_contents($this->_path);
+	public function getFileContent() {
+		return file_get_contents($this->_value);
 	}
 
 	/**
@@ -218,8 +202,8 @@ class FileObject extends StdObjectAbstract
 	 *
 	 * @return mixed
 	 */
-	function __toString() {
-		return $this->_path;
+	public function __toString() {
+		return $this->_value;
 	}
 
 	/**
@@ -232,12 +216,12 @@ class FileObject extends StdObjectAbstract
 		if($this->isNull($this->_driver)) {
 			try {
 				$driver = '\WF\StdLib\StdObject\FileObject\Drivers\\' . self::DRIVER;
-				$this->_driver = new $driver($this->_path);
+				$this->_driver = new $driver($this->_value);
 				if(!$this->isInstanceOf($this->_driver, 'WF\StdLib\StdObject\FileObject\FileObjectDriverInterface')) {
 					throw new StdObjectException('FileObject: Driver must implement FileObjectDriverInterface interface');
 				}
 			} catch (\ErrorException $e) {
-				throw new StdObjectException($this->_path . 'FileObject: Unable to create driver instance for driver:
+				throw new StdObjectException($this->_value . 'FileObject: Unable to create driver instance for driver:
                 							' . self::DRIVER);
 			}
 		}
@@ -249,9 +233,9 @@ class FileObject extends StdObjectAbstract
 	 * Correct the directory separator and set it to OS default.
 	 */
 	private function _correctDirectorySeparator() {
-		$this->_path = str_replace(array(
-										'/',
-										'\\'
-								   ), DIRECTORY_SEPARATOR, $this->_path);
+		$this->_value = str_replace(array(
+										 '/',
+										 '\\'
+									), DIRECTORY_SEPARATOR, $this->_value);
 	}
 }

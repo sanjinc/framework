@@ -34,26 +34,21 @@ trait ValidatorTrait
 	 * @return bool|key Returns the key under which the $value is found, or false.
 	 */
 	public function search($value, $strict = false) {
-		return array_search($value, $this->getValue(), $strict);
+		return array_search($value, $this->val(), $strict);
 	}
 
 	/**
-	 * Return a value from the array for the given key.
-	 * If the $key doesn't exist, $default is returned.
+	 * Checks if $key exists in current array as index. If it exists, true is returned.
+	 * If the $key doesn't exist, $default is returned,
 	 *
 	 * @param string $key     Array key.
 	 * @param mixed  $default If key is not found, $default is returned.
 	 *
-	 * @return mixed|StringObject
+	 * @return bool|mixed
 	 */
-	public function key($key, $default = false) {
-		if(array_key_exists($key, $this->getValue())) {
-			if($this->isString($this->getValue()[$key]))
-			{
-				return new StringObject($this->getValue()[$key]);
-			}else{
-				return $this->getValue()[$key];
-			}
+	public function keyExists($key, $default = false) {
+		if(array_key_exists($key, $this->val())) {
+			return true;
 		}
 
 		return $default;

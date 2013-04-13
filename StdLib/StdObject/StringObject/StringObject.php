@@ -36,7 +36,7 @@ class StringObject extends StdObjectAbstract
 	/**
 	 * @var string
 	 */
-	protected $_wfString;
+	protected $_value;
 
 
 	/**
@@ -51,7 +51,7 @@ class StringObject extends StdObjectAbstract
 		if(!$this->isString($value) && !$this->isNumber($value)){
 			throw new StdObjectException('StringObject: Unable to create StringObject from the given $value. Only strings and integers are allowed.');
 		}
-		$this->_wfString = (string) $value;
+		$this->_value = (string) $value;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class StringObject extends StdObjectAbstract
 	 * @return int
 	 */
 	public function length() {
-		return mb_strlen($this->getValue(), self::DEF_ENCODING);
+		return mb_strlen($this->val(), self::DEF_ENCODING);
 	}
 
 	/**
@@ -76,20 +76,11 @@ class StringObject extends StdObjectAbstract
 	 */
 	public function wordCount($format = 0) {
 		if($format < 1) {
-			return str_word_count($this->getValue(), $format);
+			return str_word_count($this->val(), $format);
 		} else {
-			return new ArrayObject(str_word_count($this->getValue(), $format));
+			return new ArrayObject(str_word_count($this->val(), $format));
 		}
 
-	}
-
-	/**
-	 * Return current standard objects value.
-	 *
-	 * @return string
-	 */
-	public function getValue() {
-		return $this->_wfString;
 	}
 
 	/**
@@ -98,23 +89,7 @@ class StringObject extends StdObjectAbstract
 	 * @return string
 	 */
 	public function __toString() {
-		return $this->getValue();
-	}
-
-	/**
-	 * Returns the current standard object instance.
-	 * @return $this
-	 */
-	public function getObject() {
-		return $this;
-	}
-
-	/**
-	 * The update value method is called after each modifier method.
-	 * It updates the current value of the standard object.
-	 */
-	public function updateValue($value) {
-		$this->_wfString = $value;
+		return $this->val();
 	}
 
 }

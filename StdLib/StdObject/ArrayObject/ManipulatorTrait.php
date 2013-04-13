@@ -12,6 +12,7 @@ namespace WF\StdLib\StdObject\ArrayObject;
 
 use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StdObjectManipulatorTrait;
+use WF\StdLib\StdObject\StdObjectWrapper;
 use WF\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -23,12 +24,35 @@ trait ManipulatorTrait
 {
 	use StdObjectManipulatorTrait;
 
-	abstract function getValue();
-
 	/**
-	 * @return ArrayObject
+	 * Get or update the given key inside current array.
+	 *
+	 * @param string|int $key   Array key
+	 * @param null|mixed $value If set, the value under current $key will be updated and not returned.
+	 * @param bool       $setOnlyIfDoesntExist Set the $value only in case if the $key doesn't exist.
+	 *
+	 * @return $this|mixed|StringObject
 	 */
-	abstract function getObject();
+	public function key($key, $value = null, $setOnlyIfDoesntExist=false) {
+		$array = $this->val();
+
+		if($setOnlyIfDoesntExist && !$this->keyExists($key)){
+			$array[$key] = $value;
+			$this->val($array);
+
+			return $this;
+		}else if(!$setOnlyIfDoesntExist){
+			if(!$this->isNull($value))
+			{
+				$array[$key] = $value;
+				$this->val($array);
+
+				return $this;
+			}
+		}
+
+		return StdObjectWrapper::returnStdObject($array[$key]);
+	}
 
 	/**
 	 * Inserts an element to the end of the array.
@@ -41,7 +65,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function append($k, $v = null) {
-		$array = $this->getValue();
+		$array = $this->val();
 
 		if(!$this->isNull($v)) {
 			$array[$k] = $v;
@@ -49,7 +73,7 @@ trait ManipulatorTrait
 			$array[] = $k;
 		}
 
-		$this->updateValue($array);
+		$this->val($array);
 
 		return $this;
 	}
@@ -65,7 +89,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function prepend($k, $v = null) {
-		$array = $this->getValue();
+		$array = $this->val();
 
 		if(!$this->isNull($v)) {
 			$array = array_reverse($array, true);
@@ -75,7 +99,7 @@ trait ManipulatorTrait
 			array_unshift($array, $k);
 		}
 
-		$this->updateValue($array);
+		$this->val($array);
 
 		return $this;
 	}
@@ -86,10 +110,10 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function removeFirst() {
-		$array = $this->getValue();
+		$array = $this->val();
 		array_shift($array);
 
-		$this->updateValue($array);
+		$this->val($array);
 
 		return $this;
 	}
@@ -100,10 +124,10 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function removeLast() {
-		$array = $this->getValue();
+		$array = $this->val();
 		array_pop($array);
 
-		$this->updateValue($array);
+		$this->val($array);
 
 		return $this;
 	}
@@ -116,11 +140,11 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function removeKey($key) {
-		if($this->key($key)) {
-			$array = $this->getValue();
+		if($this->keyExists($key)) {
+			$array = $this->val();
 			unset($array[$key]);
 
-			$this->updateValue($array);
+			$this->val($array);
 		}
 
 		return $this;
@@ -134,7 +158,7 @@ trait ManipulatorTrait
 	 * @return StringObject
 	 */
 	public function implode($glue) {
-		$array = $this->getValue();
+		$array = $this->val();
 		$string = implode($glue, $array);
 
 		return new StringObject($string);
@@ -151,7 +175,7 @@ trait ManipulatorTrait
 	 */
 	public function chunk($size, $preserve_keys = false) {
 		try {
-			$chunk = array_chunk($this->getValue(), $size, $preserve_keys);
+			$chunk = array_chunk($this->val(), $size, $preserve_keys);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
@@ -182,7 +206,7 @@ trait ManipulatorTrait
 			}
 		}
 
-		$this->updateValue(array_change_key_case($this->getValue(), $realCase));
+		$this->val(array_change_key_case($this->val(), $realCase));
 
 		return $this;
 	}
@@ -198,13 +222,13 @@ trait ManipulatorTrait
 	 */
 	public function fillKeys($value) {
 		try {
-			$arr = array_fill_keys($this->getValue(), $value);
+			$arr = array_fill_keys($this->val(), $value);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -230,7 +254,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: $num must be greate than zero.');
 		}
 
-		$this->updateValue(array_fill($start, $num, $value));
+		$this->val(array_fill($start, $num, $value));
 
 		return $this;
 	}
@@ -248,7 +272,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: $callback must be a callable function or a method.');
 		}
 
-		$this->updateValue(array_filter($this->getValue(), $callback));
+		$this->val(array_filter($this->val(), $callback));
 
 		return $this;
 	}
@@ -263,11 +287,10 @@ trait ManipulatorTrait
 	 */
 	public function flip() {
 		try {
-			$this->updateValue(array_flip($this->getValue()));
+			$this->val(array_flip($this->val()));
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
-
 
 		return $this;
 	}
@@ -281,7 +304,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function intersect($array) {
-		$this->updateValue(array_intersect($this->getValue(), $array));
+		$this->val(array_intersect($this->val(), $array));
 
 		return $this;
 	}
@@ -302,9 +325,9 @@ trait ManipulatorTrait
 				throw new StdObjectException('ArrayObject: $callback must be a callable function or a method.');
 			}
 
-			$this->updateValue(array_intersect_uassoc($this->getValue(), $array, $callback));
+			$this->val(array_intersect_uassoc($this->val(), $array, $callback));
 		} else {
-			$this->updateValue(array_intersect_assoc($this->getValue(), $array));
+			$this->val(array_intersect_assoc($this->val(), $array));
 		}
 
 		return $this;
@@ -326,9 +349,9 @@ trait ManipulatorTrait
 				throw new StdObjectException('ArrayObject: $callback must be a callable function or a method.');
 			}
 
-			$this->updateValue(array_intersect_ukey($this->getValue(), $array, $callback));
+			$this->val(array_intersect_ukey($this->val(), $array, $callback));
 		} else {
-			$this->updateValue(array_intersect_key($this->getValue(), $array));
+			$this->val(array_intersect_key($this->val(), $array));
 		}
 
 		return $this;
@@ -347,7 +370,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: $callback must be a callable function or a method.');
 		}
 
-		$this->updateValue(array_map($callback, $this->getValue()));
+		$this->val(array_map($callback, $this->val()));
 
 		return $this;
 	}
@@ -361,10 +384,10 @@ trait ManipulatorTrait
 	 */
 	public function merge($array) {
 		if($this->isInstanceOf($array, $this)) {
-			$array = $array->getValue();
+			$array = $array->val();
 		}
 
-		$this->updateValue(array_merge($this->getValue(), $array));
+		$this->val(array_merge($this->val(), $array));
 
 		return $this;
 	}
@@ -383,7 +406,7 @@ trait ManipulatorTrait
 	public function sortAssoc($direction = SORT_ASC, $sortFlag = SORT_REGULAR) {
 
 		try {
-			$arr = $this->getValue();
+			$arr = $this->val();
 			if($direction == SORT_ASC) {
 				asort($arr, $sortFlag);
 			} else {
@@ -393,7 +416,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -411,7 +434,7 @@ trait ManipulatorTrait
 	 */
 	public function sortKey($direction = SORT_ASC, $sortFlag = SORT_REGULAR) {
 		try {
-			$arr = $this->getValue();
+			$arr = $this->val();
 			if($direction == SORT_DESC) {
 				krsort($arr, $sortFlag);
 			} else {
@@ -421,7 +444,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -438,7 +461,7 @@ trait ManipulatorTrait
 	 */
 	public function sortField($field, $direction = SORT_ASC, $sortFlag = SORT_NUMERIC) {
 		// check array
-		if(!$this->isArray($this->first()->getValue())) {
+		if(!$this->isArray($this->first()->val())) {
 			throw new StdObjectException('ArrayObject: You can only sort a multi-dimensional array.');
 		}
 
@@ -449,7 +472,7 @@ trait ManipulatorTrait
 
 		// do the sorting
 		$tempArray = array();
-		$thisArray = $this->getValue();
+		$thisArray = $this->val();
 
 		foreach ($thisArray as $mk => $m) {
 			$tempArray[$m[$field]][] = $mk;
@@ -468,7 +491,7 @@ trait ManipulatorTrait
 			}
 		}
 
-		$this->updateValue($newArray);
+		$this->val($newArray);
 		unset($tempArray);
 		unset($thisArray);
 
@@ -486,12 +509,12 @@ trait ManipulatorTrait
 	 */
 	public function pad($size, $value) {
 		try {
-			$arr = array_pad($this->getValue(), $size, $value);
+			$arr = array_pad($this->val(), $size, $value);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -506,7 +529,7 @@ trait ManipulatorTrait
 	 */
 	public function rand($num = 1) {
 		try {
-			$arr = array_rand($this->getValue(), $num);
+			$arr = array_rand($this->val(), $num);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
@@ -536,7 +559,7 @@ trait ManipulatorTrait
 	 */
 	public function replace($replacements, $recursive = false) {
 		if($this->isInstanceOf($replacements, $this)) {
-			$replacements = $replacements->getValue();
+			$replacements = $replacements->val();
 		} else {
 			if(!$this->isArray($replacements)) {
 				throw new StdObjectException('ArrayObject: $array must be the of array or ArrayObject.');
@@ -545,16 +568,16 @@ trait ManipulatorTrait
 
 		try {
 			if($recursive) {
-				$arr = array_replace_recursive($this->getValue(), $replacements);
+				$arr = array_replace_recursive($this->val(), $replacements);
 			} else {
-				$arr = array_replace($this->getValue(), $replacements);
+				$arr = array_replace($this->val(), $replacements);
 			}
 
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -565,7 +588,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function reverse() {
-		$this->updateValue(array_reverse($this->getValue()));
+		$this->val(array_reverse($this->val()));
 
 		return $this;
 	}
@@ -586,12 +609,12 @@ trait ManipulatorTrait
 		}
 
 		try {
-			$arr = array_slice($this->getValue(), $offset, $length, $preserveKeys);
+			$arr = array_slice($this->val(), $offset, $length, $preserveKeys);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -612,12 +635,12 @@ trait ManipulatorTrait
 		}
 
 		try {
-			$arr = array_splice($this->getValue(), $offset, $length, $replacement);
+			$arr = array_splice($this->val(), $offset, $length, $replacement);
 		} catch (\ErrorException $e) {
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -631,7 +654,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function unique($sortFlag = SORT_STRING) {
-		$this->updateValue(array_unique($this->getValue(), $sortFlag));
+		$this->val(array_unique($this->val(), $sortFlag));
 
 		return $this;
 	}
@@ -653,7 +676,7 @@ trait ManipulatorTrait
 		}
 
 		try {
-			$arr = $this->getValue();
+			$arr = $this->val();
 			if($recursive) {
 				array_walk_recursive($arr, $function, $userData);
 			} else {
@@ -663,7 +686,7 @@ trait ManipulatorTrait
 			throw new StdObjectException('ArrayObject: ' . $e->getMessage());
 		}
 
-		$this->updateValue($arr);
+		$this->val($arr);
 
 		return $this;
 	}
@@ -674,7 +697,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function shuffle() {
-		$this->updateValue(shuffle($this->getValue()));
+		$this->val(shuffle($this->val()));
 
 		return $this;
 	}
@@ -691,7 +714,7 @@ trait ManipulatorTrait
 	 */
 	public function diff($array, $compareKeys = false) {
 		if($this->isInstanceOf($array, $this)) {
-			$array = $array->getValue();
+			$array = $array->val();
 		} else {
 			if(!$this->isArray($array)) {
 				throw new StdObjectException('ArrayObject: You can only compare one ArrayObject to another ArrayObject or array.');
@@ -699,11 +722,11 @@ trait ManipulatorTrait
 		}
 
 		if($compareKeys) {
-			$this->updateValue(array_diff_assoc($this->getValue(), $array));
+			$this->val(array_diff_assoc($this->val(), $array));
 
 			return $this;
 		} else {
-			$this->updateValue(array_diff($this->getValue(), $array));
+			$this->val(array_diff($this->val(), $array));
 
 			return $this;
 		}
@@ -720,14 +743,14 @@ trait ManipulatorTrait
 	 */
 	public function diffKeys($array) {
 		if($this->isInstanceOf($array, $this)) {
-			$array = $array->getValue();
+			$array = $array->val();
 		} else {
 			if(!$this->isArray($array)) {
 				throw new StdObjectException('ArrayObject: You can only compare one ArrayObject to another ArrayObject or array.');
 			}
 		}
 
-		$this->updateValue(array_diff_key($this->getValue(), $array));
+		$this->val(array_diff_key($this->val(), $array));
 
 		return $this;
 	}

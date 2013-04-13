@@ -27,28 +27,6 @@ interface StdObjectInterface
     function __construct($value);
 
     /**
-     * Return current standard objects value.
-     *
-     * @return mixed
-     */
-    function getValue();
-
-    /**
-     * Returns the current standard object instance.
-     *
-     * @return mixed
-     */
-    function getObject();
-
-    /**
-     * The update value method is called after each modifier method.
-     * It updates the current value of the standard object.
-     *
-     * @param mixed $value    Passed by reference.
-     */
-    function updateValue($value);
-
-    /**
      * To string implementation.
      *
      * @return mixed

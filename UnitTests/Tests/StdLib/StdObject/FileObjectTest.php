@@ -57,7 +57,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testGetValue(){
-		$this->assertSame($this->filePath, $this->f->getValue());
+		$this->assertSame($this->filePath, $this->f->val());
 	}
 
 	public function testGetFileContent(){
