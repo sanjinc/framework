@@ -122,7 +122,7 @@ class FileObject extends StdObjectAbstract
 		try {
 			return $this->_getDriver()->getPath();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file extension "' . $this->_value . '"', 0, $e);
+			throw new StdObjectException('FileObject: Unable to read file path "' . $this->_value . '"', 0, $e);
 		}
 	}
 

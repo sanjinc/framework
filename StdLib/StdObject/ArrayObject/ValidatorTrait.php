@@ -33,8 +33,8 @@ trait ValidatorTrait
 	 *
 	 * @return bool|key Returns the key under which the $value is found, or false.
 	 */
-	public function search($value, $strict = false) {
-		return array_search($value, $this->val(), $strict);
+	public function inArray($value, $strict = false) {
+		return in_array($value, $this->val(), $strict);
 	}
 
 	/**

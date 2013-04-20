@@ -9,6 +9,7 @@
 
 namespace WF\StdLib\StdObject\FileObject;
 
+use Exception;
 use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\StdObjectManipulatorTrait;
 use WF\StdLib\StdObject\StringObject\StringObject;
@@ -27,6 +28,14 @@ trait ManipulatorTrait
 	 */
 	abstract protected function _getDriver();
 
+	static public function fileExists($path){
+		return file_exists($path);
+	}
+
+	static public function dirExists($path){
+		return is_dir($path);
+	}
+
 	/**
 	 * Write the given string into the file.
 	 *
@@ -35,7 +44,7 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 *
-	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 * @throws StdObjectException
 	 */
 	function write($str, $length = null) {
 		try {
@@ -66,7 +75,7 @@ trait ManipulatorTrait
 				}
 
 			}
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$this->exception('FileObject: Unable to write to file "' . $this->val() . '".' . "\n " . $e->getMessage());
 		}
 
@@ -88,7 +97,7 @@ trait ManipulatorTrait
 
 		try {
 			$this->_getDriver()->ftruncate($size);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			throw new StdObjectException('FileObject: Unable to truncate the data from the given file: ' . $this->val() .
 											 "\n " . $e->getMessage());
 		}
@@ -138,18 +147,93 @@ trait ManipulatorTrait
 	/**
 	 * Delete current file.
 	 *
+	 *
+	 * @throws \Exception|StdObjectException
 	 * @return $this
-	 * @throws StdObjectException
 	 */
 	function delete() {
-		try {
-			unlink($this->val());
-		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to delete the given file: ' . $this->val());
+		try{
+			$this->_getDriver()->delete();
+		}catch (StdObjectException $e){
+			throw $e;
 		}
 
 		return $this;
 	}
+
+	/**
+	 * Move current file to a new destination.
+	 *
+	 * @param string $destination Path to where you want to place the file.
+	 *
+	 * @throws \Exception|StdObjectException
+	 * @return $this
+	 */
+	function move($destination) {
+		try{
+			$this->_getDriver()->move($destination);
+		}catch (StdObjectException $e){
+			throw $e;
+		}
+		return $this;
+	}
+
+	/**
+	 * Copy the current file to a given $destination.
+	 *
+	 * @param string $destination Path to where to copy the file.
+	 *
+	 * @throws \Exception|StdObjectException
+	 * @return $this
+	 */
+	function copy($destination) {
+		try{
+			$this->_getDriver()->copy($destination);
+		}catch (StdObjectException $e){
+			throw $e;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Rename the current file.
+	 *
+	 * @param string $name New file name.
+	 *
+	 * @throws \Exception|StdObjectException
+	 * @return $this
+	 */
+	function rename($name) {
+		try{
+			$this->_getDriver()->rename($name);
+		}catch (StdObjectException $e){
+			throw $e;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Attempts to set the access and modification times of the file named in the filename parameter to the value given in time.
+	 * Note that the access time is always modified, regardless of the number of parameters.
+	 *
+	 * @param null $time
+	 *
+	 * @return $this
+	 * @throws \Exception|\WF\StdLib\StdObject\StdObjectException
+	 */
+	function touch($time = null){
+		try{
+			$this->_getDriver()->touch($time);
+		}catch (StdObjectException $e){
+			throw $e;
+		}
+
+		return $this;
+	}
+
+
 
 	#########################
 	### pointer functions ###

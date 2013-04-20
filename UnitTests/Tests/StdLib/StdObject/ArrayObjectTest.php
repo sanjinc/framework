@@ -682,7 +682,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSearch($array){
 		$a = new ArrayObject($array);
-		$searchResult = $a->search('youCantFindMe');
+		$searchResult = $a->inArray('youCantFindMe');
 
 		$this->assertSame(false, $searchResult);
 	}
@@ -692,7 +692,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSearch2($array){
 		$a = new ArrayObject($array);
-		$searchResult = $a->search('v1');
+		$searchResult = $a->inArray('v1');
 
 		$key = array_search('v1', $array);
 		$this->assertSame($key, $searchResult);

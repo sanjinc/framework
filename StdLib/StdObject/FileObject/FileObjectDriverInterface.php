@@ -36,4 +36,9 @@ interface FileObjectDriverInterface
 	function isReadable();
 	function fwrite($str, $lenght = null);
 	function ftruncate($site);
+	function delete();
+	function move($destination);
+	function copy($destination);
+	function rename($name);
+	function touch($time = null);
 }

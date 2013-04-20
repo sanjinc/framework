@@ -104,7 +104,7 @@ trait ValidatorTrait
 					return $value;
 				} else {
 					$arr = new ArrayObject($types);
-					if($arr->search($value)) {
+					if($arr->inArray($value)) {
 						return $value;
 					}
 				}

@@ -27,10 +27,6 @@ abstract class StdObjectAbstract implements StdObjectInterface
 	use ValidatorTrait;
 
 	/**
-	 * @var ConfigAbstract
-	 */
-	private $_config = null;
-	/**
 	 * ArrayObject that caches the names of standard objects. This is used by StdObjectAbstract::_getStdObjectName
 	 * @var ArrayObject
 	 */
@@ -41,7 +37,7 @@ abstract class StdObjectAbstract implements StdObjectInterface
 	 *
 	 * @param null $value If $value is set, value is updated and ArrayObject is returned.
 	 *
-	 * @return array|ArrayObject
+	 * @return mixed
 	 */
 	public function val($value = null) {
 		if(!$this->isNull($value)){
@@ -70,46 +66,6 @@ abstract class StdObjectAbstract implements StdObjectInterface
 	 */
 	public function exception($message) {
 		return new StdObjectException($message);
-	}
-
-	/**
-	 * Get the default config for the given standard object.
-	 * IMPORTANT: This function returns an object that changes the default settings of this standard object.
-	 *
-	 * @return mixed
-	 * @throws \Exception|StdObjectException
-	 */
-	static protected function _getDefaultConfig() {
-		try {
-			$configClassName = self::_getStdObjectConfigClassName();
-		} catch (StdObjectException $e) {
-			throw $e;
-		}
-
-		return new $configClassName(true);
-	}
-
-	/**
-	 * Returns config object for the given standard object.
-	 * IMPORTANT: This function controlls the config for current object instance.
-	 * If you want to control the default config, use self::_getDefaultConfig
-	 *
-	 * @throws \Exception|StdObjectException
-	 * @return mixed
-	 */
-	protected function _getConfig() {
-		try {
-			$configClassName = $this->_getStdObjectConfigClassName();
-		} catch (StdObjectException $e) {
-			throw $e;
-		}
-
-
-		if(self::isNull($this->_config)) {
-			$this->_config = new $configClassName(false);
-		}
-
-		return $this->_config;
 	}
 
 	/**

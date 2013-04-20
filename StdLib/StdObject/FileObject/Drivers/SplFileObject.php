@@ -25,7 +25,7 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * @param string $filePath Absolute path to the file.
 	 *
 	 * @throws \WF\StdLib\StdObject\StdObjectException
-	 * @return \WF\StdLib\StdObject\FileObject\FileObjectDriverInterface
+	 * @return \WF\StdLib\StdObject\FileObject\Drivers\SplFileObject
 	 */
 	function __construct($filePath) {
 		$this->_filePath = $filePath;
@@ -33,6 +33,102 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 			parent::__construct($filePath, 'w');
 		} catch (\Exception $e) {
 			throw new StdObjectException('FileObject: Unable to construct driver: SplFileObject. ' . $e->getMessage());
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Delete the current file.
+	 *
+	 * @return $this
+	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 */
+	function delete() {
+		try {
+			unlink($this->val());
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('FileObject: Unable to delete the given file: ' . $this->val());
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Move the file to given destination.
+	 *
+	 * @param $destination
+	 *
+	 * @return $this
+	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 */
+	function move($destination) {
+		try {
+			$this->copy($destination);
+			$this->delete();
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('FileObject: Unable to move the given file: "' . $this->val() . '"
+			to destination "' . $destination . '"');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Copy the file to given destination.
+	 *
+	 * @param $destination
+	 *
+	 * @return $this
+	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 */
+	function copy($destination) {
+		try {
+			copy($this->val(), $destination);
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('FileObject: Unable to copy the given file: "' . $this->val() . '"
+			to destination "' . $destination . '"');
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Rename current file.
+	 *
+	 * @param $name
+	 *
+	 * @return $this
+	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 */
+	function rename($name){
+		try {
+			rename($this->val(), $name);
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('FileObject: Unable to rename the given file: "' . $this->val() . '"
+			to "' . $name. '"');
+		}
+
+		return $this;
+	}
+
+	/**
+	 *  Sets access and modification time of file.
+	 *
+	 * @param null $time
+	 *
+	 * @return $this
+	 * @throws \WF\StdLib\StdObject\StdObjectException
+	 */
+	function touch($time=null) {
+		try {
+			if(is_null($time)){
+				touch($this->valid());
+			}else{
+				touch($this->valid(), $time);
+			}
+		} catch (\ErrorException $e) {
+			throw new StdObjectException('FileObject: Unable to perform touch on the given file: "' . $this->val() . '".');
 		}
 
 		return $this;

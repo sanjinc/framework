@@ -296,7 +296,7 @@ trait ManipulatorTrait
 	 */
 	public function hash($algo = 'sha1') {
 		$algos = new ArrayObject(hash_algos());
-		if(!$algos->search($algo)) {
+		if(!$algos->inArray($algo)) {
 			throw new StdObjectException('StringObject: Invalid hash algorithm provided: "' . $algo . '"'
 											 . ' Visit http://www.php.net/manual/en/function.hash-algos.php for more information.');
 		}
