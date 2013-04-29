@@ -10,54 +10,56 @@
 
 namespace WF\StdLib;
 
+use WF\StdLib\StdObject\StdObjectException;
+use WF\StdLib\StdObject\StringObject\StringObject;
+
 /**
  * Trait containing common validators
  *
  * @package         WF\StdLib
  */
-
 trait ValidatorTrait
 {
-	static protected function is($var){
-		if(isset($var)){
+	static protected function is($var) {
+		if(isset($var)) {
 			return true;
 		}
 
 		return false;
 	}
 
-    /**
-     * Checks if given value is null.
-     *
-     * @param mixed $var Value to check
-     *
-     * @return bool
-     */
-    static protected function isNull(&$var) {
-        return is_null($var);
-    }
+	/**
+	 * Checks if given value is null.
+	 *
+	 * @param mixed $var Value to check
+	 *
+	 * @return bool
+	 */
+	static protected function isNull(&$var) {
+		return is_null($var);
+	}
 
-    /**
-     * Check if given value is an object.
-     *
-     * @param mixed $var Value to check
-     *
-     * @return bool
-     */
-    static protected function isObject(&$var) {
-        return is_object($var);
-    }
+	/**
+	 * Check if given value is an object.
+	 *
+	 * @param mixed $var Value to check
+	 *
+	 * @return bool
+	 */
+	static protected function isObject(&$var) {
+		return is_object($var);
+	}
 
-    /**
-     * Checks if given value is an array.
-     *
-     * @param $var
-     *
-     * @return bool
-     */
-    static protected function isArray($var) {
-        return is_array($var);
-    }
+	/**
+	 * Checks if given value is an array.
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static protected function isArray($var) {
+		return is_array($var);
+	}
 
 	/**
 	 * Checks if value is a number.
@@ -66,7 +68,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isNumber(&$var){
+	static protected function isNumber(&$var) {
 		return is_numeric($var);
 	}
 
@@ -77,7 +79,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInteger(&$var){
+	static protected function isInteger(&$var) {
 		return is_int($var);
 	}
 
@@ -88,8 +90,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isCallable(&$var)
-	{
+	static protected function isCallable(&$var) {
 		return is_callable($var);
 	}
 
@@ -100,7 +101,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isString(&$var){
+	static protected function isString(&$var) {
 		return is_string($var);
 	}
 
@@ -111,7 +112,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isBool(&$var){
+	static protected function isBool(&$var) {
 		return is_bool($var);
 	}
 
@@ -123,8 +124,23 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInstanceOf(&$instance, $type){
+	static protected function isInstanceOf(&$instance, $type) {
 		return ($instance instanceof $type);
+	}
+
+	/**
+	 * Check if $instance is a StandardObject.
+	 *
+	 * @param mixed $instance
+	 *
+	 * @return bool
+	 */
+	static protected function isStdObject(&$instance) {
+		if(self::isInstanceOf($instance, 'WF\StdLib\StdObject\StdObjectAbstract')) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -135,7 +151,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function classExists($className){
+	static protected function classExists($className) {
 		return class_exists($className, true);
 	}
 }

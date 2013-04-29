@@ -51,7 +51,8 @@ trait ManipulatorTrait
 			}
 		}
 
-		return StdObjectWrapper::returnStdObject($array[$key]);
+		//return StdObjectWrapper::returnStdObject($array[$key]);
+		return $array[$key];
 	}
 
 	/**

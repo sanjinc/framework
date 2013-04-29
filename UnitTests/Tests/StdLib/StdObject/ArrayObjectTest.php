@@ -6,7 +6,7 @@ require_once '../../../../WebinyFramework.php';
 use WF\StdLib\StdObject\ArrayObject\ArrayObject;
 use WF\StdLib\StdObject\StdObjectException;
 
-class ArrayObjectText extends \PHPUnit_Framework_TestCase
+class ArrayObjectTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
@@ -154,9 +154,9 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	public function testUpdateValue($array) {
 		$a = new ArrayObject($array);
 		$a->val([
-						'k1',
-						'k2' => 'v2'
-						]);
+				'k1',
+				'k2' => 'v2'
+				]);
 
 		$this->assertSame([
 						  'k1',
@@ -607,8 +607,12 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 		$this->assertSame($array, $a->val());
 	}
 
-	public function testUnique(){
-		$array = ['v1', 'v2', 'v1'];
+	public function testUnique() {
+		$array = [
+			'v1',
+			'v2',
+			'v1'
+		];
 		$a = new ArrayObject($array);
 		$a->unique();
 
@@ -619,7 +623,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testWalk($array){
+	public function testWalk($array) {
 		// callback function used for mapping
 		$callable = function ($item) {
 			if(is_array($item)) {
@@ -641,8 +645,11 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testDiff($array){
-		$compareArray = ['v1', 'v2'];
+	public function testDiff($array) {
+		$compareArray = [
+			'v1',
+			'v2'
+		];
 
 		$a = new ArrayObject($array);
 		@$a->diff($compareArray);
@@ -654,8 +661,11 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testDiff2($array){
-		$compareArray = ['v1', 'v2'];
+	public function testDiff2($array) {
+		$compareArray = [
+			'v1',
+			'v2'
+		];
 
 		$a = new ArrayObject($array);
 		@$a->diff($compareArray, true);
@@ -667,8 +677,11 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testDiffKeys($array){
-		$compareArray = ['k1', 'k2'];
+	public function testDiffKeys($array) {
+		$compareArray = [
+			'k1',
+			'k2'
+		];
 
 		$a = new ArrayObject($array);
 		@$a->diffKeys($compareArray);
@@ -680,7 +693,7 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testSearch($array){
+	public function testSearch($array) {
 		$a = new ArrayObject($array);
 		$searchResult = $a->inArray('youCantFindMe');
 
@@ -690,18 +703,18 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testSearch2($array){
+	public function testSearch2($array) {
 		$a = new ArrayObject($array);
 		$searchResult = $a->inArray('v1');
 
-		$key = array_search('v1', $array);
+		$key = in_array('v1', $array);
 		$this->assertSame($key, $searchResult);
 	}
 
 	/**
 	 * @dataProvider arraySet1
 	 */
-	public function testKey($array){
+	public function testKey($array) {
 		$a = new ArrayObject($array);
 		$searchResult = $a->keyExists('NonExistingKey');
 
@@ -744,11 +757,11 @@ class ArrayObjectText extends \PHPUnit_Framework_TestCase
 			],
 			[
 				[
-					'k1' => [
+					'k1'  => [
 						'kk1' => 'v1',
 						'kk2' => 'v2'
 					],
-					'k2' => 'v2',
+					'k2'  => 'v2',
 					'kk3' => ['vv3' => ['kk33' => 'vvv3']]
 				]
 			]

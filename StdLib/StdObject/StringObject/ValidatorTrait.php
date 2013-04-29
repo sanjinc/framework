@@ -131,6 +131,35 @@ trait ValidatorTrait
 	}
 
 	/**
+	 * Checks if the current string ends with the given $string.
+	 *
+	 * @param string|StringObject $string String to check.
+	 *
+	 * @throws StdObjectException
+	 * @return bool
+	 */
+	public function endsWith($string) {
+		if($this->isInstanceOf($string, $this)) {
+			$string = $string->val();
+		} else {
+			if(!$this->isString($string)) {
+				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
+			}
+		}
+
+		// calculate the end position
+		$endString = new StringObject($string);
+		$endPos = $this->length()-$endString->length();
+
+		$position = $this->stringPosition($string);
+		if($position !== false && $position == $endPos) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Checks if the string length is great than the given length.
 	 *
 	 * @param int  $num

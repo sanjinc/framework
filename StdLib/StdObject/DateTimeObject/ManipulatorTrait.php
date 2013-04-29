@@ -34,7 +34,7 @@ trait ManipulatorTrait
 	 */
 	public function add($amount) {
 		$interval = $this->_parseDateInterval($amount);
-		$this->val()->add($interval);
+		$this->_getDateObject()->add($interval);
 
 		return $this;
 	}
@@ -49,7 +49,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setDate($year, $month, $day) {
-		$this->val()->setDate($year, $month, $day);
+		$this->_getDateObject()->setDate($year, $month, $day);
 
 		return $this;
 	}
@@ -64,7 +64,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setTime($hour, $minute, $second = 0) {
-		$this->val()->setTime($hour, $minute, $second);
+		$this->_getDateObject()->setTime($hour, $minute, $second);
 
 		return $this;
 	}
@@ -77,7 +77,7 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setTimestamp($timestamp) {
-		$this->val()->setTimestamp($timestamp);
+		$this->_getDateObject()->setTimestamp($timestamp);
 
 		return $this;
 	}
@@ -93,7 +93,7 @@ trait ManipulatorTrait
 	 */
 	public function sub($amount) {
 		$interval = $this->_parseDateInterval($amount);
-		$this->val()->sub($interval);
+		$this->_getDateObject()->sub($interval);
 
 		return $this;
 	}

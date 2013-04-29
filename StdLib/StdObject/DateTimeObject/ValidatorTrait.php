@@ -25,7 +25,11 @@ trait ValidatorTrait{
 	 * @return string
 	 */
 	function isLeap(){
-		return date('L', $this->getTimestamp());
+		if(date('L', $this->getTimestamp())>0){
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -55,7 +59,7 @@ trait ValidatorTrait{
 	}
 
 	/**
-	 * Check if $time is larger then current DateTimeObject.
+	 * Check if current datetime is larger than $time.
 	 *
 	 * @param int|string|\DateTime|DateTimeObject $time     Date to compare to.
 	 *
@@ -63,7 +67,7 @@ trait ValidatorTrait{
 	 */
 	function largerThan($time){
 		$diff = $this->diff($time, false);
-		if($diff->key('invert')>0){
+		if($diff->key('invert')<=0){
 			return false;
 		}
 
@@ -71,7 +75,7 @@ trait ValidatorTrait{
 	}
 
 	/**
-	 * Check if $time is smaller then current DateTimeObject.
+	 * Check if current datetime smaller than $time.
 	 *
 	 * @param int|string|\DateTime|DateTimeObject $time     Date to compare to.
 	 *

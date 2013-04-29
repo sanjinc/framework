@@ -130,7 +130,7 @@ trait ManipulatorTrait
 		if($modParts->count() != 3) { // in octal we lose the zero (0).
 			throw new StdObjectException('FileObject: The chmod $mode param must be exactly 4 chars.');
 		}
-		if($modParts->key(0)->val() > 7 || $modParts->key(1)->val() > 7 || $modParts->key(2)->val() > 7) {
+		if($modParts->key(0) > 7 || $modParts->key(1) > 7 || $modParts->key(2) > 7) {
 			throw new StdObjectException('FileObject: Invalid chmod $mode value.');
 		}
 

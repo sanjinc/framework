@@ -128,7 +128,7 @@ class DateTimeObject extends StdObjectAbstract
 			$this->val(new \DateTime($time, $this->_entryTimezone));
 
 			// get UTC offset and correct the date to UTC by calculating the offset
-			$this->_timestamp = $this->val()->getTimestamp();
+			$this->_timestamp = $this->_getDateObject()->getTimestamp();
 		} catch (\Exception $e) {
 			throw new StdObjectException('DateTimeObject: Unable to create a DateTimeObject.', 0, $e);
 		}
@@ -164,7 +164,7 @@ class DateTimeObject extends StdObjectAbstract
 				$timezone = new \DateTimeZone($timezone);
 			}
 
-			$this->val()->setTimezone($timezone);
+			$this->_getDateObject()->setTimezone($timezone);
 		} catch (\Exception $e) {
 			throw new StdObjectException('DateTimeObject: Invalid timezone provided "' . $timezone . '"');
 		}
@@ -196,7 +196,8 @@ class DateTimeObject extends StdObjectAbstract
 		}
 
 		try {
-			$dt = new DateTimeObject($date->getTimestamp());
+			$dt = new DateTimeObject();
+			$dt->setTimestamp($date->getTimestamp());
 			$dt->setFormat($format);
 		} catch (StdObjectException $e) {
 			throw new StdObjectException('DateTimeObject: Unable to create DateTimeObject.', 0, $e);
@@ -214,11 +215,12 @@ class DateTimeObject extends StdObjectAbstract
 	 */
 	public function diff($time, $absolute = false) {
 		try {
-			if($this->isInstanceOf($time, \DateTime)) {
+			if($this->isInstanceOf($time, 'DateTime')) {
 				$date = $time;
 			} else {
-				if($this->isInstanceOf($time, self)) {
-					$date = new \DateTime($time->getTimestamp());
+				if($this->isInstanceOf($time, $this)) {
+					$date = new \DateTime();
+					$date->setTimestamp($time->getTimestamp());
 				} else {
 					$date = new \DateTime($time);
 				}
@@ -228,12 +230,14 @@ class DateTimeObject extends StdObjectAbstract
 		}
 
 		try {
-			$diff = $this->val()->diff($date, $absolute);
+			$diff = $this->_getDateObject()->diff($date, $absolute);
 		} catch (\Exception $e) {
 			throw new StdObjectException('DateTimeObject: Unable to diff the two dates.', 0, $e);
 		}
 
-		return new ArrayObject(get_class_vars($diff));
+		$result = get_object_vars($diff);
+
+		return new ArrayObject($result);
 	}
 
 	/**
@@ -246,7 +250,7 @@ class DateTimeObject extends StdObjectAbstract
 	 */
 	public function format($format) {
 		try {
-			return $this->val()->format($format);
+			return $this->_getDateObject()->format($format);
 		} catch (\Exception $e) {
 			throw new StdObjectException('DateTimeObject: Unable to return date in the given format "' . $format . '".', 0, $e);
 		}
@@ -258,7 +262,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @return int
 	 */
 	public function getOffset() {
-		return $this->val()->getOffset();
+		return $this->_getDateObject()->getOffset();
 	}
 
 	/**
@@ -267,7 +271,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @return \DateTimeZone
 	 */
 	public function getTimezone() {
-		return $this->val()->getTimezone()->getName();
+		return $this->_getDateObject()->getTimezone()->getName();
 	}
 
 	/**
@@ -379,7 +383,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @return int
 	 */
 	public function getTimestamp() {
-		return $this->val()->getTimestamp();
+		return $this->_getDateObject()->getTimestamp();
 	}
 
 	/**
@@ -438,12 +442,38 @@ class DateTimeObject extends StdObjectAbstract
 	}
 
 	/**
+	 * Return, or update, current standard objects value.
+	 *
+	 * @param null $value If $value is set, value is updated and ArrayObject is returned.
+	 *
+	 * @return mixed
+	 */
+	public function val($value = null) {
+		if(!$this->isNull($value)){
+			$this->_value = $value;
+
+			return $this;
+		}
+
+		return $this->_getDateObject()->format($this->_format);
+	}
+
+	/**
 	 * To string implementation.
 	 *
 	 * @return mixed
 	 */
 	public function __toString() {
 		return $this->format($this->_format);
+	}
+
+	/**
+	 * Returns current \DateTime object.
+	 *
+	 * @return \DateTime|null
+	 */
+	private function _getDateObject(){
+		return $this->_value;
 	}
 
 	/**
@@ -565,7 +595,7 @@ class DateTimeObject extends StdObjectAbstract
 		$format = ($this->isNull($format)) ? $this->_getFormatFor($dateElement) : $this->_validateFormatFor($dateElement,
 																											$format);
 
-		return $this->val()->format($format);
+		return $this->_getDateObject()->format($format);
 	}
 
 }

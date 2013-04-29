@@ -133,4 +133,8 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 
 		return $this;
 	}
+
+	function val(){
+		return $this->_filePath;
+	}
 }

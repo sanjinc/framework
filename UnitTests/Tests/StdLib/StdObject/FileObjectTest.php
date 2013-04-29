@@ -8,63 +8,65 @@ use WF\StdLib\StdLibTrait;
 use WF\StdLib\StdObject\StdObjectException;
 use WF\StdLib\StdObject\FileObject\FileObject;
 
-class StringObjectTest extends \PHPUnit_Framework_TestCase
+class FileObjectTest extends \PHPUnit_Framework_TestCase
 {
 
 	public $filePath = '/var/www/newwebiny/framework/UnitTests/Tests/StdLib/StdObject/file-test.txt';
+
+
 	/**
 	 * @var FileObject
 	 */
 	public $f;
 
-	public function setUp(){
-		if(file_exists($this->filePath)){
+	public function setUp() {
+		if(file_exists($this->filePath)) {
 			unlink($this->filePath);
 		}
 		$this->f = new FileObject($this->filePath);
 		$this->f->write('some text');
 	}
 
-	public function testConstructor(){
+	public function testConstructor() {
 		$f = new FileObject($this->filePath);
 		$f->write('test');
 
 		$this->assertTrue(file_exists($this->filePath));
 	}
 
-	public function testGetSize(){
+	public function testGetSize() {
 		$this->assertSame(9, $this->f->getSize());
 	}
 
-	public function testGetBasename(){
+	public function testGetBasename() {
 		$this->assertSame('file-test.txt', $this->f->getBasename());
 	}
 
-	public function testGetExtension(){
+	public function testGetExtension() {
 		$this->assertSame('txt', $this->f->getExtension());
 	}
 
-	public function testGetMTime(){
+	public function testGetMTime() {
 		$this->assertSame(time(), $this->f->getMTime());
 	}
 
-	public function testGetPath(){
+	public function testGetPath() {
 		$this->assertSame('/var/www/newwebiny/framework/UnitTests/Tests/StdLib/StdObject', $this->f->getPath());
 	}
 
-	public function testGetMimeType(){
+	public function testGetMimeType() {
 		$this->assertSame('text/plain', $this->f->getMimeType());
 	}
 
-	public function testGetValue(){
+	public function testGetValue() {
 		$this->assertSame($this->filePath, $this->f->val());
 	}
 
-	public function testGetFileContent(){
+	public function testGetFileContent() {
 		$this->assertSame('some text', $this->f->getFileContent());
 	}
 
-	public function testWrite(){
+	public function testWrite() {
 		$this->f->write(' added');
 		$this->assertSame('some text added', $this->f->getFileContent());
 	}
@@ -73,7 +75,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: The chmod $mode param must be exactly 4 chars.
 	 */
-	public function testChmod(){
+	public function testChmod() {
 		$this->f->chmod(04444);
 	}
 
@@ -81,7 +83,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: The chmod $mode param must be exactly 4 chars.
 	 */
-	public function testChmod2(){
+	public function testChmod2() {
 		$this->f->chmod(044);
 	}
 
@@ -89,41 +91,40 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	 * @expectedException WF\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: $mode must be an integer (octal).
 	 */
-	public function testChmod3(){
+	public function testChmod3() {
 		$this->f->chmod('444');
 	}
 
-	public function testChmod4(){
+	public function testChmod4() {
 		$this->f->chmod(0777);
 
 		$this->assertTrue($this->f->isReadable());
 		$this->assertTrue($this->f->isWritable());
 	}
 
-	public function testChmod5(){
+	public function testChmod5() {
 		$this->f->chmod(0444);
 
 		$this->assertTrue($this->f->isReadable());
 		$this->assertTrue(!$this->f->isWritable());
 	}
 
-	public function testIsFile(){
+	public function testIsFile() {
 		$this->assertTrue($this->f->isFile());
 	}
 
-	public function testIsLink(){
+	public function testIsLink() {
 		$this->assertFalse($this->f->isLink());
 	}
 
-	public function testIsImage(){
+	public function testIsImage() {
 		$this->assertFalse($this->f->isImage());
 	}
 
-	public function testDelete(){
+	public function testDelete() {
 		$this->f->delete();
 		$this->assertFileNotExists($this->filePath);
 	}
-
 
 
 }

@@ -11,6 +11,7 @@ namespace WF\StdLib\StdObject;
 
 use WF\StdLib\StdObject\ArrayObject\ArrayObject;
 use WF\StdLib\StdObject\StringObject\StringObject;
+use WF\StdLib\ValidatorTrait;
 
 /**
  * Standard object wrapper.
@@ -20,6 +21,7 @@ use WF\StdLib\StdObject\StringObject\StringObject;
  * @package		 WF\StdLib\StdObject
  */
 class StdObjectWrapper extends StdObjectAbstract{
+	use ValidatorTrait;
 
 	protected $_value = null;
 
@@ -55,6 +57,47 @@ class StdObjectWrapper extends StdObjectAbstract{
 
 		// return value as StdObjectWrapper
 		return new self($var);
+	}
+
+	/**
+	 * Returns a string based on given $var.
+	 * This function checks if $var is a string, StringObject or something else. In the end a string is returned.
+	 *
+	 * @param mixed $var
+	 *
+	 * @return string
+	 */
+	static function toString($var){
+		if(self::isString($var)){
+			return $var;
+		}else if(self::isObject($var)){
+			if(self::isInstanceOf($var, 'WF\StdLib\StdObject\StringObject\StringObject')){
+				return $var->val();
+			}
+		}
+
+		return (string) $var;
+	}
+
+	/**
+	 * Returns an array based on given $var.
+	 * This function checks if $var is an array, ArrayObject or something else. This function tries to cast the element
+	 * to array and return it.
+	 *
+	 * @param mixed $var
+	 *
+	 * @return array
+	 */
+	static function toArray($var){
+		if(self::isArray($var)){
+			return $var;
+		}else if(self::isObject($var)){
+			if(self::isInstanceOf($var, 'WF\StdLib\StdObject\ArrayObject\ArrayObject')){
+				return $var->val();
+			}
+		}
+
+		return (array) $var;
 	}
 
 	/**
