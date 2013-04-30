@@ -10,7 +10,9 @@
 
 namespace WF\StdLib\StdObject\UrlObject;
 
+use WF\StdLib\StdObject\ArrayObject\ArrayObject;
 use WF\StdLib\StdObject\StdObjectException;
+use WF\StdLib\StdObject\StdObjectWrapper;
 use WF\StdLib\StdObjectTrait;
 use WF\StdLib\ValidatorTrait;
 use WF\StdLib\StdObject\StdObjectAbstract;
@@ -22,9 +24,10 @@ use WF\StdLib\StdObject\StdObjectAbstract;
  * @package         WebinyFramework
  */
 
-class UrlObject extends \WF\StdLib\StdObject\UrlObject
+class UrlObject extends StdObjectAbstract
 {
 	use ValidatorTrait,
+		ManipulatorTrait,
 		StdObjectTrait;
 
 	protected $_value;
@@ -41,11 +44,94 @@ class UrlObject extends \WF\StdLib\StdObject\UrlObject
 	 * Set standard object value.
 	 *
 	 * @param string $value
+	 *
+	 * @throws StdObjectException
 	 */
 	public function __construct($value) {
-		$value = $this->str($value)->caseLower()->trim();
-		$this->_value = $value->val();
-		$this->_validateUrl();
+		try {
+			$value = $this->str($value)->trim();
+			$this->_value = $value->val();
+			$this->_validateUrl();
+		} catch (StdObjectException $e) {
+			throw new StdObjectException('UrlObject: Unable to parse the given value "'.$value.'".', 0, $e);
+		}
+	}
+
+	/**
+	 * Build a UrlObject from array parts.
+	 *
+	 * @param ArrayObject|array $parts Url parts, possible keys are: 'scheme', 'host', 'port', 'path' and 'query'
+	 *
+	 * @return UrlObject
+	 */
+	static function buildUrl($parts) {
+		$parts = new ArrayObject($parts);
+
+		###################
+		### PARSE PARTS ###
+		###################
+
+		// scheme
+		$scheme = $parts->key('scheme', '', true);
+
+		// host
+		$host = $parts->key('host', '', true);
+
+		// port
+		$port = $parts->key('port', '', true);
+
+		// path
+		$path = $parts->key('path', '', true);
+
+		// parse query string
+		$query = '';
+		if($parts->keyExists('query')) {
+			if(self::isString($parts->key('query'))){
+				parse_str($parts->key('query'), $queryData);
+			}else{
+				$queryData = $parts->key('query');
+			}
+
+			if(self::isArray($queryData)) {
+				$query = $queryData;
+			}
+		}
+
+
+		###################
+		### BUILD URL   ###
+		###################
+		$url = '';
+
+		// scheme
+		if($scheme && $scheme != '') {
+			$url .= $scheme.'://';
+		}
+
+		// host
+		if($host && $host != '') {
+			$url .= $host;
+		}
+
+		// port
+		if($port != '') {
+			$url .= ':' . $port;
+		}
+
+		// path
+		if($path != '') {
+			$url .= $path;
+		}
+
+		// query
+		if(self::isArray($query)){
+			$query = http_build_query($query);
+			if($query != "") {
+				$url .= '?' . $query;
+			}
+		}
+
+		return new UrlObject($url);
 	}
 
 	/**
@@ -113,8 +199,8 @@ class UrlObject extends \WF\StdLib\StdObject\UrlObject
 	 *
 	 * @return mixed
 	 */
-	public function val($url=null){
-		if($this->isNull($url)){
+	public function val($url = null) {
+		if($this->isNull($url)) {
 			return $this->_value;
 		}
 
@@ -140,8 +226,9 @@ class UrlObject extends \WF\StdLib\StdObject\UrlObject
 	 */
 	private function _validateUrl() {
 		$urlData = parse_url($this->val());
+
 		if(!$urlData || !$this->isArray($urlData)) {
-			throw new StdObjectException("UrlObject: Given string is not a valid URL.");
+			throw new StdObjectException("UrlObject: Given value is not a valid URL.");
 		}
 
 		// extract parts
@@ -171,14 +258,16 @@ class UrlObject extends \WF\StdLib\StdObject\UrlObject
 	 * @return $this
 	 */
 	private function _buildUrl() {
-		$url = http_build_url(array(
-								   "scheme" => $this->_scheme,
-								   "host"   => $this->_host,
-								   "path"   => $this->_path,
-								   "query"  => $this->_query
-							  ));
 
-		$this->val($url);
+		$url = self::buildUrl([
+							  'scheme' => $this->_scheme,
+							  'host'   => $this->_host,
+							  'port'   => $this->_port,
+							  'path'   => $this->_path,
+							  'query'  => $this->_query
+							  ]);
+
+		$this->val($url->val());
 
 		return $this;
 	}

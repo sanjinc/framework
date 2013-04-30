@@ -40,14 +40,16 @@ trait ManipulatorTrait
 			$array[$key] = $value;
 			$this->val($array);
 
-			return $this;
+			//return $this;
+			return $value;
 		}else if(!$setOnlyIfDoesntExist){
 			if(!$this->isNull($value))
 			{
 				$array[$key] = $value;
 				$this->val($array);
 
-				return $this;
+				//return $this;
+				return $value;
 			}
 		}
 
@@ -405,7 +407,6 @@ trait ManipulatorTrait
 	 * @throws StdObjectException
 	 */
 	public function sortAssoc($direction = SORT_ASC, $sortFlag = SORT_REGULAR) {
-
 		try {
 			$arr = $this->val();
 			if($direction == SORT_ASC) {

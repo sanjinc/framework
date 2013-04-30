@@ -512,6 +512,18 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($s->startsWith('lamb'));
 	}
 
+	public function testEndsWith(){
+		$s = new StringObject('Marry had a little lamb.');
+
+		$this->assertTrue($s->endsWith('lamb.'));
+	}
+
+	public function testEndsWith2(){
+		$s = new StringObject('Marry had a little lamb.');
+
+		$this->assertFalse($s->endsWith('Marry'));
+	}
+
 	public function testMatch() {
 		$s = new StringObject('I had 10 dollars.');
 		$result = $s->match('|([0-9]{1,5})|', false);

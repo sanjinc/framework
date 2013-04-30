@@ -39,13 +39,13 @@ trait ManipulatorTrait
 			throw new StdObjectException('Invalid $scheme provided. $scheme is not a valid string.', 0, $e);
 		}
 
-		if($scheme->endsWith('://')) {
-			throw new StdObjectException('UrlObject: Invalid scheme provided. A scheme must look like this "http://".');
+		if(!$scheme->endsWith('://')) {
+			$scheme->val($scheme->val().'://');
 		}
 
 		// set the scheme
-		$this->_scheme = $scheme->val();
-		$this->buildUrl();
+		$this->_scheme = $scheme->trimRight('://')->val();
+		$this->_buildUrl();
 
 		return $this;
 	}
@@ -58,8 +58,10 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setHost($host) {
-		$this->_host = StdObjectWrapper::toString($host);
-		$this->buildUrl();
+		$host = new StringObject($host);
+		$this->_host = $host->stripTrailingSlash()->trim()->val();
+
+		$this->_buildUrl();
 
 		return $this;
 	}
@@ -72,8 +74,8 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setPort($port) {
-		$this->_post = StdObjectWrapper::toString($port);
-		$this->buildUrl();
+		$this->_port = StdObjectWrapper::toString($port);
+		$this->_buildUrl();
 
 		return $this;
 	}
@@ -86,8 +88,11 @@ trait ManipulatorTrait
 	 * @return $this
 	 */
 	public function setPath($path) {
-		$this->_path = StdObjectWrapper::toString($path);
-		$this->buildUrl();
+		$path = new StringObject($path);
+		$path->trimLeft('/');
+		$this->_path = '/'.$path->val();
+
+		$this->_buildUrl();
 
 		return $this;
 	}
@@ -105,7 +110,7 @@ trait ManipulatorTrait
 		}
 
 		$this->_query = $query;
-		$this->buildUrl();
+		$this->_buildUrl();
 
 		return $this;
 	}
