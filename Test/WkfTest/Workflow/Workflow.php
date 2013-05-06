@@ -1,9 +1,9 @@
 <?php
-namespace WF\Test\WkfTest\Workflow;
+namespace Webiny\Test\WkfTest\Workflow;
 
 class Workflow
 {
-    use \WF\StdLib\Singleton;
+    use \Webiny\StdLib\Singleton;
 
     private $_activities = array();
     private $_transitions = array();

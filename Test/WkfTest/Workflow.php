@@ -1,11 +1,11 @@
 <?php
-namespace WF\Test\WkfTest;
+namespace Webiny\Test\WkfTest;
 
 trait Workflow
 {
 
     static function getInstance() {
-        return \WF\Test\WkfTest\Workflow\Workflow::getInstance();
+        return \Webiny\Test\WkfTest\Workflow\Workflow::getInstance();
     }
 
     public function addActivity($activity) {

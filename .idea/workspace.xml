@@ -2,45 +2,121 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="503f76ca-de59-47a6-ba96-20db972e4f20" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/ClassLoader/ClassLoader.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/ClassLoader/Readme.md" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Tools/Redirect/Redirect.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdLibTrait.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObjectTrait.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Tools/ToolsTrait.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/php.xml" />
+      <change type="DELETED" beforePath="Z:\newwebiny\framework\StdLib\StdLibTrait.php" afterPath="" />
+      <change type="DELETED" beforePath="Z:\newwebiny\framework\StdLib\StdObjectTrait.php" afterPath="" />
+      <change type="DELETED" beforePath="Z:\newwebiny\framework\Tools\Redirect\Redirect.php" afterPath="" />
+      <change type="DELETED" beforePath="Z:\newwebiny\framework\Tools\ToolsTrait.php" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/CRUD.php" afterPath="$PROJECT_DIR$/Test/WkfTest/CRUD.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferCRUD.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferCRUD.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferController.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/OfferWorkflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/OfferWorkflow.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdLibTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/Test.php" afterPath="$PROJECT_DIR$/Test/Test.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/ValidatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" afterPath="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/Test2.php" afterPath="$PROJECT_DIR$/Test/Test2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebinyFramework.php" afterPath="$PROJECT_DIR$/WebinyFramework.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/Workflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/Workflow.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/WkfTest/Workflow/Workflow.php" afterPath="$PROJECT_DIR$/Test/WkfTest/Workflow/Workflow.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/framework.iml" afterPath="$PROJECT_DIR$/.idea/framework.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Architecture\Environment.php" afterPath="$PROJECT_DIR$/library/Webiny/Architecture/Environment.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Architecture\Environment\Os.php" afterPath="$PROJECT_DIR$/library/Webiny/Architecture/Environment/Os.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Architecture\Environment\Path.php" afterPath="$PROJECT_DIR$/library/Webiny/Architecture/Environment/Path.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Architecture\Environment\Php.php" afterPath="$PROJECT_DIR$/library/Webiny/Architecture/Environment/Php.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Architecture\Environment\Request.php" afterPath="$PROJECT_DIR$/library/Webiny/Architecture/Environment/Request.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\Config\ConfigAbstract.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/Config/ConfigAbstract.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\ExceptionTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/ExceptionTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\Exception\Exception.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/Exception/Exception.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\Exception\ExceptionAbstract.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/Exception/ExceptionAbstract.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\Exception\ExceptionInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/Exception/ExceptionInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\SingletonTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/SingletonTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject\ArrayObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject\ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject\ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\DateTimeObject\DateTimeObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/DateTimeObject/DateTimeObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\DateTimeObject\ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/DateTimeObject/ManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\DateTimeObject\ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/DateTimeObject/ValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\FileObject\Drivers\SplFileObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/FileObject/Drivers/SplFileObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\FileObject\FileObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/FileObject/FileObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\FileObject\FileObjectDriverInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/FileObject/FileObjectDriverInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\FileObject\ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\FileObject\ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/FileObject/ValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectAbstract.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectAbstract.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectException.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectException.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StdObjectWrapper.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectWrapper.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StringObject\ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StringObject\StringObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/StringObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\StringObject\ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\UrlObject\ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/UrlObject/ManipulatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\StdObject\UrlObject\UrlObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/UrlObject/UrlObject.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\StdLib\ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Tools\AutoLoader\AutoLoader.php" afterPath="$PROJECT_DIR$/library/Webiny/Tools/AutoLoader/AutoLoader.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Tools\SystemHandler\ErrorInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/Tools/SystemHandler/ErrorInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Tools\SystemHandler\ExceptionInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/Tools/SystemHandler/ExceptionInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Tools\SystemHandler\ShutdownInterface.php" afterPath="$PROJECT_DIR$/library/Webiny/Tools/SystemHandler/ShutdownInterface.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\Tools\SystemHandler\SystemHandler.php" afterPath="$PROJECT_DIR$/library/Webiny/Tools/SystemHandler/SystemHandler.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\UnitTests\Tests\StdLib\StdObject\ArrayObjectTest.php" afterPath="$PROJECT_DIR$/library/Webiny/UnitTests/Tests/StdLib/StdObject/ArrayObjectTest.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\UnitTests\Tests\StdLib\StdObject\DateTimeObjectTest.php" afterPath="$PROJECT_DIR$/library/Webiny/UnitTests/Tests/StdLib/StdObject/DateTimeObjectTest.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\UnitTests\Tests\StdLib\StdObject\FileObjectTest.php" afterPath="$PROJECT_DIR$/library/Webiny/UnitTests/Tests/StdLib/StdObject/FileObjectTest.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\UnitTests\Tests\StdLib\StdObject\StringObjectTest.php" afterPath="$PROJECT_DIR$/library/Webiny/UnitTests/Tests/StdLib/StdObject/StringObjectTest.php" />
+      <change type="MOVED" beforePath="Z:\newwebiny\framework\UnitTests\Tests\StdLib\StdObject\UrlObjectTest.php" afterPath="$PROJECT_DIR$/library/Webiny/UnitTests/Tests/StdLib/StdObject/UrlObjectTest.php" />
     </list>
     <ignored path="framework.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364372448811" ignored="false" />
-    <file path="/StdObjectTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1363960573708" ignored="false" />
-    <file path="/a.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364064894773" ignored="false" />
+    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367827439391" ignored="false" />
+    <file path="/StdObjectTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367324686204" ignored="false" />
+    <file path="/a.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364396258825" ignored="false" />
     <file path="/StdObjectValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364055375851" ignored="false" />
-    <file path="/StdObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1363962498713" ignored="false" />
-    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364288564895" ignored="false" />
-    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364394653645" ignored="false" />
-    <file path="/StringObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364389841876" ignored="false" />
-    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364390512255" ignored="false" />
-    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364394486175" ignored="false" />
-    <file path="/README.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364386575716" ignored="false" />
-    <file path="/StdObjectException.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364052216302" ignored="false" />
-    <file path="/StdObjectAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364061302189" ignored="false" />
-    <file path="/UrlObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364061695313" ignored="false" />
-    <file path="/Test.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364392491784" ignored="false" />
-    <file path="/WebinyFramework.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364054515605" ignored="false" />
+    <file path="/StdObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365859123998" ignored="false" />
+    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367831717339" ignored="false" />
+    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367493668499" ignored="false" />
+    <file path="/StringObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364745248343" ignored="false" />
+    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367326611947" ignored="false" />
+    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365860072513" ignored="false" />
+    <file path="/README.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365169238999" ignored="false" />
+    <file path="/StdObjectException.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365072752057" ignored="false" />
+    <file path="/StdObjectAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366022111150" ignored="false" />
+    <file path="/UrlObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367499095988" ignored="false" />
+    <file path="/Test.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367603440153" ignored="false" />
+    <file path="/WebinyFramework.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367831771593" ignored="false" />
     <file path="/ExceptionTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364054113139" ignored="false" />
-    <file path="/FileObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364218988913" ignored="false" />
+    <file path="/FileObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365860570017" ignored="false" />
     <file path="/FileObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364060236689" ignored="false" />
+    <file path="/ArrayObjectTest.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367258518261" ignored="false" />
+    <file path="/StringObjectTest.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367317863852" ignored="false" />
+    <file path="/FileObjectTest.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367258288746" ignored="false" />
+    <file path="/SplFileObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367258424034" ignored="false" />
+    <file path="/FileObjectDriverInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366116938969" ignored="false" />
+    <file path="Z:/yii/blog/protected/controllers/PostController.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365254477667" ignored="false" />
+    <file path="/DateObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366049659104" ignored="false" />
+    <file path="/ConfigAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365857839259" ignored="false" />
+    <file path="/DateObjectConfig.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365796535805" ignored="false" />
+    <file path="/ConfigTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365791878752" ignored="false" />
+    <file path="/StdObjectWrapper.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367584566612" ignored="false" />
+    <file path="/Test2.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367230838687" ignored="false" />
+    <file path="/DateObjectConfigInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366023901466" ignored="false" />
+    <file path="/ConfigDefaults.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366022788889" ignored="false" />
+    <file path="/Config.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366049808379" ignored="false" />
+    <file path="/DefaultConfig.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366031750010" ignored="false" />
+    <file path="/ConfigInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366049822406" ignored="false" />
+    <file path="/DateTimeObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367258178700" ignored="false" />
+    <file path="/UrlObjectTest.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367492920082" ignored="false" />
+    <file path="/Redirect.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367495982263" ignored="false" />
+    <file path="/ToolsTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367496019557" ignored="false" />
+    <file path="/AutoLoader.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367502812998" ignored="false" />
+    <file path="/Readme.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367582426464" ignored="false" />
+    <file path="/ClassLoader.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367603849127" ignored="false" />
+    <file path="/SingletonTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367585706028" ignored="false" />
+    <file path="/StdLibTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367585879765" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,82 +136,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php">
+      <file leaf-file-name="Readme.md" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/Component/ClassLoader/Readme.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="556" column="9" selection-start="13006" selection-end="13006" vertical-scroll-proportion="0.37338045">
-              <folding>
-                <element signature="e#6#307#0" expanded="true" />
-                <element signature="e#354#402#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="7" selection-start="670" selection-end="670" vertical-scroll-proportion="64.08">
+            <state line="29" column="22" selection-start="1378" selection-end="1378" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArrayObject.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php">
+      <file leaf-file-name="StdObjectWrapper.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectWrapper.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="153" column="25" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-98.04">
+            <state line="22" column="6" selection-start="673" selection-end="673" vertical-scroll-proportion="-0.76">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileObject.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="153" column="25" selection-start="3975" selection-end="3975" vertical-scroll-proportion="-13.68">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/ValidatorTrait.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="32" selection-start="1202" selection-end="1202" vertical-scroll-proportion="-39.28">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StringObject.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="32" selection-start="2276" selection-end="2276" vertical-scroll-proportion="-13.18">
-              <folding>
-                <element signature="e#6#307#0" expanded="true" />
-                <element signature="e#354#402#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StdObjectInterface.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="25" selection-start="1073" selection-end="1073" vertical-scroll-proportion="-23.32">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="74" column="34" selection-start="1814" selection-end="1828" vertical-scroll-proportion="-27.28">
-              <folding>
-                <element signature="e#354#402#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -143,17 +157,64 @@
       <file leaf-file-name="Test.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Test/Test.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="20" selection-start="331" selection-end="331" vertical-scroll-proportion="-7.6">
+            <state line="2" column="25" selection-start="32" selection-end="32" vertical-scroll-proportion="-1.52">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
+      <file leaf-file-name="ExceptionTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/ExceptionTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="406" column="25" selection-start="9957" selection-end="9957" vertical-scroll-proportion="0.62">
+            <state line="10" column="0" selection-start="333" selection-end="333" vertical-scroll-proportion="-2.28">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Environment.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/Architecture/Environment.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="0" selection-start="436" selection-end="436" vertical-scroll-proportion="-8.36">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SingletonTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/SingletonTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="0" selection-start="920" selection-end="920" vertical-scroll-proportion="-19.52">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebinyFramework.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebinyFramework.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="247" selection-end="487" vertical-scroll-proportion="-7.6">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClassLoader.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/Component/ClassLoader/ClassLoader.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="86" selection-start="945" selection-end="945" vertical-scroll-proportion="-3.2520614">
+              <folding>
+                <element signature="e#6#277#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -176,26 +237,57 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/UrlObject/ManipulatorTrait.php" />
+        <option value="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/UrlObjectTest.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/UrlObject/UrlObject.php" />
+        <option value="$PROJECT_DIR$/Tools/Redirect/Redirect.php" />
+        <option value="$PROJECT_DIR$/Tools/ToolsTrait.php" />
+        <option value="$PROJECT_DIR$/Tools/AutoLoader/AutoLoader.php" />
+        <option value="$PROJECT_DIR$/Component/ClassLoader/Readme.md" />
+        <option value="$PROJECT_DIR$/StdLib/StdObject/StdObjectWrapper.php" />
+        <option value="$PROJECT_DIR$/StdLib/SingletonTrait.php" />
+        <option value="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
+        <option value="$PROJECT_DIR$/Component/ClassLoader/ClassLoader.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/Architecture/Environment.php" />
         <option value="$PROJECT_DIR$/Test/Test.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php" />
+        <option value="$PROJECT_DIR$/WebinyFramework.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/Component/ClassLoader/ClassLoader.php" />
       </list>
     </option>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="PhpServers">
+    <option name="servers">
+      <server host="wf.com" name="wf.com" use_path_mappings="true">
+        <path_mappings>
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/FileObject/FileObject.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/StringObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\StringObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/StdObjectAbstract.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/Config" remote_path="Z:\newwebiny\framework\StdLib\Config" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/UrlObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\UrlObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib" remote_path="Z:\newwebiny\framework\StdLib" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/FileObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\FileObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/Config/ConfigAbstract.php" remote_path="/var/www/newwebiny/framework/StdLib/Config/ConfigAbstract.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\DateObject" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject/DateObject.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/DateObject/DateObject.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/Exception" remote_path="Z:\newwebiny\framework\StdLib\Exception" />
+          <path_mapping local_path="$PROJECT_DIR$/Test" remote_path="/var/www/newwebiny/framework/Test" />
+          <path_mapping local_path="$PROJECT_DIR$/WebinyFramework.php" remote_path="/var/www/newwebiny/framework/WebinyFramework.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject/DateObjectConfig.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/DateObject/DateObjectConfig.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/ValidatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/ValidatorTrait.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
+          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+        </path_mappings>
+      </server>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true">
+    <include_path>
+      <path value="Z:\newwebiny\framework\UnitTests\PHPUnit" />
+    </include_path>
+  </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
@@ -210,10 +302,16 @@
             <id />
           </State>
           <State>
+            <id>ActionScript specificJavaScript</id>
+          </State>
+          <State>
             <id>Assignment issuesJavaScript</id>
           </State>
           <State>
             <id>Bitwise operation issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Code SmellPHP</id>
           </State>
           <State>
             <id>Code StylePHP</id>
@@ -244,6 +342,9 @@
           </State>
           <State>
             <id>GeneralPHP</id>
+          </State>
+          <State>
+            <id>Internationalization issues</id>
           </State>
           <State>
             <id>JavaScript</id>
@@ -279,6 +380,11 @@
             <id>XSLT</id>
           </State>
         </expanded-state>
+        <selected-state>
+          <State>
+            <id>MessDetectorValidationInspection</id>
+          </State>
+        </selected-state>
       </profile-state>
     </entry>
   </component>
@@ -308,7 +414,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -327,152 +432,57 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdLib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdLib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdObject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdLib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdObject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StringObject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdLib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdObject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ArrayObject" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="framework" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="StdLib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Exception" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="preferences.sourceCode.PHP" />
+    <property name="options.lastSelected" value="vcs.Git" />
+    <property name="recentsLimit" value="5" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/Webiny" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
       <server id="f0e984f1-30d0-4472-98f4-ac042de3b567">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </server>
     </servers>
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="Z:\newwebiny\framework" />
+      <recent name="Z:\newwebiny\framework\library\Webiny" />
+      <recent name="Z:\newwebiny\framework\library" />
+    </key>
+  </component>
+  <component name="RunManager" selected="PHPUnit on Server.UrlObjectTest on Webiny">
+    <configuration default="false" name="Test.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/Test/Test.php">
+      <method />
+    </configuration>
+    <configuration default="false" name="StringObjectTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="WF\UnitTests\Tests\StdLib\StdObject\StringObjectTest" file="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/StringObjectTest.php" scope="Class" />
+      <method />
+    </configuration>
+    <configuration default="false" name="FileObjectTest on Webiny" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" temporary="true" class="FileObjectTest" path="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/FileObjectTest.php" server_id="f0e984f1-30d0-4472-98f4-ac042de3b567" server_name="Webiny">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="DateTimeObjectTest.testGetDate" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="WF\UnitTests\Tests\StdLib\StdObject\DateTimeObjectTest" file="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/DateTimeObject.php" method="testGetDate" scope="Method" />
+      <method />
+    </configuration>
     <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner />
       <method />
@@ -483,11 +493,54 @@
     <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
       <method />
     </configuration>
-    <list size="0" />
+    <configuration default="false" name="ArrayObjectTest on server" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" class="ArrayObjectTest" path="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/ArrayObjectTest.php" server_id="f0e984f1-30d0-4472-98f4-ac042de3b567" server_name="Webiny">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="StringObjectTest on Webiny" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" class="StringObjectTest" path="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/StringObjectTest.php" server_id="f0e984f1-30d0-4472-98f4-ac042de3b567" server_name="Webiny">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitRemoteDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitRemoteDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="DateTimeObjectTest on Webiny" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" class="DateTimeObjectTest" path="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/DateTimeObjectTest.php" server_id="f0e984f1-30d0-4472-98f4-ac042de3b567" server_name="Webiny">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <RunnerSettings RunnerId="PhpUnitRemoteDebugRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpUnitRemoteDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="UrlObjectTest on Webiny" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" class="UrlObjectTest" path="$PROJECT_DIR$/UnitTests/Tests/StdLib/StdObject/UrlObjectTest.php" server_id="f0e984f1-30d0-4472-98f4-ac042de3b567" server_name="Webiny">
+      <RunnerSettings RunnerId="PhpRunner" />
+      <ConfigurationWrapper RunnerId="PhpRunner" />
+      <method />
+    </configuration>
+    <list size="8">
+      <item index="0" class="java.lang.String" itemvalue="PHPUnit on Server.ArrayObjectTest on server" />
+      <item index="1" class="java.lang.String" itemvalue="PHPUnit on Server.StringObjectTest on Webiny" />
+      <item index="2" class="java.lang.String" itemvalue="PHPUnit on Server.DateTimeObjectTest on Webiny" />
+      <item index="3" class="java.lang.String" itemvalue="PHPUnit on Server.UrlObjectTest on Webiny" />
+      <item index="4" class="java.lang.String" itemvalue="PHP Script.Test.php" />
+      <item index="5" class="java.lang.String" itemvalue="PHPUnit.StringObjectTest" />
+      <item index="6" class="java.lang.String" itemvalue="PHPUnit on Server.FileObjectTest on Webiny" />
+      <item index="7" class="java.lang.String" itemvalue="PHPUnit.DateTimeObjectTest.testGetDate" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="PHPUnit on Server.FileObjectTest on Webiny" />
+        <item index="1" class="java.lang.String" itemvalue="PHPUnit.DateTimeObjectTest.testGetDate" />
+        <item index="2" class="java.lang.String" itemvalue="PHPUnit.StringObjectTest" />
+        <item index="3" class="java.lang.String" itemvalue="PHPUnit on Server.StringObjectTest on Webiny" />
+        <item index="4" class="java.lang.String" itemvalue="PHP Script.Test.php" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="StructureViewFactory">
-    <option name="ACTIVE_ACTIONS" value="ALPHA_COMPARATOR" />
+    <option name="AUTOSCROLL_MODE" value="false" />
+    <option name="ACTIVE_ACTIONS" value="ALPHA_COMPARATOR,Show Inherited" />
   </component>
   <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
     <option name="USER" value="" />
@@ -512,26 +565,60 @@
       <created>1363959192618</created>
       <updated>1363959192618</updated>
     </task>
+    <task id="LOCAL-00001" summary="- ArrayObject: minor bug fixes&#10;- UnitTests: started to test ArrayObject">
+      <created>1364482726431</created>
+      <updated>1364482726431</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Testing, testing, testing">
+      <created>1364565426733</created>
+      <updated>1364565426733</updated>
+    </task>
+    <task id="LOCAL-00003" summary="StringObject: unit testing done">
+      <created>1364992949627</created>
+      <updated>1364992949627</updated>
+    </task>
+    <task id="LOCAL-00004" summary="FileObject: unit testing done">
+      <created>1365688036245</created>
+      <updated>1365688036245</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Large code refactor, DateObject, Config library">
+      <created>1365860847656</created>
+      <updated>1365860847656</updated>
+    </task>
+    <task id="LOCAL-00006" summary="DateTimeObject / FileObject&#10;- renamed to DateTimeObject&#10;- removed date config class (the config is now built-in)&#10;- add several new manipulators to FileObject">
+      <created>1366457018512</created>
+      <updated>1366457018512</updated>
+    </task>
+    <task id="LOCAL-00007" summary="DateTimeObject&#10;- class is finished and unit tested">
+      <created>1367258683780</created>
+      <updated>1367258683780</updated>
+    </task>
+    <task id="LOCAL-00008" summary="UrlObject&#10;- class methods: done&#10;- unit tests: done">
+      <created>1367324254575</created>
+      <updated>1367324254575</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21237993" sideWeight="0.67" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15208112" sideWeight="0.6711111" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3988889" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3282313" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -563,7 +650,7 @@
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
-    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
     <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
     <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
     <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
@@ -579,7 +666,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="UrlObject&#10;- class methods: done&#10;- unit tests: done" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -593,119 +680,131 @@
     <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="- ArrayObject: minor bug fixes&#10;- UnitTests: started to test ArrayObject" />
+    <MESSAGE value="Testing, testing, testing" />
+    <MESSAGE value="StringObject: unit testing done" />
+    <MESSAGE value="FileObject: unit testing done" />
+    <MESSAGE value="Large code refactor, DateObject, Config library" />
+    <MESSAGE value="DateTimeObject / FileObject&#10;- renamed to DateTimeObject&#10;- removed date config class (the config is now built-in)&#10;- add several new manipulators to FileObject" />
+    <MESSAGE value="DateTimeObject&#10;- class is finished and unit tested" />
+    <MESSAGE value="UrlObject&#10;- class methods: done&#10;- unit tests: done" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="16" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/StdLib/Exception/Exception.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Tools/Redirect/Redirect.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="28" selection-start="417" selection-end="417" vertical-scroll-proportion="0.17903416" />
+        <state line="39" column="37" selection-start="1058" selection-end="1058" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/UrlObject/UrlObject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="21" selection-start="730" selection-end="730" vertical-scroll-proportion="0.5147232" />
+        <state line="159" column="13" selection-start="3425" selection-end="3425" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectException.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Tools/ToolsTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="13" selection-start="509" selection-end="509" vertical-scroll-proportion="0.3133098" />
+        <state line="45" column="71" selection-start="1654" selection-end="1654" vertical-scroll-proportion="0.8209658">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Tools/AutoLoader/AutoLoader.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="5" selection-start="1416" selection-end="1416" vertical-scroll-proportion="0.95524144" />
+        <state line="45" column="0" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.24381626">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdLibTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/ClassLoader/Readme.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="5" selection-start="958" selection-end="958" vertical-scroll-proportion="0.8433451">
+        <state line="29" column="22" selection-start="1378" selection-end="1378" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdLibTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="14" selection-start="495" selection-end="495" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="30" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObjectTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Architecture/Environment.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="436" selection-end="436" vertical-scroll-proportion="-8.36">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectWrapper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="6" selection-start="673" selection-end="673" vertical-scroll-proportion="-0.76">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test/Test.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="25" selection-start="32" selection-end="32" vertical-scroll-proportion="-1.52">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="15" selection-start="412" selection-end="412" vertical-scroll-proportion="0.3043478">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/ValidatorTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/ExceptionTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="32" selection-start="1202" selection-end="1202" vertical-scroll-proportion="-39.28">
+        <state line="10" column="0" selection-start="333" selection-end="333" vertical-scroll-proportion="-2.28">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/StringObject.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/SingletonTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="32" selection-start="2276" selection-end="2276" vertical-scroll-proportion="-13.18">
+        <state line="43" column="0" selection-start="920" selection-end="920" vertical-scroll-proportion="-19.52">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebinyFramework.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="247" selection-end="487" vertical-scroll-proportion="-7.6">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/ClassLoader/ClassLoader.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="86" selection-start="945" selection-end="945" vertical-scroll-proportion="-3.2520614">
           <folding>
-            <element signature="e#6#307#0" expanded="true" />
-            <element signature="e#354#402#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StdObjectInterface.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="25" selection-start="1073" selection-end="1073" vertical-scroll-proportion="-23.32">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ValidatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="34" selection-start="1814" selection-end="1828" vertical-scroll-proportion="-27.28">
-          <folding>
-            <element signature="e#354#402#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test/Test.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="20" selection-start="331" selection-end="331" vertical-scroll-proportion="-7.6">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="406" column="25" selection-start="9957" selection-end="9957" vertical-scroll-proportion="0.62">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="25" selection-start="3975" selection-end="3975" vertical-scroll-proportion="-13.68">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ArrayObject.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="25" selection-start="3389" selection-end="3389" vertical-scroll-proportion="-98.04">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/FileObject/ManipulatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="7" selection-start="670" selection-end="670" vertical-scroll-proportion="64.08">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StdLib/StdObject/StringObject/ManipulatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="556" column="9" selection-start="13006" selection-end="13006" vertical-scroll-proportion="0.37338045">
-          <folding>
-            <element signature="e#6#307#0" expanded="true" />
-            <element signature="e#354#402#0" expanded="true" />
+            <element signature="e#6#277#0" expanded="true" />
           </folding>
         </state>
       </provider>

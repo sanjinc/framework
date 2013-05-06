@@ -1,5 +1,5 @@
 <?php
-namespace WF\Test\WkfTest;
+namespace Webiny\Test\WkfTest;
 
 abstract class CRUD
 {
