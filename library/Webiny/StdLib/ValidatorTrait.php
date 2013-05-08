@@ -35,7 +35,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isNull(&$var) {
+	static protected function isNull($var) {
 		return is_null($var);
 	}
 
@@ -46,7 +46,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isObject(&$var) {
+	static protected function isObject($var) {
 		return is_object($var);
 	}
 
@@ -68,7 +68,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isNumber(&$var) {
+	static protected function isNumber($var) {
 		return is_numeric($var);
 	}
 
@@ -79,7 +79,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInteger(&$var) {
+	static protected function isInteger($var) {
 		return is_int($var);
 	}
 
@@ -90,7 +90,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isCallable(&$var) {
+	static protected function isCallable($var) {
 		return is_callable($var);
 	}
 
@@ -112,7 +112,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isBool(&$var) {
+	static protected function isBool($var) {
 		return is_bool($var);
 	}
 
@@ -124,7 +124,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInstanceOf(&$instance, $type) {
+	static protected function isInstanceOf($instance, $type) {
 		return ($instance instanceof $type);
 	}
 
@@ -135,7 +135,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isStdObject(&$instance) {
+	static protected function isStdObject($instance) {
 		if(self::isInstanceOf($instance, 'Webiny\StdLib\StdObject\StdObjectAbstract')) {
 			return true;
 		}

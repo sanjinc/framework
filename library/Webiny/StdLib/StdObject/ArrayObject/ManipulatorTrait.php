@@ -27,13 +27,14 @@ trait ManipulatorTrait
 	/**
 	 * Get or update the given key inside current array.
 	 *
-	 * @param string|int $key   Array key
+	 * @param string|int|StringObject $key   Array key
 	 * @param null|mixed $value If set, the value under current $key will be updated and not returned.
 	 * @param bool       $setOnlyIfDoesntExist Set the $value only in case if the $key doesn't exist.
 	 *
 	 * @return $this|mixed|StringObject
 	 */
 	public function key($key, $value = null, $setOnlyIfDoesntExist=false) {
+        $key = StdObjectWrapper::toString($key);
 		$array = $this->val();
 
 		if($setOnlyIfDoesntExist && !$this->keyExists($key)){
@@ -107,14 +108,21 @@ trait ManipulatorTrait
 		return $this;
 	}
 
-	/**
-	 * Removes the first element from the array.
-	 *
-	 * @return $this
-	 */
-	public function removeFirst() {
+    /**
+     * Removes the first element from the array.
+     * If $assign parameter is given, the removed value will be assigned to it.
+     *
+     * @param null $assign
+     *
+     * @return $this
+     */
+	public function removeFirst(&$assign=null) {
 		$array = $this->val();
-		array_shift($array);
+
+		if(count(func_get_args()) > 0){
+            $assign = $this->first();
+        }
+        array_shift($array);
 
 		$this->val($array);
 
@@ -394,6 +402,24 @@ trait ManipulatorTrait
 
 		return $this;
 	}
+
+    /**
+     * Merge given $array with current array recursively.
+     * If two arrays contain same keys, their values wil be merged together
+     *
+     * @param array|ArrayObject $array
+     *
+     * @return $this
+     */
+    public function mergeRecursive($array) {
+        if($this->isInstanceOf($array, $this)) {
+            $array = $array->val();
+        }
+
+        $this->val(array_merge_recursive($this->val(), $array));
+
+        return $this;
+    }
 
 	/**
 	 * Sort the array by its values.

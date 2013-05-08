@@ -10,6 +10,7 @@
 namespace Webiny\Component\Config;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\ValidatorTrait;
 
 /**
@@ -82,10 +83,11 @@ class Config
     /**
      * Constructor.
      *
-     * @param  array $array
+     * @param  array $array|ArrayObject
      */
-    public function __construct(array $array)
+    public function __construct($array)
     {
+        $array = StdObjectWrapper::toArray($array);
         $this->_data = new ArrayObject();
         foreach ($array as $key => $value) {
             if ($this->isArray($value)) {

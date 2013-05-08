@@ -1,4 +1,23 @@
 <?php
+
+/**
+ *
+ * ._ => "_"
+ * ._12 => isto ko i gore
+ * .asd_ => zadnji underscore
+ * .12 => is_int
+ * 1. Prvi znak mora biti unutar [a-z]
+ * 2.
+ * (int)
+ * ._12
+ * .-
+ * ._
+ * .12*
+ * .abc_
+ * .asd12_
+ */
+
+
 namespace Webiny\Test;
 
 use Webiny\Component\Config\Config;
@@ -13,19 +32,11 @@ class Test3
     {
         try {
             /* @var $configObject Config */
-            $configObject = Config::Ini('config.ini');
+            $configObject = Config::Ini(realpath(__DIR__).'/config.ini');
         } catch (ConfigException $e) {
+            die($e->getMessage());
             die("Exception caught!");
         }
-
-        echo $configObject->address->country . " (".$configObject->name."/". $configObject->address->number.") - ";
-        $configObject->address->country = 'Ukraine';
-        echo $configObject->address->country . " - ";
-        $configObject->address->country = [
-            'continent' => 'Europe',
-            'part'      => 'East'
-        ];
-        echo $configObject->address->country->part . "\n\n\n";
 
         die(print_r($configObject));
 

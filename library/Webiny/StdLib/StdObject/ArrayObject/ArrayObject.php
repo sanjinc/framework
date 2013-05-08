@@ -48,8 +48,10 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate, \Arra
         if (!$this->isArray($array)) {
             if ($this->isNull($array)) {
                 $this->_value = array();
+            } elseif (StdObjectWrapper::isArrayObject($array)) {
+                return $array;
             } else {
-                throw new StdObjectException('ArrrayObject: Array standard object can only be created from an array.');
+                throw new StdObjectException('ArrayObject: Array standard object can only be created from an array.');
             }
         } else {
             if ($this->isInstanceOf($array, $this)) {

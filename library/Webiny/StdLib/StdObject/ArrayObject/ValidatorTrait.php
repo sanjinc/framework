@@ -12,6 +12,7 @@ namespace Webiny\StdLib\StdObject\ArrayObject;
 
 use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectValidatorTrait;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -41,12 +42,13 @@ trait ValidatorTrait
 	 * Checks if $key exists in current array as index. If it exists, true is returned.
 	 * If the $key doesn't exist, $default is returned,
 	 *
-	 * @param string $key     Array key.
+	 * @param string|StringObject $key     Array key.
 	 * @param mixed  $default If key is not found, $default is returned.
 	 *
 	 * @return bool|mixed
 	 */
 	public function keyExists($key, $default = false) {
+        $key = StdObjectWrapper::toString($key);
 		if(array_key_exists($key, $this->val())) {
 			return true;
 		}

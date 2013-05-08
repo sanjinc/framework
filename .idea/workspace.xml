@@ -2,28 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="503f76ca-de59-47a6-ba96-20db972e4f20" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Config.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/DriverAbstract.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Readme.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/Test3.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/config.ini" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Test/info.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/framework.iml" afterPath="$PROJECT_DIR$/.idea/framework.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/Component/Config/Config.php" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php" afterPath="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test/Test3.php" afterPath="$PROJECT_DIR$/Test/Test3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ValidatorTrait.php" afterPath="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="framework.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367849685111" ignored="false" />
+    <file path="/Dummy.txt" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368000172951" ignored="false" />
     <file path="/StdObjectTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367324686204" ignored="false" />
     <file path="/a.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364396258825" ignored="false" />
     <file path="/StdObjectValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364055375851" ignored="false" />
     <file path="/StdObjectInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365859123998" ignored="false" />
-    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367842526913" ignored="false" />
-    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367493668499" ignored="false" />
+    <file path="/a.dummy" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368015367130" ignored="false" />
+    <file path="/ManipulatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368014549611" ignored="false" />
     <file path="/StringObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1364745248343" ignored="false" />
-    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367326611947" ignored="false" />
-    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367849229884" ignored="false" />
+    <file path="/ValidatorTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368013130080" ignored="false" />
+    <file path="/ArrayObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368014672818" ignored="false" />
     <file path="/README.md" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365169238999" ignored="false" />
     <file path="/StdObjectException.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1365072752057" ignored="false" />
     <file path="/StdObjectAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366022111150" ignored="false" />
@@ -47,7 +48,7 @@
     <file path="/Test2.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367230838687" ignored="false" />
     <file path="/DateObjectConfigInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366023901466" ignored="false" />
     <file path="/ConfigDefaults.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366022788889" ignored="false" />
-    <file path="/Config.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367849508873" ignored="false" />
+    <file path="/Config.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368015656464" ignored="false" />
     <file path="/DefaultConfig.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366031750010" ignored="false" />
     <file path="/ConfigInterface.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1366049822406" ignored="false" />
     <file path="/DateTimeObject.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367258178700" ignored="false" />
@@ -60,10 +61,13 @@
     <file path="/SingletonTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367585706028" ignored="false" />
     <file path="/StdLibTrait.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367585879765" ignored="false" />
     <file path="/Exception.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367842539738" ignored="false" />
-    <file path="/Test3.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367848638818" ignored="false" />
+    <file path="/Test3.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368020574601" ignored="false" />
     <file path="/Ini.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367846255449" ignored="false" />
     <file path="/DriverAbstract.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367846513267" ignored="false" />
-    <file path="/IniDriver.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1367847510117" ignored="false" />
+    <file path="/IniDriver.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368021747395" ignored="false" />
+    <file path="/config.ini" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368021527402" ignored="false" />
+    <file path="/info.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368004581959" ignored="false" />
+    <file path="/ConfigException.php" changelist="503f76ca-de59-47a6-ba96-20db972e4f20" time="1368021375426" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,22 +87,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Config.php" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Config.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="5" selection-start="1209" selection-end="1209" vertical-scroll-proportion="0.023584906">
-              <folding>
-                <element signature="e#6#275#0" expanded="true" />
-                <element signature="e#313#365#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="IniDriver.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="136" selection-start="1542" selection-end="1666" vertical-scroll-proportion="0.0">
+            <state line="145" column="26" selection-start="4684" selection-end="4684" vertical-scroll-proportion="-27.23077">
               <folding />
             </state>
           </provider>
@@ -107,16 +99,64 @@
       <file leaf-file-name="ConfigException.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="0" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0">
+            <state line="28" column="40" selection-start="744" selection-end="744" vertical-scroll-proportion="-16.153847">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DriverAbstract.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/DriverAbstract.php">
+      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ManipulatorTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="31" selection-start="1170" selection-end="1170" vertical-scroll-proportion="0.0">
+            <state line="461" column="20" selection-start="10643" selection-end="10643" vertical-scroll-proportion="-11.192307">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Config.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Config.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="107" column="29" selection-start="2655" selection-end="2655" vertical-scroll-proportion="-13.076923">
+              <folding>
+                <element signature="e#6#275#0" expanded="true" />
+                <element signature="e#313#365#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ValidatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ValidatorTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="32" selection-start="697" selection-end="697" vertical-scroll-proportion="-13.076923">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ManipulatorTrait.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="400" column="27" selection-start="9736" selection-end="9744" vertical-scroll-proportion="-12.039216">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArrayObject.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="53" column="34" selection-start="1807" selection-end="1807" vertical-scroll-proportion="-17.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.ini" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Test/config.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="11" selection-start="270" selection-end="270" vertical-scroll-proportion="0.34324944">
               <folding />
             </state>
           </provider>
@@ -125,8 +165,10 @@
       <file leaf-file-name="Test3.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Test/Test3.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="29" selection-start="653" selection-end="653" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="30" column="0" selection-start="369" selection-end="369" vertical-scroll-proportion="-7.1923075">
+              <folding>
+                <element signature="e#7#205#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,48 +191,33 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/StdLib/SingletonTrait.php" />
-        <option value="$PROJECT_DIR$/StdLib/StdLibTrait.php" />
-        <option value="$PROJECT_DIR$/Component/ClassLoader/ClassLoader.php" />
-        <option value="$PROJECT_DIR$/library/Webiny/Architecture/Environment.php" />
-        <option value="$PROJECT_DIR$/Test/Test.php" />
         <option value="$PROJECT_DIR$/WebinyFramework.php" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/ClassLoader/ClassLoader.php" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Readme.md" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Exception.php" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/Ini.php" />
-        <option value="$PROJECT_DIR$/Test/Test3.php" />
-        <option value="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php" />
-        <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php" />
-        <option value="$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/DriverAbstract.php" />
+        <option value="$PROJECT_DIR$/Test/info.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php" />
         <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Config.php" />
+        <option value="$PROJECT_DIR$/Test/Test3.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php" />
+        <option value="$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php" />
+        <option value="$PROJECT_DIR$/Test/config.ini" />
       </list>
     </option>
   </component>
+  <component name="PhpDebugGeneral" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
   <component name="PhpServers">
     <option name="servers">
       <server host="wf.com" name="wf.com" use_path_mappings="true">
         <path_mappings>
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/FileObject/FileObject.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/FileObject/FileObject.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/StringObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\StringObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\ArrayObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/StdObjectAbstract.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/StdObjectAbstract.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/Config" remote_path="Z:\newwebiny\framework\StdLib\Config" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/UrlObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\UrlObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib" remote_path="Z:\newwebiny\framework\StdLib" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/FileObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\FileObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/Config/ConfigAbstract.php" remote_path="/var/www/newwebiny/framework/StdLib/Config/ConfigAbstract.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject" remote_path="Z:\newwebiny\framework\StdLib\StdObject\DateObject" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject/DateObject.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/DateObject/DateObject.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/Exception" remote_path="Z:\newwebiny\framework\StdLib\Exception" />
-          <path_mapping local_path="$PROJECT_DIR$/Test" remote_path="/var/www/newwebiny/framework/Test" />
           <path_mapping local_path="$PROJECT_DIR$/WebinyFramework.php" remote_path="/var/www/newwebiny/framework/WebinyFramework.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/DateObject/DateObjectConfig.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/DateObject/DateObjectConfig.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/ValidatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/ValidatorTrait.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ValidatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/ArrayObject/ValidatorTrait.php" />
-          <path_mapping local_path="$PROJECT_DIR$/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" remote_path="/var/www/newwebiny/framework/StdLib/StdObject/ArrayObject/ManipulatorTrait.php" />
+          <path_mapping local_path="$PROJECT_DIR$/Test" remote_path="/var/www/newwebiny/framework/Test" />
+          <path_mapping local_path="$PROJECT_DIR$" remote_path="/var/www/newwebiny/framework" />
         </path_mappings>
       </server>
     </option>
@@ -355,11 +382,185 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="library" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StringObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ArrayObject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="StdLib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Webiny" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Component" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -392,13 +593,13 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="preferences.keymap" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="fileTemplates" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/Webiny" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -557,15 +758,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22038421" sideWeight="0.40555555" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22038421" sideWeight="0.58666664" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3988889" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20064034" sideWeight="0.40555555" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20064034" sideWeight="0.58555555" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24555555" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3282313" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32777777" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -647,100 +848,124 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="16" />
+      <option name="time" value="29" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/library/Webiny/Tools/Redirect/Redirect.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/DriverAbstract.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="50" column="0" selection-start="1238" selection-end="1238" vertical-scroll-proportion="-12.653846">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ValidatorTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="18" selection-start="806" selection-end="806" vertical-scroll-proportion="0.3667453" />
+        <state line="44" column="33" selection-start="1274" selection-end="1274" vertical-scroll-proportion="0.5518868">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObjectTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectWrapper.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="109" column="7" selection-start="2674" selection-end="2674" vertical-scroll-proportion="0.3903302">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectManipulatorTrait.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectAbstract.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ValidatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="21" selection-start="1429" selection-end="1429" vertical-scroll-proportion="0.4245283" />
+        <state line="48" column="0" selection-start="1277" selection-end="1277" vertical-scroll-proportion="-0.20400943">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/StringObject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="32" selection-start="1213" selection-end="1213" vertical-scroll-proportion="0.379717" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/Tools/AutoLoader/AutoLoader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="398" selection-end="431" vertical-scroll-proportion="-2.6923077" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectValidatorTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.28301886" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/SingletonTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test/Test3.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="29" selection-start="653" selection-end="653" vertical-scroll-proportion="0.0">
+        <state line="49" column="20" selection-start="1108" selection-end="1108" vertical-scroll-proportion="0.3431604">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ArrayObject.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="177" column="7" selection-start="5179" selection-end="5179" vertical-scroll-proportion="0.28301886" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StdObjectAbstract.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.990566" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0">
+        <state line="53" column="34" selection-start="1807" selection-end="1807" vertical-scroll-proportion="-17.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/DriverAbstract.php">
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/ArrayObject/ManipulatorTrait.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="31" selection-start="1170" selection-end="1170" vertical-scroll-proportion="0.0">
+        <state line="400" column="27" selection-start="9736" selection-end="9744" vertical-scroll-proportion="-12.039216">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ValidatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="32" selection-start="697" selection-end="697" vertical-scroll-proportion="-13.076923">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test/Test3.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="0" selection-start="369" selection-end="369" vertical-scroll-proportion="-7.1923075">
+          <folding>
+            <element signature="e#7#205#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Config.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="29" selection-start="2655" selection-end="2655" vertical-scroll-proportion="-13.076923">
+          <folding>
+            <element signature="e#6#275#0" expanded="true" />
+            <element signature="e#313#365#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/StdObject/StringObject/ManipulatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="461" column="20" selection-start="10643" selection-end="10643" vertical-scroll-proportion="-11.192307">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/Core_c.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="194" column="20" selection-start="5274" selection-end="5274" vertical-scroll-proportion="0.3431604">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/ConfigException.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="40" selection-start="744" selection-end="744" vertical-scroll-proportion="-16.153847">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/Webiny/StdLib/ValidatorTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="30" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.33254716">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Drivers/IniDriver.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="136" selection-start="1542" selection-end="1666" vertical-scroll-proportion="0.0">
+        <state line="145" column="26" selection-start="4684" selection-end="4684" vertical-scroll-proportion="-27.23077">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/library/Webiny/Component/Config/Config.php">
+    <entry file="file://$PROJECT_DIR$/Test/config.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="5" selection-start="1209" selection-end="1209" vertical-scroll-proportion="0.023584906">
-          <folding>
-            <element signature="e#6#275#0" expanded="true" />
-            <element signature="e#313#365#0" expanded="true" />
-          </folding>
+        <state line="15" column="11" selection-start="270" selection-end="270" vertical-scroll-proportion="0.34324944">
+          <folding />
         </state>
       </provider>
     </entry>
