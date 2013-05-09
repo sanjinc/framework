@@ -9,6 +9,8 @@
 
 namespace Webiny\Component\Config;
 
+use Webiny\Component\Config\Drivers\DriverAbstract;
+use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\ValidatorTrait;
@@ -23,7 +25,7 @@ use Webiny\StdLib\ValidatorTrait;
  */
 class Config
 {
-    use ValidatorTrait;
+    use StdLibTrait;
 
     /**
      * Config data
@@ -33,34 +35,71 @@ class Config
     protected $_data = array();
 
     /**
+     * Get Config object from INI file or string
+     *
      * @param string $resource      Config resource in form of a file path or config string
+     *
+     * @param bool   $flushCache    Flush existing cache and load config file
      *
      * @param string $nestDelimiter Delimiter for nested properties, ex: a.b.c or a-b-c
      *
      * @return $this
      */
-    public static function Ini($resource, $nestDelimiter = '.')
+    public static function Ini($resource, $flushCache = false, $nestDelimiter = '.')
     {
         $driver = new Drivers\IniDriver($resource);
         $driver->setDelimiter($nestDelimiter);
 
-        return new static($driver->getConfig());
+        return new static($driver, $flushCache);
 
     }
 
     /**
+     * Get Config object from JSON file or string
+     *
      * @param string $resource      Config resource in form of a file path or config string
      *
-     * @throws ConfigException
+     * @param bool   $flushCache    Flush existing cache and load config file
      *
      * @return $this
      */
-    public static function Php($resource)
+    public static function Json($resource, $flushCache = false)
     {
-        if(!self::isArray($resource)){
-            throw new ConfigException('PHP Config resource must be a valid array.');
-        }
-        return new static($resource);
+        $driver = new Drivers\JsonDriver($resource);
+
+        return new static($driver, $flushCache);
+
+    }
+
+
+    /**
+     * Get Config object from PHP file or array
+     *
+     * @param string|array $resource      Config resource in form of a file path or config string
+     *
+     * @param bool   $flushCache    Flush existing cache and load config file
+     *
+     * @return $this
+     */
+    public static function Php($resource, $flushCache = false)
+    {
+        $driver = new Drivers\PhpDriver($resource);
+
+        return new static($driver, $flushCache);
+    }
+
+    /**
+     * Parse resource and create a Config object
+     * A valid resource is a PHP array, ArrayObject or an instance of DriverAbstract
+     *
+     * @param array|ArrayObject|DriverAbstract $resource   Config resource
+     * @param bool                             $flushCache Flush existing cache and load config file
+     *
+     * @return static
+     */
+    public static function parseResource($resource, $flushCache = false)
+    {
+        return new static($resource, $flushCache);
     }
 
     /**
@@ -81,14 +120,36 @@ class Config
     }
 
     /**
-     * Constructor.
+     * Config is an object representing config data
      *
-     * @param  array $array|ArrayObject
+     * @param  array|ArrayObject|DriverAbstract $resource Config resource
+     *
+     * @param bool                              $flushCache Flush existing cache and load config file
+     *
+     * @throws ConfigException
+     * @internal param $
+     *
      */
-    public function __construct($array)
+    private function __construct($resource, $flushCache = false)
     {
-        $array = StdObjectWrapper::toArray($array);
-        $this->_data = new ArrayObject();
+        $driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
+        $arrayObjectClassName = '\Webiny\StdLib\StdObject\ArrayObject\ArrayObject';
+
+        // Validate given resources
+        if (!$this->isArray($resource) && !$this->isInstanceOf($resource, $driverAbstractClassName
+        ) && !$this->isArrayObject($resource)
+        ) {
+            throw new ConfigException("Config resource must be a valid array, $arrayObjectClassName or $driverAbstractClassName");
+        }
+
+        // If it's a DriverAbstract class - get config array
+        if ($this->isInstanceOf($resource, $driverAbstractClassName)) {
+            $resource = $resource->getConfig($flushCache);
+        }
+
+        $array = StdObjectWrapper::toArray($resource);
+
+        $this->_data = $this->arr();
         foreach ($array as $key => $value) {
             if ($this->isArray($value)) {
                 $this->_data->key($key, new static($value));

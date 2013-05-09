@@ -64,7 +64,7 @@ class IniDriver extends DriverAbstract
 
         // Perform string checks
         try {
-            $this->_resource = new StringObject($this->_resource);
+            $this->_resource = $this->str($this->_resource);
             if ($this->_resource->trim()->length() == 0) {
                 throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
             }
@@ -82,7 +82,7 @@ class IniDriver extends DriverAbstract
      */
     private function _parseIniString($data)
     {
-        $config = new ArrayObject();
+        $config = $this->arr();
         $data = parse_ini_string($data, true);
         foreach ($data as $section => $value) {
             $config = $config->mergeRecursive($this->_processValue($section, $value));
@@ -102,17 +102,17 @@ class IniDriver extends DriverAbstract
      */
     private function _processValue($section, $value, $config = [])
     {
-        // Make sure $config is an ArrayObject
+        // Need to catch Exception in case INI string is not properly formed
         try{
-            // Need to catch Exception in case INI string is not properly formed
-            $config = new ArrayObject($config);
+            // Make sure $config is an ArrayObject
+            $config = $this->arr($config);
         } catch(StdObjectException $e){
-            $config = new ArrayObject();
+            $config = $this->arr();
         }
 
 
         // Create StringObject and trim invalid characters
-        $section = new StringObject($section);
+        $section = $this->str($section);
         $this->_validateSection($section);
 
         // Handle nested sections, ex: parent.child.property
@@ -122,8 +122,7 @@ class IniDriver extends DriverAbstract
              * First element will be the new array key, and second will be passed for recursive processing
              * Ex: parent.child.property will be split into 'parent' and 'child.property'
              */
-            $sections = $section->explode($this->_delimiter, 2);
-            $sections->removeFirst($section);
+            $sections = $section->explode($this->_delimiter, 2)->removeFirst($section);
             $localConfig = $config->key($section, [], true);
             $config->key($section, $this->_processValue($sections->last()->val(), $value, $localConfig));
         } else {

@@ -11,6 +11,7 @@
 namespace Webiny\StdLib;
 
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -116,6 +117,28 @@ trait ValidatorTrait
 		return is_bool($var);
 	}
 
+    /**
+     * Checks if $var is a file.
+     *
+     * @param $var
+     *
+     * @return bool
+     */
+    static protected function isFile($var) {
+        return is_file($var);
+    }
+
+    /**
+     * Checks if $var is a directory.
+     *
+     * @param $var
+     *
+     * @return bool
+     */
+    static protected function isDirectory($var) {
+        return is_dir($var);
+    }
+
 	/**
 	 * Check if $instance if of $type.
 	 *
@@ -142,6 +165,28 @@ trait ValidatorTrait
 
 		return false;
 	}
+
+    /**
+     * Check if $instance is a StringObject.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    static protected function isStringObject($instance) {
+        return StdObjectWrapper::isStringObject($instance);
+    }
+
+    /**
+     * Check if $instance is an ArrayObject.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    static protected function isArrayObject($instance) {
+        return StdObjectWrapper::isArrayObject($instance);
+    }
 
 	/**
 	 * Checks if class exists.

@@ -30,7 +30,7 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	function __construct($filePath) {
 		$this->_filePath = $filePath;
 		try {
-			parent::__construct($filePath, 'w');
+			parent::__construct($filePath, 'c+');
 		} catch (\Exception $e) {
 			throw new StdObjectException('FileObject: Unable to construct driver: SplFileObject. ' . $e->getMessage());
 		}

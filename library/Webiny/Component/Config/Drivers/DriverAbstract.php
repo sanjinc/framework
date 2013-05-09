@@ -10,6 +10,10 @@
 namespace Webiny\Component\Config\Drivers;
 
 use Webiny\Component\Config\ConfigException;
+use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\StdLib\ValidatorTrait;
 
 /**
  * Abstract Driver class
@@ -18,6 +22,9 @@ use Webiny\Component\Config\ConfigException;
  */
 abstract class DriverAbstract
 {
+    use StdLibTrait;
+
+    private static $_configCache = null;
     /**
      * Contains config data which needs to be parsed and converted to Config object
      * @var null|string|array Resource given to config driver
@@ -32,22 +39,36 @@ abstract class DriverAbstract
 
     /**
      * Parse config resource and build config array
-     * @return array
+     * @return array|ArrayObject
      */
     abstract protected function _buildConfig();
 
     public function __construct($resource)
     {
+        if (self::isNull(self::$_configCache)) {
+            self::$_configCache = $this->arr();
+        }
         $this->_resource = $resource;
         $this->_validateResource();
     }
 
     /**
      * Get config data as array
-     * @return array
+     *
+     * @param bool $flushCache
+     *
+     * @return array|ArrayObject
      */
-    public function getConfig()
+    public function getConfig($flushCache = false)
     {
-        return $this->_buildConfig();
+        $res = $this->str($this->_resource)->md5()->val();
+        if ($flushCache) {
+            return self::$_configCache->key($res, $this->_buildConfig());
+        } else {
+            if (!self::$_configCache->keyExists($res)) {
+                self::$_configCache->key($res, $this->_buildConfig());
+            }
+            return self::$_configCache->key($res);
+        }
     }
 }

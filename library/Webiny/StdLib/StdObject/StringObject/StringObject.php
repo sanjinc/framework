@@ -48,6 +48,10 @@ class StringObject extends StdObjectAbstract
 	 * @throws StdObjectException
 	 */
 	public function __construct($value) {
+        if($this->isStringObject($value)){
+            return $value;
+        }
+
 		if(!$this->isString($value) && !$this->isNumber($value)){
 			throw new StdObjectException('StringObject: Unable to create StringObject from the given $value. Only strings and integers are allowed.');
 		}

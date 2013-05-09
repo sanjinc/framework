@@ -1,47 +1,16 @@
 <?php
 
-/**
- *
- * ._ => "_"
- * ._12 => isto ko i gore
- * .asd_ => zadnji underscore
- * .12 => is_int
- * 1. Prvi znak mora biti unutar [a-z]
- * 2.
- * (int)
- * ._12
- * .-
- * ._
- * .12*
- * .abc_
- * .asd12_
- */
-
-
-namespace Webiny\Test;
-
-use Webiny\Component\Config\Config;
-use Webiny\Component\Config\ConfigException;
-
 require_once '../WebinyFramework.php';
+/*
+ # Built-in drivers
+$config = \Webiny\Component\Config\Config::Ini(realpath(__DIR__).'/Configs/config.ini');
+$config2 = \Webiny\Component\Config\Config::Json(realpath(__DIR__).'/Configs/config.json');
+$config3 = \Webiny\Component\Config\Config::Php(realpath(__DIR__).'/Configs/config.php');
 
-class Test3
-{
+# Custom Resource #
+$config4 = \Webiny\Component\Config\Config::parseResource(['name' => 'Test']);
+$config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
+*/
 
-    public function test()
-    {
-        try {
-            /* @var $configObject Config */
-            $configObject = Config::Ini(realpath(__DIR__).'/config.ini');
-        } catch (ConfigException $e) {
-            die($e->getMessage());
-            die("Exception caught!");
-        }
-
-        die(print_r($configObject));
-
-    }
-}
-
-$test = new Test3();
-$test->test();
+$config3 = \Webiny\Component\Config\Config::Ini(realpath(__DIR__).'/Configs/config.ini');
+die(print_r($config3));

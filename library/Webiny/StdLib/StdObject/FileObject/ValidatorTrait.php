@@ -49,15 +49,6 @@ trait ValidatorTrait
 	}
 
 	/**
-	 * Tells if the object references a regular file.
-	 *
-	 * @return bool
-	 */
-	function isFile() {
-		return $this->_getDriver()->isFile();
-	}
-
-	/**
 	 * Tells if the file is a link.
 	 *
 	 * @return bool
