@@ -11,6 +11,7 @@
 namespace Webiny\StdLib;
 
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -35,7 +36,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isNull(&$var) {
+	static protected function isNull($var) {
 		return is_null($var);
 	}
 
@@ -46,7 +47,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isObject(&$var) {
+	static protected function isObject($var) {
 		return is_object($var);
 	}
 
@@ -68,7 +69,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isNumber(&$var) {
+	static protected function isNumber($var) {
 		return is_numeric($var);
 	}
 
@@ -79,7 +80,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInteger(&$var) {
+	static protected function isInteger($var) {
 		return is_int($var);
 	}
 
@@ -90,7 +91,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isCallable(&$var) {
+	static protected function isCallable($var) {
 		return is_callable($var);
 	}
 
@@ -112,9 +113,31 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isBool(&$var) {
+	static protected function isBool($var) {
 		return is_bool($var);
 	}
+
+    /**
+     * Checks if $var is a file.
+     *
+     * @param $var
+     *
+     * @return bool
+     */
+    static protected function isFile($var) {
+        return is_file($var);
+    }
+
+    /**
+     * Checks if $var is a directory.
+     *
+     * @param $var
+     *
+     * @return bool
+     */
+    static protected function isDirectory($var) {
+        return is_dir($var);
+    }
 
 	/**
 	 * Check if $instance if of $type.
@@ -124,7 +147,7 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isInstanceOf(&$instance, $type) {
+	static protected function isInstanceOf($instance, $type) {
 		return ($instance instanceof $type);
 	}
 
@@ -135,13 +158,35 @@ trait ValidatorTrait
 	 *
 	 * @return bool
 	 */
-	static protected function isStdObject(&$instance) {
+	static protected function isStdObject($instance) {
 		if(self::isInstanceOf($instance, 'Webiny\StdLib\StdObject\StdObjectAbstract')) {
 			return true;
 		}
 
 		return false;
 	}
+
+    /**
+     * Check if $instance is a StringObject.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    static protected function isStringObject($instance) {
+        return StdObjectWrapper::isStringObject($instance);
+    }
+
+    /**
+     * Check if $instance is an ArrayObject.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    static protected function isArrayObject($instance) {
+        return StdObjectWrapper::isArrayObject($instance);
+    }
 
 	/**
 	 * Checks if class exists.
