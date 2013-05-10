@@ -3,32 +3,24 @@ ClassLoader Component
 Class loader component loads your PHP files automatically as long as they follow some standard naming convention.
 For naming standard please refer to Webiny coding standard PDF od PSR-0 naming convention.
 
-To use the ClassLoader, just include it and call ClassLoader::getLoader()->register() method. By default it will have all the rules
-to load the default libraries included with WebinyFramework.
-    require_once 'WebinyFramework/Component/ClassLoader/ClassLoader.php'
+To use the ClassLoader, get its instance by calling ClassLoader::getInstance() method.
+    require_once 'Webiny/Component/ClassLoader/ClassLoader.php'
 
-    use WF\Component\ClassLoader;
+    use Webiny\Component\ClassLoader;
 
-    ClassLoader::getLoader()->register();
+    ClassLoader::getInstance();
 
-Optionally you can register a namespace prefix:
+Once you have the ClassLoader instance, you can register map rules. The ClassLoader automatically detects if you are
+registering a namespace or a PEAR rule. PEAR rules are identified by having a underline '_' at the end of the prefix.
 
-    ClassLoader::getLoader()->registerNamespace('Monolog', '/vendor/monolog/src');
+    ClassLoader::getInstance()->registerMap([
+    										// a namespace rule
+    										'Webiny' => realpath(dirname(__FILE__)).'/library',
+    										// a PEAR rule
+    										'Swift_' => realpath(dirname(__FILE__)).'/library/Swift',
+    										]);
 
-You can register multiple paths for one namespace, and the ClassLoader will go over them in the same order in which
-they were registered.
-
-    ClassLoader::getLoader()->registerNamespace('Monolog', ['/vendor/monolog/src', '/var/www/monolog/]);
-
-    // it's the same as
-    ClassLoader::getLoader()->registerNamespace('Monolog', '/vendor/monolog/src');
-    ClassLoader::getLoader()->registerNamespace('Monolog', '/var/www/monolog/');
-
-You can also register multiple namespaces and their pats at once, like this:
-    ClassLoader::getLoader()->registerNamespace([
-        'Monolog'  => ['/vendor/monolog/src', '/var/www/monolog/],
-        'WF'       => '/vendor/wf'
-    ]);
+As you can see the registerMap method takes an array of multiple rules. Each rule consists of a prefix and a location.
 
 For better performance you can provide a Cache component to ClassLoader. Doing so, ClassLoader will cache the paths and
 files resulting in a faster performance.

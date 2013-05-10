@@ -2,7 +2,7 @@
 
 namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
-require_once '../../../../WebinyFramework.php';
+require_once '../../../../../../WebinyFramework.php';
 
 use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
@@ -337,9 +337,9 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 
 	public function testMd5() {
 		$s = new StringObject('abc');
-		$s->md5();
+		#$s->md5();
 
-		$this->assertSame('900150983cd24fb0d6963f7d28e17f72', $s->val());
+		$this->assertSame(md5('abc'), $s->md5()->val());
 	}
 
 	public function testCrc32() {
