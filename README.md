@@ -14,3 +14,8 @@ Some notes on coding:
 - prefer the usage of 'use' keyword instead of writing the full class name with namespace
 - config class?
 - *ako funkcija prima StdObject onda i vraća StdObject, i obrnuto ako prima string
+
+
+COMPONENT NOTES:
+================
+The "Response" object must utilize HTTP Cache (http://symfony.com/doc/current/book/http_cache.html)
