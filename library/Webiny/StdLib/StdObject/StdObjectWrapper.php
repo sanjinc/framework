@@ -72,7 +72,7 @@ class StdObjectWrapper extends StdObjectAbstract{
 		if(self::isString($var)){
 			return $var;
 		}else if(self::isObject($var)){
-			if(self::isInstanceOf($var, 'Webiny\StdLib\StdObject\StringObject\StringObject')){
+			if(self::isStringObject($var) || self::isFileObject($var)){
 				return $var->val();
 			}
 		}
@@ -145,6 +145,21 @@ class StdObjectWrapper extends StdObjectAbstract{
 
 		return false;
 	}
+
+    /**
+     * Check if $var is an instance of FileObject.
+     *
+     * @param mixed $var Element to check.
+     *
+     * @return bool
+     */
+    static function isFileObject($var){
+        if(self::isInstanceOf($var, 'Webiny\StdLib\StdObject\FileObject\FileObject')){
+            return true;
+        }
+
+        return false;
+    }
 
 	/**
 	 * To string implementation.

@@ -178,6 +178,17 @@ trait ValidatorTrait
     }
 
     /**
+     * Check if $instance is a FileObject.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    static protected function isFileObject($instance) {
+        return StdObjectWrapper::isFileObject($instance);
+    }
+
+    /**
      * Check if $instance is an ArrayObject.
      *
      * @param mixed $instance
@@ -187,6 +198,17 @@ trait ValidatorTrait
     static protected function isArrayObject($instance) {
         return StdObjectWrapper::isArrayObject($instance);
     }
+
+	/**
+	 * Check if $instance is a UrlObject.
+	 *
+	 * @param mixed $instance
+	 *
+	 * @return bool
+	 */
+	static protected function isUrlObject($instance) {
+		return StdObjectWrapper::isUrlObject($instance);
+	}
 
 	/**
 	 * Checks if class exists.

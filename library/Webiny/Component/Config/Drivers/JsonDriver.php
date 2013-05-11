@@ -24,58 +24,80 @@ use Webiny\StdLib\ValidatorTrait;
 class JsonDriver extends DriverAbstract
 {
 
-    /**
-     * Parse config resource and build config array
-     * @return array
-     */
-    protected function _buildConfig()
-    {
-        if (file_exists($this->_resource)) {
-            $config = $this->file($this->_resource)->getFileContent();
-        } else {
-            $config = $this->_resource;
-        }
+	/**
+	 * Convert given data to appropriate string format
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
+	public function toString($data) {
+		return json_encode($data);
+	}
 
-        return $this->_parseJsonString($config);
-    }
+	/**
+	 * Save given data to given destination
+	 *
+	 * @param $data
+	 * @param $destination
+	 *
+	 * @return mixed
+	 */
+	protected function _saveToFile($data, $destination) {
+		$this->file($destination)->write($data);
 
-    /**
-     * Validate given config resource and throw ConfigException if it's not valid
-     * @throws ConfigException
-     */
-    protected function _validateResource()
-    {
-        if (self::isNull($this->_resource)) {
-            throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
-        }
+		return true;
+	}
 
-        // Perform string checks
-        try {
-            $this->_resource = $this->str($this->_resource)->trim();
-            if ($this->_resource->length() == 0) {
-                throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
-            }
-        } catch (StdObjectException $e) {
-            throw new ConfigException($e->getMessage());
-        }
-    }
+	/**
+	 * Parse config resource and build config array
+	 * @return array
+	 */
+	protected function _buildArray() {
+		if(file_exists($this->_resource)) {
+			$config = $this->file($this->_resource)->getFileContent();
+		} else {
+			$config = $this->_resource;
+		}
 
-    /**
-     * Parse JSON string and return config array
-     *
-     * @param array $data
-     *
-     * @throws ConfigException
-     * @return array
-     */
-    private function _parseJsonString($data)
-    {
-        try {
-            $config = json_decode($data, true);
-        } catch (Exception $e) {
-            throw new ConfigException($e->getMessage());
-        }
+		return $this->_parseJsonString($config);
+	}
 
-        return $config;
-    }
+	/**
+	 * Validate given config resource and throw ConfigException if it's not valid
+	 * @throws ConfigException
+	 */
+	protected function _validateResource() {
+		if(self::isNull($this->_resource)) {
+			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
+		}
+
+		// Perform string checks
+		try {
+			$this->_resource = $this->str($this->_resource)->trim();
+			if($this->_resource->length() == 0) {
+				throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
+			}
+		} catch (StdObjectException $e) {
+			throw new ConfigException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Parse JSON string and return config array
+	 *
+	 * @param array $data
+	 *
+	 * @throws ConfigException
+	 * @return array
+	 */
+	private function _parseJsonString($data) {
+		try {
+			$config = json_decode($data, true);
+		} catch (Exception $e) {
+			throw new ConfigException($e->getMessage());
+		}
+
+		return $config;
+	}
 }
