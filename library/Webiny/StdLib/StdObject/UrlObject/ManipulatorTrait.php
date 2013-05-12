@@ -10,7 +10,6 @@
 namespace Webiny\StdLib\StdObject\UrlObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
@@ -29,15 +28,15 @@ trait ManipulatorTrait
 	 *
 	 * @param StringObject|string $scheme - Scheme must end with '://'. Example 'http://'.
 	 *
-	 * @throws StdObjectException
+	 * @throws UrlObjectException
 	 * @return $this
 	 */
 	public function setScheme($scheme) {
 		// validate scheme
 		try {
 			$scheme = new StringObject($scheme);
-		} catch (StdObjectException $e) {
-			throw new StdObjectException('Invalid $scheme provided. $scheme is not a valid string.', 0, $e);
+		} catch (\Exception $e) {
+			throw new UrlObjectException($e->getMessage());
 		}
 
 		if(!$scheme->endsWith('://')) {
@@ -56,10 +55,16 @@ trait ManipulatorTrait
 	 *
 	 * @param StringObject|string $host Url host.
 	 *
+	 * @throws UrlObjectException
 	 * @return $this
 	 */
 	public function setHost($host) {
-		$host = new StringObject($host);
+		try {
+			$host = new StringObject($host);
+		} catch (\Exception $e) {
+			throw new UrlObjectException($e->getMessage());
+		}
+
 		$this->_host = $host->stripTrailingSlash()->trim()->val();
 
 		$this->_buildUrl();
@@ -86,10 +91,16 @@ trait ManipulatorTrait
 	 *
 	 * @param StringObject|string $path Url path.
 	 *
+	 * @throws UrlObjectException
 	 * @return $this
 	 */
 	public function setPath($path) {
-		$path = new StringObject($path);
+		try {
+			$path = new StringObject($path);
+		} catch (\Exception $e) {
+			throw new UrlObjectException($e->getMessage());
+		}
+
 		$path->trimLeft('/');
 		$this->_path = '/' . $path->val();
 
@@ -107,7 +118,7 @@ trait ManipulatorTrait
 	 *                                                      that already exist in the current query, will be overwritten
 	 *                                                      by the ones inside the $query.
 	 *
-	 * @throws StdObjectException
+	 * @throws UrlObjectException
 	 * @return $this
 	 */
 	public function setQuery($query, $append = false) {
@@ -131,7 +142,10 @@ trait ManipulatorTrait
 					if(StdObjectWrapper::isStringObject($query)) {
 						$query = $query->parseString()->val();
 					} else {
-						throw new StdObjectException('UrlObject: Given $query parameter is of unsupported object type.');
+						throw new UrlObjectException(UrlObjectException::MSG_INVALID_ARG, [
+																						  '$query',
+																						  'StringObject|ArrayObject|string|array'
+																						  ]);
 					}
 				}
 			} else {

@@ -10,6 +10,7 @@
 namespace Webiny\StdLib\StdObject\FileObject\Drivers;
 
 use Webiny\StdLib\StdObject\FileObject\FileObjectDriverInterface;
+use Webiny\StdLib\StdObject\FileObject\FileObjectException;
 use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
@@ -24,7 +25,7 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	/**
 	 * @param string $filePath Absolute path to the file.
 	 *
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 * @return \Webiny\StdLib\StdObject\FileObject\Drivers\SplFileObject
 	 */
 	function __construct($filePath) {
@@ -32,7 +33,12 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 		try {
 			parent::__construct($filePath, 'c+');
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to construct driver: SplFileObject. ' . $e->getMessage());
+			// try to create the file
+			try{
+				parent::__construct($filePath, 'w+');
+			}catch (\Exception $e){
+				throw new SplFileObjectException($e->getMessage());
+			}
 		}
 
 		return $this;
@@ -42,13 +48,16 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * Delete the current file.
 	 *
 	 * @return $this
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 */
 	function delete() {
 		try {
 			unlink($this->val());
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to delete the given file: ' . $this->val());
+			throw new SplFileObjectException(SplFileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																								   'delete',
+																								   $this->val()
+																								   ]);
 		}
 
 		return $this;
@@ -60,15 +69,17 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * @param $destination
 	 *
 	 * @return $this
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 */
 	function move($destination) {
 		try {
 			$this->copy($destination);
 			$this->delete();
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to move the given file: "' . $this->val() . '"
-			to destination "' . $destination . '"');
+			throw new SplFileObjectException(SplFileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																								   'move',
+																								   $this->val()
+																								   ]);
 		}
 
 		return $this;
@@ -80,14 +91,16 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * @param $destination
 	 *
 	 * @return $this
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 */
 	function copy($destination) {
 		try {
 			copy($this->val(), $destination);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to copy the given file: "' . $this->val() . '"
-			to destination "' . $destination . '"');
+			throw new SplFileObjectException(SplFileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																								   'copy',
+																								   $this->val()
+																								   ]);
 		}
 
 		return $this;
@@ -99,14 +112,16 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * @param $name
 	 *
 	 * @return $this
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 */
-	function rename($name){
+	function rename($name) {
 		try {
 			rename($this->val(), $name);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to rename the given file: "' . $this->val() . '"
-			to "' . $name. '"');
+			throw new SplFileObjectException(SplFileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																								   'rename',
+																								   $this->val()
+																								   ]);
 		}
 
 		return $this;
@@ -118,23 +133,26 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 	 * @param null $time
 	 *
 	 * @return $this
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @throws SplFileObjectException
 	 */
-	function touch($time=null) {
+	function touch($time = null) {
 		try {
-			if(is_null($time)){
+			if(is_null($time)) {
 				touch($this->valid());
-			}else{
+			} else {
 				touch($this->valid(), $time);
 			}
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to perform touch on the given file: "' . $this->val() . '".');
+			throw new SplFileObjectException(SplFileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																								   'touch',
+																								   $this->val()
+																								   ]);
 		}
 
 		return $this;
 	}
 
-	function val(){
+	function val() {
 		return $this->_filePath;
 	}
 }

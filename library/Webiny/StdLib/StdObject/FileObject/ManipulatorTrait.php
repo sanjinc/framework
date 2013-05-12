@@ -9,8 +9,6 @@
 
 namespace Webiny\StdLib\StdObject\FileObject;
 
-use Exception;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
@@ -24,19 +22,6 @@ trait ManipulatorTrait
 	use StdObjectManipulatorTrait;
 
 	/**
-	 * @return \Webiny\StdLib\StdObject\FileObject\FileObjectDriverInterface
-	 */
-	abstract protected function _getDriver();
-
-	static public function fileExists($path){
-		return file_exists($path);
-	}
-
-	static public function dirExists($path){
-		return is_dir($path);
-	}
-
-	/**
 	 * Write the given string into the file.
 	 *
 	 * @param string $str    String that will be written.
@@ -44,7 +29,7 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 *
-	 * @throws StdObjectException
+	 * @throws FileObjectException
 	 */
 	function write($str, $length = null) {
 		try {
@@ -75,8 +60,11 @@ trait ManipulatorTrait
 				}
 
 			}
-		} catch (Exception $e) {
-			$this->exception('FileObject: Unable to write to file "' . $this->val() . '".' . "\n " . $e->getMessage());
+		} catch (\Exception $e) {
+			new FileObjectException(FileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																					   'write',
+																					   $this->val()
+																					   ]);
 		}
 
 		return $this;
@@ -85,9 +73,9 @@ trait ManipulatorTrait
 	/**
 	 * Truncate the given number of bytes from the file.
 	 *
-	 * @param null $size
+	 * @param null $size How many bytes to truncate. By default the whole file will be truncated.
 	 *
-	 * @throws StdObjectException
+	 * @throws FileObjectException
 	 * @return $this
 	 */
 	function truncate($size = null) {
@@ -97,9 +85,11 @@ trait ManipulatorTrait
 
 		try {
 			$this->_getDriver()->ftruncate($size);
-		} catch (Exception $e) {
-			throw new StdObjectException('FileObject: Unable to truncate the data from the given file: ' . $this->val() .
-											 "\n " . $e->getMessage());
+		} catch (\Exception $e) {
+			new FileObjectException(FileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																					   'truncate',
+																					   $this->val()
+																					   ]);
 		}
 
 		return $this;
@@ -111,34 +101,42 @@ trait ManipulatorTrait
 	 * @param int $mode Must be in format xxx. Example 0744
 	 *
 	 * @return $this
-	 * @throws StdObjectException
+	 * @throws FileObjectException
 	 */
 	function chmod($mode = 0644) {
 		$modeDec = decoct($mode);
 
 		if(!$this->_fileExists) {
-			throw new StdObjectException('FileObject: Unable to perform chmod because the file doesn\'t exist: ' . $this->val());
+			throw new FileObjectException(FileObjectException::MSG_FILE_DOESNT_EXIST, [$this->val()]);
 		}
 
 		// few $mode checks
 		if(!$this->isInteger($mode)) {
-			throw new StdObjectException('FileObject: $mode must be an integer (octal).');
+			throw new FileObjectException(FileObjectException::MSG_INVALID_ARG, [
+																				'$mode',
+																				'integer'
+																				]);
 		}
 
 		$modCheck = new StringObject($modeDec);
 		$modParts = $modCheck->split();
 		if($modParts->count() != 3) { // in octal we lose the zero (0).
-			throw new StdObjectException('FileObject: The chmod $mode param must be exactly 4 chars.');
+			throw new FileObjectException(FileObjectException::MSG_INVALID_ARG_LENGTH, [
+																					   '$mode',
+																					   'exactly 4 chars'
+																					   ]);
 		}
 		if($modParts->key(0) > 7 || $modParts->key(1) > 7 || $modParts->key(2) > 7) {
-			throw new StdObjectException('FileObject: Invalid chmod $mode value.');
+			throw new FileObjectException(FileObjectException::MSG_ARG_OUT_OF_RANGE, ['$mode']);
 		}
 
 		try {
 			chmod($this->val(), $mode);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileObject: Unable to perform chmod on: ' . $this->val() .
-											 " \nPlease check that you have the necessary permissions for this operation.");
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_PERFORM_ACTION, [
+																							 'chmod',
+																							 $this->val()
+																							 ]);
 		}
 
 		return $this;
@@ -148,14 +146,14 @@ trait ManipulatorTrait
 	 * Delete current file.
 	 *
 	 *
-	 * @throws \Exception|StdObjectException
+	 * @throws FileObjectException
 	 * @return $this
 	 */
 	function delete() {
-		try{
+		try {
 			$this->_getDriver()->delete();
-		}catch (StdObjectException $e){
-			throw $e;
+		} catch (\Exception $e) {
+			throw new FileObjectException($e->getMessage());
 		}
 
 		return $this;
@@ -166,15 +164,16 @@ trait ManipulatorTrait
 	 *
 	 * @param string $destination Path to where you want to place the file.
 	 *
-	 * @throws \Exception|StdObjectException
+	 * @throws FileObjectException
 	 * @return $this
 	 */
 	function move($destination) {
-		try{
+		try {
 			$this->_getDriver()->move($destination);
-		}catch (StdObjectException $e){
-			throw $e;
+		} catch (\Exception $e) {
+			throw new FileObjectException($e->getMessage());
 		}
+
 		return $this;
 	}
 
@@ -183,14 +182,14 @@ trait ManipulatorTrait
 	 *
 	 * @param string $destination Path to where to copy the file.
 	 *
-	 * @throws \Exception|StdObjectException
+	 * @throws FileObjectException
 	 * @return $this
 	 */
 	function copy($destination) {
-		try{
+		try {
 			$this->_getDriver()->copy($destination);
-		}catch (StdObjectException $e){
-			throw $e;
+		} catch (\Exception $e) {
+			throw new FileObjectException($e->getMessage());
 		}
 
 		return $this;
@@ -201,14 +200,14 @@ trait ManipulatorTrait
 	 *
 	 * @param string $name New file name.
 	 *
-	 * @throws \Exception|StdObjectException
+	 * @throws FileObjectException
 	 * @return $this
 	 */
 	function rename($name) {
-		try{
+		try {
 			$this->_getDriver()->rename($name);
-		}catch (StdObjectException $e){
-			throw $e;
+		} catch (\Exception $e) {
+			throw new FileObjectException($e->getMessage());
 		}
 
 		return $this;
@@ -221,19 +220,17 @@ trait ManipulatorTrait
 	 * @param null $time
 	 *
 	 * @return $this
-	 * @throws \Exception|\Webiny\StdLib\StdObject\StdObjectException
+	 * @throws FileObjectException
 	 */
-	function touch($time = null){
-		try{
+	function touch($time = null) {
+		try {
 			$this->_getDriver()->touch($time);
-		}catch (StdObjectException $e){
-			throw $e;
+		} catch (\Exception $e) {
+			throw new FileObjectException($e->getMessage());
 		}
 
 		return $this;
 	}
-
-
 
 	#########################
 	### pointer functions ###

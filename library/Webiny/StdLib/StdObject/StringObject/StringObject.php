@@ -12,12 +12,15 @@ namespace Webiny\StdLib\StdObject\StringObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectAbstract;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StringObject\ManipulatorTrait;
 use Webiny\StdLib\StdObject\StringObject\ValidatorTrait;
 
 /**
  * String standard object.
+ * This is a helper class for working with strings.
+ *
+ * Example:
+ * $s = new StringObject('some string');
  *
  * @package         Webiny\StdLib\StdObject\StringObject
  */
@@ -43,28 +46,35 @@ class StringObject extends StdObjectAbstract
 	 * Constructor.
 	 * Set standard object value.
 	 *
-	 * @param string|int $value
+	 * @param string|int $value A string from which the StringObject instance will be created.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 */
 	public function __construct($value) {
-		if(!$this->isString($value) && !$this->isNumber($value)){
-			throw new StdObjectException('StringObject: Unable to create StringObject from the given $value. Only strings and integers are allowed.');
+		if(!$this->isString($value) && !$this->isNumber($value)) {
+			if($this->isInstanceOf($value, $this)){
+				return $value;
+			}
+
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$value',
+																					'string'
+																					]);
 		}
-		$this->_value = (string) $value;
+		$this->_value = (string)$value;
 	}
 
 	/**
-	 * Returns the lenght of the current string.
+	 * Get the length of the current string.
 	 *
-	 * @return int
+	 * @return int Length of current string.
 	 */
 	public function length() {
 		return mb_strlen($this->val(), self::DEF_ENCODING);
 	}
 
 	/**
-	 * Return the number of words in the string.
+	 * Get the number of words in the string.
 	 *
 	 * @param int $format Specify the return format:
 	 * 0 - return number of words
@@ -72,7 +82,7 @@ class StringObject extends StdObjectAbstract
 	 * 2 - returns an ArrayObject, where the key is the numeric position of the word
 	 *                    inside the string and the value is the actual word itself
 	 *
-	 * @return mixed|ArrayObject
+	 * @return mixed|ArrayObject An ArrayObject or integer, based on the wanted $format, with the stats about the words in the string.
 	 */
 	public function wordCount($format = 0) {
 		if($format < 1) {
@@ -86,7 +96,7 @@ class StringObject extends StdObjectAbstract
 	/**
 	 * To string implementation.
 	 *
-	 * @return string
+	 * @return string Current string.
 	 */
 	public function __toString() {
 		return $this->val();

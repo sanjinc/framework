@@ -117,6 +117,17 @@ trait ValidatorTrait
 		return is_bool($var);
 	}
 
+	/**
+	 * This is an alias function for self::isBool
+	 *
+	 * @param $var
+	 *
+	 * @return bool
+	 */
+	static protected function isBoolean($var){
+		return self::isBool($var);
+	}
+
     /**
      * Checks if $var is a file.
      *

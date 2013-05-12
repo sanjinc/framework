@@ -1,7 +1,7 @@
 <?php
 namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
-require_once '../../../../WebinyFramework.php';
+require_once '../../../../../../WebinyFramework.php';
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectException;

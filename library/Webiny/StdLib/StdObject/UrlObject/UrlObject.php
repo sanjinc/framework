@@ -11,7 +11,6 @@
 namespace Webiny\StdLib\StdObject\UrlObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObjectTrait;
 use Webiny\StdLib\ValidatorTrait;
@@ -21,7 +20,10 @@ use Webiny\StdLib\StdObject\StdObjectAbstract;
  * Url standard object.
  * If you want to extract parameters from a url, or to build/change its parts, this is a class for that.
  *
- * @package         WebinyFramework
+ * Example usage:
+ * $url = new UrlObject('http://www.webiny.com?theBest=true');
+ *
+ * @package         Webiny\StdLib\StdObject\UrlObject
  */
 
 class UrlObject extends StdObjectAbstract
@@ -45,15 +47,19 @@ class UrlObject extends StdObjectAbstract
 	 *
 	 * @param string $value
 	 *
-	 * @throws StdObjectException
+	 * @throws UrlObjectException
 	 */
 	public function __construct($value) {
+		if($this->isInstanceOf($value, $this)){
+			return $value;
+		}
+
 		try {
 			$value = $this->str($value)->trim();
 			$this->_value = $value->val();
 			$this->_validateUrl();
-		} catch (StdObjectException $e) {
-			throw new StdObjectException('UrlObject: Unable to parse the given value "' . $value . '".', 0, $e);
+		} catch (\Exception $e) {
+			throw new UrlObjectException(UrlObjectException::MSG_INVALID_URL, [$value]);
 		}
 	}
 
@@ -62,6 +68,7 @@ class UrlObject extends StdObjectAbstract
 	 *
 	 * @param ArrayObject|array $parts Url parts, possible keys are: 'scheme', 'host', 'port', 'path' and 'query'
 	 *
+	 * @throws UrlObjectException
 	 * @return UrlObject
 	 */
 	static function buildUrl($parts) {
@@ -131,7 +138,11 @@ class UrlObject extends StdObjectAbstract
 			}
 		}
 
-		return new UrlObject($url);
+		try{
+			return new UrlObject($url);
+		}catch (\Exception $e){
+			throw new UrlObjectException($e->getMessage());
+		}
 	}
 
 	/**
@@ -164,49 +175,48 @@ class UrlObject extends StdObjectAbstract
 		header('Location:' . $this->val());
 
 		die();
-
 	}
 
 	/**
-	 * Returns host name, without trailing slash.
+	 * Get host name, without trailing slash.
 	 *
-	 * @return bool|string
+	 * @return bool|string Host name without the trailing slash.
 	 */
 	public function getHost() {
 		return $this->_host;
 	}
 
 	/**
-	 * Returns scheme (eg. http).
+	 * Get scheme (eg. http).
 	 *
-	 * @return bool|string
+	 * @return bool|string Url scheme, or false if it's not set.
 	 */
 	public function getScheme() {
 		return $this->_scheme;
 	}
 
 	/**
-	 * Returns port number.
+	 * Get port number.
 	 *
-	 * @return bool|int
+	 * @return bool|int Port number, or false if it's not set.
 	 */
 	public function getPort() {
 		return $this->_port;
 	}
 
 	/**
-	 * Returns query params as an array from current object.
+	 * Get query params as an array from current object.
 	 *
-	 * @return array
+	 * @return array Array containing query params from the current instance.
 	 */
 	public function getQuery() {
 		return $this->_query;
 	}
 
 	/**
-	 * Returns the domain name of the current url.
+	 * Get the domain name of the current url.
 	 *
-	 * @return string|bool
+	 * @return string|bool Domain name, or false it's not set.
 	 */
 	public function getDomain() {
 		if($this->getScheme() && $this->getHost()) {
@@ -217,9 +227,9 @@ class UrlObject extends StdObjectAbstract
 	}
 
 	/**
-	 * Returns path from the current url.
+	 * Get the path from the current url.
 	 *
-	 * @return string
+	 * @return string Path from the current instance.
 	 */
 	public function getPath() {
 		return $this->_path;
@@ -255,13 +265,13 @@ class UrlObject extends StdObjectAbstract
 	/**
 	 * Validates current url and parses data like scheme, host, query, and similar from, it.
 	 *
-	 * @throws StdObjectException
+	 * @throws UrlObjectException
 	 */
 	private function _validateUrl() {
 		$urlData = parse_url($this->val());
 
 		if(!$urlData || !$this->isArray($urlData)) {
-			throw new StdObjectException("UrlObject: Given value is not a valid URL.");
+			throw new UrlObjectException(UrlObjectException::MSG_INVALID_URL, [$this->val()]);
 		}
 
 		// extract parts
@@ -311,7 +321,7 @@ class UrlObject extends StdObjectAbstract
 	 * @param integer $headerCode Header code.
 	 *
 	 * @return string
-	 * @throws StdObjectException
+	 * @throws UrlObjectException
 	 */
 	private function _getHeaderResponseString($headerCode) {
 		switch ($headerCode) {
@@ -427,7 +437,7 @@ class UrlObject extends StdObjectAbstract
 				$text = 'HTTP Version not supported';
 				break;
 			default:
-				throw new StdObjectException('UrlObject: Invalid header code supplied "' . $headerCode . '".');
+				throw new UrlObjectException(UrlObjectException::MSG_ARG_OUT_OF_RANGE, ['$headerCode']);
 				break;
 		}
 

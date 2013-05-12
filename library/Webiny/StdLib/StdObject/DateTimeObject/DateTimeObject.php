@@ -11,13 +11,14 @@ namespace Webiny\StdLib\StdObject\DateTimeObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectAbstract;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
-use Webiny\StdLib\StdObject\DateTimeObject\ValidatorTrait;
 
 /**
  * Date standard object.
  * Class that enables you to work with dates and time much easier.
+ *
+ * Example:
+ * $dt = new DateTimeObject('3 days ago');
  *
  * @package         Webiny\StdLib\StdObject\DateTimeObject
  */
@@ -115,7 +116,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @param null|string $timezone                 Timezone in which you want to set the date. Here is a list of valid
 	 *                                              timezones: http://php.net/manual/en/timezones.php
 	 *
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 * @internal param mixed $value
 	 */
 	public function __construct($time = "now", $timezone = null) {
@@ -130,7 +131,7 @@ class DateTimeObject extends StdObjectAbstract
 			// get UTC offset and correct the date to UTC by calculating the offset
 			$this->_timestamp = $this->_getDateObject()->getTimestamp();
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to create a DateTimeObject.', 0, $e);
+			throw new DateTimeObjectException($e->getMessage());
 		}
 	}
 
@@ -156,17 +157,17 @@ class DateTimeObject extends StdObjectAbstract
 	 *                                       visit: http://php.net/manual/en/timezones.php
 	 *
 	 * @return $this
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	public function setTimezone($timezone) {
 		try {
-			if(!$this->isInstanceOf($timezone, 'DateTimeZone')){
+			if(!$this->isInstanceOf($timezone, 'DateTimeZone')) {
 				$timezone = new \DateTimeZone($timezone);
 			}
 
 			$this->_getDateObject()->setTimezone($timezone);
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Invalid timezone provided "' . $timezone . '"');
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_TIMEZONE, [$timezone]);
 		}
 
 		return $this;
@@ -179,7 +180,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @param null|string $format Format in which the current timestamp is defined.
 	 *
 	 * @return DateTimeObject
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	static public function createFromFormat($time, $format = null) {
 		if(self::isNull($format)) {
@@ -189,18 +190,18 @@ class DateTimeObject extends StdObjectAbstract
 		try {
 			$date = \DateTime::createFromFormat($format, $time);
 			if(!$date) {
-				throw new StdObjectException('DateTimeObject: Unable to create date from the given $time and $format');
+				throw new DateTimeObjectException(DateTimeObjectException::MSG_UNABLE_TO_CREATE_FROM_FORMAT);
 			}
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to create date from the given $time and $format.', 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_UNABLE_TO_CREATE_FROM_FORMAT);
 		}
 
 		try {
 			$dt = new DateTimeObject();
 			$dt->setTimestamp($date->getTimestamp());
 			$dt->setFormat($format);
-		} catch (StdObjectException $e) {
-			throw new StdObjectException('DateTimeObject: Unable to create DateTimeObject.', 0, $e);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_UNABLE_TO_CREATE_FROM_FORMAT);
 		}
 
 		return $dt;
@@ -210,8 +211,8 @@ class DateTimeObject extends StdObjectAbstract
 	 * @param int|string|\DateTime|DateTimeObject $time     Date to compare to.
 	 * @param bool                                $absolute Should the interval be forced to be positive?
 	 *
-	 * @throws StdObjectException
-	 * @return ArrayObject
+	 * @throws DateTimeObjectException
+	 * @return ArrayObject Instance of ArrayObject containing time units (d,m,y,h,i,s) for keys and amounts for their values.
 	 */
 	public function diff($time, $absolute = false) {
 		try {
@@ -226,13 +227,13 @@ class DateTimeObject extends StdObjectAbstract
 				}
 			}
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to parse $time.', 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_UNABLE_TO_PARSE, ['$time']);
 		}
 
 		try {
 			$diff = $this->_getDateObject()->diff($date, $absolute);
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to diff the two dates.', 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_UNABLE_TO_DIFF);
 		}
 
 		$result = get_object_vars($diff);
@@ -245,83 +246,83 @@ class DateTimeObject extends StdObjectAbstract
 	 *
 	 * @param string $format A valid date format.
 	 *
-	 * @return string
-	 * @throws StdObjectException
+	 * @return string A string containing the date in the given $format.
+	 * @throws DateTimeObjectException
 	 */
 	public function format($format) {
 		try {
 			return $this->_getDateObject()->format($format);
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to return date in the given format "' . $format . '".', 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_DATE_FORMAT, [$format]);
 		}
 	}
 
 	/**
-	 * Returns the offset from current timezone to the UTC timezone in seconds.
+	 * Get the offset from current timezone to the UTC timezone in seconds.
 	 *
-	 * @return int
+	 * @return int The offset from current timezone to UTC in seconds.
 	 */
 	public function getOffset() {
 		return $this->_getDateObject()->getOffset();
 	}
 
 	/**
-	 * Returns the name of current timezone.
+	 * Get the name of current timezone.
 	 *
-	 * @return \DateTimeZone
+	 * @return string The name of current timezone.
 	 */
 	public function getTimezone() {
 		return $this->_getDateObject()->getTimezone()->getName();
 	}
 
 	/**
-	 * Returns date in full date format.
+	 * Get date in full date format.
 	 *
 	 * @param null|string $format A valid date format.
 	 *
-	 * @return string
+	 * @return string Date in full date format like ISO 8691 or RFC 2822.
 	 */
 	public function getDate($format = null) {
 		return $this->_getDateElement('date', $format);
 	}
 
 	/**
-	 * Return year based on current date.
+	 * Get year based on current date.
 	 *
 	 * @param null|string $format A valid year format.
 	 *
-	 * @return string
+	 * @return string Year based on current date.
 	 */
 	public function getYear($format = null) {
 		return $this->_getDateElement('year', $format);
 	}
 
 	/**
-	 * Return month based on current date.
+	 * Get month based on current date.
 	 *
 	 * @param null|string $format A valid month format.
 	 *
-	 * @return string
+	 * @return string  Month based on current date.
 	 */
 	public function getMonth($format = null) {
 		return $this->_getDateElement('month', $format);
 	}
 
 	/**
-	 * Return week number based on current date.
+	 * Get week number based on current date.
 	 *
-	 * @return int
+	 * @return int Wek number based on current date.
 	 */
 	public function getWeek() {
 		return $this->_getDateElement('week');
 	}
 
 	/**
-	 * Return day based on current date.
+	 * Get day based on current date.
 	 *
 	 * @param null|string $format A valid day format.
 	 *
-	 * @return string
+	 * @return string  Day based on current date.
 	 */
 	public function getDay($format = null) {
 		return $this->_getDateElement('day', $format);
@@ -332,55 +333,55 @@ class DateTimeObject extends StdObjectAbstract
 	 *
 	 * @param null|string $format A valid time format.
 	 *
-	 * @return string
+	 * @return string Time based on current date.
 	 */
 	public function getTime($format = null) {
 		return $this->_getDateElement('time', $format);
 	}
 
 	/**
-	 * Return hours based on current date.
+	 * Get hours based on current date.
 	 *
 	 * @param null|string $format A valid hour format.
 	 *
-	 * @return string
+	 * @return string Hours based on current date.
 	 */
 	public function getHours($format = null) {
 		return $this->_getDateElement('hours', $format);
 	}
 
 	/**
-	 * Return meridiem (am, pm) based on current date.
+	 * Get meridiem (am, pm) based on current date.
 	 *
 	 * @param null|string $format A valid meridiem format.
 	 *
-	 * @return string
+	 * @return string Meridiem (am, pm) based on current date.
 	 */
 	public function getMeridiem($format = null) {
 		return $this->_getDateElement('meridiem', $format);
 	}
 
 	/**
-	 * Return minutes based on current date.
+	 * Get minutes based on current date.
 	 *
-	 * @return string
+	 * @return string Minutes based on current date
 	 */
 	public function getMinutes() {
 		return $this->_getDateElement('minutes');
 	}
 
 	/**
-	 * Return seconds based on current date.
+	 * Get seconds based on current date.
 	 *
-	 * @return string
+	 * @return string Seconds based on current date.
 	 */
 	public function getSeconds() {
 		return $this->_getDateElement('seconds');
 	}
 
 	/**
-	 * Return UNIX timestamp.
-	 * @return int
+	 * Get UNIX timestamp based on current date.
+	 * @return int UNIX timestamp based on current date
 	 */
 	public function getTimestamp() {
 		return $this->_getDateObject()->getTimestamp();
@@ -392,7 +393,7 @@ class DateTimeObject extends StdObjectAbstract
 	 *
 	 * @param null $from Timestamp from where to calculate the offset. Default is now.
 	 *
-	 * @return string
+	 * @return string String describing the passed time. Example "4 hours ago".
 	 */
 	public function getTimeAgo($from = null) {
 		$periods = [
@@ -449,7 +450,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * @return mixed
 	 */
 	public function val($value = null) {
-		if(!$this->isNull($value)){
+		if(!$this->isNull($value)) {
 			$this->_value = $value;
 
 			return $this;
@@ -472,7 +473,7 @@ class DateTimeObject extends StdObjectAbstract
 	 *
 	 * @return \DateTime|null
 	 */
-	private function _getDateObject(){
+	private function _getDateObject() {
 		return $this->_value;
 	}
 
@@ -484,7 +485,7 @@ class DateTimeObject extends StdObjectAbstract
 	 *                              http://www.php.net/manual/en/timezones.php
 	 *
 	 * @return \DateTimeZone
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	private function _createTimezone($timezone = null) {
 		try {
@@ -495,7 +496,7 @@ class DateTimeObject extends StdObjectAbstract
 
 						self::$_defaultTimezone = new \DateTimeZone($defaultTimezone);
 					} catch (\Exception $e) {
-						throw new StdObjectException('DateTimeObject: Unable to detect the default timezone.');
+						throw new DateTimeObjectException(DateTimeObjectException::MSG_DEFAULT_TIMEZONE);
 					}
 				}
 
@@ -504,7 +505,7 @@ class DateTimeObject extends StdObjectAbstract
 				return new \DateTimeZone($timezone);
 			}
 		} catch (\Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to create a valid time zone for given zone: ' . $timezone, 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_TIMEZONE, [$timezone]);
 		}
 	}
 
@@ -512,7 +513,7 @@ class DateTimeObject extends StdObjectAbstract
 	 * This function parses the format provided by Config and sets the default formatting for getting date information
 	 * like day, month, year, etc..
 	 *
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	private function _parseDateTimeFormat() {
 		try {
@@ -533,8 +534,8 @@ class DateTimeObject extends StdObjectAbstract
 				}
 			}
 			$this->_dateTimeFormat = new ArrayObject($this->_dateTimeFormat);
-		} catch (StdObjectException $e) {
-			throw new StdObjectException('DateTimeObject: Unable to parse date/time format.', 0, $e);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_DATE_FORMAT, [$this->_format]);
 		}
 	}
 
@@ -573,11 +574,14 @@ class DateTimeObject extends StdObjectAbstract
 	 * @param string $format      For list of possible formats check: http://php.net/manual/en/function.date.php
 	 *
 	 * @return mixed
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	private function _validateFormatFor($dateElement, $format) {
 		if(!self::$_formatters->key($dateElement)->inArray($format)) {
-			throw new StdObjectException('DateTimeObject: Invalid format "' . $format . '" for "get' . ucfirst($dateElement) . '"');
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_FORMAT_FOR_ELEMENT, [
+																									   $format,
+																									   "get" . ucfirst($dateElement)
+																									   ]);
 		}
 
 		return $format;

@@ -9,8 +9,6 @@
 
 namespace Webiny\StdLib\StdObject\DateTimeObject;
 
-use Exception;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
@@ -30,11 +28,16 @@ trait ManipulatorTrait
 	 *                       or as a date string (example: '1 day', '2 months', '3 year', '2 days + 10 minutes').
 	 *
 	 * @return $this
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	public function add($amount) {
-		$interval = $this->_parseDateInterval($amount);
-		$this->_getDateObject()->add($interval);
+		try {
+			$interval = $this->_parseDateInterval($amount);
+			$this->_getDateObject()->add($interval);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
+		}
+
 
 		return $this;
 	}
@@ -46,10 +49,15 @@ trait ManipulatorTrait
 	 * @param int $month
 	 * @param int $day
 	 *
+	 * @throws DateTimeObjectException
 	 * @return $this
 	 */
 	public function setDate($year, $month, $day) {
-		$this->_getDateObject()->setDate($year, $month, $day);
+		try {
+			$this->_getDateObject()->setDate($year, $month, $day);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
+		}
 
 		return $this;
 	}
@@ -61,10 +69,15 @@ trait ManipulatorTrait
 	 * @param int $minute
 	 * @param int $second
 	 *
+	 * @throws DateTimeObjectException
 	 * @return $this
 	 */
 	public function setTime($hour, $minute, $second = 0) {
-		$this->_getDateObject()->setTime($hour, $minute, $second);
+		try {
+			$this->_getDateObject()->setTime($hour, $minute, $second);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
+		}
 
 		return $this;
 	}
@@ -74,10 +87,15 @@ trait ManipulatorTrait
 	 *
 	 * @param int $timestamp UNIX timestamp.
 	 *
+	 * @throws DateTimeObjectException
 	 * @return $this
 	 */
 	public function setTimestamp($timestamp) {
-		$this->_getDateObject()->setTimestamp($timestamp);
+		try {
+			$this->_getDateObject()->setTimestamp($timestamp);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
+		}
 
 		return $this;
 	}
@@ -89,11 +107,15 @@ trait ManipulatorTrait
 	 *                       or as a date string (example: '1 day', '2 months', '3 year', '2 days + 10 minutes').
 	 *
 	 * @return $this
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	public function sub($amount) {
-		$interval = $this->_parseDateInterval($amount);
-		$this->_getDateObject()->sub($interval);
+		try {
+			$interval = $this->_parseDateInterval($amount);
+			$this->_getDateObject()->sub($interval);
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
+		}
 
 		return $this;
 	}
@@ -107,14 +129,14 @@ trait ManipulatorTrait
 	 *                                       or a valid timezone string. For timezone string formats
 	 *                                       visit: http://php.net/manual/en/timezones.php
 	 *
-	 * @throws Exception|\Webiny\StdLib\StdObject\StdObjectException
+	 * @throws DateTimeObjectException
 	 * @return $this
 	 */
 	public function offsetToTimezone($timezone) {
 		try {
 			$this->setTimezone($timezone);
-		} catch (StdObjectException $e) {
-			throw $e;
+		} catch (\Exception $e) {
+			throw new DateTimeObjectException($e->getMessage());
 		}
 
 		return $this;
@@ -124,7 +146,7 @@ trait ManipulatorTrait
 	 * @param $interval
 	 *
 	 * @return \DateInterval
-	 * @throws StdObjectException
+	 * @throws DateTimeObjectException
 	 */
 	private function _parseDateInterval($interval) {
 		try {
@@ -137,7 +159,7 @@ trait ManipulatorTrait
 				}
 			}
 		} catch (Exception $e) {
-			throw new StdObjectException('DateTimeObject: Unable to read the given $amount as date inverval.', 0, $e);
+			throw new DateTimeObjectException(DateTimeObjectException::MSG_INVALID_DATE_INTERVAL, [$interval]);
 		}
 
 		return $interval;

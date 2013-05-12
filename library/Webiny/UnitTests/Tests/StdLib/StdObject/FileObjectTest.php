@@ -2,7 +2,7 @@
 
 namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
-require_once '../../../../WebinyFramework.php';
+require_once '../../../../../../WebinyFramework.php';
 
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\StdObjectException;
@@ -11,7 +11,7 @@ use Webiny\StdLib\StdObject\FileObject\FileObject;
 class FileObjectTest extends \PHPUnit_Framework_TestCase
 {
 
-	public $filePath = '/var/www/newwebiny/framework/UnitTests/Tests/StdLib/StdObject/file-test.txt';
+	public $filePath = '/var/www/newwebiny/framework/library/Webiny/UnitTests/Tests/StdLib/StdObject/file-test.txt';
 
 
 	/**

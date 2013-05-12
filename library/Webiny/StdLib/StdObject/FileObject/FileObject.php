@@ -11,7 +11,6 @@ namespace Webiny\StdLib\StdObject\FileObject;
 
 use SplFileObject;
 use Webiny\StdLib\StdObject\StdObjectAbstract;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
@@ -19,6 +18,9 @@ use Webiny\StdLib\StdObject\StringObject\StringObject;
 /**
  * This is the file standard object.
  * Using this standard object you can check if file exits, you can also create and modify files and get file meta data.
+ *
+ * Example:
+ * $fo = new FileObject($pathToFile);
  *
  * @package         Webiny\StdLib\StdObject
  */
@@ -55,9 +57,13 @@ class FileObject extends StdObjectAbstract
 	 *
 	 * @param string|StringObject $pathToFile Absolute path to the file.
 	 *
-	 * @throws StdObjectException
+	 * @throws FileObjectException
 	 */
 	public function __construct($pathToFile) {
+		if(self::isInstanceOf($pathToFile, $this)){
+			return $pathToFile;
+		}
+
 		// assign file path
 		$this->_value = StdObjectWrapper::toString($pathToFile);
 
@@ -73,81 +79,101 @@ class FileObject extends StdObjectAbstract
 			$this->_fileExists = true;
 			$this->_value = $realPath;
 		} else {
-			throw new StdObjectException('FileObject: Unable to create, or access, file: ' . $this->_value);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_ACCESS, [$this->_value]);
 		}
 	}
 
 	/**
-	 * Returns the file size in bytes.
+	 * Get the file size in bytes.
 	 *
-	 * @throws StdObjectException
-	 * @return int
+	 * @throws FileObjectException
+	 * @return int Size of the file in bytes.
 	 */
 	public function getSize() {
 		try {
 			return $this->_getDriver()->getSize();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to get file size for file: ' . $this->_value . "\n " . $e->getMessage(), 0, $e);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'size',
+																							 $this->_value
+																							 ]);
 		}
 	}
 
 	/**
-	 * Returns file name without the directory path.
+	 * Get file name without the directory path.
 	 *
-	 * @throws StdObjectException
-	 * @return mixed|string
+	 * @throws FileObjectException
+	 * @return string The name of the file with its extension and without the directory path.
 	 */
 	public function getBasename() {
 		try {
 			return $this->_getDriver()->getBasename();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file basename for file "' . $this->_value . '"', 0, $e);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'basename',
+																							 $this->_value
+																							 ]);
 		}
 	}
 
 	/**
-	 * Return file extension.
+	 * Get file extension.
 	 *
-	 * @throws StdObjectException
-	 * @return string
+	 * @throws FileObjectException
+	 * @return string File extension.
 	 */
 	public function getExtension() {
 		try {
 			return $this->_getDriver()->getExtension();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file extension "' . $this->_value . '"', 0, $e);
-		}
-	}
-
-	public function getPath() {
-		try {
-			return $this->_getDriver()->getPath();
-		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file path "' . $this->_value . '"', 0, $e);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'extension',
+																							 $this->_value
+																							 ]);
 		}
 	}
 
 	/**
-	 * Returns last modified time.
+	 * Get the directory path to the file, without the file name.
 	 *
-	 * @return int
-	 * @throws StdObjectException
+	 * @return string Path to the file, without the file name.
+	 * @throws FileObjectException
+	 */
+	public function getPath() {
+		try {
+			return $this->_getDriver()->getPath();
+		} catch (\Exception $e) {
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'path',
+																							 $this->_value
+																							 ]);
+		}
+	}
+
+	/**
+	 * Get last modified time.
+	 *
+	 * @return int File last modified time as UNIX timestamp.
+	 * @throws FileObjectException
 	 */
 	public function getMTime() {
 		try {
 			return $this->_getDriver()->getMTime();
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to read file last modified time "' . $this->_value . '"', 0, $e);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'last modified time',
+																							 $this->_value
+																							 ]);
 		}
 	}
 
 	/**
 	 * Get current file path, or set a new file path for current file object.
 	 *
-	 * @param string|null $value
+	 * @param string|null $value If set, current FileObject instance will use that path for file manipulation.
 	 *
-	 * @return array|\Webiny\StdLib\StdObject\ArrayObject\ArrayObject
-	 * @throws \Webiny\StdLib\StdObject\StdObjectException
+	 * @return mixed|null|string Either returns the path to the file or current FileObject instance.
 	 */
 	public function val($value = null) {
 		if(!$this->isNull($value)) {
@@ -155,20 +181,16 @@ class FileObject extends StdObjectAbstract
 			$this->_driver = null;
 		}
 
-		try {
-			return $this->_value;
-		} catch (\Exception $e) {
-			throw new StdObjectException('FileObject: Unable to get file path "' . $this->_value . '"', 0, $e);
-		}
+		return $this->_value;
 	}
 
 	/**
-	 * Returns file mime type.
+	 * Get file mime-type.
 	 * This function uses FileInfo extension.
 	 * @link http://www.php.net/manual/en/book.fileinfo.php
 	 *
-	 * @throws StdObjectException
-	 * @return string
+	 * @throws FileObjectException
+	 * @return string The file mime-type.
 	 */
 	public function getMimeType() {
 		try {
@@ -176,7 +198,10 @@ class FileObject extends StdObjectAbstract
 			$info = finfo_file($fi, $this->_value);
 			finfo_close($fi);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('FileInfo: Unable to read mime type for file: ' . $this->_value);
+			throw new FileObjectException(FileObjectException::MSG_UNABLE_TO_READ_FILE_PROP, [
+																							 'mime-type',
+																							 $this->_value
+																							 ]);
 		}
 
 		return $info;
@@ -192,7 +217,7 @@ class FileObject extends StdObjectAbstract
 	/**
 	 * Reads the entire file into memory and returns is as a string.
 	 *
-	 * @return string
+	 * @return string File content.
 	 */
 	public function getFileContent() {
 		return file_get_contents($this->_value);
@@ -201,7 +226,7 @@ class FileObject extends StdObjectAbstract
 	/**
 	 * To string implementation.
 	 *
-	 * @return mixed
+	 * @return mixed Full path to the file.
 	 */
 	public function __toString() {
 		return $this->_value;
@@ -210,20 +235,20 @@ class FileObject extends StdObjectAbstract
 	/**
 	 * Get driver for handling file operations.
 	 *
-	 * @throws StdObjectException
-	 * @return \Webiny\StdLib\StdObject\FileObject\FileObjectDriverInterface
+	 * @throws FileObjectException
+	 * @return FileObjectDriverInterface
 	 */
 	protected function _getDriver() {
 		if($this->isNull($this->_driver)) {
 			try {
 				$driver = '\Webiny\StdLib\StdObject\FileObject\Drivers\\' . self::DRIVER;
 				$this->_driver = new $driver($this->_value);
-				if(!$this->isInstanceOf($this->_driver, 'Webiny\StdLib\StdObject\FileObject\FileObjectDriverInterface')) {
-					throw new StdObjectException('FileObject: Driver must implement FileObjectDriverInterface interface');
+				if(!$this->isInstanceOf($this->_driver, 'Webiny\StdLib\StdObject\FileObject\FileObjectDriverInterface')
+				) {
+					throw new FileObjectException(FileObjectException::MSG_DRIVER_INTERFACE);
 				}
 			} catch (\ErrorException $e) {
-				throw new StdObjectException($this->_value . 'FileObject: Unable to create driver instance for driver:
-                							' . self::DRIVER);
+				throw new FileObjectException(FileObjectException::MSG_DRIVER_INSTANCE, [$driver]);
 			}
 		}
 

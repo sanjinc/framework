@@ -10,16 +10,13 @@
 
 namespace Webiny\StdLib\StdObject\StringObject;
 
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectValidatorTrait;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 
 /**
- * String validator trait.
+ * StringObject validator trait.
  *
- * @package         WebinyFramework
- * @category        StdLib
- * @subcategory        String
+ * @package         Webiny\StdLib\StdObject\StringObject
  */
 
 trait ValidatorTrait
@@ -33,18 +30,13 @@ trait ValidatorTrait
 	 *
 	 * @param string|StringObject $needle String you wish to check if it exits within the current string.
 	 *
-	 * @throws StdObjectException
-	 * @return bool
+	 * @return bool True if current string contains the $needle. Otherwise false is returned.
 	 */
 	public function contains($needle) {
-		if(!$this->isString($needle) && !$this->isInstanceOf($needle, $this)) {
-			throw new StdObjectException('StringObject: $needle must be a string or a StringObject.');
-		}
+		$needle = StdObjectWrapper::toString($needle);
 
-		if($this->isInstanceOf($needle, $this)) {
-			$needle = $needle->val();
-		}
-
+		// we double-cast the $needle param to string, because integer is also a string, but in stripos function integer
+		// can cause unwanted mismatches if it's not strictly casted to string
 		if(stripos($this->val(), (string)$needle) !== false) {
 			return true;
 		}
@@ -58,18 +50,13 @@ trait ValidatorTrait
 	 *
 	 * @param string|StringObject $string String to compare.
 	 *
-	 * @throws StdObjectException
-	 * @return bool
+	 * @return bool True if current string is equal to $string. Otherwise false is returned.
 	 */
 	public function equals($string) {
-		if($this->isInstanceOf($string, $this)) {
-			$string = $string->val();
-		} else {
-			if(!$this->isString($string)) {
-				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
-			}
-		}
+		$string = StdObjectWrapper::toString($string);
 
+		// we double-cast the $string param to string, because integer is also a string, but in strcmp function integer
+		// can cause unwanted mismatches if it's not strictly casted to string
 		$result = strcmp((string)$string, $this->val());
 		if($result !== 0) {
 			return false;
@@ -86,22 +73,21 @@ trait ValidatorTrait
 	 * @param string $string
 	 * @param int    $offset
 	 *
-	 * @throws StdObjectException
-	 * @return int|bool
+	 * @throws StringObjectException
+	 * @return int|bool If $string is contained within the current string, the position of $string is returned, otherwise false.
 	 */
 	public function stringPosition($string, $offset = 0) {
-		if($this->isInstanceOf($string, $this)) {
-			$string = $string->val();
-		} else {
-			if(!$this->isString($string)) {
-				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
-			}
-		}
+		$string = StdObjectWrapper::toString($string);
 
 		if(!$this->isNumber($offset)) {
-			throw new StdObjectException('StringObject: $offset must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$offset',
+																					'integer'
+																					]);
 		}
 
+		// we double-cast the $string param to string, because integer is also a string, but in stripos function integer
+		// can cause unwanted mismatches if it's not strictly casted to string
 		return stripos($this->val(), (string)$string, $offset);
 	}
 
@@ -110,17 +96,10 @@ trait ValidatorTrait
 	 *
 	 * @param string|StringObject $string String to check.
 	 *
-	 * @throws StdObjectException
-	 * @return bool
+	 * @return bool If current string starts with $string, true is returned, otherwise false.
 	 */
 	public function startsWith($string) {
-		if($this->isInstanceOf($string, $this)) {
-			$string = $string->val();
-		} else {
-			if(!$this->isString($string)) {
-				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
-			}
-		}
+		$string = StdObjectWrapper::toString($string);
 
 		$position = $this->stringPosition($string);
 		if($position !== false && $position == 0) {
@@ -135,17 +114,10 @@ trait ValidatorTrait
 	 *
 	 * @param string|StringObject $string String to check.
 	 *
-	 * @throws StdObjectException
-	 * @return bool
+	 * @return bool If current string ends with $string, true is returned, otherwise false.
 	 */
 	public function endsWith($string) {
-		if($this->isInstanceOf($string, $this)) {
-			$string = $string->val();
-		} else {
-			if(!$this->isString($string)) {
-				throw new StdObjectException('StringObject: $string must be a string or a StringObject.');
-			}
-		}
+		$string = StdObjectWrapper::toString($string);
 
 		// calculate the end position
 		$endString = new StringObject($string);
@@ -162,12 +134,27 @@ trait ValidatorTrait
 	/**
 	 * Checks if the string length is great than the given length.
 	 *
-	 * @param int  $num
-	 * @param bool $inclusive
+	 * @param int  $num       Length against which you wish to check.
+	 * @param bool $inclusive Do you want the check to be inclusive or not. Default is false (not inclusive).
 	 *
-	 * @return bool
+	 * @throws StringObjectException
+	 * @return bool If current string size is longer than the given $num, true is returned, otherwise false.
 	 */
 	public function longerThan($num, $inclusive = false) {
+		if(!$this->isNumber($num)) {
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$num',
+																					'integer'
+																					]);
+		}
+
+		if(!$this->isBoolean($inclusive)){
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$inclusive',
+																					'boolean'
+																					]);
+		}
+
 		$length = strlen($this->val());
 		if($length > $num) {
 			return true;

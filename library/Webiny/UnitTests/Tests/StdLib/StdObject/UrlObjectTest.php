@@ -2,7 +2,7 @@
 
 namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
-require_once '../../../../WebinyFramework.php';
+require_once '../../../../../../WebinyFramework.php';
 
 use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\UrlObject\UrlObject;

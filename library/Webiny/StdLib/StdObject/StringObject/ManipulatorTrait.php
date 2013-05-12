@@ -11,12 +11,10 @@
 namespace Webiny\StdLib\StdObject\StringObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
-use Webiny\StdLib\ValidatorTrait;
 
 /**
- * String manipulators.
+ * StringObject manipulator trait.
  *
  * @package         Webiny\StdLib\StdObject\StringObject
  */
@@ -30,7 +28,7 @@ trait ManipulatorTrait
 	 *
 	 * @param string|null $char  Char you want to trim.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function trim($char = null) {
@@ -38,7 +36,10 @@ trait ManipulatorTrait
 			$value = trim($this->val());
 		} else {
 			if(!$this->isString($char)) {
-				throw new StdObjectException('StringObject: $char must be a string.');
+				throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																						'$char',
+																						'string'
+																						]);
 			}
 
 			$value = trim($this->val(), $char);
@@ -151,7 +152,7 @@ trait ManipulatorTrait
 
 	/**
 	 * Strips a slash from the start of the string.
-	 * If there are two or more slashes at the begining of the string, all of them will be stripped.
+	 * If there are two or more slashes at the beginning of the string, all of them will be stripped.
 	 *
 	 * @return $this
 	 */
@@ -166,12 +167,15 @@ trait ManipulatorTrait
 	 *
 	 * @param string $char Char you want to trim.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function trimLeft($char) {
 		if(!$this->isString($char)) {
-			throw new StdObjectException('StringObject: $char must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$char',
+																					'string'
+																					]);
 		}
 		$this->val(ltrim($this->val(), $char));
 
@@ -183,12 +187,15 @@ trait ManipulatorTrait
 	 *
 	 * @param string $char Char you want to trim.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function trimRight($char) {
 		if(!$this->isString($char)) {
-			throw new StdObjectException('StringObject: $char must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$char',
+																					'string'
+																					]);
 		}
 
 		$this->val(rtrim($this->val(), $char));
@@ -202,12 +209,22 @@ trait ManipulatorTrait
 	 * @param int $startPosition From which char position will the substring start.
 	 * @param int $length        Where will the substring end.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function subString($startPosition, $length) {
-		if(!$this->isNumber($startPosition) || !$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: Both $startPosition and $length must be integers.');
+		if(!$this->isNumber($startPosition)) {
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$startPosition',
+																					'integer'
+																					]);
+		}
+
+		if(!$this->isNumber($length)) {
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		$value = mb_substr($this->val(), $startPosition, $length, self::DEF_ENCODING);
@@ -223,7 +240,7 @@ trait ManipulatorTrait
 	 * @param string|array $search  String, or array of strings, that will replaced.
 	 * @param string|array $replace String, or array of strings, with whom $search occurrences will be replaced.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function replace($search, $replace) {
@@ -231,7 +248,7 @@ trait ManipulatorTrait
 			$value = str_ireplace($search, $replace, $this->val(), $count);
 			$this->val($value);
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('StringObject: ' . $e->getMessage());
+			throw new StringObjectException($e->getMessage());
 		}
 
 		return $this;
@@ -243,26 +260,32 @@ trait ManipulatorTrait
 	 * @param string   $delimiter String upon which the current string will be exploded.
 	 * @param null|int $limit     Limit the number of exploded items.
 	 *
-	 * @return ArrayObject
-	 * @throws StdObjectException
+	 * @return ArrayObject ArrayObject object containing exploded values.
+	 * @throws StringObjectException
 	 */
 	public function explode($delimiter, $limit = null) {
 		if(!$this->isString($delimiter)) {
-			throw new StdObjectException('StringObject: $delimiter must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$delimiter',
+																					'string'
+																					]);
 		}
 
 		if($this->isNull($limit)) {
 			$arr = explode($delimiter, $this->val());
 		} else {
 			if(!$this->isNumber($limit)) {
-				throw new StdObjectException('StringObject: $limit must be an integer.');
+				throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																						'$limit',
+																						'integer'
+																						]);
 			}
 
 			$arr = explode($delimiter, $this->val(), $limit);
 		}
 
 		if(!$arr) {
-			throw new StdObjectException('StringObject: Unable to explode the string with the given delimiter "' . $delimiter . '"');
+			throw new StringObjectException(StringObjectException::MSG_UNABLE_TO_EXPLODE, [$delimiter]);
 		}
 
 		return new ArrayObject($arr);
@@ -273,12 +296,15 @@ trait ManipulatorTrait
 	 *
 	 * @param int $chunkSize Size of each chunk. Set it to 1 if you want to get all the characters from the string.
 	 *
-	 * @throws StdObjectException
-	 * @return ArrayObject
+	 * @throws StringObjectException
+	 * @return ArrayObject ArrayObject containing string chunks.
 	 */
 	public function split($chunkSize = 1) {
 		if(!$this->isNumber($chunkSize)) {
-			throw new StdObjectException('StringObject: $chunkSize must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$chunkSize',
+																					'integer'
+																					]);
 		}
 
 		$arr = str_split($this->val(), $chunkSize);
@@ -291,14 +317,13 @@ trait ManipulatorTrait
 	 *
 	 * @param string $algo        Name of the algorithm used for calculation (md5, sha1, ripemd160,...).
 	 *
-	 * @throws StdObjectException
-	 * @return string
+	 * @throws StringObjectException
+	 * @return $this
 	 */
 	public function hash($algo = 'sha1') {
 		$algos = new ArrayObject(hash_algos());
 		if(!$algos->inArray($algo)) {
-			throw new StdObjectException('StringObject: Invalid hash algorithm provided: "' . $algo . '"'
-											 . ' Visit http://www.php.net/manual/en/function.hash-algos.php for more information.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_HASH_ALGO, [$algo]);
 		}
 
 		$this->val(hash($algo, $this->val()));
@@ -324,7 +349,7 @@ trait ManipulatorTrait
 	 * @param string|null $flags    Default flags are set to ENT_COMPAT | ENT_HTML401
 	 * @param string      $encoding Which encoding will be used in the conversion. Default is UTF-8.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function htmlEntityEncode($flags = null, $encoding = 'UTF-8') {
@@ -335,7 +360,7 @@ trait ManipulatorTrait
 				$this->val(htmlentities($this->val(), $flags, $encoding));
 			}
 		} catch (\ErrorException $e) {
-			throw new StdObjectException('StringObject: ' . $e->getMessage());
+			throw new StringObjectException($e->getMessage());
 		}
 
 
@@ -372,16 +397,22 @@ trait ManipulatorTrait
 	 * @param int    $chunkSize    Size of each chunk.
 	 * @param string $endChar      String that will be appended to the end of each chunk.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function chunkSplit($chunkSize = 76, $endChar = "\n") {
 		if(!$this->isNumber($chunkSize)) {
-			throw new StdObjectException('StringObject: $chunkSize must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$chunkSize',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($endChar)) {
-			throw new StdObjectException('StringObject: $endChar must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$endChar',
+																					'string'
+																					]);
 		}
 
 		$tmp = array_chunk(preg_split("//u", $this->val(), -1, PREG_SPLIT_NO_EMPTY), $chunkSize);
@@ -431,7 +462,7 @@ trait ManipulatorTrait
 	/**
 	 * Parse current string as a query string and return ArrayObject with results.
 	 *
-	 * @return ArrayObject
+	 * @return ArrayObject ArrayObject from the parsed string.
 	 */
 	public function parseString() {
 		parse_str($this->val(), $arr);
@@ -480,16 +511,22 @@ trait ManipulatorTrait
 	 * @param int    $length    Length to which to pad.
 	 * @param string $padString String that will be appended.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function padLeft($length, $padString) {
 		if(!$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: $length param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($padString)) {
-			throw new StdObjectException('StringObject: $padString must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$padString',
+																					'string'
+																					]);
 		}
 
 		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_LEFT));
@@ -503,16 +540,22 @@ trait ManipulatorTrait
 	 * @param int    $length    Length to which to pad.
 	 * @param string $padString String that will be appended.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function padRight($length, $padString) {
 		if(!$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: $length param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($padString)) {
-			throw new StdObjectException('StringObject: $padString must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$padString',
+																					'string'
+																					]);
 		}
 
 		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_RIGHT));
@@ -526,16 +569,22 @@ trait ManipulatorTrait
 	 * @param int    $length    Length to which to pad.
 	 * @param string $padString String that will be appended.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function padBoth($length, $padString) {
 		if(!$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: $length param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($padString)) {
-			throw new StdObjectException('StringObject: $padString must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$padString',
+																					'string'
+																					]);
 		}
 
 		$this->val(str_pad($this->val(), $length, $padString, STR_PAD_BOTH));
@@ -549,11 +598,14 @@ trait ManipulatorTrait
 	 * @param int $multiplier How many times to repeat the string.
 	 *
 	 * @return $this
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 */
 	public function repeat($multiplier) {
 		if(!$this->isNumber($multiplier)) {
-			throw new StdObjectException('StringObject: $multiplier param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$multiplier',
+																					'integer'
+																					]);
 		}
 		$this->val(str_repeat($this->val(), $multiplier));
 
@@ -576,12 +628,15 @@ trait ManipulatorTrait
 	 *
 	 * @param string $whiteList A list of allowed HTML tags that you don't want to strip. Example: '<p><a>'
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function stripTags($whiteList = '') {
 		if(!$this->isString($whiteList)) {
-			throw new StdObjectException('StringObject: $whiteList param must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$whiteList',
+																					'integer'
+																					]);
 		}
 
 		$this->val(strip_tags($this->val(), $whiteList));
@@ -608,20 +663,29 @@ trait ManipulatorTrait
 	 * @param bool   $cut    If the cut is set to TRUE, the string is always wrapped at or before the specified width.
 	 *                       So if you have a word that is larger than the given width, it is broken apart.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function wordWrap($length, $break = "\n", $cut = false) {
 		if(!$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: $length param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($break)) {
-			throw new StdObjectException('StringObject: $break param must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$break',
+																					'string'
+																					]);
 		}
 
 		if(!$this->isBool($cut)) {
-			throw new StdObjectException('StringObject: $whiteList param must be a boolean.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$cut',
+																					'boolean'
+																					]);
 		}
 		$this->val(wordwrap($this->val(), $length, $break, $cut));
 
@@ -634,16 +698,22 @@ trait ManipulatorTrait
 	 * @param int    $length   Length to which you which to trim.
 	 * @param string $ellipsis Ellipsis is calculated in the string $length.
 	 *
-	 * @throws StdObjectException
+	 * @throws StringObjectException
 	 * @return $this
 	 */
 	public function truncate($length, $ellipsis = '') {
 		if(!$this->isNumber($length)) {
-			throw new StdObjectException('StringObject: $length param must be an integer.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$length',
+																					'integer'
+																					]);
 		}
 
 		if(!$this->isString($ellipsis)) {
-			throw new StdObjectException('StringObject: $ellipsis param must be a string.');
+			throw new StringObjectException(StringObjectException::MSG_INVALID_ARG, [
+																					'$ellipsis',
+																					'string'
+																					]);
 		}
 
 		if($this->length() <= $length) {
@@ -668,7 +738,7 @@ trait ManipulatorTrait
 	 * @param string $regEx        Regular expression to match.
 	 * @param bool   $matchAll     Use preg_match_all, or just preg_match. Default is preg_match_all.
 	 *
-	 * @return ArrayObject|bool    If there are matches, an array with the the $matches is returned, else, false is returned.
+	 * @return ArrayObject|bool    If there are matches, an ArrayObject with the the $matches is returned, else, false is returned.
 	 */
 	public function match($regEx, $matchAll = true) {
 		if($matchAll) {
@@ -696,7 +766,7 @@ trait ManipulatorTrait
 		 */
 	}
 
-	public function baseConvert(){
+	public function baseConvert() {
 		// @TODO
 	}
 }

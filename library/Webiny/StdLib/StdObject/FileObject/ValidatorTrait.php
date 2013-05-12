@@ -10,7 +10,6 @@
 namespace Webiny\StdLib\StdObject\FileObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectValidatorTrait;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
@@ -42,7 +41,7 @@ trait ValidatorTrait
 	/**
 	 * Does the file exist on the disk.
 	 *
-	 * @return bool
+	 * @return bool True if file exists, else false is returned.
 	 */
 	function exists() {
 		return $this->_fileExists;
@@ -51,7 +50,7 @@ trait ValidatorTrait
 	/**
 	 * Tells if the file is a link.
 	 *
-	 * @return bool
+	 * @return bool True if the current file path is actually a link to it's real destination. Otherwise, false is returned.
 	 */
 	function isLink() {
 		return $this->_getDriver()->isLink();
@@ -60,7 +59,7 @@ trait ValidatorTrait
 	/**
 	 * Is file writable.
 	 *
-	 * @return bool
+	 * @return bool True if file is writable, else false is returned.
 	 */
 	function isWritable() {
 		return $this->_getDriver()->isWritable();
@@ -69,7 +68,7 @@ trait ValidatorTrait
 	/**
 	 * If file readable.
 	 *
-	 * @return bool
+	 * @return bool True if file is readable, else false is returned.
 	 */
 	function isReadable() {
 		return $this->_getDriver()->isReadable();
@@ -83,8 +82,8 @@ trait ValidatorTrait
 	 * @param null|array|ArrayObject $types   The image must be of this type. Available types are: gif, jpeg, png, tiff,
 	 *                                        ico, bmp.
 	 *
-	 * @throws StdObjectException
-	 * @return bool|StringObject
+	 * @throws FileObjectException
+	 * @return bool|string False if file is not an image. If file is an image, than we return the image extension.
 	 */
 	function isImage($types = null) {
 		try {
@@ -103,7 +102,7 @@ trait ValidatorTrait
 
 			return false;
 		} catch (\Exception $e) {
-			throw new StdObjectException('FileInfo: Unable to perform a check if file is an image', 0, $e);
+			throw new FileObjectException($e->getMessage());
 		}
 	}
 }

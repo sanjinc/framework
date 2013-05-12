@@ -10,7 +10,7 @@
 namespace Webiny\StdLib\Exception;
 
 /**
- * WebinyFramework exception interface.
+ * Exception interface.
  * Use it if you want to throw custom exceptions.
  *
  * @package         Webiny\StdLib\Exception
@@ -25,8 +25,10 @@ interface ExceptionInterface
 	 * Make sure you return:
 	 * parent::_construct($message, $params);
 	 *
-	 * @param string $message
-	 * @param null   $params
+	 * @param string|int       $message Message you what to throw. If $message is type of integer,
+	 *                                  than the method will treat that as an exception code.
+	 * @param null|array       $params  If message has variables inside, send an array of values using this argument,
+	 *                                  and the variables will be replaced with those values in the same order they appear.
 	 */
     public function __construct($message, $params = null);
 }
