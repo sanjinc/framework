@@ -17,7 +17,5 @@ namespace Webiny\StdLib;
  */
 trait StdLibTrait
 {
-    use ExceptionTrait,
-        StdObjectTrait;
 
 }

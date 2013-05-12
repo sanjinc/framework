@@ -24,7 +24,6 @@ class StdObjectWrapper extends StdObjectAbstract{
 	use ValidatorTrait;
 
 	protected $_value = null;
-	static private $_returnType = 'StdObject'; // can be 'native' or 'StdObject'
 
 	/**
 	 * Constructor.

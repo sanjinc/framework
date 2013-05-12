@@ -15,7 +15,7 @@ use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
- * Trait containing common validators
+ * Trait containing common validators.
  *
  * @package         Webiny\StdLib
  */
