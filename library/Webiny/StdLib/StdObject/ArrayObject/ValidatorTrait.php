@@ -10,7 +10,6 @@
 
 namespace Webiny\StdLib\StdObject\ArrayObject;
 
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectValidatorTrait;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
@@ -23,7 +22,6 @@ use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 trait ValidatorTrait
 {
-	use StdObjectValidatorTrait;
 
 	/**
 	 * Search the array for the given $value.
@@ -45,7 +43,7 @@ trait ValidatorTrait
 	 * @param string|StringObject $key     Array key.
 	 * @param mixed  $default If key is not found, $default is returned.
 	 *
-	 * @return bool|mixed
+	 * @return bool|mixed True is returned if the key exists, otherwise $default is returned.
 	 */
 	public function keyExists($key, $default = false) {
         $key = StdObjectWrapper::toString($key);
