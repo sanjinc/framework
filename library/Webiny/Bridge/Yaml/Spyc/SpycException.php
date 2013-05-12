@@ -7,17 +7,17 @@
  * @license      http://www.webiny.com/framework/license
  * @package      WebinyFramework
  */
+namespace Webiny\Bridge\Yaml\Spyc;
 
-namespace Webiny\StdLib;
+use Webiny\StdLib\Exception\ExceptionAbstract;
 
 /**
- * A library of standard functions
+ * Spyc bridge exception class.
  *
- * @package         Webiny\StdLib
+ * @package      Webiny\Bridge\Yaml\Spyc
  */
-trait StdLibTrait
+
+class SpycException extends ExceptionAbstract
 {
-    use ExceptionTrait,
-        StdObjectTrait;
 
 }

@@ -9,20 +9,31 @@
 
 namespace Webiny\Component\Config\Drivers;
 
+use Webiny\Bridge\Yaml\Spyc\Spyc as YamlBridge;
 use Webiny\Component\Config\ConfigException;
-use Webiny\StdLib\Exception\Exception;
+use Webiny\StdLib\StdObject\FileObject\FileObject;
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 use Webiny\StdLib\ValidatorTrait;
 
 /**
- * JsonDriver is responsible for parsing JSON config files and returning a config array.
+ * YamlDriver is responsible for parsing Yaml config files and returning a config array.
  *
  * @package   Webiny\Component\Config\Drivers;
  */
 
-class JsonDriver extends DriverAbstract
+class YamlDriver extends DriverAbstract
 {
+	/**
+	 * @var null|\Webiny\Bridge\Yaml\Spyc\Spyc
+	 */
+	private $_yaml = null;
+
+	public function __construct($resource = null) {
+		parent::__construct($resource);
+		$this->_yaml = new YamlBridge();
+	}
 
 	/**
 	 * Convert given data to appropriate string format
@@ -32,7 +43,7 @@ class JsonDriver extends DriverAbstract
 	 * @return string
 	 */
 	public function toString($data) {
-		return json_encode($data);
+		return $this->_yaml->createYaml($data)->val();
 	}
 
 	/**
@@ -44,9 +55,8 @@ class JsonDriver extends DriverAbstract
 	 * @return mixed
 	 */
 	protected function _saveToFile($data, $destination) {
-		$this->file($destination)->write($data);
-
-		return true;
+		// the formated Yaml string is already stored in YamlBridge object so $data is unused
+		$this->_yaml->saveToFile($destination);
 	}
 
 	/**
@@ -54,13 +64,7 @@ class JsonDriver extends DriverAbstract
 	 * @return array
 	 */
 	protected function _buildArray() {
-		if(file_exists($this->_resource)) {
-			$config = $this->file($this->_resource)->getFileContent();
-		} else {
-			$config = $this->_resource;
-		}
-
-		return $this->_parseJsonString($config);
+		return $this->_parseYamlString($this->_resource);
 	}
 
 	/**
@@ -74,8 +78,8 @@ class JsonDriver extends DriverAbstract
 
 		// Perform string checks
 		try {
-			$this->_resource = $this->str($this->_resource)->trim();
-			if($this->_resource->length() == 0) {
+			$this->_resource = $this->str($this->_resource);
+			if($this->_resource->trim()->length() == 0) {
 				throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
 			}
 		} catch (StdObjectException $e) {
@@ -83,21 +87,10 @@ class JsonDriver extends DriverAbstract
 		}
 	}
 
-	/**
-	 * Parse JSON string and return config array
-	 *
-	 * @param array $data
-	 *
-	 * @throws ConfigException
-	 * @return array
-	 */
-	private function _parseJsonString($data) {
-		try {
-			$config = json_decode($data, true);
-		} catch (Exception $e) {
-			throw new ConfigException($e->getMessage());
-		}
+	private function _parseYamlString($data) {
+		$data = StdObjectWrapper::toString($data);
+		$yaml = new YamlBridge();
 
-		return $config;
+		return $yaml->parseYaml($data)->val();
 	}
 }

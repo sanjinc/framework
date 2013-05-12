@@ -24,42 +24,64 @@ use Webiny\StdLib\ValidatorTrait;
 
 class PhpDriver extends DriverAbstract
 {
-    use ValidatorTrait;
 
-    /**
-     * Parse config resource and build config array
-     * @return array
-     */
-    protected function _buildConfig()
-    {
-        echo "Building config\n";
-        if ($this->isArray($this->_resource)) {
-            return $this->_resource;
-        } else {
-            return include $this->_resource;
-        }
-    }
 
-    /**
-     * Validate given config resource and throw ConfigException if it's not valid
-     * @throws ConfigException
-     */
-    protected function _validateResource()
-    {
-        // If array - it's a valid resource
-        if ($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)) {
-            return true;
-        }
+	/**
+	 * Parse config resource and build config array
+	 * @return array
+	 */
+	protected function _buildArray() {
+		if($this->isArray($this->_resource)) {
+			return $this->_resource;
+		} else {
+			return include $this->_resource;
+		}
+	}
 
-        try {
-            // If it's a string - make sure it's a valid file
-            if ($this->isString($this->_resource) && $this->isFile($this->_resource)) {
-                return true;
-            }
-        } catch (StdObjectException $e) {
-            throw new ConfigException($e->getMessage());
-        }
+	/**
+	 * Validate given config resource and throw ConfigException if it's not valid
+	 * @throws ConfigException
+	 */
+	protected function _validateResource() {
+		// If array - it's a valid resource
+		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)) {
+			return true;
+		}
 
-        throw new ConfigException('PHP Config resource must be a valid file path or PHP array.');
-    }
+		try {
+			// If it's a string - make sure it's a valid file
+			if($this->isString($this->_resource) && $this->isFile($this->_resource)) {
+				return true;
+			}
+		} catch (StdObjectException $e) {
+			throw new ConfigException($e->getMessage());
+		}
+
+		throw new ConfigException('PHP Config resource must be a valid file path or PHP array.');
+	}
+
+	/**
+	 * Convert given data to appropriate string format
+	 *
+	 * @param $data
+	 *
+	 * @return string
+	 */
+	public function toString($data) {
+		return "<?php\n" . "return " . var_export($data, true) . ";\n";
+	}
+
+	/**
+	 * Save given data to given destination
+	 *
+	 * @param $data
+	 * @param $destination
+	 *
+	 * @return mixed
+	 */
+	protected function _saveToFile($data, $destination) {
+		$this->file($destination)->write($data);
+
+		return true;
+	}
 }

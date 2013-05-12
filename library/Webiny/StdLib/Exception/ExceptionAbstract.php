@@ -21,7 +21,7 @@ use Webiny\StdLib\ValidatorTrait;
  */
 abstract class ExceptionAbstract extends \Exception implements ExceptionInterface
 {
-	use ValidatorTrait, StdObjectTrait;
+	use StdObjectTrait;
 
 
 	const MSG_BAD_FUNC_CALL = 1;

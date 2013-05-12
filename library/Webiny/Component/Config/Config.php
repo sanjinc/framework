@@ -10,6 +10,10 @@
 namespace Webiny\Component\Config;
 
 use Webiny\Component\Config\Drivers\DriverAbstract;
+use Webiny\Component\Config\Drivers\IniDriver;
+use Webiny\Component\Config\Drivers\JsonDriver;
+use Webiny\Component\Config\Drivers\PhpDriver;
+use Webiny\Component\Config\Drivers\YamlDriver;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
@@ -25,171 +29,110 @@ use Webiny\StdLib\ValidatorTrait;
  */
 class Config
 {
-    use StdLibTrait;
+	use StdLibTrait;
 
-    /**
-     * Config data
-     *
-     * @var array
-     */
-    protected $_data = array();
+	/**
+	 * Get Config object from INI file or string
+	 *
+	 * @param string $resource      Config resource in form of a file path or config string
+	 *
+	 * @param bool   $flushCache    Flush existing cache and load config file
+	 *
+	 * @param string $nestDelimiter Delimiter for nested properties, ex: a.b.c or a-b-c
+	 *
+	 * @return ConfigObject
+	 */
+	public static function Ini($resource, $flushCache = false, $nestDelimiter = '.') {
+		$config = ConfigCache::getCache($resource);
+		if($flushCache || !$config) {
+			return new ConfigObject(new IniDriver($resource));
+		}
 
-    /**
-     * Get Config object from INI file or string
-     *
-     * @param string $resource      Config resource in form of a file path or config string
-     *
-     * @param bool   $flushCache    Flush existing cache and load config file
-     *
-     * @param string $nestDelimiter Delimiter for nested properties, ex: a.b.c or a-b-c
-     *
-     * @return $this
-     */
-    public static function Ini($resource, $flushCache = false, $nestDelimiter = '.')
-    {
-        $driver = new Drivers\IniDriver($resource);
-        $driver->setDelimiter($nestDelimiter);
+		return $config;
 
-        return new static($driver, $flushCache);
+	}
 
-    }
+	/**
+	 * Get Config object from JSON file or string
+	 *
+	 * @param string $resource      Config resource in form of a file path or config string
+	 *
+	 * @param bool   $flushCache    Flush existing cache and load config file
+	 *
+	 * @return ConfigObject
+	 */
+	public static function Json($resource, $flushCache = false) {
+		$config = ConfigCache::getCache($resource);
+		if($flushCache || !$config) {
+			return new ConfigObject(new JsonDriver($resource));
+		}
 
-    /**
-     * Get Config object from JSON file or string
-     *
-     * @param string $resource      Config resource in form of a file path or config string
-     *
-     * @param bool   $flushCache    Flush existing cache and load config file
-     *
-     * @return $this
-     */
-    public static function Json($resource, $flushCache = false)
-    {
-        $driver = new Drivers\JsonDriver($resource);
+		return $config;
 
-        return new static($driver, $flushCache);
+	}
 
-    }
+	/**
+	 * Get ConfigObject from YAML file or string
+	 *
+	 * @param string $resource      Config resource in form of a file path or config string
+	 *
+	 * @param bool   $flushCache    Flush existing cache and load config file
+	 *
+	 * @return ConfigObject
+	 */
+	public static function Yaml($resource, $flushCache = false) {
+		$config = ConfigCache::getCache($resource);
+		if($flushCache || !$config) {
+			return new ConfigObject(new YamlDriver($resource));
+		}
+
+		return $config;
+	}
 
 
-    /**
-     * Get Config object from PHP file or array
-     *
-     * @param string|array $resource      Config resource in form of a file path or config string
-     *
-     * @param bool   $flushCache    Flush existing cache and load config file
-     *
-     * @return $this
-     */
-    public static function Php($resource, $flushCache = false)
-    {
-        $driver = new Drivers\PhpDriver($resource);
+	/**
+	 * Get Config object from PHP file or array
+	 *
+	 * @param string|array $resource      Config resource in form of a file path or config string
+	 *
+	 * @param bool         $flushCache    Flush existing cache and load config file
+	 *
+	 * @return ConfigObject
+	 */
+	public static function Php($resource, $flushCache = false) {
+		$config = ConfigCache::getCache($resource);
+		if($flushCache || !$config) {
+			return new ConfigObject(new PhpDriver($resource));
+		}
 
-        return new static($driver, $flushCache);
-    }
+		return $config;
+	}
 
-    /**
-     * Parse resource and create a Config object
-     * A valid resource is a PHP array, ArrayObject or an instance of DriverAbstract
-     *
-     * @param array|ArrayObject|DriverAbstract $resource   Config resource
-     * @param bool                             $flushCache Flush existing cache and load config file
-     *
-     * @return static
-     */
-    public static function parseResource($resource, $flushCache = false)
-    {
-        return new static($resource, $flushCache);
-    }
+	/**
+	 * Parse resource and create a Config object
+	 * A valid resource is a PHP array, ArrayObject or an instance of DriverAbstract
+	 *
+	 * @param array|ArrayObject|DriverAbstract $resource   Config resource
+	 * @param bool                             $flushCache Flush existing cache and load config file
+	 *
+	 * @return ConfigObject
+	 */
+	public static function parseResource($resource, $flushCache = false) {
+		$driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
+		if(self::isInstanceOf($resource, $driverAbstractClassName)) {
+			$driver = $resource;
+			$resource = $driver->getResource();
+		}
 
-    /**
-     * Get value or return $default if there is no element set.
-     *
-     * @param  string $name
-     * @param  mixed  $default
-     *
-     * @return mixed
-     */
-    public function get($name, $default = null)
-    {
-        if ($this->_data->keyExists($name)) {
-            return $this->_data->key($name);
-        }
+		$cache = ConfigCache::getCache($resource);
+		if($flushCache || !$cache) {
+			return new ConfigObject($driver);
+		}
 
-        return $default;
-    }
+		return $cache->getConfigObject();
+	}
 
-    /**
-     * Config is an object representing config data
-     *
-     * @param  array|ArrayObject|DriverAbstract $resource Config resource
-     *
-     * @param bool                              $flushCache Flush existing cache and load config file
-     *
-     * @throws ConfigException
-     * @internal param $
-     *
-     */
-    private function __construct($resource, $flushCache = false)
-    {
-        $driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
-        $arrayObjectClassName = '\Webiny\StdLib\StdObject\ArrayObject\ArrayObject';
-
-        // Validate given resources
-        if (!$this->isArray($resource) && !$this->isInstanceOf($resource, $driverAbstractClassName
-        ) && !$this->isArrayObject($resource)
-        ) {
-            throw new ConfigException("Config resource must be a valid array, $arrayObjectClassName or $driverAbstractClassName");
-        }
-
-        // If it's a DriverAbstract class - get config array
-        if ($this->isInstanceOf($resource, $driverAbstractClassName)) {
-            $resource = $resource->getConfig($flushCache);
-        }
-
-        $array = StdObjectWrapper::toArray($resource);
-
-        $this->_data = $this->arr();
-        foreach ($array as $key => $value) {
-            if ($this->isArray($value)) {
-                $this->_data->key($key, new static($value));
-            } else {
-                $this->_data->key($key, $value);
-            }
-        }
-    }
-
-    /**
-     * Access internal data as if it was a real object
-     *
-     * @param  string $name
-     *
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        return $this->get($name);
-    }
-
-    /**
-     * Set internal data as if it was a real object
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     *
-     * @return void
-     */
-    public function __set($name, $value)
-    {
-        if ($this->isArray($value)) {
-            $value = new static($value);
-        }
-
-        if ($this->isNull($name)) {
-            $this->_data[] = $value;
-        } else {
-            $this->_data[$name] = $value;
-        }
-    }
-
+	private function __construct(){
+		// Prevent instantiation
+	}
 }

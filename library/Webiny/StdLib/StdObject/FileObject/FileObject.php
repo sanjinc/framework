@@ -12,6 +12,7 @@ namespace Webiny\StdLib\StdObject\FileObject;
 use SplFileObject;
 use Webiny\StdLib\StdObject\StdObjectAbstract;
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 
@@ -52,13 +53,13 @@ class FileObject extends StdObjectAbstract
 	 * Create a new file standard object.
 	 * It's not necessary that the file exists.
 	 *
-	 * @param string $pathToFile Absolute path to the file.
+	 * @param string|StringObject $pathToFile Absolute path to the file.
 	 *
 	 * @throws StdObjectException
 	 */
 	public function __construct($pathToFile) {
 		// assign file path
-		$this->_value = $pathToFile;
+		$this->_value = StdObjectWrapper::toString($pathToFile);
 
 		// correct directory separator
 		$this->_correctDirectorySeparator();

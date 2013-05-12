@@ -11,6 +11,7 @@
 namespace Webiny\StdLib;
 
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectValidatorTrait;
 
 /**
  * WebinyFramework standard object trait. Use this functions whenever you want to create a standard object.
@@ -19,61 +20,81 @@ use Webiny\StdLib\StdObject\StdObjectException;
  */
 trait StdObjectTrait
 {
-	/**
-	 * Creates an instance of String Standard Object.
-	 *
-	 * @param string $string
-	 *
-	 * @return StdObject\StringObject\StringObject
-	 */
-	static public function str($string) {
-		return new StdObject\StringObject\StringObject($string);
-	}
+	use ValidatorTrait;
+    /**
+     * Creates an instance of String Standard Object.
+     *
+     * @param string $string
+     *
+     * @return StdObject\StringObject\StringObject
+     */
+    static public function str($string)
+    {
+		if(self::isStringObject($string)){
+			return $string;
+		}
+        return new StdObject\StringObject\StringObject($string);
+    }
 
-	/**
-	 * Creates an instance of Array Standard Object.
-	 *
-	 * @param array $array
-	 *
-	 * @return StdObject\ArrayObject\ArrayObject
-	 */
-	static public function arr(&$array = null) {
-		return new StdObject\ArrayObject\ArrayObject($array);
-	}
+    /**
+     * Creates an instance of Array Standard Object.
+     *
+     * @param array $array
+     *
+     * @return StdObject\ArrayObject\ArrayObject
+     */
+    static public function arr(&$array = null)
+    {
+		if(self::isArrayObject($array)){
+			return $array;
+		}
+        return new StdObject\ArrayObject\ArrayObject($array);
+    }
 
-	/**
-	 * Creates an instance of Url Standard Object.
-	 *
-	 * @param string $url
-	 *
-	 * @return StdObject\UrlObject\UrlObject
-	 */
-	static public function url(&$url) {
-		return new StdObject\UrlObject\UrlObject($url);
-	}
+    /**
+     * Creates an instance of Url Standard Object.
+     *
+     * @param string $url
+     *
+     * @return StdObject\UrlObject\UrlObject
+     */
+    static public function url(&$url)
+    {
+		if(self::isUrlObject($url)){
+			return $url;
+		}
+        return new StdObject\UrlObject\UrlObject($url);
+    }
 
-	/**
-	 * Create an instance of File Standard Object.
-	 *
-	 * @param string $pathToFile
-	 *
-	 * @return StdObject\FileObject\FileObject
-	 */
-	static function file($pathToFile) {
-		return new StdObject\FileObject\FileObject($pathToFile);
-	}
+    /**
+     * Create an instance of File Standard Object.
+     *
+     * @param string|StringObject $pathToFile
+     *
+     * @throws StdObjectException
+     *
+     * @return StdObject\FileObject\FileObject
+     */
+    static function file($pathToFile)
+    {
+		if(self::isFileObject($pathToFile)){
+            return $pathToFile;
+        }
+        return new StdObject\FileObject\FileObject($pathToFile);
+    }
 
-	/**
-	 * Create an instance of DateTime Standard Object.
-	 *
-	 * @param string|int  $time                     A date/time string. List of available formats is explained here
-	 *                                              http://www.php.net/manual/en/datetime.formats.php
-	 * @param null|string $timezone                 Timezone in which you want to set the date. Here is a list of valid
-	 *                                              timezones: http://php.net/manual/en/timezones.php
-	 *
-	 * @return StdObject\DateTimeObject\DateTimeObject
-	 */
-	static function datetime($time = "now", $timezone = null) {
-		return new StdObject\DateTimeObject\DateTimeObject($time, $timezone);
-	}
+    /**
+     * Create an instance of DateTime Standard Object.
+     *
+     * @param string|int  $time                      A date/time string. List of available formats is explained here
+     *                                               http://www.php.net/manual/en/datetime.formats.php
+     * @param null|string $timezone                  Timezone in which you want to set the date. Here is a list of valid
+     *                                               timezones: http://php.net/manual/en/timezones.php
+     *
+     * @return StdObject\DateTimeObject\DateTimeObject
+     */
+    static function datetime($time = "now", $timezone = null)
+    {
+        return new StdObject\DateTimeObject\DateTimeObject($time, $timezone);
+    }
 }
