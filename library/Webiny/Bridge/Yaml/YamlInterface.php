@@ -34,15 +34,27 @@ interface YamlInterface
 	/**
 	 * Get current Yaml value as string
 	 *
+	 * @param int  $indent
+	 * @param bool $wordWrap
+	 *
 	 * @return string
 	 */
-	function getStringValue();
+	function getString($indent = 2, $wordWrap = false);
 
 	/**
 	 * Get Yaml value as array
 	 *
 	 * @return array
 	 */
-	function getArrayValue();
+	function getArray();
+
+
+	/**
+	 * Set driver resource to work on
+	 * @param mixed $resource
+	 *
+	 * @return $this
+	 */
+	function setResource($resource);
 
 }

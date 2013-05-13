@@ -1,8 +1,9 @@
 <?php
 return [
-    'key'     => 'value',
-    'default' => [
-        'url' => 'www.webiny.com',
-        'name' => 'Webiny'
-    ]
+	'website' => 'value',
+	'default' => [
+		'url'  => 'www.webiny.com',
+		'name' => ['address' => 'London',
+				   'name' => 'Webiny']
+	]
 ];

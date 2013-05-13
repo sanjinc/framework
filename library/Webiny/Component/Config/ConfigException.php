@@ -20,14 +20,4 @@ use Webiny\StdLib\Exception\ExceptionAbstract;
 class ConfigException extends ExceptionAbstract
 {
 
-    /**
-     * Set the exception message that will be thrown.
-     * Current line and file will be set as exception origin.
-     *
-     * @param string $message
-     */
-    public function __construct($message)
-    {
-        parent::__construct($message);
-    }
 }

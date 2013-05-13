@@ -25,16 +25,21 @@ class Yaml implements YamlInterface
 	use StdLibTrait;
 
 	/**
+	 * @var YamlInterface
+	 */
+	private $_driverInstance = null;
+
+	/**
 	 * Default Yaml driver class name
 	 * @var string
 	 */
-	private static $_driverClass = 'Spyc\Spyc';
+	private static $_driverClass = 'Webiny\Bridge\Yaml\Spyc\Spyc';
 
 	/**
 	 * Instance of Yaml driver to use
 	 * @var null|YamlInterface
 	 */
-	private static $_driverInstance = null;
+	private static $_customDriver = null;
 
 	/**
 	 * Driver interface to enforce
@@ -56,7 +61,7 @@ class Yaml implements YamlInterface
 				$driver = StdObjectWrapper::toString($driver);
 				$driver = new $driver;
 				if(self::isInstanceOf($driver, self::$_driverInterface)) {
-					self::$_driverInstance = $driver;
+					self::$_customDriver = $driver;
 
 					return;
 				}
@@ -66,31 +71,33 @@ class Yaml implements YamlInterface
 																		self::$_driverInterface
 																		]);
 		}
-		self::$_driverInstance = $driver;
+		self::$_customDriver = $driver;
 
 		return;
 	}
 
-	public function __construct($resource=null, $indent = 2, $wordWrap = false) {
-		if(!$this->isInstanceOf(self::$_driverInstance, self::$_driverInterface)) {
-			self::$_driverInstance = new self::$_driverClass($indent, $wordWrap);
-		}
-		self::$_driverInstance->setResource($resource);
+	/**
+	 * Get bridge instance
+	 * @param mixed $resource
+	 *
+	 * @return YamlInterface
+	 */
+	public static function getInstance($resource = null) {
+		return new static($resource);
 	}
 
 	/**
 	 * Write current Yaml data to file
 	 *
-	 * @param $data
 	 * @param string|StringObject|FileObject $destination
 	 *
 	 * @throws YamlException
 	 * @return bool
 	 */
-	function writeToFile($data, $destination) {
-		$res = self::$_driverInstance->writeToFile($data, $destination);
-		if(!$this->isBool($res)) {
-			throw new YamlException('Yaml bridge method writeToFile() must return a boolean.');
+	function writeToFile($destination) {
+		$res = $this->_driverInstance->writeToFile($destination);
+		if(!$this->isBoolean($res)) {
+			throw new YamlException('YamlInterface method writeToFile() must return a boolean.');
 		}
 
 		return $res;
@@ -99,13 +106,16 @@ class Yaml implements YamlInterface
 	/**
 	 * Get current Yaml value as string
 	 *
+	 * @param int  $indent
+	 * @param bool $wordWrap
+	 *
 	 * @throws YamlException
 	 * @return string
 	 */
-	function getStringValue() {
-		$res = self::$_driverInstance->getStringValue();
+	function getString($indent = 2, $wordWrap = false) {
+		$res = $this->_driverInstance->getString($indent, $wordWrap);
 		if(!$this->isString($res) && !$this->isStringObject($res)) {
-			throw new YamlException('Yaml bridge method getStringValue() must return a string.');
+			throw new YamlException('YamlInterface method _getString() must return a string or StringObject.');
 		}
 
 		return StdObjectWrapper::toString($res);
@@ -117,17 +127,44 @@ class Yaml implements YamlInterface
 	 * @throws YamlException
 	 * @return array
 	 */
-	function getArrayValue() {
-		$res = self::$_driverInstance->getArrayValue();
+	function getArray() {
+		$res = $this->_driverInstance->getArray();
 		if(!$this->isArray($res) && !$this->isArrayObject($res)) {
-			throw new YamlException('Yaml bridge method getArrayValue() must return an array.');
+			throw new YamlException('YamlInterface method writeToFile() must return an array or ArrayObject.');
 		}
 
-		return StdObjectWrapper::toString($res);
+		return StdObjectWrapper::toArray($res);
 	}
 
-	function setResource($resource){
-		return self::$_driverInstance->setResource($resource);
+	/**
+	 * Set driver resource to work on
+	 *
+	 * @param mixed $resource
+	 *
+	 * @throws YamlException
+	 * @return $this
+	 */
+	function setResource($resource) {
+		$res = $this->_driverInstance->setResource($resource);
+		if(!$this->isInstanceOf($res, self::$_driverInterface)) {
+			throw new YamlException('YamlInterface method setSource() must return YamlInterface object.');
+		}
+
+		return $res;
 	}
 
+	/**
+	 * Create Yaml bridge
+	 *
+	 * @param mixed $resource
+	 */
+	private function __construct($resource = null) {
+		if($this->isInstanceOf(self::$_customDriver, self::$_driverInterface)) {
+			// If custom driver was set, we need to return a copy of it and set it's resource
+			$this->_driverInstance = clone self::$_driverInstance->setResource($resource);
+		} else {
+			$this->_driverInstance = new self::$_driverClass();
+			$this->_driverInstance->setResource($resource);
+		}
+	}
 }

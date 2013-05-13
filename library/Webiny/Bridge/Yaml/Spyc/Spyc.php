@@ -9,7 +9,8 @@
 
 namespace Webiny\Bridge\Yaml\Spyc;
 
-use use Webiny\Bridge\Yaml\YamlAbstract;
+use Webiny\Bridge\Yaml\YamlAbstract;
+use Webiny\Bridge\Yaml\YamlInterface;
 use Webiny\Component\Config\Config;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
@@ -24,33 +25,46 @@ use Webiny\StdLib\ValidatorTrait;
  *
  * @package   Webiny\Bridge\Yaml\Spyc
  */
-class Spyc extends YamlAbstract
+class Spyc implements YamlInterface
 {
 	use StdLibTrait;
 
 	private $_indent = null;
 	private $_wordWrap = null;
+	private $_resource = null;
 
-	public function __construct($indent = 2, $wordWrap = false) {
-		$this->_indent = $indent;
-		$this->_wordWrap = $wordWrap;
+	/**
+	 * Set resource to work on
+	 * @param $resource
+	 *
+	 * @return $this
+	 */
+	public function setResource($resource) {
+		$this->_resource = $resource;
+		return $this;
 	}
 
 	/**
-	 * Get current Yaml value as string
+	 * Get Yaml value as string
 	 *
-	 * @return string
+	 * @param int  $indent
+	 * @param bool $wordWrap
+	 *
+	 * @return string Yaml string
 	 */
-	function getStringValue() {
+	function getString($indent = 2, $wordWrap = false) {
+		$this->_indent = $indent;
+		$this->_wordWrap = $wordWrap;
+
 		return $this->_toString();
 	}
 
 	/**
 	 * Get Yaml value as array
 	 *
-	 * @return array
+	 * @return array Parsed Yaml array
 	 */
-	function getArrayValue() {
+	function getArray() {
 		return $this->_parseResource();
 	}
 
@@ -82,14 +96,23 @@ class Spyc extends YamlAbstract
 	 * Parse given Yaml resource and build array
 	 * This method must support file paths (string or StringObject) and FileObject
 	 *
-	 * @return $this
+	 * @throws SpycException
+	 * @return string
 	 */
 	private function _parseResource() {
-		if($this->isFile($this->_resource)) {
+		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)) {
+			return StdObjectWrapper::toArray($this->_resource);
+		} elseif($this->isFileObject($this->_resource)) {
+			return \Spyc\Spyc::YAMLLoad($this->_resource->val());
+		} elseif($this->isFile($this->_resource)) {
 			return \Spyc\Spyc::YAMLLoad($this->_resource);
-		} else {
-			return \Spyc\Spyc::YAMLLoadString($this->_resource);
+		} elseif($this->isString($this->_resource) || $this->isStringObject($this->_resource)) {
+			return \Spyc\Spyc::YAMLLoadString(StdObjectWrapper::toString($this->_resource));
+		} elseif($this->isInstanceOf($this->_resource, 'Webiny\Component\Config\ConfigObject')) {
+			return $this->_resource->toArray();
 		}
+
+		throw new SpycException('Spyc Bridge - Unable to parse given resource of type %s', [gettype($this->_resource)]);
 	}
 
 	/**
@@ -99,18 +122,9 @@ class Spyc extends YamlAbstract
 	 * @return $this
 	 */
 	private function _toString() {
-		$data = $this->_resource;
-		if(!$this->isArray($data) && !$this->isArrayObject($data) && !$this->isInstanceOf($data,
-																						  'Webiny\Component\Config\Config')
-		) {
-			throw new SpycException('Spyc Bridge - Invalid argument supplied. Argument must be a valid array, ArrayObject or Webiny\Component\Config\Config');
-		}
-
-		if($this->isInstanceOf($data, 'Webiny\Component\Config\Config')) {
-			$data = $data->toArray();
-		}
-		$data = StdObjectWrapper::toArray($data);
+		$data = $this->_parseResource();
 
 		return \Spyc\Spyc::YAMLDump($data, $this->_indent, $this->_wordWrap);
 	}
+
 }

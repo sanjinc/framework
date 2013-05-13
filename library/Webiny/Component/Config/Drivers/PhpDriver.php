@@ -24,13 +24,21 @@ use Webiny\StdLib\ValidatorTrait;
 
 class PhpDriver extends DriverAbstract
 {
+	/**
+	 * Get config data as string
+	 *
+	 * @return string
+	 */
+	protected function _getString() {
+		return "<?php\n" . "return " . var_export($this->_getArray(), true) . ";\n";
+	}
 
 
 	/**
 	 * Parse config resource and build config array
 	 * @return array
 	 */
-	protected function _buildArray() {
+	protected function _getArray() {
 		if($this->isArray($this->_resource)) {
 			return $this->_resource;
 		} else {
@@ -48,6 +56,11 @@ class PhpDriver extends DriverAbstract
 			return true;
 		}
 
+		if($this->isFileObject($this->_resource)){
+			$this->_resource = $this->_resource->val();
+			return true;
+		}
+
 		try {
 			// If it's a string - make sure it's a valid file
 			if($this->isString($this->_resource) && $this->isFile($this->_resource)) {
@@ -58,30 +71,5 @@ class PhpDriver extends DriverAbstract
 		}
 
 		throw new ConfigException('PHP Config resource must be a valid file path or PHP array.');
-	}
-
-	/**
-	 * Convert given data to appropriate string format
-	 *
-	 * @param $data
-	 *
-	 * @return string
-	 */
-	public function toString($data) {
-		return "<?php\n" . "return " . var_export($data, true) . ";\n";
-	}
-
-	/**
-	 * Save given data to given destination
-	 *
-	 * @param $data
-	 * @param $destination
-	 *
-	 * @return mixed
-	 */
-	protected function _saveToFile($data, $destination) {
-		$this->file($destination)->write($data);
-
-		return true;
 	}
 }

@@ -33,29 +33,17 @@ abstract class DriverAbstract
 	protected $_resource = null;
 
 	/**
-	 * Convert given data to appropriate string format
-	 *
-	 * @param $data
+	 * Get config data as string
 	 *
 	 * @return string
 	 */
-	abstract public function toString($data);
+	abstract protected function _getString();
 
 	/**
 	 * Parse config resource and build config array
 	 * @return array|ArrayObject
 	 */
-	abstract protected function _buildArray();
-
-	/**
-	 * Save given data to given destination
-	 *
-	 * @param $data
-	 * @param $destination
-	 *
-	 * @return mixed
-	 */
-	abstract protected function _saveToFile($data, $destination);
+	abstract protected function _getArray();
 
 	/**
 	 * Validate given config resource and throw ConfigException if it's not valid
@@ -72,36 +60,61 @@ abstract class DriverAbstract
 		}
 	}
 
+	final public function getString() {
+		$this->_validateResource();
+
+		$res = $this->_getString();
+		if(!$this->isString($res) && !$this->isStringObject($res)){
+			throw new ConfigException('DriverAbstract method _getString() must return string or StringObject.');
+		}
+		return StdObjectWrapper::toString($res);
+	}
+
 	/**
 	 * Get config data as array
 	 *
+	 * @throws \Webiny\Component\Config\ConfigException
 	 * @return array|ArrayObject
 	 */
 	final public function getArray() {
 		$this->_validateResource();
 
-		return $this->_buildArray();
+		$res = $this->_getArray();
+		if(!$this->isArray($res) && !$this->isArrayObject($res)){
+			throw new ConfigException('DriverAbstract method _getArray() must return array or ArrayObject.');
+		}
+		return StdObjectWrapper::toArray($res);
 	}
 
+	/**
+	 * Get driver resource
+	 * @return mixed Driver resource (can be: string, array, StringObject, ArrayObject, FileObject)
+	 */
 	final public function getResource() {
 		return $this->_resource;
 	}
 
+	/**
+	 * Set driver resource
+	 * @param mixed $resource Driver resource (can be: string, array, StringObject, ArrayObject, FileObject)
+	 *
+	 * @return $this
+	 */
 	final public function setResource($resource) {
 		$this->_resource = $resource;
+		return $this;
 	}
 
 	/**
 	 * Write config to destination
 	 *
-	 * @param                                     $data
 	 * @param null|string|StringObject|FileObject $destination
 	 *
 	 * @throws \InvalidArgumentException
 	 * @throws \Webiny\Component\Config\ConfigException
-	 * @return mixed
+	 * @return $this
 	 */
-	final public function saveToFile($data, $destination = null) {
+	final public function saveToFile($destination = null) {
 
 		if($this->isString($destination) || $this->isStringObject($destination)) {
 			$destination = StdObjectWrapper::toString($destination);
@@ -120,7 +133,12 @@ abstract class DriverAbstract
 			$destination = $this->_resource;
 		}
 
-
-		return $this->_saveToFile($this->toString($data), $destination);
+		try {
+			$destination = $this->file($destination);
+			$destination->truncate()->write($this->_getString());
+			return $this;
+		} catch (StdObjectException $e) {
+			throw new ConfigException($e->getMessage());
+		}
 	}
 }

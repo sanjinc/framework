@@ -1,19 +1,14 @@
 <?php
-
+define('WF', '/www/webiny/framework');
 require_once '../WebinyFramework.php';
-/*
- # Built-in drivers
-$config = \Webiny\Component\Config\Config::Ini(realpath(__DIR__).'/Configs/config.ini');
-$config2 = \Webiny\Component\Config\Config::Json(realpath(__DIR__).'/Configs/config.json');
-$config3 = \Webiny\Component\Config\Config::Php(realpath(__DIR__).'/Configs/config.php');
 
-# Custom Resource #
-$config4 = \Webiny\Component\Config\Config::parseResource(['name' => 'Test']);
-$config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
-*/
+/**
+ * Custom Resource
+ * $config4 = \Webiny\Component\Config\Config::parseResource(['name' => 'Test']);
+ * $config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
+ */
 
-$yaml = new Webiny\Bridge\Yaml\Yaml();
 
-$config3 = \Webiny\Component\Config\Config::Yaml(realpath(__DIR__).'/Configs/config.yaml');
-$config->name = 12;
-$config3->save();
+
+$config3 = \Webiny\Component\Config\Config::Php(realpath(__DIR__) . '/Configs/config.php');
+die($config3->getAsYaml());
