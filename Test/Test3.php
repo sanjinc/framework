@@ -12,4 +12,8 @@ $config4 = \Webiny\Component\Config\Config::parseResource(['name' => 'Test']);
 $config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
 */
 
-$config3 = \Webiny\Component\Config\Config::Json(realpath(__DIR__).'/Configs/config.json');
+$yaml = new Webiny\Bridge\Yaml\Yaml();
+
+$config3 = \Webiny\Component\Config\Config::Yaml(realpath(__DIR__).'/Configs/config.yaml');
+$config->name = 12;
+$config3->save();

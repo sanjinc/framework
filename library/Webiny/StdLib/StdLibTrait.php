@@ -17,5 +17,5 @@ namespace Webiny\StdLib;
  */
 trait StdLibTrait
 {
-
+	use StdObjectTrait, ValidatorTrait;
 }

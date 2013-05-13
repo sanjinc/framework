@@ -9,9 +9,9 @@
 
 namespace Webiny\Bridge\Yaml\Spyc;
 
+use use Webiny\Bridge\Yaml\YamlAbstract;
 use Webiny\Component\Config\Config;
 use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
 use Webiny\StdLib\StdObject\StdObjectAbstract;
 use Webiny\StdLib\StdObject\StdObjectException;
@@ -24,40 +24,82 @@ use Webiny\StdLib\ValidatorTrait;
  *
  * @package   Webiny\Bridge\Yaml\Spyc
  */
-class Spyc
+class Spyc extends YamlAbstract
 {
 	use StdLibTrait;
 
-	private $_resource = null;
+	private $_indent = null;
+	private $_wordWrap = null;
 
-	/**
-	 * Parse Yaml resource and create PHP array
-	 *
-	 * @param $resource
-	 *
-	 * @return $this
-	 */
-	public function parseYaml($resource) {
-		if($this->isFile($resource)) {
-			$this->_resource = \Spyc\Spyc::YAMLLoad($resource);
-		} else {
-			$this->_resource = \Spyc\Spyc::YAMLLoadString($resource);
-		}
-
-		return $this;
+	public function __construct($indent = 2, $wordWrap = false) {
+		$this->_indent = $indent;
+		$this->_wordWrap = $wordWrap;
 	}
 
 	/**
-	 * Convert data to Yaml
+	 * Get current Yaml value as string
 	 *
-	 * @param array|ArrayObject|Config $data        Data in form of array, ArrayObject or Webiny\Component\Config\Config
-	 * @param bool|int                 $indent      Pass in false to use the default, which is 2
-	 * @param bool|int                 $wordwrap    Pass in 0 for no wordwrap, false for default (40)
+	 * @return string
+	 */
+	function getStringValue() {
+		return $this->_toString();
+	}
+
+	/**
+	 * Get Yaml value as array
+	 *
+	 * @return array
+	 */
+	function getArrayValue() {
+		return $this->_parseResource();
+	}
+
+	/**
+	 * Write current Yaml data to file
+	 *
+	 * @param string|StringObject|FileObject $destination
+	 *
+	 * @throws SpycException
+	 * @return bool
+	 */
+	public function writeToFile($destination) {
+
+		if(!$this->isString($destination) && !$this->isStringObject($destination) && !$this->isFileObject($destination)) {
+			throw new SpycException('Spyc Bridge - destination argument must be a string, StringObject or FileObject!');
+		}
+
+		try {
+			$destination = $this->file($destination);
+			$destination->truncate()->write($this->_toString());
+		} catch (StdObjectException $e) {
+			throw new SpycException('Spyc Bridge - ' . $e->getMessage());
+		}
+
+		return true;
+	}
+
+	/**
+	 * Parse given Yaml resource and build array
+	 * This method must support file paths (string or StringObject) and FileObject
+	 *
+	 * @return $this
+	 */
+	private function _parseResource() {
+		if($this->isFile($this->_resource)) {
+			return \Spyc\Spyc::YAMLLoad($this->_resource);
+		} else {
+			return \Spyc\Spyc::YAMLLoadString($this->_resource);
+		}
+	}
+
+	/**
+	 * Convert given data to Yaml string
 	 *
 	 * @throws SpycException
 	 * @return $this
 	 */
-	public function createYaml($data, $indent = false, $wordwrap = false) {
+	private function _toString() {
+		$data = $this->_resource;
 		if(!$this->isArray($data) && !$this->isArrayObject($data) && !$this->isInstanceOf($data,
 																						  'Webiny\Component\Config\Config')
 		) {
@@ -68,43 +110,7 @@ class Spyc
 			$data = $data->toArray();
 		}
 		$data = StdObjectWrapper::toArray($data);
-		$this->_resource = \Spyc\Spyc::YAMLDump($data, $indent, $wordwrap);
 
-		return $this;
-	}
-
-	/**
-	 * Get current Yaml data
-	 * @return null|string
-	 */
-	public function val() {
-		return $this->_resource;
-	}
-
-	/**
-	 * Store current Yaml data to file
-	 *
-	 * @param string|StringObject|FileObject $destination Destination file
-	 *
-	 * @return $this
-	 * @throws SpycException
-	 */
-	public function saveToFile($destination) {
-		if($this->isNull($this->_resource)) {
-			throw new SpycException('Spyc Bridge - can not store a NULL resource!');
-		}
-
-		if(!$this->isString($destination) && !$this->isStringObject($destination) && !$this->isFileObject($destination)) {
-			throw new SpycException('Spyc Bridge - destination argument must be a string, StringObject or FileObject!');
-		}
-
-		try {
-			$destination = $this->file($destination);
-			$destination->truncate()->write($this->_resource);
-		} catch (StdObjectException $e) {
-			throw new SpycException('Spyc Bridge - ' . $e->getMessage());
-		}
-
-		return true;
+		return \Spyc\Spyc::YAMLDump($data, $this->_indent, $this->_wordWrap);
 	}
 }

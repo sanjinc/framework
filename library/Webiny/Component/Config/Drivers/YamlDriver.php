@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Config\Drivers;
 
-use Webiny\Bridge\Yaml\Spyc\Spyc as YamlBridge;
+use Webiny\Bridge\Yaml\Yaml as YamlBridge;
 use Webiny\Component\Config\ConfigException;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
 use Webiny\StdLib\StdObject\StdObjectException;
@@ -26,7 +26,7 @@ use Webiny\StdLib\ValidatorTrait;
 class YamlDriver extends DriverAbstract
 {
 	/**
-	 * @var null|\Webiny\Bridge\Yaml\Spyc\Spyc
+	 * @var null|\Webiny\Bridge\Yaml\Yaml
 	 */
 	private $_yaml = null;
 
@@ -38,12 +38,15 @@ class YamlDriver extends DriverAbstract
 	/**
 	 * Convert given data to appropriate string format
 	 *
-	 * @param $data
+	 * @param      $data
+	 *
+	 * @param bool $indent
+	 * @param bool $wordwrap
 	 *
 	 * @return string
 	 */
-	public function toString($data) {
-		return $this->_yaml->createYaml($data)->val();
+	public function toString($data, $indent = false, $wordwrap = false) {
+		return $this->_yaml->toString($data, $indent, $wordwrap)->getStringValue();
 	}
 
 	/**
@@ -55,8 +58,7 @@ class YamlDriver extends DriverAbstract
 	 * @return mixed
 	 */
 	protected function _saveToFile($data, $destination) {
-		// the formated Yaml string is already stored in YamlBridge object so $data is unused
-		$this->_yaml->saveToFile($destination);
+		return $this->_yaml->writeToFile($data, $destination);
 	}
 
 	/**
