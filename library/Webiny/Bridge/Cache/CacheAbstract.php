@@ -16,23 +16,9 @@ use \Webiny\StdLib\ValidatorTrait;
  *
  * @package         Webiny\Bridge\Cache;
  */
-abstract class CacheAbstract
+abstract class CacheAbstract implements DriverInterface
 {
 	use ValidatorTrait;
-
-	/**
-	 * Get the name of bridge library which will be used as the driver.
-	 *
-	 * @return string
-	 */
-	abstract static protected function _getLibrary();
-
-	/**
-	 * Change the default library used for the driver.
-	 *
-	 * @param string $pathToClass Path to the new driver class. Must be an instance of \Webiny\Bridge\Cache\CacheInterface
-	 */
-	abstract static public function setLibrary($pathToClass);
 
 	/**
 	 * Create an instance of a cache driver.
@@ -45,14 +31,17 @@ abstract class CacheAbstract
 	static function getInstance($cacheId) {
 		$driver = static::_getLibrary();
 
-		try{
+		try {
 			$instance = new $driver($cacheId);
-		}catch (\Exception $e){
+		} catch (\Exception $e) {
 			throw new CacheException($e->getMessage());
 		}
 
-		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheInterface')){
-			throw new CacheException(\CacheException::MSG_INVALID_ARG, ['driver', '\Webiny\Bridge\Cache\CacheInterface']);
+		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheInterface')) {
+			throw new CacheException(CacheException::MSG_INVALID_ARG, [
+																	  'driver',
+																	  '\Webiny\Bridge\Cache\CacheInterface'
+																	  ]);
 		}
 
 		return $instance;

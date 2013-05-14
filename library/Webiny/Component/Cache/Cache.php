@@ -10,6 +10,7 @@
 namespace Webiny\Component\Cache;
 
 use Webiny\Bridge\Cache\CacheAbstract;
+use Webiny\Bridge\Cache\CacheInterface;
 use Webiny\Component\Cache\CacheException;
 use Webiny\StdLib\StdLibTrait;
 
@@ -20,13 +21,14 @@ use Webiny\StdLib\StdLibTrait;
  * The stored information can only be accessed for a limited time, after which it is invalidated.
  *
  * This component is based on Memory library by Eugeniy Oz and as so is under an MIT licence.
- * @link https://github.com/jamm/Memory
+ * @link            https://github.com/jamm/Memory
  *
  * The Memory library is required by this class.
  *
- * @package		 WebinyFramework
+ * @package         WebinyFramework
  */
-class Cache{
+class Cache
+{
 	use StdLibTrait;
 
 	const DRIVER_APC = 'APC';
@@ -37,31 +39,65 @@ class Cache{
 
 	private $_driverInstance = null;
 
-	public function __construct($id = '', $driver=self::DRIVER_APC ){
-
-		// validate driver
-		$const = __CLASS__.'::DRIVER_'.$this->str($driver)->caseUpper();
-		if(!defined($const)){
-			throw new CacheException(CacheException::MSG_UNSUPPORTED_DRIVER, [$driver]);
-		}
-
-		// create cache instance
-		$driver = '\Webiny\Component\Cache\Drivers\\'.$driver;
-		$this->_driverInstance = $driver::getInstance($id);
-
-		// validate instance
-		if(!$this->isInstanceOf($this->_driverInstance, '\Webiny\Bridge\Cache\CacheInterface')){
-			throw new CacheException(CacheException::MSG_INVALID_ARG, ['driver', 'Webiny\Bridge\Cache\CacheInterface']);
-		}
+	public function __construct(CacheInterface $driver) {
+		$this->_driverInstance = $driver;
 	}
 
 	/**
-	 * @param $cacheId
+	 * Create a cache instance with APC as cache driver.
+	 *
+	 * @param string $cacheId Cache identifier.
 	 *
 	 * @return Cache
 	 */
-	static function APC($cacheId){
-		return new static($cacheId, self::DRIVER_APC);
+	static function APC($cacheId) {
+		$driver = Drivers\APC::getInstance($cacheId);
+
+		return new static($driver);
+	}
+
+	/**
+	 * Create a cache instance with Couchbase as cache driver.
+	 *
+	 * @param string           $cacheId   Cache identifier.
+	 * @param \Couchbase       $couchbase Instance of \Couchbase class.
+	 *
+	 * @return Cache
+	 */
+	static function Couchbase($cacheId, \Couchbase $couchbase) {
+		$driver = Drivers\Couchbase::getInstance($cacheId, $couchbase);
+
+		return new static($driver);
+	}
+
+	/**
+	 * Create a cache instance with Memcache as cache driver.
+	 *
+	 * @param string       $cacheId Cache identifier.
+	 * @param string       $host    Host where the memcached is running.
+	 * @param int          $port    Port where memcached is running.
+	 *
+	 * @return Cache
+	 */
+	static function Memcache($cacheId, $host = 'locahost', $port = 11211) {
+		$driver = Drivers\Memcache::getInstance($cacheId, $host, $port);
+
+		return new static($driver);
+	}
+
+	/**
+	 * Create a cache instance with Redis as cache driver.
+	 *
+	 * @param string       $cacheId Cache identifier.
+	 * @param string       $host    Host where the Redis server is running.
+	 * @param int          $port    Port where Redis server is running.
+	 *
+	 * @return Cache
+	 */
+	static function Redis($cacheId, $host = 'locahost', $port = 6379) {
+		$driver = Drivers\Redis::getInstance($cacheId, $host, $port);
+
+		return new static($driver);
 	}
 
 	/**

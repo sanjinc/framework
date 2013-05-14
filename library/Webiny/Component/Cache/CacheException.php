@@ -12,7 +12,8 @@ namespace Webiny\Component\Cache;
 
 use Webiny\StdLib\Exception\ExceptionAbstract;
 
-class CacheException extends ExceptionAbstract{
+class CacheException extends ExceptionAbstract
+{
 	const MSG_UNSUPPORTED_DRIVER = 101;
 
 	static protected $_messages = [
