@@ -22,7 +22,6 @@ class MyCustomDriver extends DriverAbstract
         // Implement
     }
 
-
     /**
      * Parse config resource and build config array
      * @return array
