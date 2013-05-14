@@ -53,6 +53,9 @@ class ConfigCache
 	 * @param ConfigObject $config
 	 */
 	public static function setCache($cacheKey, $config) {
+		if(!self::isArrayObject(self::$_configCache)) {
+			self::$_configCache = self::arr(self::$_configCache);
+		}
 		self::$_configCache->key($cacheKey, $config);
 	}
 
@@ -85,7 +88,12 @@ class ConfigCache
 	 * @return Boolean
 	 */
 	private static function _isMd5($md5) {
+		if(!self::isString($md5) && !self::isStringObjecT($md5)) {
+			return false;
+		}
+
 		$md5 = StdObjectWrapper::toString($md5);
+
 		return !empty($md5) && preg_match('/^[a-f0-9]{32}$/', $md5);
 	}
 

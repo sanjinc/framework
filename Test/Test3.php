@@ -1,4 +1,6 @@
 <?php
+use Webiny\Component\Config\ConfigTrait;
+
 define('WF', '/www/webiny/framework');
 require_once '../WebinyFramework.php';
 
@@ -8,7 +10,17 @@ require_once '../WebinyFramework.php';
  * $config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
  */
 
+class Test
+{
+	use ConfigTrait;
 
+	function test() {
+		$config = $this->getJsonConfig(['name' => 'Test', 'test' => ['key' => 'value']]);
+		die($config->getAsIni());
 
-$config3 = \Webiny\Component\Config\Config::Php(realpath(__DIR__) . '/Configs/config.php');
-die($config3->getAsYaml());
+	}
+
+}
+
+$test = new Test();
+$test->test();

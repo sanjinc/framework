@@ -1,11 +1,11 @@
 Config Component
 =====================
 Config component creates Config objects from config files.
-Currently only INI files are supported.
+Currently supported formats: INI, JSON, PHP, YAML and custom drivers.
 
 To use Config component you will need a config file.
 
-===== Example INI File =====
+Example INI:
 
     [properties]
     a = "value"
@@ -27,13 +27,16 @@ If, however, you need an original config from file, you need to specify the seco
 
     $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini', true);
 
+If you don't want to use INI sections, or set custom nest delimiter, specify the following arguments:
+
+    $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini', false, false, '_');
 
 You can save your config in any format using the following methods:
 
     $config->saveAsJson($pathToFile);
     $config->saveAsPhp($pathToFile);
-    $config->saveAsIni($pathToFile);
-    $config->saveAsYaml($pathToFile);
+    $config->saveAsIni($pathToFile, $useSections = true, $nestDelimiter = '.');
+    $config->saveAsYaml($pathToFile, $indent = 2, $wordWrap = false);
 
     // This will save your config object to the file used when loading config
     $config->save();
@@ -41,14 +44,14 @@ You can save your config in any format using the following methods:
 And you can also use custom driver:
 
     $driverInstance = new MyCustomDriver();
-    $config->saveAs($driverInstance);
+    $config->saveAs($driverInstance, $destination);
 
 You can get your config as string in any format using the following methods:
 
     $string = $config->getAsJson();
     $string = $config->getAsPhp();
-    $string = $config->getAsIni();
-    $string = $config->getAsYaml();
+    $string = $config->getAsIni($useSections = true, $nestDelimiter = '.');
+    $string = $config->getAsYaml($indent = 2, $wordWrap = false);
 
 And you can also use custom driver
 

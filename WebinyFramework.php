@@ -12,6 +12,7 @@ ClassLoader::getInstance()->registerMap([
 										// a namespace rule
 										'Webiny'      => realpath(dirname(__FILE__)) . '/library/Webiny',
 										'Jamm\Memory' => realpath(dirname(__FILE__)) . '/library/Memory',
+										'Spyc'        => realpath(dirname(__FILE__)) . '/library/Spyc',
 										// a PEAR rule
 										'Swift_'      => realpath(dirname(__FILE__)) . '/library/Swift',
 										]);

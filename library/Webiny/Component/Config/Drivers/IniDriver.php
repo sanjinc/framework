@@ -23,6 +23,7 @@ use Webiny\StdLib\StdObject\StringObject\StringObject;
 class IniDriver extends DriverAbstract
 {
 	private $_delimiter = '.';
+	private $_useSections = true;
 
 	/**
 	 * Get config data as string
@@ -39,10 +40,25 @@ class IniDriver extends DriverAbstract
 	/**
 	 * Set delimiting character for nested properties, ex: a.b.c or a-b-c
 	 *
-	 * @param $delimiter
+	 * @param string $delimiter Default: '.'
+	 * @return $this
 	 */
 	public function setDelimiter($delimiter) {
 		$this->_delimiter = $delimiter;
+
+		return $this;
+	}
+
+	/**
+	 * Should parser use sections or not, ex: [section]
+	 * @param boolean $useSections Default: true
+	 *
+	 * @return $this
+	 */
+	public function useSections($useSections) {
+		$this->_useSections = $useSections;
+
+		return $this;
 	}
 
 	/**
@@ -154,7 +170,7 @@ class IniDriver extends DriverAbstract
 	}
 
 	private function _validateSection(StringObject $section) {
-		$tmp = $section->explode('.');
+		$tmp = $section->explode($this->_delimiter);
 		if($tmp->first()->contains('-') || $this->isNumber($tmp->first()->val())) {
 			throw new ConfigException(sprintf('Invalid config key "%s"', $section->val()));
 		}
@@ -186,7 +202,7 @@ class IniDriver extends DriverAbstract
 		$string = '';
 		foreach ($ini as $key => $val) {
 			if(is_array($val)) {
-				$string .= $this->_getSection($ini[$key], $prefix . $key . '.');
+				$string .= $this->_getSection($ini[$key], $prefix . $key . $this->_delimiter);
 			} else {
 				$string .= $prefix . $key . ' = ' . str_replace("\n", "\\\n", $this->_setValue($val)) . "\n";
 			}
