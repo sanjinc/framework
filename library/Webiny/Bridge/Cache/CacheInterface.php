@@ -7,63 +7,17 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Cache;
-
-use Webiny\Bridge\Cache\CacheAbstract;
-use Webiny\Component\Cache\CacheException;
-use Webiny\StdLib\StdLibTrait;
+namespace Webiny\Bridge\Cache;
 
 /**
- * Webiny cache component.
+ * Webiny cache bridge interface.
+ * All cache bridges must implement this interface.
  *
- * The cache component is used to store different information into memory or file system for much faster access.
- * The stored information can only be accessed for a limited time, after which it is invalidated.
- *
- * This component is based on Memory library by Eugeniy Oz and as so is under an MIT licence.
- * @link https://github.com/jamm/Memory
- *
- * The Memory library is required by this class.
- *
- * @package		 WebinyFramework
+ * @package         Webiny\Bridge\Cache
  */
-class Cache{
-	use StdLibTrait;
 
-	const DRIVER_APC = 'APC';
-	const DRIVER_COUCHBASE = 'Couchbase';
-	const DRIVER_MEMCACHE = 'Memcache';
-	const DRIVER_REDIS = 'Redis';
-	const DRIVER_FILESYSTEM = 'FileSystem';
-
-	private $_driverInstance = null;
-
-	public function __construct($id = '', $driver=self::DRIVER_APC ){
-
-		// validate driver
-		$const = __CLASS__.'::DRIVER_'.$this->str($driver)->caseUpper();
-		if(!defined($const)){
-			throw new CacheException(CacheException::MSG_UNSUPPORTED_DRIVER, [$driver]);
-		}
-
-		// create cache instance
-		$driver = '\Webiny\Component\Cache\Drivers\\'.$driver;
-		$this->_driverInstance = $driver::getInstance($id);
-
-		// validate instance
-		if(!$this->isInstanceOf($this->_driverInstance, '\Webiny\Bridge\Cache\CacheInterface')){
-			throw new CacheException(CacheException::MSG_INVALID_ARG, ['driver', 'Webiny\Bridge\Cache\CacheInterface']);
-		}
-	}
-
-	/**
-	 * @param $cacheId
-	 *
-	 * @return Cache
-	 */
-	static function APC($cacheId){
-		return new static($cacheId, self::DRIVER_APC);
-	}
-
+interface CacheInterface
+{
 	/**
 	 * Save a value into memory only if it DOESN'T exists (or false will be returned).
 	 *
@@ -74,9 +28,7 @@ class Cache{
 	 *
 	 * @return boolean True if value was added, otherwise false.
 	 */
-	public function add($key, $value, $ttl = 600, $tags = null) {
-		return $this->_driverInstance->add($key, $value, $ttl, $tags);
-	}
+	public function add($key, $value, $ttl = 600, $tags = null);
 
 	/**
 	 * Save a value into memory.
@@ -88,9 +40,7 @@ class Cache{
 	 *
 	 * @return bool True if value was stored successfully, otherwise false.
 	 */
-	public function save($key, $value, $ttl = 600, $tags = null) {
-		return $this->_driverInstance->save($key, $value, $ttl, $tags);
-	}
+	public function save($key, $value, $ttl = 600, $tags = null);
 
 	/**
 	 * Get the cache data for the given $key.
@@ -100,9 +50,7 @@ class Cache{
 	 *
 	 * @return mixed
 	 */
-	public function read($key, &$ttlLeft = -1) {
-		return $this->_driverInstance->read($key, $ttlLeft);
-	}
+	public function read($key, &$ttlLeft = -1);
 
 	/**
 	 * Delete key or array of keys from storage.
@@ -111,18 +59,14 @@ class Cache{
 	 *
 	 * @return boolean|array If array of keys was passed, on error will be returned array of not deleted keys, or true on success.
 	 */
-	public function delete($key) {
-		return $this->_driverInstance->del($key);
-	}
+	public function delete($key);
 
 	/**
 	 * Delete expired cache values.
 	 *
 	 * @return boolean
 	 */
-	public function deleteOld() {
-		return $this->_driverInstance->del_old();
-	}
+	public function deleteOld();
 
 	/**
 	 * Delete keys by tags.
@@ -131,9 +75,7 @@ class Cache{
 	 *
 	 * @return boolean
 	 */
-	public function deleteByTags($tag) {
-		return $this->_driverInstance->del_by_tags($tag);
-	}
+	public function deleteByTags($tag);
 
 	/**
 	 * Select from storage via callback function.
@@ -144,9 +86,7 @@ class Cache{
 	 *
 	 * @return mixed
 	 */
-	public function selectByCallback($callback, $getArray = false) {
-		return $this->_driverInstance->select_fx($callback, $getArray);
-	}
+	public function selectByCallback($callback, $getArray = false);
 
 	/**
 	 * Increment value of the key.
@@ -161,9 +101,7 @@ class Cache{
 	 *
 	 * @return int|string|array New key value.
 	 */
-	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200) {
-		return $this->_driverInstance->increment($key, $byValue, $limitKeysCount, $ttl);
-	}
+	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200);
 
 	/**
 	 * Get exclusive mutex for key. Key will be still accessible to read and write, but
@@ -171,12 +109,8 @@ class Cache{
 	 *
 	 * @param mixed $key                    Name of the cache key.
 	 * @param mixed $autoUnlockerVariable   Pass empty, just declared variable
-	 *
-	 * @return bool
 	 */
-	public function lockKey($key, &$autoUnlockerVariable) {
-		return $this->_driverInstance->lock_key($key, $autoUnlockerVariable);
-	}
+	public function lockKey($key, &$autoUnlockerVariable);
 
 	/**
 	 * Try to lock key, and if key is already locked - wait, until key will be unlocked.
@@ -187,7 +121,5 @@ class Cache{
 	 *
 	 * @return boolean
 	 */
-	public function acquireKey($key, &$autoUnlocker) {
-		return $this->_driverInstance->acquire_key($key, $autoUnlocker);
-	}
+	public function acquireKey($key, &$autoUnlocker);
 }

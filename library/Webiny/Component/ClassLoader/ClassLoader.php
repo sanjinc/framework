@@ -180,8 +180,12 @@ class ClassLoader
 				}
 
 				foreach ($dirs as $dir) {
-					$file = $dir . DIRECTORY_SEPARATOR . $normalizedClass;
+					$file = $dir . DIRECTORY_SEPARATOR . str_replace(str_replace('\\', DIRECTORY_SEPARATOR,$ns), '', $normalizedClass);
 					// no check if a file exists or not
+					if(!file_exists($file)){
+						$path = str_replace(str_replace('\\', DIRECTORY_SEPARATOR,$ns), '', $normalizedClass);
+						die($dir . DIRECTORY_SEPARATOR . $path);
+					}
 					return $file;
 				}
 			}

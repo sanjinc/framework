@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Webiny Framework (http://www.webiny.com/framework)
  *
@@ -8,14 +7,15 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Cache;
+namespace Webiny\Bridge\Cache;
 
 use Webiny\StdLib\Exception\ExceptionAbstract;
 
+/**
+ * Cache bridge exception class.
+ *
+ * @package		 Webiny\Bridge\Cache
+ */
 class CacheException extends ExceptionAbstract{
-	const MSG_UNSUPPORTED_DRIVER = 101;
 
-	static protected $_messages = [
-		101 => 'Driver "%s" is not a valida cache driver.'
-	];
 }

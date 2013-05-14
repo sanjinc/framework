@@ -18,7 +18,5 @@ use Webiny\StdLib\Exception\ExceptionAbstract;
  */
 class StdObjectException extends ExceptionAbstract
 {
-	function __construct($message, $code = 0, $prevException = null) {
-		parent::__construct('StdObjectException: ' . $message, $code, $prevException);
-	}
+
 }

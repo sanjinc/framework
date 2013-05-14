@@ -4,6 +4,7 @@ Class loader component loads your PHP files automatically as long as they follow
 For naming standard please refer to Webiny coding standard PDF od PSR-0 naming convention.
 
 To use the ClassLoader, get its instance by calling ClassLoader::getInstance() method.
+
     require_once 'Webiny/Component/ClassLoader/ClassLoader.php'
 
     use Webiny\Component\ClassLoader;
@@ -15,7 +16,7 @@ registering a namespace or a PEAR rule. PEAR rules are identified by having a un
 
     ClassLoader::getInstance()->registerMap([
     										// a namespace rule
-    										'Webiny' => realpath(dirname(__FILE__)).'/library',
+    										'Webiny' => realpath(dirname(__FILE__)).'/library/Webiny',
     										// a PEAR rule
     										'Swift_' => realpath(dirname(__FILE__)).'/library/Swift',
     										]);

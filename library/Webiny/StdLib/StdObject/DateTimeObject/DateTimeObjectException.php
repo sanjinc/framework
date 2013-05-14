@@ -9,14 +9,14 @@
 
 namespace Webiny\StdLib\StdObject\DateTimeObject;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
  * DateTimeObject exception class.
  *
  * @package         Webiny\StdLib\StdObject\DateTimeObject
  */
-class DateTimeObjectException extends ExceptionAbstract
+class DateTimeObjectException extends StdObjectException
 {
 	const MSG_INVALID_TIMEZONE = 101;
 	const MSG_UNABLE_TO_CREATE_FROM_FORMAT = 102;
