@@ -53,7 +53,6 @@ class Config
 		}
 
 		return $config;
-
 	}
 
 	/**
