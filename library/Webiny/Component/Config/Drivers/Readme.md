@@ -10,7 +10,7 @@ These are the drivers currently provided by Webiny:
 - PHP
 
 If you are interested in developing a new config driver, you must extend the DriverAbstract class. It will have you implement the following methods:
-
+```php
     class MyCustomDriver extends DriverAbstract
     {
         /**
@@ -45,9 +45,9 @@ If you are interested in developing a new config driver, you must extend the Dri
             throw new ConfigException('MyCustomDriver resource must be of type ... ');
         }
     }
-
+```
 After that you can use your custom driver in your calls to Config and ConfigObject class methods, for example:
-
+```php
     // Get ConfigObject
     $myCustomDriver = new MyCustomDriver($pathToFile);
     $config = Config::parseResource($myCustomDriver, $flushCache = false);
@@ -57,3 +57,4 @@ After that you can use your custom driver in your calls to Config and ConfigObje
 
     // Get ConfigObject as string
     $configString = $config->getAs($myCustomDriver);
+```
