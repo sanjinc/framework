@@ -180,12 +180,17 @@ class ClassLoader
 				}
 
 				foreach ($dirs as $dir) {
-					$file = $dir . DIRECTORY_SEPARATOR . str_replace(str_replace('\\', DIRECTORY_SEPARATOR,$ns), '', $normalizedClass);
-					// no check if a file exists or not
-					if(!file_exists($file)){
-						$path = str_replace(str_replace('\\', DIRECTORY_SEPARATOR,$ns), '', $normalizedClass);
-						die($dir . DIRECTORY_SEPARATOR . $path);
+					// create the path to the namespace
+					$nsPath = str_replace('\\', DIRECTORY_SEPARATOR, $ns);
+					$pos = strpos($normalizedClass, $nsPath);
+					if ($pos !== false) {
+						$normalizedClass = substr_replace($normalizedClass, '', $pos, strlen($nsPath));
 					}
+
+					// build the full path
+					$file = $dir . DIRECTORY_SEPARATOR . $normalizedClass;
+
+					// no check if a file exists or not
 					return $file;
 				}
 			}
