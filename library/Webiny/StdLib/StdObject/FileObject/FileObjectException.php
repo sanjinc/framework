@@ -9,14 +9,14 @@
 
 namespace Webiny\StdLib\StdObject\FileObject;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
  * FileObject exception class.
  *
  * @package         Webiny\StdLib\StdObject\FileObject
  */
-class FileObjectException extends ExceptionAbstract
+class FileObjectException extends StdObjectException
 {
 	const MSG_UNABLE_TO_ACCESS = 101;
 	const MSG_UNABLE_TO_READ_FILE_PROP = 102;

@@ -9,14 +9,14 @@
 
 namespace Webiny\StdLib\StdObject\ArrayObject;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
  * ArrayObject Exception class.
  *
  * @package         Webiny\StdLib\StdObject\ArrayObject
  */
-class ArrayObjectException extends ExceptionAbstract
+class ArrayObjectException extends StdObjectException
 {
 	/**
 	 * Constants defining the exception codes.

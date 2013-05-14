@@ -9,14 +9,14 @@
 
 namespace Webiny\StdLib\StdObject\UrlObject;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
  * UrlObject exception class.
  *
  * @package         Webiny\StdLib\StdObject\UrlObject
  */
-class UrlObjectException extends ExceptionAbstract
+class UrlObjectException extends StdObjectException
 {
 	const MSG_INVALID_URL = 101;
 

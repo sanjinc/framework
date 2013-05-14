@@ -9,14 +9,14 @@
 
 namespace Webiny\StdLib\StdObject\StringObject;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\StdLib\StdObject\StdObjectException;
 
 /**
  * StringObject exception class.
  *
  * @package         Webiny\StdLib\StdObject\StringObject
  */
-class StringObjectException extends ExceptionAbstract
+class StringObjectException extends StdObjectException
 {
 
 	const MSG_UNABLE_TO_EXPLODE = 101;
