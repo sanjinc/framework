@@ -10,9 +10,8 @@ use Webiny\Component\ClassLoader\ClassLoader;
 require_once 'library/Webiny/Component/ClassLoader/ClassLoader.php';
 ClassLoader::getInstance()->registerMap([
 										// a namespace rule
-										'Webiny'	=> realpath(dirname(__FILE__)).'/library',
-										'Jamm'		=> realpath(dirname(__FILE__)).'/library/Memory',
-										'Spyc'		=> realpath(dirname(__FILE__)).'/library',
+										'Webiny'      => realpath(dirname(__FILE__)) . '/library/Webiny',
+										'Jamm\Memory' => realpath(dirname(__FILE__)) . '/library/Memory',
 										// a PEAR rule
-										'Swift_'	=> realpath(dirname(__FILE__)).'/library/Swift',
+										'Swift_'      => realpath(dirname(__FILE__)) . '/library/Swift',
 										]);
