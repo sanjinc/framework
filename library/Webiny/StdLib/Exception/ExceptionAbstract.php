@@ -23,10 +23,25 @@ abstract class ExceptionAbstract extends \Exception implements ExceptionInterfac
 {
 	use StdObjectTrait, ValidatorTrait;
 
+	/**
+	 * Bad function call.
+	 */
 	const MSG_BAD_FUNC_CALL = 1;
+	/**
+	 * Bad method call.
+	 */
 	const MSG_BAD_METHOD_CALL = 2;
+	/**
+	 * Invalid argument provided. %s must be type of %s.
+	 */
 	const MSG_INVALID_ARG = 3;
+	/**
+	 * Invalid argument provided. %s must be %s.
+	 */
 	const MSG_INVALID_ARG_LENGTH = 4;
+	/**
+	 * Defined value for %s argument if out of the valid range.
+	 */
 	const MSG_ARG_OUT_OF_RANGE = 5;
 
 	/**
@@ -47,9 +62,9 @@ abstract class ExceptionAbstract extends \Exception implements ExceptionInterfac
 	/**
 	 * Create an instance of exception class.
 	 *
-	 * @param string|int       $message Message you what to throw. If $message is type of integer,
+	 * @param string|int $message       Message you what to throw. If $message is type of integer,
 	 *                                  than the method will treat that as an exception code.
-	 * @param null|array       $params  If message has variables inside, send an array of values using this argument,
+	 * @param null|array $params        If message has variables inside, send an array of values using this argument,
 	 *                                  and the variables will be replaced with those values in the same order they appear.
 	 */
 	public function __construct($message, $params = null) {

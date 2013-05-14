@@ -7,18 +7,17 @@
  * @license      http://www.webiny.com/framework/license
  * @package      WebinyFramework
  */
-namespace Webiny\Bridge\Yaml\Spyc;
+namespace Webiny\Bridge\Yaml;
 
-use Webiny\Bridge\Yaml\YamlException;
 use Webiny\StdLib\Exception\ExceptionAbstract;
 
 /**
- * Spyc bridge exception class.
+ * Config exception class.
  *
- * @package      Webiny\Bridge\Yaml\Spyc
+ * @package      Webiny\Bridge\Yaml
  */
 
-class SpycException extends YamlException
+class YamlException extends ExceptionAbstract
 {
 
 }

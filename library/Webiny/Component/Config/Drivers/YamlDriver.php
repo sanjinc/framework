@@ -9,8 +9,11 @@
 
 namespace Webiny\Component\Config\Drivers;
 
-use Webiny\Bridge\Yaml\Spyc\Spyc as YamlBridge;
+use Webiny\Bridge\Yaml\Yaml;
+use Webiny\Bridge\Yaml\YamlAbstract;
+use Webiny\Bridge\Yaml\YamlInterface;
 use Webiny\Component\Config\ConfigException;
+use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
 use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
@@ -25,46 +28,65 @@ use Webiny\StdLib\ValidatorTrait;
 
 class YamlDriver extends DriverAbstract
 {
+	private $_indent = 2;
+	private $_wordWrap = false;
 	/**
-	 * @var null|\Webiny\Bridge\Yaml\Spyc\Spyc
+	 * @var null|YamlInterface
 	 */
 	private $_yaml = null;
 
 	public function __construct($resource = null) {
 		parent::__construct($resource);
-		$this->_yaml = new YamlBridge();
+		$this->_yaml = Yaml::getInstance();
 	}
 
 	/**
-	 * Convert given data to appropriate string format
+	 * Set Yaml indent
 	 *
-	 * @param $data
+	 * @param int $indent
+	 *
+	 * @throws \Webiny\Component\Config\ConfigException
+	 * @return $this
+	 */
+	public function setIndent($indent){
+		if(!$this->isNumber($indent)){
+			 throw new ConfigException(ConfigException::MSG_INVALID_ARG, ['$indent', 'integer']);
+		}
+		$this->_indent = $indent;
+		return $this;
+	}
+
+	/**
+	 * Set word wrap
+	 *
+	 * @param boolean $wordWrap
+	 *
+	 * @throws \Webiny\Component\Config\ConfigException
+	 * @return $this
+	 */
+	public function setWordWrap($wordWrap){
+		if(!$this->isBoolean($wordWrap)){
+			throw new ConfigException(ConfigException::MSG_INVALID_ARG, ['$wordWrap', 'boolean']);
+		}
+		$this->_wordWrap = $wordWrap;
+		return $this;
+	}
+
+	/**
+	 * Get config as Yaml string
 	 *
 	 * @return string
 	 */
-	public function toString($data) {
-		return $this->_yaml->createYaml($data)->val();
-	}
-
-	/**
-	 * Save given data to given destination
-	 *
-	 * @param $data
-	 * @param $destination
-	 *
-	 * @return mixed
-	 */
-	protected function _saveToFile($data, $destination) {
-		// the formated Yaml string is already stored in YamlBridge object so $data is unused
-		$this->_yaml->saveToFile($destination);
+	protected function _getString() {
+		return $this->_yaml->setResource($this->_resource)->getString($this->_indent, $this->_wordWrap);
 	}
 
 	/**
 	 * Parse config resource and build config array
 	 * @return array
 	 */
-	protected function _buildArray() {
-		return $this->_parseYamlString($this->_resource);
+	protected function _getArray() {
+		return $this->_yaml->setResource($this->_resource)->getArray();
 	}
 
 	/**
@@ -76,6 +98,10 @@ class YamlDriver extends DriverAbstract
 			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
 		}
 
+		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)){
+			return true;
+		}
+
 		// Perform string checks
 		try {
 			$this->_resource = $this->str($this->_resource);
@@ -85,12 +111,5 @@ class YamlDriver extends DriverAbstract
 		} catch (StdObjectException $e) {
 			throw new ConfigException($e->getMessage());
 		}
-	}
-
-	private function _parseYamlString($data) {
-		$data = StdObjectWrapper::toString($data);
-		$yaml = new YamlBridge();
-
-		return $yaml->parseYaml($data)->val();
 	}
 }

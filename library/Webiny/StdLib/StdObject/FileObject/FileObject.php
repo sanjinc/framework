@@ -60,8 +60,12 @@ class FileObject extends StdObjectAbstract
 	 * @throws FileObjectException
 	 */
 	public function __construct($pathToFile) {
-		if(self::isInstanceOf($pathToFile, $this)){
-			return $pathToFile;
+		if(self::isInstanceOf($pathToFile, $this)) {
+			$this->_fileExists = true;
+			$this->_value = $pathToFile->val();
+			$this->_getDriver();
+
+			return;
 		}
 
 		// assign file path
@@ -178,7 +182,7 @@ class FileObject extends StdObjectAbstract
 	public function val($value = null) {
 		if(!$this->isNull($value)) {
 			$this->_value = $value;
-			$this->_driver = null;
+			$this->_driver = null; // @TODO: why is this null?
 		}
 
 		return $this->_value;

@@ -12,6 +12,7 @@ namespace Webiny\Component\Config\Drivers;
 use Webiny\Component\Config\ConfigException;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 use Webiny\StdLib\ValidatorTrait;
 
@@ -23,37 +24,24 @@ use Webiny\StdLib\ValidatorTrait;
 
 class JsonDriver extends DriverAbstract
 {
-
 	/**
-	 * Convert given data to appropriate string format
-	 *
-	 * @param $data
+	 * Get config data as string
 	 *
 	 * @return string
 	 */
-	public function toString($data) {
-		return json_encode($data);
-	}
-
-	/**
-	 * Save given data to given destination
-	 *
-	 * @param $data
-	 * @param $destination
-	 *
-	 * @return mixed
-	 */
-	protected function _saveToFile($data, $destination) {
-		$this->file($destination)->write($data);
-
-		return true;
+	protected function _getString() {
+		return json_encode($this->_getArray());
 	}
 
 	/**
 	 * Parse config resource and build config array
-	 * @return array
+	 * @return array|ArrayObject
 	 */
-	protected function _buildArray() {
+	protected function _getArray() {
+		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)){
+			return StdObjectWrapper::toArray($this->_resource);
+		}
+
 		if(file_exists($this->_resource)) {
 			$config = $this->file($this->_resource)->getFileContent();
 		} else {
@@ -63,6 +51,7 @@ class JsonDriver extends DriverAbstract
 		return $this->_parseJsonString($config);
 	}
 
+
 	/**
 	 * Validate given config resource and throw ConfigException if it's not valid
 	 * @throws ConfigException
@@ -70,6 +59,10 @@ class JsonDriver extends DriverAbstract
 	protected function _validateResource() {
 		if(self::isNull($this->_resource)) {
 			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
+		}
+
+		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)){
+			return true;
 		}
 
 		// Perform string checks
@@ -93,11 +86,9 @@ class JsonDriver extends DriverAbstract
 	 */
 	private function _parseJsonString($data) {
 		try {
-			$config = json_decode($data, true);
+			return json_decode($data, true);
 		} catch (Exception $e) {
 			throw new ConfigException($e->getMessage());
 		}
-
-		return $config;
 	}
 }

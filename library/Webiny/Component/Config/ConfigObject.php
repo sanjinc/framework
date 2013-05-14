@@ -11,6 +11,7 @@ namespace Webiny\Component\Config;
 
 use Traversable;
 use Webiny\Component\Config\Drivers\DriverAbstract;
+use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
 use Webiny\Component\Config\Drivers\PhpDriver;
 use Webiny\Component\Config\Drivers\YamlDriver;
@@ -64,44 +65,54 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	private $_driverClass = null;
 
 
-	public function saveAsYaml($destination) {
-		$driver = new YamlDriver();
+	public function saveAsYaml($destination, $indent = 2, $wordWrap = false) {
+		$driver = new YamlDriver($this->toArray());
+		$driver->setIndent($indent)->setWordWrap($wordWrap)->saveToFile($destination);
 
-		return $driver->saveToFile($this->toArray(), $destination);
+		return $this;
 	}
 
-	public function getAsYaml() {
-		$driver = new YamlDriver();
+	public function getAsYaml($indent = 2, $wordWrap = false) {
+		$driver = new YamlDriver($this->toArray());
 
-		return $driver->toString($this->toArray());
+		return $driver->setIndent($indent)->setWordWrap($wordWrap)->getString();
 	}
 
 	public function saveAsPhp($destination) {
-		$driver = new PhpDriver();
-		return $driver->saveToFile($this->toArray(), $destination);
+		$driver = new PhpDriver($this->toArray());
+		$driver->saveToFile($destination);
+
+		return $this;
 	}
 
 	public function getAsPhp() {
-		$driver = new PhpDriver();
+		$driver = new PhpDriver($this->toArray());
 
-		return $driver->toString($this->toArray());
+		return $driver->getString();
 	}
 
 	public function saveAsIni($destination) {
 
 	}
 
-	public function saveAsJson($destination) {
-		$driver = new JsonDriver();
+	public function getAsIni() {
+		$driver = new IniDriver($this->toArray());
 
-		return $driver->saveToFile($this->toArray(), $destination);
+		return $driver->getString();
+	}
+
+	public function saveAsJson($destination) {
+		$driver = new JsonDriver($this->toArray());
+		$driver->saveToFile($destination);
+
+		return $this;
 
 	}
 
 	public function getAsJson() {
-		$driver = new JsonDriver();
+		$driver = new JsonDriver($this->toArray());
 
-		return $driver->toString($this->toArray());
+		return $driver->getString();
 	}
 
 	public function save() {
@@ -109,9 +120,10 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			throw new ConfigException('ConfigObject was not created from a file resource and thus can not be saved directly!');
 		}
 
-		$driver = new $this->_driverClass($this->_fileResource);
+		$driver = new $this->_driverClass($this->toArray());
+		$driver->saveToFile($this->_fileResource);
 
-		return $driver->saveToFile($this->toArray());
+		return $this;
 
 	}
 
