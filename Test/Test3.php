@@ -1,26 +1,31 @@
 <?php
-use Webiny\Component\Config\ConfigTrait;
 
-define('WF', '/www/webiny/framework');
+define('WF', '/var/www/newwebiny/framework');
 require_once '../WebinyFramework.php';
-
-/**
- * Custom Resource
- * $config4 = \Webiny\Component\Config\Config::parseResource(['name' => 'Test']);
- * $config4 = \Webiny\Component\Config\Config::parseResource(new CustomDriver(realpath(__DIR__).'/Configs/config.ext'));
- */
 
 class Test
 {
-	use ConfigTrait;
-
 	function test() {
-		$config = $this->getJsonConfig(['name' => 'Test', 'test' => ['key' => 'value']]);
-		die($config->getAsIni());
+		$processor = function($record){
+			$record['extra']['country'] = 'Ukraine';
+			return $record;
+		};
 
+
+		$logger = new Monolog\Logger('Debug');
+		$handler = new Monolog\Handler\StreamHandler(WF.'/Test/logger.log', true);
+		$handler->
+
+		$logger->pushHandler($handler);
+		$logger->pushProcessor($processor);
+
+		$logger->addInfo('Testing Info call', ['name' => 'Pavel']);
 	}
 
 }
+
+$logger = \Webiny\Component\Logger\Logger::getInstance('Module builder');
+die(print_r($logger));
 
 $test = new Test();
 $test->test();
