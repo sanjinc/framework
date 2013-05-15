@@ -9,6 +9,8 @@
 
 namespace Webiny\Component\Logger;
 
+use Webiny\StdLib\StdLibTrait;
+
 /**
  * Description
  *
@@ -17,5 +19,24 @@ namespace Webiny\Component\Logger;
 
 abstract class LoggerAbstract implements LoggerInterface
 {
+	use StdLibTrait;
+
+	protected $_handlers = [];
+	protected $_processors = [];
+	protected $_formatter = null;
+
+	abstract protected function __construct($channelName);
+
+	public function addHandler(LoggerHandlerAbstract $handler){
+		$this->arr($this->_handlers)->prepend($handler);
+	}
+
+	public function addProcessor(LoggerProcessorAbstract $processor){
+
+	}
+
+	public static function getInstance($channelName) {
+		return new static($channelName);
+	}
 
 }

@@ -9,7 +9,6 @@
 
 namespace Webiny\Bridge\Logger\Monolog;
 
-use Monolog\Logger;
 use Webiny\Component\Logger\LoggerAbstract;
 
 /**
@@ -17,12 +16,13 @@ use Webiny\Component\Logger\LoggerAbstract;
  */
 class Monolog extends LoggerAbstract
 {
-	public static function getInstance($channelName) {
-		return new static($channelName);
-	}
+	/**
+	 * @var \Monolog\Logger|null
+	 */
+	protected $_library = null;
 
-	private function __construct($channelName){
-		$this->_driver = new Logger($channelName);
+	protected function __construct($channelName) {
+		$this->_library = new \Monolog\Logger($channelName);
 	}
 
 	/**
@@ -34,7 +34,7 @@ class Monolog extends LoggerAbstract
 	 * @return null
 	 */
 	public function emergency($message, array $context = array()) {
-		$this->_driver->emergency($message, $context);
+		$this->_library->emergency($message, $context);
 	}
 
 	/**
@@ -45,10 +45,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function alert($message, array $context = array()) {
-		// $message,$context
+		$this->_library->alert($message, $context);
 	}
 
 	/**
@@ -58,10 +59,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function critical($message, array $context = array()) {
-		// $message,$context
+		$this->_library->critical($message, $context);
 	}
 
 	/**
@@ -70,10 +72,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function error($message, array $context = array()) {
-		// $message,$context
+		$this->_library->error($message, $context);
 	}
 
 	/**
@@ -84,10 +87,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function warning($message, array $context = array()) {
-		// $message,$context
+		$this->_library->warning($message, $context);
 	}
 
 	/**
@@ -95,10 +99,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function notice($message, array $context = array()) {
-		// $message,$context
+		$this->_library->notice($message, $context);
 	}
 
 	/**
@@ -108,10 +113,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function info($message, array $context = array()) {
-		$this->_driver->info($message, $context);
+		$this->_library->info($message, $context);
 	}
 
 	/**
@@ -119,10 +125,11 @@ class Monolog extends LoggerAbstract
 	 *
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function debug($message, array $context = array()) {
-		// $message,$context
+		$this->_library->debug($message, $context);
 	}
 
 	/**
@@ -131,8 +138,18 @@ class Monolog extends LoggerAbstract
 	 * @param mixed  $level
 	 * @param string $message
 	 * @param array  $context
+	 *
 	 * @return null
 	 */
 	public function log($level, $message, array $context = array()) {
-		// $level,$message,$context
-	}}
+		$this->_library->log($level, $message, $context);
+	}
+
+	public function addHandler($handler) {
+		$this->_library->pushHandler($handler);
+	}
+
+	public function addProcessor($processor) {
+		$this->_library->pushProcessor($processor);
+	}
+}
