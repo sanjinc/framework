@@ -38,18 +38,21 @@ class Config
 	 *
 	 * @param bool   $flushCache    Flush existing cache and load config file
 	 *
+	 * @param bool   $useSections   Default: true
 	 * @param string $nestDelimiter Delimiter for nested properties, ex: a.b.c or a-b-c
 	 *
 	 * @return ConfigObject
 	 */
-	public static function Ini($resource, $flushCache = false, $nestDelimiter = '.') {
+	public static function Ini($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
 		$config = ConfigCache::getCache($resource);
 		if($flushCache || !$config) {
-			return new ConfigObject(new IniDriver($resource));
+			$driver = new IniDriver($resource);
+			$driver->setDelimiter($nestDelimiter)->useSections($useSections);
+
+			return new ConfigObject($driver);
 		}
 
 		return $config;
-
 	}
 
 	/**
@@ -118,10 +121,10 @@ class Config
 	 * @return ConfigObject
 	 */
 	public static function parseResource($resource, $flushCache = false) {
+		$driver = $resource;
 		$driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
 		if(self::isInstanceOf($resource, $driverAbstractClassName)) {
-			$driver = $resource;
-			$resource = $driver->getResource();
+			$resource = $resource->getResource();
 		}
 
 		$cache = ConfigCache::getCache($resource);
@@ -129,10 +132,10 @@ class Config
 			return new ConfigObject($driver);
 		}
 
-		return $cache->getConfigObject();
+		return $cache;
 	}
 
-	private function __construct(){
+	private function __construct() {
 		// Prevent instantiation
 	}
 }

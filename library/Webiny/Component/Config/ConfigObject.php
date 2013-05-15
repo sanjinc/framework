@@ -64,18 +64,65 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 */
 	private $_driverClass = null;
 
+	/**
+	 * GET METHODS
+	 */
+
+	/**
+	 * Get config as Yaml string
+	 *
+	 * @param int  $indent
+	 * @param bool $wordWrap
+	 *
+	 * @return string
+	 */
+	public function getAsYaml($indent = 2, $wordWrap = false) {
+		$driver = new YamlDriver($this->toArray());
+
+		return $driver->setIndent($indent)->setWordWrap($wordWrap)->getString();
+	}
+
+	public function getAsPhp() {
+		$driver = new PhpDriver($this->toArray());
+
+		return $driver->getString();
+	}
+
+	public function getAsIni($useSections = true, $nestDelimiter = '.') {
+		$driver = new IniDriver($this->toArray());
+
+		return $driver->setDelimiter($nestDelimiter)->useSections($useSections)->getString();
+	}
+
+	public function getAsJson() {
+		$driver = new JsonDriver($this->toArray());
+
+		return $driver->getString();
+	}
+
+	public function getAs(DriverAbstract $driver) {
+		return $driver->getString();
+	}
+
+	/**
+	 * SAVE METHODS
+	 */
+
+	/**
+	 * Save config as Yaml
+	 *
+	 * @param      $destination
+	 * @param int  $indent
+	 * @param bool $wordWrap
+	 *
+	 * @return $this
+	 */
 
 	public function saveAsYaml($destination, $indent = 2, $wordWrap = false) {
 		$driver = new YamlDriver($this->toArray());
 		$driver->setIndent($indent)->setWordWrap($wordWrap)->saveToFile($destination);
 
 		return $this;
-	}
-
-	public function getAsYaml($indent = 2, $wordWrap = false) {
-		$driver = new YamlDriver($this->toArray());
-
-		return $driver->setIndent($indent)->setWordWrap($wordWrap)->getString();
 	}
 
 	public function saveAsPhp($destination) {
@@ -85,34 +132,22 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function getAsPhp() {
-		$driver = new PhpDriver($this->toArray());
-
-		return $driver->getString();
-	}
-
-	public function saveAsIni($destination) {
-
-	}
-
-	public function getAsIni() {
-		$driver = new IniDriver($this->toArray());
-
-		return $driver->getString();
-	}
-
 	public function saveAsJson($destination) {
 		$driver = new JsonDriver($this->toArray());
 		$driver->saveToFile($destination);
 
 		return $this;
-
 	}
 
-	public function getAsJson() {
-		$driver = new JsonDriver($this->toArray());
+	public function saveAsIni($destination, $useSections = true, $nestDelimiter = '.') {
+		$driver = new IniDriver($this->toArray());
+		$driver->useSections($useSections)->setDelimiter($nestDelimiter)->saveToFile($destination);
 
-		return $driver->getString();
+		return $this;
+	}
+
+	public function saveAs(DriverAbstract $driver, $destination) {
+		return $driver->setResource($this->toArray())->saveToFile($destination);
 	}
 
 	public function save() {
