@@ -9,7 +9,7 @@
 
 namespace Webiny\Bridge\Logger\Monolog;
 
-use Webiny\Component\Logger\LoggerAbstract;
+use Webiny\Bridge\Logger\LoggerAbstract;
 
 /**
  * @package         Webiny\Bridge\Logger\Monolog
@@ -145,11 +145,5 @@ class Monolog extends LoggerAbstract
 		$this->_library->log($level, $message, $context);
 	}
 
-	public function addHandler($handler) {
-		$this->_library->pushHandler($handler);
-	}
 
-	public function addProcessor($processor) {
-		$this->_library->pushProcessor($processor);
-	}
 }

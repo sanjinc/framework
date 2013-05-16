@@ -7,19 +7,21 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger;
+namespace Webiny\Bridge\Logger;
 
 use Webiny\StdLib\StdLibTrait;
 
 /**
  * Description
  *
- * @package   Webiny\Component\Logger
+ * @package   Webiny\Bridge\Logger
  */
 
 abstract class LoggerAbstract implements LoggerInterface
 {
 	use StdLibTrait;
+
+	protected $_channelName = '';
 
 	protected $_handlers = [];
 	protected $_processors = [];
@@ -31,8 +33,8 @@ abstract class LoggerAbstract implements LoggerInterface
 		$this->arr($this->_handlers)->prepend($handler);
 	}
 
-	public function addProcessor(LoggerProcessorAbstract $processor){
-
+	public function addProcessor($processor){
+		$this->arr($this->_processors)->prepend($processor);
 	}
 
 	public static function getInstance($channelName) {
