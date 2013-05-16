@@ -9,38 +9,25 @@
 
 namespace Webiny\Bridge\Cache;
 
-use Webiny\StdLib\ValidatorTrait;
-
 /**
- * APC cache bridge loader.
+ * Webiny cache bridge driver interface.
  *
  * @package         Webiny\Bridge\Cache
  */
-class APC extends CacheAbstract
+
+interface DriverInterface
 {
-
-	/**
-	 * Path to the default bridge library for APC.
-	 *
-	 * @var string
-	 */
-	static private $_library = '\Webiny\Bridge\Cache\Memory\APC';
-
 	/**
 	 * Get the name of bridge library which will be used as the driver.
 	 *
 	 * @return string
 	 */
-	static function _getLibrary() {
-		return self::$_library;
-	}
+	static function _getLibrary();
 
 	/**
 	 * Change the default library used for the driver.
 	 *
 	 * @param string $pathToClass Path to the new driver class. Must be an instance of \Webiny\Bridge\Cache\CacheInterface
 	 */
-	static function setLibrary($pathToClass) {
-		self::$_library = $pathToClass;
-	}
+	static function setLibrary($pathToClass);
 }

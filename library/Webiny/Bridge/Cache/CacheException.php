@@ -14,8 +14,9 @@ use Webiny\StdLib\Exception\ExceptionAbstract;
 /**
  * Cache bridge exception class.
  *
- * @package		 Webiny\Bridge\Cache
+ * @package         Webiny\Bridge\Cache
  */
-class CacheException extends ExceptionAbstract{
+class CacheException extends ExceptionAbstract
+{
 
 }
