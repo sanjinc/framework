@@ -23,7 +23,7 @@ class Test
 
 }
 
-$logger = new \Webiny\Component\Logger\Logger('Module builder');
+$logger = \Webiny\Component\Logger\Logger::getInstance('Module builder');
 $logger->addHandler(new \Webiny\Component\Logger\Handlers\StreamHandler(WF.'/Test/logger.log'));
 
 $logger->info('Got to this point...');
