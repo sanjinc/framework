@@ -131,6 +131,21 @@ class StdObjectWrapper extends StdObjectAbstract{
 	}
 
 	/**
+	 * Check if $var is an instance of DateTimeObject.
+	 *
+	 * @param mixed $var Element to check.
+	 *
+	 * @return bool
+	 */
+	static function isDateTimeObject($var){
+		if(self::isInstanceOf($var, 'Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject')){
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Check if $var is an instance of UrlObject.
 	 *
 	 * @param mixed $var Element to check.

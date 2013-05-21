@@ -5,6 +5,8 @@ namespace Webiny\Component\Logger;
 use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
 use Webiny\Bridge\Logger\LoggerException;
+use Webiny\Component\Logger\Drivers\Webiny;
+use Webiny\StdLib\StdLibTrait;
 
 /**
  * Webiny Logger
@@ -26,6 +28,16 @@ class Logger
 	 */
 	public function __construct($driverInstance) {
 		$this->_driverInstance = $driverInstance;
+	}
+
+	/**
+	 * Get Webiny logger
+	 * @param $name
+	 *
+	 * @return Webiny Webiny logger instance
+	 */
+	public static function Webiny($name){
+		return new static(new Webiny($name));
 	}
 
 	/**
@@ -58,7 +70,7 @@ class Logger
 	 * @return null
 	 */
 	public function emergency($message, array $context = array()) {
-		$this->_loggerInstance->emergency($message, $context);
+		$this->_driverInstance->emergency($message, $context);
 	}
 
 	/**
@@ -73,7 +85,7 @@ class Logger
 	 * @return null
 	 */
 	public function alert($message, array $context = array()) {
-		$this->_loggerInstance->alert($message, $context);
+		$this->_driverInstance->alert($message, $context);
 	}
 
 	/**
@@ -87,7 +99,7 @@ class Logger
 	 * @return null
 	 */
 	public function critical($message, array $context = array()) {
-		$this->_loggerInstance->critical($message, $context);
+		$this->_driverInstance->critical($message, $context);
 	}
 
 	/**
@@ -100,7 +112,7 @@ class Logger
 	 * @return null
 	 */
 	public function error($message, array $context = array()) {
-		$this->_loggerInstance->error($message, $context);
+		$this->_driverInstance->error($message, $context);
 	}
 
 	/**
@@ -115,7 +127,7 @@ class Logger
 	 * @return null
 	 */
 	public function warning($message, array $context = array()) {
-		$this->_loggerInstance->warning($message, $context);
+		$this->_driverInstance->warning($message, $context);
 	}
 
 	/**
@@ -127,7 +139,7 @@ class Logger
 	 * @return null
 	 */
 	public function notice($message, array $context = array()) {
-		$this->_loggerInstance->notice($message, $context);
+		$this->_driverInstance->notice($message, $context);
 	}
 
 	/**
@@ -141,7 +153,7 @@ class Logger
 	 * @return null
 	 */
 	public function info($message, array $context = array()) {
-		$this->_loggerInstance->info($message, $context);
+		$this->_driverInstance->info($message, $context);
 	}
 
 	/**
@@ -153,7 +165,7 @@ class Logger
 	 * @return null
 	 */
 	public function debug($message, array $context = array()) {
-		$this->_loggerInstance->debug($message, $context);
+		$this->_driverInstance->debug($message, $context);
 	}
 
 	/**
@@ -166,6 +178,6 @@ class Logger
 	 * @return null
 	 */
 	public function log($level, $message, array $context = array()) {
-		$this->_loggerInstance->log($level, $message, $context);
+		$this->_driverInstance->log($level, $message, $context);
 	}
 }

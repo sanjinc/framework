@@ -188,6 +188,17 @@ trait ValidatorTrait
         return StdObjectWrapper::isStringObject($instance);
     }
 
+	/**
+	 * Check if $instance is a DateTimeObject.
+	 *
+	 * @param mixed $instance
+	 *
+	 * @return bool
+	 */
+	static protected function isDateTimeObject($instance) {
+		return StdObjectWrapper::isDateTimeObject($instance);
+	}
+
     /**
      * Check if $instance is a FileObject.
      *

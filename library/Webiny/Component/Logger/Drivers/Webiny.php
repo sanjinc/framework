@@ -11,9 +11,9 @@ namespace Webiny\Component\Logger\Drivers;
 
 use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
-use Webiny\Bridge\Logger\LoggerException;
 use Webiny\Bridge\Logger\LoggerHandlerAbstract;
 use Webiny\Bridge\Logger\LoggerLevel;
+use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
 use Webiny\Component\Logger\LoggerException;
 use Webiny\StdLib\StdLibTrait;
@@ -196,7 +196,7 @@ class Webiny implements LoggerDriverInterface
 		$record->message = (string) $message;
 		$record->context = $context;
 		$record->level = $level;
-		$record->name = $this->name;
+		$record->name = $this->_name;
 		$record->datetime = $this->datetime("now");
 		$record->extra = [];
 
@@ -204,7 +204,7 @@ class Webiny implements LoggerDriverInterface
 		$canHandle = false;
 		foreach ($this->_handlers as $handler) {
 			if ($handler->canHandle($record)) {
-				$canHandle = $key;
+				$canHandle = true;
 				break;
 			}
 		}
@@ -214,14 +214,14 @@ class Webiny implements LoggerDriverInterface
 		}
 
 		// found at least one, process record
-		foreach ($this->_processors as $processor) {
+		/*foreach ($this->_processors as $processor) {
 			if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')){
 				$record = $processor->processRecord($record);
 			} else {
 				$record = call_user_func($processor, $record);
 			}
 
-		}
+		}*/
 
 		/* @var $handler \Webiny\Bridge\Logger\Webiny\HandlerAbstract */
 		foreach($this->_handlers as $handler) {
