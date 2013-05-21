@@ -54,7 +54,7 @@ class Redis extends CacheAbstract
 	 * @throws CacheException
 	 * @return void|CacheInterface
 	 */
-	static function getInstance($cacheId = '', $host = 'locahost', $port = 6379) {
+	static function getInstance($cacheId = '', $host = '127.0.0.1', $port = 6379) {
 		$driver = static::_getLibrary();
 
 		try {

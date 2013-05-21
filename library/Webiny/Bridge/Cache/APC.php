@@ -43,4 +43,5 @@ class APC extends CacheAbstract
 	static function setLibrary($pathToClass) {
 		self::$_library = $pathToClass;
 	}
+
 }

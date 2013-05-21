@@ -64,7 +64,7 @@ class Cache
 	 *
 	 * @return Cache
 	 */
-	static function Couchbase($cacheId, \Couchbase $couchbase) {
+	static function Couchbase($cacheId, \Couchbase $couchbase = null) {
 		$driver = Drivers\Couchbase::getInstance($cacheId, $couchbase);
 
 		return new static($driver);
@@ -79,7 +79,7 @@ class Cache
 	 *
 	 * @return Cache
 	 */
-	static function Memcache($cacheId, $host = 'locahost', $port = 11211) {
+	static function Memcache($cacheId, $host = '127.0.0.1', $port = 11211) {
 		$driver = Drivers\Memcache::getInstance($cacheId, $host, $port);
 
 		return new static($driver);
@@ -94,10 +94,19 @@ class Cache
 	 *
 	 * @return Cache
 	 */
-	static function Redis($cacheId, $host = 'locahost', $port = 6379) {
+	static function Redis($cacheId, $host = '127.0.0.1', $port = 6379) {
 		$driver = Drivers\Redis::getInstance($cacheId, $host, $port);
 
 		return new static($driver);
+	}
+
+	/**
+	 * Get current driver instance.
+	 *
+	 * @return null|CacheInterface
+	 */
+	public function getDriver(){
+		return $this->_driverInstance;
 	}
 
 	/**

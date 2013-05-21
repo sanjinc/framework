@@ -54,7 +54,7 @@ class Memcache extends CacheAbstract
 	 * @throws CacheException
 	 * @return void|CacheInterface
 	 */
-	static function getInstance($cacheId = '', $host = 'locahost', $port = 11211) {
+	static function getInstance($cacheId = '', $host = '127.0.0.1', $port = 11211) {
 		$driver = static::_getLibrary();
 
 		try {

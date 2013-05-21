@@ -46,5 +46,4 @@ abstract class CacheAbstract implements DriverInterface
 
 		return $instance;
 	}
-
 }

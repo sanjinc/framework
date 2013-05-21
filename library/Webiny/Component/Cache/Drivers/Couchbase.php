@@ -28,7 +28,7 @@ class Couchbase
 	 *
 	 * @return \Webiny\Bridge\Cache\CacheInterface
 	 */
-	static function getInstance($cacheId, \Couchbase $couchbase) {
+	static function getInstance($cacheId, \Couchbase $couchbase = null) {
 		return \Webiny\Bridge\Cache\Couchbase::getInstance($cacheId, $couchbase);
 	}
 }

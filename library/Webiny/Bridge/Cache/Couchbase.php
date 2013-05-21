@@ -53,7 +53,7 @@ class Couchbase extends CacheAbstract
 	 * @throws CacheException
 	 * @return void|CacheInterface
 	 */
-	static function getInstance($cacheId, \Couchbase $couchbase) {
+	static function getInstance($cacheId, \Couchbase $couchbase = null) {
 		$driver = static::_getLibrary();
 
 		try {
