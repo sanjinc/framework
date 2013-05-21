@@ -20,15 +20,17 @@ class Test
 
 		$logger->addInfo('Testing Info call', ['name' => 'Pavel']);
 	}
+	
+	function config(){
+		$config = \Webiny\Component\Config\Config::Json(WF.'/Test/Configs/config.json');
+		$config2 = \Webiny\Component\Config\Config::PHP(WF.'/Test/Configs/config.php');
+		$config3 = \Webiny\Component\Config\Config::Ini(WF.'/Test/Configs/config.ini');
+
+		$config->merge([$config2]);
+		die(print_r($config->toArray()));
+	}
 
 }
 
-$logger = \Webiny\Component\Logger\Logger::getInstance('Module builder');
-$logger->addHandler(new \Webiny\Component\Logger\Handlers\StreamHandler(WF.'/Test/logger.log'));
-
-$logger->info('Got to this point...');
-
-die(print_r($logger));
-
 $test = new Test();
-$test->test();
+$test->config();
