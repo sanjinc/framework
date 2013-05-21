@@ -439,7 +439,7 @@ trait ManipulatorTrait
 		if($this->isInstanceOf($array, $this)) {
 			$array = $array->val();
 		}
-
+		
 		$this->val(array_merge_recursive($this->val(), $array));
 
 		return $this;

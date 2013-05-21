@@ -215,18 +215,8 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			$this->_fileResource = $originalResource;
 		}
 
-		// Make sure resource is an array
-		$array = StdObjectWrapper::toArray($resource);
-
-		// Build internal data array
-		$this->_data = $this->arr();
-		foreach ($array as $key => $value) {
-			if($this->isArray($value)) {
-				$this->_data->key($key, new static($value, false));
-			} else {
-				$this->_data->key($key, $value);
-			}
-		}
+		// Build internal data array from array resource
+		$this->_buildInternalData($resource);
 
 		// Store config to cache
 		if($cache) {
@@ -405,5 +395,67 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			return self::STRING_RESOURCE;
 		}
 		throw new ConfigException("Given ConfigObject resource is not allowed!");
+	}
+
+	/**
+	 * Merge current config with given config
+	 *
+	 * @param array|ArrayObject|ConfigObject $config ConfigObject or array of ConfigObject to merge with
+	 *
+	 * @throws ConfigException
+	 * @return $this
+	 */
+	public function merge($config) {
+		if($this->isArray($config) || $this->isArrayObject($config)) {
+			$data = StdObjectWrapper::toArray($config);
+		} elseif($this->isInstanceOf($config, $this)) {
+			$data = $config->toArray();
+		} else {
+			throw new ConfigException('Invalid parameter passed to ConfigObject merge() method. Must be a ConfigObject or an array.');
+		}
+
+		$currentConfigData = $this->toArray();
+
+		//////
+		/** @var Config $value */
+		foreach ($merge as $key => $value) {
+			if(array_key_exists($key, $this->data)) {
+				if(is_int($key)) {
+					$this->data[] = $value;
+				} elseif($value instanceof self && $this->data[$key] instanceof self) {
+					$this->data[$key]->merge($value);
+				} else {
+					if($value instanceof self) {
+						$this->data[$key] = new static($value->toArray(), $this->allowModifications);
+					} else {
+						$this->data[$key] = $value;
+					}
+				}
+			} else {
+				if($value instanceof self) {
+					$this->data[$key] = new static($value->toArray(), $this->allowModifications);
+				} else {
+					$this->data[$key] = $value;
+				}
+
+				$this->count++;
+			}
+		}
+
+		$this->_buildInternalData($mergedData);
+
+		return $this;
+	}
+
+	private function _buildInternalData($array) {
+		$this->_data = $this->arr();
+		$array = StdObjectWrapper::toArray($array);
+		foreach ($array as $key => $value) {
+			if($this->isArray($value)) {
+				$this->_data->key($key, new static($value, false));
+			} else {
+				$this->_data->key($key, $value);
+			}
+		}
 	}
 }

@@ -94,6 +94,7 @@ class YamlDriver extends DriverAbstract
 	 * @throws ConfigException
 	 */
 	protected function _validateResource() {
+		// @TODO: CHECK IF FILE EXISTS, try dirname($this->_resource)
 		if(self::isNull($this->_resource)) {
 			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
 		}
