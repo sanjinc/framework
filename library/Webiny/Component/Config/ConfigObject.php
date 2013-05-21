@@ -146,10 +146,25 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
+	/**
+	 * Save config using given DriverAbstract instance
+	 *
+	 * @param DriverAbstract                  $driver
+	 * @param string|StringObject|FileObject $destination
+	 *
+	 * @return $this
+	 */
 	public function saveAs(DriverAbstract $driver, $destination) {
-		return $driver->setResource($this->toArray())->saveToFile($destination);
+		$driver->setResource($this->toArray())->saveToFile($destination);
+
+		return $this;
 	}
 
+	/**
+	 * Save current config
+	 * @throws ConfigException
+	 * @return $this
+	 */
 	public function save() {
 		if($this->_resourceType != ConfigObject::FILE_RESOURCE) {
 			throw new ConfigException('ConfigObject was not created from a file resource and thus can not be saved directly!');
@@ -168,7 +183,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @param  string $name
 	 * @param  mixed  $default
 	 *
-	 * @return mixed
+	 * @return mixed Config value or default value
 	 */
 	public function get($name, $default = null) {
 		if($this->_data->keyExists($name)) {
@@ -227,7 +242,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 
 	/**
 	 * Get Config data in form of an array
-	 * @return array
+	 * @return array Config data array
 	 */
 	public function toArray() {
 		$data = [];
@@ -405,51 +420,60 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @throws ConfigException
 	 * @return $this
 	 */
-	public function merge($config) {
+	public function mergeWith($config) {
 		if($this->isArray($config) || $this->isArrayObject($config)) {
-			$data = StdObjectWrapper::toArray($config);
+			$configs = StdObjectWrapper::toArray($config);
+			// Make sure it's an array of ConfigObject
+			if(!$this->isInstanceOf($this->arr($configs)->first()->val(), $this)) {
+				$configs = [Config::Php($configs)];
+			}
 		} elseif($this->isInstanceOf($config, $this)) {
-			$data = $config->toArray();
+			$configs = [$config];
 		} else {
-			throw new ConfigException('Invalid parameter passed to ConfigObject merge() method. Must be a ConfigObject or an array.');
+			throw new ConfigException('Invalid parameter passed to ConfigObject mergeWith($config) method! Expecting a ConfigObject or array.');
 		}
 
-		$currentConfigData = $this->toArray();
+		/** @var ConfigObject $value */
+		foreach ($configs as $config) {
+			// If it's a PHP array or ArrayObject, convert it to ConfigObject
+			if($this->isArray($config) || $this->isArrayObject($config)) {
+				$config = Config::Php($config);
+			}
 
-		//////
-		/** @var Config $value */
-		foreach ($merge as $key => $value) {
-			if(array_key_exists($key, $this->data)) {
-				if(is_int($key)) {
-					$this->data[] = $value;
-				} elseif($value instanceof self && $this->data[$key] instanceof self) {
-					$this->data[$key]->merge($value);
-				} else {
-					if($value instanceof self) {
-						$this->data[$key] = new static($value->toArray(), $this->allowModifications);
+			foreach ($config as $key => $value) {
+				if($this->_data->keyExists($key)) {
+					if($this->isNumber($key)) {
+						$this->_data[] = $value;
+					} elseif($this->isInstanceOf($value, $this) && $this->isInstanceOf($this->_data[$key], $this)) {
+						$this->_data[$key]->mergeWith($value);
 					} else {
-						$this->data[$key] = $value;
+						if($this->isInstanceOf($value, $this)) {
+							$this->_data[$key] = new static($value->toArray(), false);
+						} else {
+							$this->_data[$key] = $value;
+						}
+					}
+				} else {
+					if($this->isInstanceOf($value, $this)) {
+						$this->_data[$key] = new static($value->toArray(), false);
+					} else {
+						$this->_data[$key] = $value;
 					}
 				}
-			} else {
-				if($value instanceof self) {
-					$this->data[$key] = new static($value->toArray(), $this->allowModifications);
-				} else {
-					$this->data[$key] = $value;
-				}
-
-				$this->count++;
 			}
 		}
-
-		$this->_buildInternalData($mergedData);
 
 		return $this;
 	}
 
-	private function _buildInternalData($array) {
+	/**
+	 * Build internal object data using given $config
+	 *
+	 * @param array|ArrayObject $config
+	 */
+	private function _buildInternalData($config) {
 		$this->_data = $this->arr();
-		$array = StdObjectWrapper::toArray($array);
+		$array = StdObjectWrapper::toArray($config);
 		foreach ($array as $key => $value) {
 			if($this->isArray($value)) {
 				$this->_data->key($key, new static($value, false));

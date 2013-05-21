@@ -41,6 +41,7 @@ class IniDriver extends DriverAbstract
 	 * Set delimiting character for nested properties, ex: a.b.c or a-b-c
 	 *
 	 * @param string $delimiter Default: '.'
+	 *
 	 * @return $this
 	 */
 	public function setDelimiter($delimiter) {
@@ -51,6 +52,7 @@ class IniDriver extends DriverAbstract
 
 	/**
 	 * Should parser use sections or not, ex: [section]
+	 *
 	 * @param boolean $useSections Default: true
 	 *
 	 * @return $this
@@ -66,8 +68,8 @@ class IniDriver extends DriverAbstract
 	 * @return array
 	 */
 	protected function _getArray() {
-		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)) {
-			return StdObjectWrapper::toArray($this->_resource);
+		if($this->isArray($this->_resource)) {
+			return $this->_resource;
 		}
 
 		if(file_exists($this->_resource)) {
@@ -77,30 +79,6 @@ class IniDriver extends DriverAbstract
 		}
 
 		return $this->_parseIniString($config);
-	}
-
-	/**
-	 * Validate given config resource and throw ConfigException if it's not valid
-	 * @throws ConfigException
-	 */
-	protected function _validateResource() {
-		if(self::isNull($this->_resource)) {
-			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
-		}
-
-		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)) {
-			return true;
-		}
-
-		// Perform string checks
-		try {
-			$this->_resource = $this->str($this->_resource);
-			if($this->_resource->trim()->length() == 0) {
-				throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
-			}
-		} catch (StdObjectException $e) {
-			throw new ConfigException($e->getMessage());
-		}
 	}
 
 	/**

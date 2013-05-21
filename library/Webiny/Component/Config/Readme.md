@@ -1,9 +1,9 @@
 Config Component
 =====================
-Config component creates Config objects from config files.
+`Config` component creates `ConfigObject` instances from config files.
 Currently supported formats: INI, JSON, PHP, YAML and custom drivers.
 
-To use Config component you will need a config file.
+To use `Config` component you will need a config file.
 
 Example INI:
 
@@ -12,7 +12,7 @@ Example INI:
     b.name = "name"
     b.value = "value"
 
-Here is an example of creating a Config object:
+Here is an example of creating a `ConfigObject`:
 ```php
     $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini');
 ```
