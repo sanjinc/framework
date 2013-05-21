@@ -68,4 +68,13 @@ And you can also use custom driver
     $string = $config->getAs($driverInstance);
 ```
 
+You can also merge one config with another `ConfigObject` or array:
+```php
+// Simple merge
+$config->mergeWith($config2);
+
+// Or merge with multiple ConfigObjects and config arrays at once
+$config->mergeWith([$config2, ['group2' => ['custom' => 'data']], $config3]);
+```
+
 
