@@ -1,6 +1,6 @@
 <?php
 return [
-	'website' => 'value',
+	'website' => 'bu',
 	'default' => [
 		'url'  => 'www.webiny.com',
 		'name' => ['address' => 'London',

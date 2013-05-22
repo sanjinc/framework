@@ -146,10 +146,25 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
+	/**
+	 * Save config using given DriverAbstract instance
+	 *
+	 * @param DriverAbstract                  $driver
+	 * @param string|StringObject|FileObject $destination
+	 *
+	 * @return $this
+	 */
 	public function saveAs(DriverAbstract $driver, $destination) {
-		return $driver->setResource($this->toArray())->saveToFile($destination);
+		$driver->setResource($this->toArray())->saveToFile($destination);
+
+		return $this;
 	}
 
+	/**
+	 * Save current config
+	 * @throws ConfigException
+	 * @return $this
+	 */
 	public function save() {
 		if($this->_resourceType != ConfigObject::FILE_RESOURCE) {
 			throw new ConfigException('ConfigObject was not created from a file resource and thus can not be saved directly!');
@@ -168,7 +183,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @param  string $name
 	 * @param  mixed  $default
 	 *
-	 * @return mixed
+	 * @return mixed Config value or default value
 	 */
 	public function get($name, $default = null) {
 		if($this->_data->keyExists($name)) {
@@ -215,18 +230,8 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			$this->_fileResource = $originalResource;
 		}
 
-		// Make sure resource is an array
-		$array = StdObjectWrapper::toArray($resource);
-
-		// Build internal data array
-		$this->_data = $this->arr();
-		foreach ($array as $key => $value) {
-			if($this->isArray($value)) {
-				$this->_data->key($key, new static($value, false));
-			} else {
-				$this->_data->key($key, $value);
-			}
-		}
+		// Build internal data array from array resource
+		$this->_buildInternalData($resource);
 
 		// Store config to cache
 		if($cache) {
@@ -237,7 +242,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 
 	/**
 	 * Get Config data in form of an array
-	 * @return array
+	 * @return array Config data array
 	 */
 	public function toArray() {
 		$data = [];
@@ -405,5 +410,76 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			return self::STRING_RESOURCE;
 		}
 		throw new ConfigException("Given ConfigObject resource is not allowed!");
+	}
+
+	/**
+	 * Merge current config with given config
+	 *
+	 * @param array|ArrayObject|ConfigObject $config ConfigObject or array of ConfigObject to merge with
+	 *
+	 * @throws ConfigException
+	 * @return $this
+	 */
+	public function mergeWith($config) {
+		if($this->isArray($config) || $this->isArrayObject($config)) {
+			$configs = StdObjectWrapper::toArray($config);
+			// Make sure it's an array of ConfigObject
+			if(!$this->isInstanceOf($this->arr($configs)->first()->val(), $this)) {
+				$configs = [Config::Php($configs)];
+			}
+		} elseif($this->isInstanceOf($config, $this)) {
+			$configs = [$config];
+		} else {
+			throw new ConfigException('Invalid parameter passed to ConfigObject mergeWith($config) method! Expecting a ConfigObject or array.');
+		}
+
+		/** @var ConfigObject $value */
+		foreach ($configs as $config) {
+			// If it's a PHP array or ArrayObject, convert it to ConfigObject
+			if($this->isArray($config) || $this->isArrayObject($config)) {
+				$config = Config::Php($config);
+			}
+
+			foreach ($config as $key => $value) {
+				if($this->_data->keyExists($key)) {
+					if($this->isNumber($key)) {
+						$this->_data[] = $value;
+					} elseif($this->isInstanceOf($value, $this) && $this->isInstanceOf($this->_data[$key], $this)) {
+						$this->_data[$key]->mergeWith($value);
+					} else {
+						if($this->isInstanceOf($value, $this)) {
+							$this->_data[$key] = new static($value->toArray(), false);
+						} else {
+							$this->_data[$key] = $value;
+						}
+					}
+				} else {
+					if($this->isInstanceOf($value, $this)) {
+						$this->_data[$key] = new static($value->toArray(), false);
+					} else {
+						$this->_data[$key] = $value;
+					}
+				}
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Build internal object data using given $config
+	 *
+	 * @param array|ArrayObject $config
+	 */
+	private function _buildInternalData($config) {
+		$this->_data = $this->arr();
+		$array = StdObjectWrapper::toArray($config);
+		foreach ($array as $key => $value) {
+			if($this->isArray($value)) {
+				$this->_data->key($key, new static($value, false));
+			} else {
+				$this->_data->key($key, $value);
+			}
+		}
 	}
 }

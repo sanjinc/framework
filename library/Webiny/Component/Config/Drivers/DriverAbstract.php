@@ -35,54 +35,61 @@ abstract class DriverAbstract
 	/**
 	 * Get config data as string
 	 *
-	 * @return string
+	 * @return string Formatted config data
 	 */
 	abstract protected function _getString();
 
 	/**
 	 * Parse config resource and build config array
-	 * @return array|ArrayObject
+	 * @return array|ArrayObject Config data
 	 */
 	abstract protected function _getArray();
 
 	/**
-	 * Validate given config resource and throw ConfigException if it's not valid
-	 * @throws ConfigException
+	 * Create config driver instance
+	 *
+	 * @param null $resource Resource for driver
 	 */
-	abstract protected function _validateResource();
-
 	public function __construct($resource = null) {
-
-		if($this->isArray($resource) || $this->isArrayObject($resource)) {
-			$this->_resource = StdObjectWrapper::toArray($resource);
-		} else {
-			$this->_resource = $resource;
-		}
+		$this->_resource = $this->_normalizeResource($resource);
 	}
 
+	/**
+	 * Get formatted config data as string
+	 *
+	 * @throws ConfigException
+	 * @return string Formatted config data
+	 */
 	final public function getString() {
 		$this->_validateResource();
 
 		$res = $this->_getString();
-		if(!$this->isString($res) && !$this->isStringObject($res)){
+		if(!$this->isString($res) && !$this->isStringObject($res)) {
 			throw new ConfigException('DriverAbstract method _getString() must return string or StringObject.');
 		}
+
 		return StdObjectWrapper::toString($res);
 	}
 
 	/**
 	 * Get config data as array
 	 *
-	 * @throws \Webiny\Component\Config\ConfigException
-	 * @return array|ArrayObject
+	 * @throws ConfigException
+	 * @return array Parsed resource data array
 	 */
 	final public function getArray() {
-		$this->_validateResource();
+
+		try {
+			$this->_validateResource();
+		} catch (StdObjectException $e) {
+			throw new ConfigException($e->getMessage());
+		}
 
 		$res = $this->_getArray();
-		if(!$this->isArray($res) && !$this->isArrayObject($res)){
+		if(!$this->isArray($res) && !$this->isArrayObject($res)) {
 			throw new ConfigException('DriverAbstract method _getArray() must return array or ArrayObject.');
 		}
+
 		return StdObjectWrapper::toArray($res);
 	}
 
@@ -96,12 +103,14 @@ abstract class DriverAbstract
 
 	/**
 	 * Set driver resource
+	 *
 	 * @param mixed $resource Driver resource (can be: string, array, StringObject, ArrayObject, FileObject)
 	 *
 	 * @return $this
 	 */
 	final public function setResource($resource) {
-		$this->_resource = $resource;
+		$this->_resource = $this->_normalizeResource($resource);
+
 		return $this;
 	}
 
@@ -111,7 +120,7 @@ abstract class DriverAbstract
 	 * @param null|string|StringObject|FileObject $destination
 	 *
 	 * @throws \InvalidArgumentException
-	 * @throws \Webiny\Component\Config\ConfigException
+	 * @throws ConfigException
 	 * @return $this
 	 */
 	final public function saveToFile($destination = null) {
@@ -136,9 +145,52 @@ abstract class DriverAbstract
 		try {
 			$destination = $this->file($destination);
 			$destination->truncate()->write($this->_getString());
+
 			return $this;
 		} catch (StdObjectException $e) {
 			throw new ConfigException($e->getMessage());
 		}
 	}
+
+	/**
+	 * Validate given config resource and throw ConfigException if it's not valid
+	 * @throws ConfigException
+	 */
+	protected function _validateResource() {
+		if(self::isNull($this->_resource)) {
+			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
+		}
+
+		if($this->isArray($this->_resource)) {
+			return true;
+		}
+
+		// Check if it's a valid file path
+		if(dirname($this->_resource) != '.' && !file_exists($this->_resource)) {
+			throw new ConfigException('Config resource file does not exist!');
+		}
+
+		// Perform string checks
+		$this->_resource = $this->str($this->_resource);
+		if($this->_resource->trim()->length() == 0) {
+			throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
+		}
+	}
+
+	/**
+	 * Normalize resource value
+	 *
+	 * @param mixed $resource
+	 *
+	 * @return mixed Normalized resource value
+	 */
+	private function _normalizeResource($resource) {
+		// Convert resource to native PHP type
+		if($this->isStdObject($resource)) {
+			return $resource->val();
+		}
+
+		return $resource;
+	}
+
 }

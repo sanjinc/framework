@@ -48,11 +48,15 @@ class YamlDriver extends DriverAbstract
 	 * @throws \Webiny\Component\Config\ConfigException
 	 * @return $this
 	 */
-	public function setIndent($indent){
-		if(!$this->isNumber($indent)){
-			 throw new ConfigException(ConfigException::MSG_INVALID_ARG, ['$indent', 'integer']);
+	public function setIndent($indent) {
+		if(!$this->isNumber($indent)) {
+			throw new ConfigException(ConfigException::MSG_INVALID_ARG, [
+																		'$indent',
+																		'integer'
+																		]);
 		}
 		$this->_indent = $indent;
+
 		return $this;
 	}
 
@@ -64,11 +68,15 @@ class YamlDriver extends DriverAbstract
 	 * @throws \Webiny\Component\Config\ConfigException
 	 * @return $this
 	 */
-	public function setWordWrap($wordWrap){
-		if(!$this->isBoolean($wordWrap)){
-			throw new ConfigException(ConfigException::MSG_INVALID_ARG, ['$wordWrap', 'boolean']);
+	public function setWordWrap($wordWrap) {
+		if(!$this->isBoolean($wordWrap)) {
+			throw new ConfigException(ConfigException::MSG_INVALID_ARG, [
+																		'$wordWrap',
+																		'boolean'
+																		]);
 		}
 		$this->_wordWrap = $wordWrap;
+
 		return $this;
 	}
 
@@ -87,29 +95,5 @@ class YamlDriver extends DriverAbstract
 	 */
 	protected function _getArray() {
 		return $this->_yaml->setResource($this->_resource)->getArray();
-	}
-
-	/**
-	 * Validate given config resource and throw ConfigException if it's not valid
-	 * @throws ConfigException
-	 */
-	protected function _validateResource() {
-		if(self::isNull($this->_resource)) {
-			throw new ConfigException('Config resource can not be NULL! Please provide a valid file path, config string or PHP array.');
-		}
-
-		if($this->isArray($this->_resource) || $this->isArrayObject($this->_resource)){
-			return true;
-		}
-
-		// Perform string checks
-		try {
-			$this->_resource = $this->str($this->_resource);
-			if($this->_resource->trim()->length() == 0) {
-				throw new ConfigException('Config resource string can not be empty! Please provide a valid file path, config string or PHP array.');
-			}
-		} catch (StdObjectException $e) {
-			throw new ConfigException($e->getMessage());
-		}
 	}
 }

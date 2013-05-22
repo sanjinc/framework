@@ -1,34 +1,38 @@
 <?php
 
-define('WF', '/var/www/newwebiny/framework');
+use Webiny\Component\Config\Config;
+use Webiny\Component\Logger\Formatters\FileFormatter;
+use Webiny\Component\Logger\Handlers\FileHandler;
+use Webiny\Component\Logger\Logger;
+
+define('WF', '/www/webiny/framework');
 require_once '../WebinyFramework.php';
 
 class Test
 {
-	function test() {
-		$processor = function($record){
-			$record['extra']['country'] = 'Ukraine';
-			return $record;
-		};
+	function testLogger() {
+		$logger = Logger::Webiny('Bootstrap');
+		$handler = new FileHandler(WF.'/Test/Logger/logger.log');
+		$formatter = new FileFormatter(null, 'd.m.Y H-i-s');
+		$handler->setFormatter($formatter);
 
+		$logger->addHandler($handler);
+		$logger->debug('Started bootstrap process...');
+		$logger->alert('Wrong datetime format provided...');
+		$logger->info('Bootstrap finished!');
+	}
 
-		$logger = new Monolog\Logger('Debug');
-		$handler = new Monolog\Handler\StreamHandler(WF.'/Test/logger.log', true);
+	function config() {
+		$config = Config::PHP(WF . '/Test/Configs/config.php');
+		$config2 = Config::Json(WF . '/Test/Configs/config.json');
+		$config3 = Config::Yaml(WF . '/Test/Configs/config.yaml');
+		$config4 = Config::Ini(WF . '/Test/Configs/config.ini');
 
-		$logger->pushHandler($handler);
-		$logger->pushProcessor($processor);
-
-		$logger->addInfo('Testing Info call', ['name' => 'Pavel']);
+		$config->mergeWith([$config2, ['group2' => ['custom' => 'data']], $config3])->mergeWith($config4);
+		die(print_r($config->toArray()));
 	}
 
 }
 
-$logger = new \Webiny\Component\Logger\Logger('Module builder');
-$logger->addHandler(new \Webiny\Component\Logger\Handlers\StreamHandler(WF.'/Test/logger.log'));
-
-$logger->info('Got to this point...');
-
-die(print_r($logger));
-
 $test = new Test();
-$test->test();
+$test->testLogger();

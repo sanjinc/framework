@@ -1,20 +1,21 @@
 <?php
 
-namespace Webiny\Bridge\Logger;
+namespace Webiny\Bridge\Logger\Webiny;
 
 /**
  * Interface for formatters
  *
  */
-interface LoggerFormatterInterface
+interface FormatterInterface
 {
 	/**
 	 * Formats a log record.
 	 *
-	 * @param  array $record A record to format
+	 * @param Record $record A record to format
+	 *
 	 * @return mixed The formatted record
 	 */
-	public function formatRecord(array $record);
+	public function formatRecord(Record $record);
 
 	/**
 	 * Formats multiple log records.

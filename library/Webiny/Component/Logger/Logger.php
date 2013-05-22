@@ -2,10 +2,11 @@
 
 namespace Webiny\Component\Logger;
 
-use Psr\Log\InvalidArgumentException;
 use Webiny\Bridge\Logger\LoggerAbstract;
+use Webiny\Bridge\Logger\LoggerDriverInterface;
+use Webiny\Bridge\Logger\LoggerException;
+use Webiny\Component\Logger\Drivers\Webiny;
 use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
 
 /**
  * Webiny Logger
@@ -15,52 +16,50 @@ class Logger
 {
 	use StdLibTrait;
 
-	const DRIVER = '\Webiny\Component\Logger\Drivers\Monolog';
-
-	private static $_driverClass = '\Webiny\Bridge\Logger\LoggerAbstract';
-
 	/**
-	 * @var null|LoggerAbstract
+	 * @var null
 	 */
-	private $_loggerInstance = null;
+	private $_driverInstance = null;
 
 	/**
-	 * @param        $channelName
-	 * @param string $driverClass
+	 * @param LoggerDriverInterface $driverInstance
 	 *
-	 * @throws LoggerException
 	 * @return \Webiny\Component\Logger\Logger
 	 */
-	public function __construct($channelName, $driverClass = Logger::DRIVER) {
-		// Validate channel name
-		if(!self::isString($channelName) && !self::isStringObject($channelName)) {
-			throw new LoggerException(LoggerException::MSG_INVALID_ARG, [
-																		'$channelName',
-																		'string or StringObject'
-																		]);
-		}
-		$channelName = StdObjectWrapper::toString($channelName);
-
-		// Validate driver class
-		if(!self::isString($driverClass) && !self::isStringObject($driverClass)) {
-			throw new LoggerException(LoggerException::MSG_INVALID_ARG, [
-																		'$driverClass',
-																		'string or StringObject'
-																		]);
-		}
-
-		if(!class_exists($driverClass)) {
-			throw new LoggerException("Provided Logger driver class '" . $driverClass . "' does not exist!");
-		}
-
-		// Get instance of logger
-		$this->_loggerInstance = $driverClass::getInstance($channelName);
-
-		// Validate logger
-		if(!self::isInstanceof($this->_loggerInstance, self::$_driverClass)) {
-			throw new LoggerException('Logger driver must be an instance of ' . self::$_driverClass);
-		}
+	public function __construct($driverInstance) {
+		$this->_driverInstance = $driverInstance;
 	}
+
+	/**
+	 * Get Webiny logger
+	 * @param $name
+	 *
+	 * @return Webiny Webiny logger instance
+	 */
+	public static function Webiny($name){
+		return new static(new Webiny($name));
+	}
+
+	/**
+	 * Call a method on driver instance
+	 * Since we are wrapping an actual driver instance with this Logger object, we need a way to implement this magic method to forward the call to driver instance
+	 *
+	 * @param $name
+	 * @param $arguments
+	 *
+	 * @return mixed
+	 * @throws LoggerException
+	 */
+	function __call($name, $arguments) {
+		if(method_exists($this->_driverInstance, $name)) {
+			return call_user_func_array([
+										$this->_driverInstance,
+										$name
+										], $arguments);
+		}
+		throw new LoggerException('Call to undefined method "' . $name . '" on Logger object! Make sure your logger driver provides the required method!');
+	}
+
 
 	/**
 	 * System is unusable.
@@ -71,7 +70,7 @@ class Logger
 	 * @return null
 	 */
 	public function emergency($message, array $context = array()) {
-		$this->_loggerInstance->emergency($message, $context);
+		$this->_driverInstance->emergency($message, $context);
 	}
 
 	/**
@@ -86,7 +85,7 @@ class Logger
 	 * @return null
 	 */
 	public function alert($message, array $context = array()) {
-		$this->_loggerInstance->alert($message, $context);
+		$this->_driverInstance->alert($message, $context);
 	}
 
 	/**
@@ -100,7 +99,7 @@ class Logger
 	 * @return null
 	 */
 	public function critical($message, array $context = array()) {
-		$this->_loggerInstance->critical($message, $context);
+		$this->_driverInstance->critical($message, $context);
 	}
 
 	/**
@@ -113,7 +112,7 @@ class Logger
 	 * @return null
 	 */
 	public function error($message, array $context = array()) {
-		$this->_loggerInstance->error($message, $context);
+		$this->_driverInstance->error($message, $context);
 	}
 
 	/**
@@ -128,7 +127,7 @@ class Logger
 	 * @return null
 	 */
 	public function warning($message, array $context = array()) {
-		$this->_loggerInstance->warning($message, $context);
+		$this->_driverInstance->warning($message, $context);
 	}
 
 	/**
@@ -140,7 +139,7 @@ class Logger
 	 * @return null
 	 */
 	public function notice($message, array $context = array()) {
-		$this->_loggerInstance->notice($message, $context);
+		$this->_driverInstance->notice($message, $context);
 	}
 
 	/**
@@ -154,7 +153,7 @@ class Logger
 	 * @return null
 	 */
 	public function info($message, array $context = array()) {
-		$this->_loggerInstance->info($message, $context);
+		$this->_driverInstance->info($message, $context);
 	}
 
 	/**
@@ -166,23 +165,19 @@ class Logger
 	 * @return null
 	 */
 	public function debug($message, array $context = array()) {
-		$this->_loggerInstance->debug($message, $context);
+		$this->_driverInstance->debug($message, $context);
 	}
 
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param mixed $level
+	 * @param mixed  $level
 	 * @param string $message
-	 * @param array $context
+	 * @param array  $context
 	 *
 	 * @return null
 	 */
 	public function log($level, $message, array $context = array()) {
-		$this->_loggerInstance->log($level, $message, $context);
-	}
-
-	public function addHandler($handler){
-		$this->_loggerInstance->addHandler($handler);
+		$this->_driverInstance->log($level, $message, $context);
 	}
 }
