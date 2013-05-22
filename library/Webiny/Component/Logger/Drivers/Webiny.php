@@ -213,20 +213,10 @@ class Webiny implements LoggerDriverInterface
 			return false;
 		}
 
-		// found at least one, process record
-		/*foreach ($this->_processors as $processor) {
-			if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')){
-				$record = $processor->processRecord($record);
-			} else {
-				$record = call_user_func($processor, $record);
-			}
-
-		}*/
-
 		/* @var $handler \Webiny\Bridge\Logger\Webiny\HandlerAbstract */
 		foreach($this->_handlers as $handler) {
 			if($handler->canHandle($record)){
-				$bubble = $handler->process($record);
+				$bubble = $handler->process(clone $record);
 				if(!$bubble){
 					break;
 				}

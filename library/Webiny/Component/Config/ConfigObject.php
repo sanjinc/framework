@@ -382,6 +382,10 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		}
 	}
 
+	public function __toString(){
+		return var_export($this->toArray(), true);
+	}
+
 	/**
 	 * (PHP 5 &gt;= 5.0.0)<br/>
 	 * Retrieve an external iterator

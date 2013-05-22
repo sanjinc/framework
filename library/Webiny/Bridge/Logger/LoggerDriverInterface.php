@@ -11,6 +11,7 @@ namespace Webiny\Bridge\Logger;
 
 use Psr\Log\LoggerInterface;
 
+
 /**
  * Logger driver interface
  * Uses PSR-3 Logger Interface

@@ -1,25 +1,27 @@
 <?php
 
 use Webiny\Component\Config\Config;
-use Webiny\Component\Logger\Formatters\FileFormatter;
-use Webiny\Component\Logger\Handlers\FileHandler;
+use Webiny\Component\Logger\Drivers\Webiny\Formatters\FileFormatter;
+use Webiny\Component\Logger\Drivers\Webiny\Handlers\FileHandler;
+use Webiny\Component\Logger\Drivers\Webiny\Processors\TestProcessor;
 use Webiny\Component\Logger\Logger;
 
-define('WF', '/www/webiny/framework');
-require_once '../WebinyFramework.php';
+define('WF', '/var/www/newwebiny/framework');
+require_once '../library/autoloader.php';
 
 class Test
 {
 	function testLogger() {
+		// Setup Bootstrap logger
 		$logger = Logger::Webiny('Bootstrap');
 		$handler = new FileHandler(WF.'/Test/Logger/logger.log');
-		$formatter = new FileFormatter(null, 'd.m.Y H-i-s');
-		$handler->setFormatter($formatter);
-
+		$formatter = new FileFormatter();
+		$processor = new TestProcessor();
+		$handler->setFormatter($formatter)->addProcessor($processor);
 		$logger->addHandler($handler);
-		$logger->debug('Started bootstrap process...');
-		$logger->alert('Wrong datetime format provided...');
-		$logger->info('Bootstrap finished!');
+
+		// Log some messages
+		$logger->info('Bootstrap finished!', [$formatter]);
 	}
 
 	function config() {

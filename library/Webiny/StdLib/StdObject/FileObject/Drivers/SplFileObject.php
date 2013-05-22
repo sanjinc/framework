@@ -32,6 +32,7 @@ class SplFileObject extends \SplFileObject implements FileObjectDriverInterface
 		$this->_filePath = $filePath;
 		try {
 			parent::__construct($filePath, 'c+');
+			$this->fseek(0, SEEK_END);
 		} catch (\Exception $e) {
 			// try to create the file
 			try{

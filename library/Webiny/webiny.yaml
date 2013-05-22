@@ -7,15 +7,7 @@
 
 system:
   display_errors: 'true'
-  cache:
-    driver:
-      name: 'Couchbase'
-      params:
-        cacheId: '_webiny'
-        user: 'webiny'
-        password: ''
-        bucket: 'default'
-        host: '127.0.0.1:8091'
+  cache: false
   environment: 'development'
 bridges:
   cache:
@@ -26,9 +18,12 @@ bridges:
   yaml: 'Spyc\Spyc'
 additional_libraries:
   'Jamm\Memory': '../Memory'
+  'Spyc\Spyc': '../Spyc'
+  'Psr':'../Psr'
 components:
   logger:
     formatters:
+      default:
+        date_format: 'Y-m-d H:i:s'
       file:
-        simple_format: ''
-        date_format: ''
+        record_format: '%datetime% [%name%] [%level%]: %message%\nContext: %context%\nExtra: %extra%\n\n'

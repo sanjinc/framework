@@ -10,9 +10,9 @@
 
 namespace Webiny\StdLib;
 
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 
 /**
  * Trait containing common validators.

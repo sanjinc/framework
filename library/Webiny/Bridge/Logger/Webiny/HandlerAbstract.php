@@ -79,10 +79,12 @@ abstract class HandlerAbstract
 			throw new \InvalidArgumentException('Processor must be valid callable or an instance of \Webiny\Bridge\Logger\Webiny\ProcessorInterface');
 		}
 		$this->_processors->prepend($callback);
+		return $this;
 	}
 
 	public function setFormatter(FormatterInterface $formatter) {
 		$this->_formatter = $formatter;
+		return $this;
 	}
 
 	public function process(Record $record) {
@@ -105,7 +107,12 @@ abstract class HandlerAbstract
 	public function processRecord(Record $record) {
 		if($this->_processors) {
 			foreach ($this->_processors as $processor) {
-				$record = call_user_func($processor, $record);
+				if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')){
+					$record = $processor->processRecord($record);
+				} else {
+					$record = call_user_func($processor, $record);
+				}
+
 			}
 		}
 

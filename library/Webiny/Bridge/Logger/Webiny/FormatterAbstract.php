@@ -2,6 +2,7 @@
 
 namespace Webiny\Bridge\Logger\Webiny;
 
+use Webiny\Component\Registry\RegistryTrait;
 use Webiny\StdLib\StdLibTrait;
 
 /**
@@ -9,28 +10,35 @@ use Webiny\StdLib\StdLibTrait;
  */
 abstract class FormatterAbstract implements FormatterInterface
 {
-	use StdLibTrait;
+	use StdLibTrait, RegistryTrait;
+
+	protected $_config = null;
 
 	/**
 	 * Normalize record values, convert objects and resources to string representation, encode arrays to json, etc.
 	 */
-	public function normalizeValues() {
-
-		foreach ($this as $key => $value) {
-			$this->$key = $this->_normalizeValue($value);
+	public function normalizeValues(Record $record) {
+		foreach ($record as $key => $value) {
+			$record->$key = $this->_normalizeValue($value);
 		}
-	}
 
-	private function toJson($data) {
-		return @json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		return $record;
 	}
 
 	private function _normalizeValue($data) {
-		if(null === $data || is_scalar($data)) {
+		if($this->isNull($data) || is_scalar($data)) {
 			return $data;
 		}
 
 		if($this->isStdObject($data)) {
+			if($this->isDateTimeObject($data)) {
+				if($this->isNull($this->_config->date_format)) {
+					$format = $this->registry()->webiny->components->logger->formatters->default->date_format;
+				} else {
+					$format = $this->_config->date_format;
+				}
+				return $data->format($format);
+			}
 			$data = $data->val();
 		}
 
@@ -40,11 +48,15 @@ abstract class FormatterAbstract implements FormatterInterface
 				$normalized[$key] = $this->_normalizeValue($value);
 			}
 
-			return $this->toJson($normalized);
+			return $normalized;
 		}
 
 		if(is_object($data)) {
-			return sprintf("[object] (%s: %s)", get_class($data), $this->toJson($data, true));
+			if(method_exists($data, '__toString')) {
+				return '' . $data;
+			}
+
+			return sprintf("[object] (%s: %s)", get_class($data), json_encode($data));
 		}
 
 		if(is_resource($data)) {

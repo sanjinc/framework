@@ -7,13 +7,13 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger\Handlers;
+namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
 
 use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerHandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
-use Webiny\Component\Logger\Formatters\FileFormatter;
+use Webiny\Component\Logger\Drivers\Webiny\Formatters\FileFormatter;
 use Webiny\Component\Logger\LoggerException;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\StdObjectException;
