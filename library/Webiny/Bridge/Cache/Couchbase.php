@@ -9,6 +9,8 @@
 
 namespace Webiny\Bridge\Cache;
 
+use Webiny\Component\Cache\CacheException;
+
 /**
  * Couchbase cache bridge loader.
  *
@@ -45,16 +47,29 @@ class Couchbase extends CacheAbstract
 	/**
 	 * Override the CacheAbstract::getInstance method.
 	 *
-	 * @see CacheAbstract::getInstance()
+	 * @see      CacheAbstract::getInstance()
 	 *
-	 * @param string           $cacheId         Cache identifier.
-	 * @param \Couchbase       $couchbase       Instance of Couchbase class.
+	 * @param string $cacheId         Cache identifier.
+	 * @param string $user Couchbase username.
+	 * @param string $password Couchbase password.
+	 * @param string $bucket Couchbase bucket.
+	 * @param string $host Couchbase host (with port number).
 	 *
-	 * @throws CacheException
+	 * @throws \Webiny\Component\Cache\CacheException
+	 * @internal param \Couchbase $couchbase Instance of Couchbase class.
+	 *
 	 * @return void|CacheInterface
 	 */
-	static function getInstance($cacheId, \Couchbase $couchbase = null) {
+	static function getInstance($cacheId, $user='', $password='', $bucket='', $host = '127.0.0.1:8091') {
 		$driver = static::_getLibrary();
+
+		// check if Couchbase extension is loaded
+		if(!class_exists('Couchbase', true)) {
+			throw new CacheException('The "Couchbase" SDK must be installed if you wish to use Couchbase.
+										For more information visit: http://www.couchbase.com/develop/php/current');
+		} else {
+			$couchbase = new \Couchbase($host, $user, $password, $bucket);
+		}
 
 		try {
 			$instance = new $driver($couchbase, $cacheId);

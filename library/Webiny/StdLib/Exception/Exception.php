@@ -20,16 +20,5 @@ use Webiny\StdLib\ValidatorTrait;
  */
 class Exception extends ExceptionAbstract
 {
-	use ValidatorTrait, StdObjectTrait;
 
-	/**
-	 * Set the exception message that will be thrown.
-	 * Current line and file will be set as exception origin.
-	 *
-	 * @param string $message
-	 * @param null   $params
-	 */
-    public function __construct($message, $params = null) {
-		parent::__construct($message, $params);
-    }
 }

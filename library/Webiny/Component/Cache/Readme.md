@@ -1,25 +1,25 @@
 Cache Component
 ===============
-Cache component give you ability to store different information into memory for a limited time.
+`Cache` component give you ability to store different information into memory for a limited time.
 
 The cache component supports following cache drivers:
-* APC (http://php.net/manual/en/book.apc.php)
-* Couchbase (http://www.couchbase.com/develop/php/current)
-* Memcache (http://php.net/manual/en/book.memcache.php)
-* Redis (http://redis.io/clients)
+* `APC` (http://php.net/manual/en/book.apc.php)
+* `Couchbase` (http://www.couchbase.com/develop/php/current)
+* `Memcache` (http://php.net/manual/en/book.memcache.php)
+* `Redis` (http://redis.io/clients)
 
-If you are not sure which driver to use, we suggest APC.
+If you are not sure which driver to use, we suggest `APC`.
 
-Based on the selected driver, you'll have to pass different options to the constuctor method.
-Example:
+Based on the selected driver, you'll have to pass different options to the constuctor.
+
+For example:
 
 ```php
     // APC
     $cache = \Webiny\Component\Cache\Cache::APC('cache-id');
 
     // Couchbase
-    $couchbase = new \Couchbase("127.0.0.1:8091", "username", "password", "default");
-    $cache = \Webiny\Component\Cache\Cache::Couchbase('cache-id', $couchbase);
+    $cache = \Webiny\Component\Cache\Cache::Couchbase('cache-id', 'username', 'password', 'bucket', '127.0.0.1:8091');
 
     // Memcache
     $cache = \Webiny\Component\Cache\Cache::Memcache('cache-id', 'localhost', 11211);
@@ -28,8 +28,8 @@ Example:
     $cache = \Webiny\Component\Cache\Cache::Redis('cache-id', 'localhost', 6379);
 ```
 
-Once you have created your Cache instance, you can start using your cache. The cache methods are the same, no matter
-which driver you use:
+Once you have created your `Cache` instance, you can start using your cache.
+The cache methods are the same, no matter which driver you use:
 
 ```php
     // write to cache
@@ -45,10 +45,12 @@ which driver you use:
     $cache->deleteByTag(['tag1']);
 ```
 
-You can also implement your own cache driver and pass it to the cache class. The custom driver must implement
-\Webiny\Bridge\Cache\CacheInterface
+You can also implement your own cache driver and pass it to the `Cache` class.
+The custom driver must implement `\Webiny\Bridge\Cache\CacheInterface`
 
 ```php
     $myCustomCacheDriver = new \CustomCacheDriver();
     $cache = new \Webiny\Component\Cache\Cache($myCustomCacheDriver);
 ```
+
+Once you set your custom driver, you start using the cache like with any other driver.

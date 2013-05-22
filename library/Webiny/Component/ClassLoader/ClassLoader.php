@@ -43,6 +43,10 @@ class ClassLoader
 	 * @var bool
 	 */
 	private $_includePathLookup = false;
+	/**
+	 * @var bool|CacheInterface
+	 */
+	private $_cache = false;
 
 	private function __construct(){
 		// omit the constructor
@@ -68,10 +72,31 @@ class ClassLoader
 	 * Registers SPL autoload function.
 	 */
 	static private function _registerAutoloader(){
-		spl_autoload_register(array(
-								   self::$_instance,
-								   'getClass'
-							  ), true, true);
+		spl_autoload_register([self::$_instance, 'getClass'], true, true);
+	}
+
+	/**
+	 * Sets a cache layer in front of the autoloader.
+	 * This class unregisteres the old ClassLoader::getClass autoload method.
+	 *
+	 * @param \Webiny\Component\Cache\Cache $cache Instance of the \Webiny\Component\Cache\Cache class.
+	 *
+	 * @throws \Exception
+	 */
+	public function registerCacheDriver($cache){
+		// validate cache
+		if(!($cache instanceof \Webiny\Component\Cache\Cache)){
+			throw new \Exception('The $cache param must instance of "Webiny\Component\Cache\Cache".');
+		}
+
+		// set cache
+		$this->_cache = $cache;
+
+		// unregister the old autoloader
+		spl_autoload_unregister([self::$_instance, 'getClass']);
+
+		// prepend the new cache autoloader
+		spl_autoload_register([self::$_instance, 'getClassFromCache'], true, true);
 	}
 
 	/**
@@ -145,9 +170,9 @@ class ClassLoader
 	/**
 	 * Tries to find the class file based on currently registered rules.
 	 *
-	 * @param string $class
+	 * @param string $class Name of the class you are trying to find.
 	 *
-	 * @return bool
+	 * @return bool True is retuned if the class if found and loaded into memory.
 	 */
 	public function getClass($class) {
 		if($file = $this->findClass($class)) {
@@ -158,7 +183,32 @@ class ClassLoader
 	}
 
 	/**
-	 * This function is taken from Symfony.
+	 * First tries to find the class in the cache. If the class is not found in the cache, then it tries to find it
+	 * by using the registered maps.
+	 *
+	 * @param string $class Name of the class you are trying to find.
+	 *
+	 * @return bool True is retuned if the class if found and loaded into memory.
+	 */
+	public function getClassFromCache($class){
+		// from cache
+		if(($file = $this->_cache->read($class))){
+			require $file;
+
+			return true;
+		}
+
+		// from disk
+		if($file = $this->findClass($class)) {
+			$this->_cache->save($class, $file, 600, ['_webiny', '_kernel']);
+			require $file;
+
+			return true;
+		}
+	}
+
+	/**
+	 * This function is taken from Symfony (but it has been changed a bit.).
 	 * (c) Fabien Potencier <fabien@symfony.com>
 	 *
 	 * @param string $class The name of the class

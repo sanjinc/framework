@@ -10,6 +10,8 @@
 
 namespace Webiny\StdLib;
 
+use Webiny\StdLib\Exception\Exception;
+
 /**
  * Description
  *
@@ -21,19 +23,9 @@ trait SingletonTrait
     protected static $_wfInstance;
 
     /**
-     * Singleton trait.
-     * NOTE: This function must be declared static.
-     * This function must return:
-     * self::_getInstance();
-     *
-     * @return $this
+     * @return $this;
      */
-    abstract function getInstance();
-
-    /**
-     * @return self;
-     */
-    final private static function _getInstance() {
+    final public static function getInstance() {
 		if(isset(static::$_wfInstance)){
 			return static::$_wfInstance;
 		}else{
@@ -42,12 +34,11 @@ trait SingletonTrait
 		}
     }
 
-    public function __construct() {
-        #$this->exception('You cannot create a new instance of this object. Please use the getInstance static call.');
-		if(method_exists($this, '_postConstructCallback')){
-			$this->_postConstructCallback();
-		}
+	final private function __construct() {
+		$this->init();
     }
+
+	protected function init() {}
 
     final private function __wakeup() {
     }
