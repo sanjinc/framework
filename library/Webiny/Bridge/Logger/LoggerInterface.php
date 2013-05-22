@@ -7,14 +7,14 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger;
+namespace Webiny\Bridge\Logger;
 
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
 /**
  * Description
  *
- * @package   Webiny\Component\Logger
+ * @package   Webiny\Bridge\Logger
  */
 
 interface LoggerInterface extends PsrLoggerInterface

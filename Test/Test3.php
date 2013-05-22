@@ -14,7 +14,6 @@ class Test
 
 		$logger = new Monolog\Logger('Debug');
 		$handler = new Monolog\Handler\StreamHandler(WF.'/Test/logger.log', true);
-		$handler->
 
 		$logger->pushHandler($handler);
 		$logger->pushProcessor($processor);
@@ -24,7 +23,11 @@ class Test
 
 }
 
-$logger = \Webiny\Component\Logger\Logger::getInstance('Module builder');
+$logger = new \Webiny\Component\Logger\Logger('Module builder');
+$logger->addHandler(new \Webiny\Component\Logger\Handlers\StreamHandler(WF.'/Test/logger.log'));
+
+$logger->info('Got to this point...');
+
 die(print_r($logger));
 
 $test = new Test();
