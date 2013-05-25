@@ -11,7 +11,7 @@ namespace Webiny\UnitTests\Tests\Component\Config;
 
 use Webiny\Component\Cache\Cache;
 
-require_once '../../../../../../WebinyFramework.php';
+require_once '../../../../../autoloader.php';
 
 class CacheTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,55 +23,50 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider driverSet
 	 */
-	function testConstructor($driver){
-		$cache = new Cache($driver);
-
+	function testConstructor($cache){
 		$this->assertInstanceOf('Webiny\Component\Cache\Cache', $cache);
 	}
 
 	function testAPCConstructor(){
-		$cache = Cache::APC('some-key');
+		$cache = Cache::APC('apc-test');
 		$this->assertInstanceOf('Webiny\Bridge\Cache\Memory\APC', $cache->getDriver());
 	}
 
 	function testCouchbaseConstructor(){
-		$cache = Cache::Couchbase('some-key', new \Couchbase(self::COUCHBASE_HOSTS, self::COUCHBASE_USER, self::COUCHBASE_PASSWORD, self::COUCHBASE_BUCKET));
+		$cache = Cache::Couchbase('couchbase-test', self::COUCHBASE_USER, self::COUCHBASE_PASSWORD, self::COUCHBASE_BUCKET, self::COUCHBASE_HOSTS);
 
 		$this->assertInstanceOf('Webiny\Bridge\Cache\Memory\Couchbase', $cache->getDriver());
 	}
 
 	function testMemcacheConstructor(){
-		$cache = Cache::Memcache('some-key');
+		$cache = Cache::Memcache('memcache-test');
 		$this->assertInstanceOf('Webiny\Bridge\Cache\Memory\Memcache', $cache->getDriver());
 	}
 
 	function testRedisConstructor(){
-		$cache = Cache::Redis('some-key');
+		$cache = Cache::Redis('redis-test');
 		$this->assertInstanceOf('Webiny\Bridge\Cache\Memory\Redis', $cache->getDriver());
 	}
 
 	/**
 	 * @dataProvider driverSet
 	 */
-	function testSave($driver){
-		$cache = new Cache($driver);
+	function testSave($cache){
 		$cache->save('cacheKey', 'some value', 3600, ['test', 'unit', 'tag']);
 	}
 
 	/**
 	 * @dataProvider driverSet
 	 */
-	function testRead($driver){
-		$cache = new Cache($driver);
-
+	function testRead($cache){
 		$this->assertSame('some value', $cache->read('cacheKey'));
 	}
 
 	/**
 	 * @dataProvider driverSet
 	 */
-	function testDelete($driver){
-		$cache = new Cache($driver);
+	function testDelete($cache){
+
 		$cache->delete('cacheKey');
 
 		$this->assertTrue($cache->read('cacheKey')==false || $cache->read('cacheKey')==null);
@@ -80,8 +75,8 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider driverSet
 	 */
-	function testDeleteByTags($driver){
-		$cache = new Cache($driver);
+	function testDeleteByTags($cache){
+
 		$cache->save('cacheKey', 'some value', 3600, ['test', 'unit', 'tag']);
 		$cache->deleteByTags('test');
 
@@ -90,10 +85,10 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
 	function driverSet(){
 		return [
-			[Cache::APC('some-key')->getDriver()],
-			[Cache::Couchbase('some-key', new \Couchbase(self::COUCHBASE_HOSTS, self::COUCHBASE_USER, self::COUCHBASE_PASSWORD, self::COUCHBASE_BUCKET))->getDriver()],
-			[Cache::Memcache('some-key')->getDriver()],
-			[Cache::Redis('some-key')->getDriver()]
+			[Cache::APC('apc')],
+			[Cache::Couchbase('couchbase', self::COUCHBASE_USER, self::COUCHBASE_PASSWORD, self::COUCHBASE_BUCKET, self::COUCHBASE_HOSTS)],
+			[Cache::Memcache('memcache')],
+			[Cache::Redis('redis')]
 		];
 	}
 

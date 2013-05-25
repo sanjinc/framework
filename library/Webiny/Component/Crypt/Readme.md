@@ -1,0 +1,2 @@
+- TODO
+- dokumentiraj config i bridgeve na svim komponentama

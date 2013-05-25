@@ -34,10 +34,17 @@ trait SingletonTrait
 		}
     }
 
+	/**
+	 * The constructor is set to private to prevent creating new instances.
+	 * If you want to fire a function after the singleton instance is created, just implement 'init' method into your class.
+	 */
 	final private function __construct() {
 		$this->init();
     }
 
+	/**
+	 * Override this if you wish to do some stuff once the singleton instance has been created.
+	 */
 	protected function init() {}
 
     final private function __wakeup() {

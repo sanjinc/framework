@@ -40,9 +40,19 @@ class Cache
 	private $_cacheId = '';
 	static private $_driverInstances = [];
 
+	/**
+	 * Creates a Cache instance.
+	 * If a cache instance under the given $cacheId exists, and the registered driver in not the same as prodvided $driver,
+	 * a CacheException is thrown.
+	 *
+	 * @param CacheInterface $driver  Instance of cache driver.
+	 * @param string         $cacheId The id under which the instance will be storred.
+	 *
+	 * @throws CacheException
+	 */
 	public function __construct(CacheInterface $driver, $cacheId) {
-		if($this->is(self::$_driverInstances[$cacheId])){
-			throw new CacheException('Another cache instance has already registered under the given cache id "'.$cacheId.'".');
+		if(isset(self::$_driverInstances[$cacheId]) && !(self::$_driverInstances[$cacheId] instanceof $driver)) {
+			throw new CacheException('Another cache instance has already registered under the given cache id "' . $cacheId . '".');
 		}
 
 		self::$_driverInstances[$cacheId] = $driver;
@@ -117,9 +127,9 @@ class Cache
 	 * @return CacheInterface
 	 * @throws CacheException
 	 */
-	static public function getDriverInstance($cacheId){
-		if(!self::is(self::$_driverInstances[$cacheId])){
-			throw new CacheException('Cache driver instance not found for the key "'.$cacheId.'".');
+	static public function getDriverInstance($cacheId) {
+		if(!self::is(self::$_driverInstances[$cacheId])) {
+			throw new CacheException('Cache driver instance not found for the key "' . $cacheId . '".');
 		}
 
 		return self::$_driverInstances[$cacheId];

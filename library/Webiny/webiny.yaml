@@ -16,10 +16,12 @@ bridges:
     memcache: 'Memory\Memcache'
     redis: 'Memory\Redis'
   yaml: 'Spyc\Spyc'
+  crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
   'Jamm\Memory': '../Memory'
   'Spyc\Spyc': '../Spyc'
-  'Psr':'../Psr'
+  'Psr': '../Psr'
+  'CryptLib': '../PHP-CryptLib/lib/CryptLib'
 components:
   logger:
     formatters:
@@ -27,3 +29,8 @@ components:
         date_format: 'Y-m-d H:i:s'
       file:
         record_format: '%datetime% [%name%] [%level%]: %message%\nContext: %context%\nExtra: %extra%\n\n'
+  crypt:
+      password_alog: 'Blowfish'
+      cipher_mode: 'CCM'
+      cipher_block: 'rijndael-128'
+      cipher_initialization_vector: '_FOO_VECTOR'

@@ -30,6 +30,10 @@ class Memcache extends CacheAbstract
 	 * @return string
 	 */
 	static function _getLibrary() {
+		if(isset(self::webiny()->getConfig()->bridges->cache->memcache)){
+			return self::webiny()->getConfig()->bridges->cache->memcache;
+		}
+
 		return self::$_library;
 	}
 

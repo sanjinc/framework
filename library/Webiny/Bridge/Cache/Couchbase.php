@@ -32,6 +32,10 @@ class Couchbase extends CacheAbstract
 	 * @return string
 	 */
 	static function _getLibrary() {
+		if(isset(self::webiny()->getConfig()->bridges->cache->couchbase)){
+			return self::webiny()->getConfig()->bridges->cache->couchbase;
+		}
+
 		return self::$_library;
 	}
 

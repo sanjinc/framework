@@ -7,20 +7,16 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Registry;
+namespace Webiny\Component\Crypt;
+
+use Webiny\StdLib\Exception\ExceptionAbstract;
 
 /**
- * Trait for Registry component.
+ * Exception class for the Crypt component.
  *
- * @package		 Webiny\Component\Registry
+ * @package		 Webiny\Component\Crypt
  */
  
-trait RegistryTrait{
+class CryptException extends ExceptionAbstract{
 
-	/**
-	 * @return Registry
-	 */
-	public function registry(){
-		return Registry::getInstance();
-	}
 }
