@@ -22,7 +22,7 @@ class UDPHandler extends HandlerAbstract
 		parent::__construct($levels, $bubble, false);
 
 		if($this->isNull($host)) {
-			$host = $this->registry()->webiny->components->logger->handlers->udp->host;
+			$host = $this->webiny()->getConfig()->components->logger->handlers->udp->host;
 		}
 
 		list($this->_host, $this->_port) = explode(':', $host);

@@ -37,7 +37,7 @@ class WebinyTrayFormatter extends FormatterAbstract
 	 * @param string|null $dateFormat The format of the timestamp: one supported by DateTime::format
 	 */
 	public function __construct($method = null, $dateFormat = null) {
-		$this->_config = $this->registry()->webiny->components->logger->formatters->webiny_tray;
+		$this->_config = $this->webiny()->getConfig()->components->logger->formatters->webiny_tray;
 		$this->_dateFormat = $dateFormat !== null ? $dateFormat : $this->_config->date_format;
 		$this->_method = $method !== null ? $method : $this->_config->method;
 	}
@@ -54,9 +54,9 @@ class WebinyTrayFormatter extends FormatterAbstract
 			if($this->isDateTimeObject($val)) {
 				$val = $val->format($this->dateFormat);
 			}
-			if(is_object($val)) {
+			if($this->isObject($val)) {
 				$val = (array)$val;
-			} elseif(is_array($val)) {
+			} elseif($this->isArray($val)) {
 				$val = json_encode($val);
 			}
 
@@ -83,7 +83,7 @@ class WebinyTrayFormatter extends FormatterAbstract
 }
 
 
-$tray = $this->registry()->webiny->components->logger->tray;
+/*$tray = $this->registry()->webiny->components->logger->tray;
 
 if($this->isInstanceOf($tray, 'Webiny\Component\Config\ConfigObject')) {
 	$tray = $tray->toArray();
@@ -91,4 +91,4 @@ if($this->isInstanceOf($tray, 'Webiny\Component\Config\ConfigObject')) {
 
 if(!$this->isArray($tray) && !$this->isArrayObject($tray)) {
 	$tray = [$tray];
-}
+}*/
