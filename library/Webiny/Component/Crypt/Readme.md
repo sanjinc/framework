@@ -1,6 +1,3 @@
-- TODO
-- dokumentiraj config i bridgeve na svim komponentama
-
 Crypt Component
 ===============
 The `Crypt` component provides methods for generating random numbers and strings, also, password hashing and password
@@ -82,39 +79,39 @@ original form.
 
 The algorithm used for hashing passwords. Supported algorithms depend on the defined `bridge` library.
 The default library, PHP-CryptLib, supports:
-    - **BCrypt** - (*default*)
-    - **PBKDF1**
-    - **PBKDF2**
-    - **SHA256** - (crypt()'s implementation)
-    - **SHA512** - (crypt()'s implementation)
-    - **Schneier** (a PBKDF derivative)
+- **BCrypt** - (*default*)
+- **PBKDF1**
+- **PBKDF2**
+- **SHA256** - (crypt()'s implementation)
+- **SHA512** - (crypt()'s implementation)
+- **Schneier** (a PBKDF derivative)
 
 ### "cipher_mode"
 
 This is the mode that will be used for encrypting and decrypting strings.
 Following modes are supported by the default library:
-    - **CBC** - Encryption (Cipher Block Chaining) - (*default*)
-    - **CCM** - Encryption and Authentication (Counter Cipher Block Chaining)
-    - **CFB** - Encryption (Cipher FeedBack)
-    - **CTR** - Encryption (Counter)
-    - **ECB** - Encryption (Electronic CodeBook)
-    - **NOFB** - Encryption (Output FeedBack - Variable Block Size)
+- **CBC** - Encryption (Cipher Block Chaining) - (*default*)
+- **CCM** - Encryption and Authentication (Counter Cipher Block Chaining)
+- **CFB** - Encryption (Cipher FeedBack)
+- **CTR** - Encryption (Counter)
+- **ECB** - Encryption (Electronic CodeBook)
+- **NOFB** - Encryption (Output FeedBack - Variable Block Size)
 
 
 ### "cipher_block"
 
 `cipher_block` is the portable block cipher used, in combination with `cipher_mode` for the encrypt/decrypt method.
 The following options are available:
-    - **aes-128**
-    - **aes-192**
-    - **aes-256**
-    - **rijndael-128** - (*default*)
-    - **rijndael-160**
-    - **rijndael-192**
-    - **rijndael-224**
-    - **rijndael-256**
-    - **des**
-    - **tripledes**
+- **aes-128**
+- **aes-192**
+- **aes-256**
+- **rijndael-128** - (*default*)
+- **rijndael-160**
+- **rijndael-192**
+- **rijndael-224**
+- **rijndael-256**
+- **des**
+- **tripledes**
 
 ### "cipher_initialization_vector"
 
