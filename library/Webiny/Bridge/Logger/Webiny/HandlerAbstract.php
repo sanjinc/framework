@@ -22,6 +22,7 @@ abstract class HandlerAbstract
 	 */
 	protected $_formatter = null;
 	protected $_processors = [];
+	protected $_records = [];
 
 	/**
 	 * Writes the record down to the log of the implementing handler
@@ -69,9 +70,18 @@ abstract class HandlerAbstract
 	 * This will be called automatically when the object is destroyed
 	 */
 	public function stopHandling() {
-
+		if($this->_buffer) {
+			$this->_processRecords($this->_records);
+		}
 	}
 
+	/**
+	 * Add processor to this handler
+	 * @param mixed $callback Callable or instance of ProcessorInterface
+	 *
+	 * @throws \InvalidArgumentException
+	 * @return $this
+	 */
 	public function addProcessor($callback) {
 		if(!is_callable($callback) && !$this->isInstanceOf($callback,
 														   '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')
@@ -79,19 +89,36 @@ abstract class HandlerAbstract
 			throw new \InvalidArgumentException('Processor must be valid callable or an instance of \Webiny\Bridge\Logger\Webiny\ProcessorInterface');
 		}
 		$this->_processors->prepend($callback);
+
 		return $this;
 	}
 
 	public function setFormatter(FormatterInterface $formatter) {
 		$this->_formatter = $formatter;
+
 		return $this;
 	}
 
+	/**
+	 * Process given record
+	 * This will pass given record to ProcessorInterface instance, then format the record and output it according to current HandlerAbstract instance
+	 * @param Record $record
+	 *
+	 * @return bool Bubble flag (this either continues propagation of the Record to other handlers, or stops the logger from processing this record any further)
+	 */
 	public function process(Record $record) {
-		$record = $this->processRecord($record);
 
-		$record->formatted = $this->_getFormatter()->formatRecord($record);
+		if($this->_buffer) {
+			$this->_records[] = $record;
 
+			return $this->_bubble;
+		}
+
+		$record = $this->_processRecord($record);
+		$formatter = $this->_getFormatter();
+		if($this->isInstanceOf($formatter, '\Webiny\Bridge\Logger\Webiny\FormatterInterface')) {
+			$formatter->formatRecord($record);
+		}
 		$this->write($record);
 
 		return $this->_bubble;
@@ -102,32 +129,39 @@ abstract class HandlerAbstract
 	 *
 	 * @param Record $record
 	 *
-	 * @return Record
+	 * @return Record Processed Record object
 	 */
-	public function processRecord(Record $record) {
+	protected function _processRecord(Record $record) {
 		if($this->_processors) {
 			foreach ($this->_processors as $processor) {
-				if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')){
-					$record = $processor->processRecord($record);
+				if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')) {
+					$processor->processRecord($record);
 				} else {
-					$record = call_user_func($processor, $record);
+					call_user_func($processor, $record);
 				}
 
 			}
 		}
-
-		return $record;
 	}
 
-	public function processRecords(array $records) {
+	protected function _processRecords(array $records) {
 		foreach ($records as $record) {
-			$this->processRecord($record);
+			$this->_processRecord($record);
 		}
+
+		$record = new Record();
+		$formatter = $this->_getFormatter();
+		if($this->isInstanceOf($formatter, '\Webiny\Bridge\Logger\Webiny\FormatterInterface')) {
+			$formatter->formatRecords($records, $record);
+		}
+
+		$this->write($record);
+		return $this->_bubble;
 	}
 
 	/**
 	 * @throws \Webiny\Bridge\Logger\LoggerException
-	 * @return FormatterInterface
+	 * @return FormatterInterface Instance of formatter to use for record formatting
 	 */
 	private function _getFormatter() {
 		if($this->isNull($this->_formatter)) {

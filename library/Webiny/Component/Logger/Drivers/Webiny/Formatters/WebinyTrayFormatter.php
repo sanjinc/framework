@@ -14,11 +14,11 @@ use Webiny\Bridge\Logger\Webiny\Record;
 
 
 /**
- * Formats incoming records into a valid JsonRPC 2.0
+ * Formats incoming records into a request for Webiny Tray Notifier
  *
  * @package         Webiny\Component\Logger\Formatters
  */
-class JsonRpcFormatter extends FormatterAbstract
+class WebinyTrayFormatter extends FormatterAbstract
 {
 	/**
 	 * Message date format
@@ -37,7 +37,7 @@ class JsonRpcFormatter extends FormatterAbstract
 	 * @param string|null $dateFormat The format of the timestamp: one supported by DateTime::format
 	 */
 	public function __construct($method = null, $dateFormat = null) {
-		$this->_config = $this->registry()->webiny->components->logger->formatters->json_rpc;
+		$this->_config = $this->registry()->webiny->components->logger->formatters->webiny_tray;
 		$this->_dateFormat = $dateFormat !== null ? $dateFormat : $this->_config->date_format;
 		$this->_method = $method !== null ? $method : $this->_config->method;
 	}
@@ -47,15 +47,7 @@ class JsonRpcFormatter extends FormatterAbstract
 		// Call this to execute standard value normalization
 		$record = $this->normalizeValues($record);
 
-		$output = $this->str($this->_format);
-
-		// Handle extra values in case specific values are given in record format
-		foreach ($record->extra as $var => $val) {
-			if($output->contains('%extra.' . $var . '%')) {
-				$output->replace('%extra.' . $var . '%', $val);
-				unset($record->extra[$var]);
-			}
-		}
+		$output = [];
 
 		// Handle main record values
 		foreach ($record as $var => $val) {
@@ -63,24 +55,40 @@ class JsonRpcFormatter extends FormatterAbstract
 				$val = $val->format($this->dateFormat);
 			}
 			if(is_object($val)) {
-				if(method_exists($val, '__toString')) {
-					$val = '' . $val;
-				}
+				$val = (array)$val;
 			} elseif(is_array($val)) {
 				$val = json_encode($val);
 			}
-			$output->replace('%' . $var . '%', $val);
+
+			$output['params'][$var] = $val;
 		}
 
-		return $output->val();
+		return $output;
 	}
 
-	public function formatRecords(array $records) {
-		$message = '';
+	public function formatRecords(array $records, Record $record) {
+		$request = [];
 		foreach ($records as $record) {
-			$message .= $this->formatRecord($record);
+			$request['messages'][] = $this->formatRecord($record);
 		}
 
-		return $message;
+		$json = [
+			'jsonrpc' => '2.0',
+			'method'  => $this->_method,
+			'params'  => $request
+		];
+
+		$record->formatted = $json;
 	}
+}
+
+
+$tray = $this->registry()->webiny->components->logger->tray;
+
+if($this->isInstanceOf($tray, 'Webiny\Component\Config\ConfigObject')) {
+	$tray = $tray->toArray();
+}
+
+if(!$this->isArray($tray) && !$this->isArrayObject($tray)) {
+	$tray = [$tray];
 }
