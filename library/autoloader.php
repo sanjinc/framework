@@ -10,4 +10,8 @@ ClassLoader::getInstance()->registerMap([
 										'Spyc'        => realpath(dirname(__FILE__)) . '/Spyc'
 										]);
 
-\Webiny\WebinyFramework::init();
+/**
+ * We just need to call the 'getInstance' method which automatically triggers the internal 'init' method
+ * due to the implementation of 'SingletonTrait'
+ */
+\Webiny\WebinyFrameworkBase::getInstance();

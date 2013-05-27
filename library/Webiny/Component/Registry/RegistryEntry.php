@@ -11,6 +11,7 @@ namespace Webiny\Component\Registry;
 
 /**
  * Registry entry class.
+ * This class holds the actual values assigned into the Registry.
  *
  * @package         Webiny\Component\Registry
  */
@@ -45,12 +46,6 @@ class RegistryEntry
 			$this->{$name} = new RegistryEntry($name, null);
 		}
 
-		/*
-		if($name == $this->_name) {
-			return $this->_value;
-		}
-		*/
-
 		return $this->{$name};
 	}
 
@@ -61,12 +56,6 @@ class RegistryEntry
 	 * @param mixed $value Value that will be stored.
 	 */
 	public function __set($name, $value) {
-		if(is_array($value)) {
-			array_walk($value, function (&$item, $key) {
-				$item = new RegistryEntry($key, $item);
-			});
-		}
-
 		$this->{$name} = $value;
 	}
 

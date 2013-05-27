@@ -10,6 +10,8 @@
 namespace Webiny\Bridge\Cache;
 
 use Webiny\StdLib\ValidatorTrait;
+use Webiny\WebinyFrameworkBase;
+use Webiny\WebinyTrait;
 
 /**
  * APC cache bridge loader.
@@ -18,6 +20,7 @@ use Webiny\StdLib\ValidatorTrait;
  */
 class APC extends CacheAbstract
 {
+	use WebinyTrait;
 
 	/**
 	 * Path to the default bridge library for APC.
@@ -32,6 +35,10 @@ class APC extends CacheAbstract
 	 * @return string
 	 */
 	static function _getLibrary() {
+		if(isset(self::webiny()->getConfig()->bridges->cache->apc)){
+			return self::webiny()->getConfig()->bridges->cache->apc;
+		}
+
 		return self::$_library;
 	}
 

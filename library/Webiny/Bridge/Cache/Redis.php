@@ -30,6 +30,10 @@ class Redis extends CacheAbstract
 	 * @return string
 	 */
 	static function _getLibrary() {
+		if(isset(self::webiny()->getConfig()->bridges->cache->redis)){
+			return self::webiny()->getConfig()->bridges->cache->redis;
+		}
+
 		return self::$_library;
 	}
 

@@ -18,7 +18,7 @@ namespace Webiny\Component\Registry;
 trait RegistryTrait{
 
 	/**
-	 * @return $this
+	 * @return Registry
 	 */
 	public function registry(){
 		return Registry::getInstance();

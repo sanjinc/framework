@@ -16,10 +16,12 @@ bridges:
     memcache: 'Memory\Memcache'
     redis: 'Memory\Redis'
   yaml: 'Spyc\Spyc'
+  crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
   'Jamm\Memory': '../Memory'
   'Spyc\Spyc': '../Spyc'
-  'Psr':'../Psr'
+  'Psr': '../Psr'
+  'CryptLib': '../PHP-CryptLib/lib/CryptLib'
 components:
   logger:
     formatters:
@@ -33,4 +35,9 @@ components:
     handlers:
       json_rpc_udp:
         host: 192.168.1.28:41234
-    tray: 192.168.1.28:5000
+    tray: 192.168.1.28:5000        
+  crypt:
+      password_alog: 'Blowfish'
+      cipher_mode: 'CCM'
+      cipher_block: 'rijndael-128'
+      cipher_initialization_vector: '_FOO_VECTOR'
