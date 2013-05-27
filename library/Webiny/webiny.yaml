@@ -27,3 +27,10 @@ components:
         date_format: 'Y-m-d H:i:s'
       file:
         record_format: '%datetime% [%name%] [%level%]: %message%\nContext: %context%\nExtra: %extra%\n\n'
+      json_rpc:
+        method: new_notification
+        date_format: 'Y-m-d H:i:s'
+    handlers:
+      json_rpc_udp:
+        host: 192.168.1.28:41234
+    tray: 192.168.1.28:5000
