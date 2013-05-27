@@ -5,21 +5,22 @@ namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
 use Webiny\Bridge\Logger\LoggerException;
 use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
-use Webiny\Component\Registry\RegistryTrait;
 use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\StdObjectWrapper;
+use Webiny\WebinyTrait;
 
 /**
  * @package Webiny\Component\Logger\Drivers\Webiny\Handlers
  */
 class UDPHandler extends HandlerAbstract
 {
-	use StdLibTrait, RegistryTrait;
+	use StdLibTrait, WebinyTrait;
 
 	private $_host;
 	private $_port;
 
 	public function __construct($levels = [], $bubble = true, $buffer = false, $host = null) {
-		parent::__construct($levels, $bubble, false);
+		parent::__construct($levels, $bubble, $buffer);
 
 		if($this->isNull($host)) {
 			$host = $this->webiny()->getConfig()->components->logger->handlers->udp->host;
@@ -43,9 +44,11 @@ class UDPHandler extends HandlerAbstract
 				return;
 			}
 
-			$message = $this->isArray($record->formatted) ? $this->jsonEncode($record->formatted) : $record->formatted;
+			if(!$this->isString($record->formatted) && !$this->isStringObject($record->formatted)){
+				throw new LoggerException('Formatted record must be a string or StringObject!');
+			}
 
-			fwrite($fp, $message);
+			fwrite($fp, StdObjectWrapper::toString($record->formatted));
 			fclose($fp);
 		} catch (Exception $e) {
 			throw new LoggerException($e->getMessage());

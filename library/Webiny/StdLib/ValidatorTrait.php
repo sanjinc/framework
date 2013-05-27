@@ -52,6 +52,29 @@ trait ValidatorTrait
 	}
 
 	/**
+	 * Check if given value is a scalar value.
+	 * Scalar values are: integer, float, boolean and string
+	 *
+	 * @param mixed $var Value to check
+	 *
+	 * @return bool
+	 */
+	static protected function isScalar($var) {
+		return is_scalar($var);
+	}
+
+	/**
+	 * Check if given value is a resource.
+	 *
+	 * @param mixed $var Value to check
+	 *
+	 * @return bool
+	 */
+	static protected function isResource($var) {
+		return is_resource($var);
+	}
+
+	/**
 	 * Checks if given value is an array.
 	 *
 	 * @param $var

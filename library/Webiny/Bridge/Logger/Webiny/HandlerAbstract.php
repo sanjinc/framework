@@ -33,6 +33,11 @@ abstract class HandlerAbstract
 	 */
 	abstract protected function write(Record $record);
 
+	/**
+	 * Get default formatter for this handler
+	 *
+	 * @return FormatterAbstract
+	 */
 	abstract protected function _getDefaultFormatter();
 
 	/**
@@ -110,15 +115,11 @@ abstract class HandlerAbstract
 
 		if($this->_buffer) {
 			$this->_records[] = $record;
-
 			return $this->_bubble;
 		}
 
-		$record = $this->_processRecord($record);
-		$formatter = $this->_getFormatter();
-		if($this->isInstanceOf($formatter, '\Webiny\Bridge\Logger\Webiny\FormatterInterface')) {
-			$formatter->formatRecord($record);
-		}
+		$this->_processRecord($record);
+		$this->_getFormatter()->formatRecord($record);
 		$this->write($record);
 
 		return $this->_bubble;
@@ -145,8 +146,8 @@ abstract class HandlerAbstract
 	}
 
 	protected function _processRecords(array $records) {
-		foreach ($records as $record) {
-			$this->_processRecord($record);
+		foreach ($records as $rec) {
+			$this->_processRecord($rec);
 		}
 
 		$record = new Record();
