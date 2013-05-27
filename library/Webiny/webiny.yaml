@@ -30,7 +30,7 @@ components:
       file:
         record_format: '%datetime% [%name%] [%level%]: %message%\nContext: %context%\nExtra: %extra%\n\n'
   crypt:
-      password_alog: 'Blowfish'
+      password_algo: 'Blowfish'
       cipher_mode: 'CCM'
       cipher_block: 'rijndael-128'
       cipher_initialization_vector: '_FOO_VECTOR'

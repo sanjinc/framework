@@ -7,7 +7,7 @@ You can always access the `Registry` from within anywhere inside your applicatio
 
 Here is how you use it:
 
-``php
+```php
     // get the registry
     $registry = \Webiny\Component\Registry\Registry::getInstance();
 

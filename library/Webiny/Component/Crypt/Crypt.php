@@ -27,6 +27,10 @@ class Crypt
 	 */
 	static private $_driverInstance = null;
 
+
+	/**
+	 * Create a Crypt instance.
+	 */
 	public function __construct() {
 		if($this->isNull(self::$_driverInstance)) {
 			try {
@@ -54,6 +58,24 @@ class Crypt
 	function generateRandomInt($min, $max) {
 		try {
 			return self::$_driverInstance->generateRandomInt($min, $max);
+		} catch (\Exception $e) {
+			throw new CryptException($e->getMessage());
+		}
+	}
+
+	/**
+	 * Generates a random string using the defined character set.
+	 * If $chars param is empty, the string will be generated using numbers, letters and special characters.
+	 *
+	 * @param int    $length Length of the generated string.
+	 * @param string $chars  A string containing a list of chars that will be uses for generating the random string.
+	 *
+	 * @throws CryptException
+	 * @return string Random string with the given $length containing only the provided set of $chars.
+	 */
+	function generateRandomString($length, $chars = ''){
+		try {
+			return self::$_driverInstance->generateRandomString($length, $chars);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
