@@ -9,6 +9,8 @@
 
 namespace Webiny\Component\ClassLoader;
 
+use Webiny\Component\Cache\CacheDriver;
+
 /**
  * Class loader implements a more standardized way of autoloading files.
  *
@@ -77,18 +79,13 @@ class ClassLoader
 
 	/**
 	 * Sets a cache layer in front of the autoloader.
-	 * This class unregisteres the old ClassLoader::getClass autoload method.
+	 * Unregister the old ClassLoader::getClass autoload method.
 	 *
-	 * @param \Webiny\Component\Cache\Cache $cache Instance of the \Webiny\Component\Cache\Cache class.
+	 * @param CacheDriver $cache Instance of the \Webiny\Component\Cache\Cache class.
 	 *
 	 * @throws \Exception
 	 */
-	public function registerCacheDriver($cache){
-		// validate cache
-		if(!($cache instanceof \Webiny\Component\Cache\Cache)){
-			throw new \Exception('The $cache param must instance of "Webiny\Component\Cache\Cache".');
-		}
-
+	public function registerCacheDriver(CacheDriver $cache){
 		// set cache
 		$this->_cache = $cache;
 

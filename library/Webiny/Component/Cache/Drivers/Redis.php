@@ -23,13 +23,16 @@ class Redis
 	/**
 	 * Get an instance of Redis cache driver.
 	 *
-	 * @param string       $cacheId    Cache identifier.
-	 * @param string       $host       Host on which Redis server is running.
-	 * @param int          $port       Port on which Redis server is running.
+	 * @param string $cacheId    Cache identifier.
+	 * @param string $host       Host on which Redis server is running.
+	 * @param int    $port       Port on which Redis server is running.
+	 * @param bool   $status     Cache status.
 	 *
 	 * @return \Webiny\Bridge\Cache\CacheInterface
 	 */
-	static function getInstance($cacheId = '', $host = 'locahost', $port = 6379) {
-		return \Webiny\Bridge\Cache\Redis::getInstance($cacheId, $host, $port);
+	static function getInstance($cacheId = '', $host = 'locahost', $port = 6379, $status = false) {
+		$driver = \Webiny\Bridge\Cache\Redis::getInstance($cacheId, $host, $port);
+
+		return new CacheDriver($driver, $status);
 	}
 }

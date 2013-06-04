@@ -10,6 +10,7 @@
 namespace Webiny\Bridge\Cache;
 
 use Webiny\Component\Cache\CacheException;
+use Webiny\WebinyTrait;
 
 /**
  * Couchbase cache bridge loader.
@@ -18,6 +19,7 @@ use Webiny\Component\Cache\CacheException;
  */
 class Couchbase extends CacheAbstract
 {
+	use WebinyTrait;
 
 	/**
 	 * Path to the default bridge library for APC.

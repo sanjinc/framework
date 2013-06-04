@@ -11,6 +11,7 @@ namespace Webiny;
 
 use Webiny\Bridge\Cache\CacheInterface;
 use Webiny\Component\Cache\Cache;
+use Webiny\Component\Cache\CacheDriver;
 use Webiny\Component\ClassLoader\ClassLoader;
 use Webiny\Component\Config\Config;
 use Webiny\StdLib\Exception\Exception;
@@ -37,8 +38,9 @@ use Webiny\StdLib\SingletonTrait;
 
 class WebinyFrameworkBase
 {
-
 	use SingletonTrait;
+
+	const WF_CACHE_ID = 'wfc';
 
 	/**
 	 * @var int Is the framework loaded or not.
@@ -49,11 +51,6 @@ class WebinyFrameworkBase
 	 * @var Config Holds the aggregated config object.
 	 */
 	static private $_config;
-
-	/**
-	 * @var bool|Cache If available, holds the instance of system cache.
-	 */
-	static private $_cache = false;
 
 	/**
 	 * @var string Path to the Webiny framework folder. (with trailing slash)
@@ -82,27 +79,19 @@ class WebinyFrameworkBase
 	 * @throws StdLib\Exception\Exception
 	 */
 	public function init() {
-
 		if(self::$_status) {
 			throw new Exception('Webiny framework is already initialized. You cannot initialize it again.');
 		}
+
+		self::$_status = 1;
 
 		$this->_parseConfigs();
 		$this->_readEnvironment();
 
 		$this->_setupErrorEnvironment();
 		$this->_setupClassLoader();
-		$this->_checkForSystemCache();
+		$this->_checkForCache();
 		$this->_assignCacheToClassLoader();
-
-		self::$_status = 1;
-	}
-
-	/**
-	 * @return bool|CacheInterface
-	 */
-	public function getCache() {
-		return self::$_cache;
 	}
 
 	/**
@@ -171,17 +160,33 @@ class WebinyFrameworkBase
 
 	/**
 	 * Checks if there is a cache defined in the config.
-	 * If cache is defined, than its instance is stored as a static property of this class.
 	 *
 	 * @throws \Exception
 	 */
-	private function _checkForSystemCache() {
-		if(isset(self::$_config->system->cache) && self::$_config->system->cache != '') {
-			try {
-				self::$_cache = call_user_func_array('Webiny\Component\Cache\Cache::' . self::$_config->system->cache->driver->name,
-													 self::$_config->system->cache->driver->params->toArray());
-			} catch (\Exception $e) {
-				throw $e;
+	private function _checkForCache() {
+		if(self::$_config->system->cache){
+			foreach(self::$_config->system->cache as $cacheId => $cacheDriver){
+				try {
+					// parse params
+					$params = $cacheDriver->params->toArray();
+					array_unshift($params, $cacheId);
+
+					// parse options
+					if(isset($cacheDriver->options)){
+						$options = $cacheDriver->options;
+					}else{
+						$options = [];
+					}
+					array_push($params, $options);
+
+					// get the class for defined driver
+					$cacheDriver = call_user_func_array($cacheDriver['driver'], $params);
+
+					// assign driver to Cache
+					Cache::addDriver($cacheDriver);
+				} catch (\Exception $e) {
+					throw $e;
+				}
 			}
 		}
 	}
@@ -190,7 +195,7 @@ class WebinyFrameworkBase
 	 * Setup the environment based on config params
 	 */
 	private function _setupErrorEnvironment() {
-		if(self::$_config->system->display_errors == 'true') {
+		if(self::$_config->system->display_errors) {
 			error_reporting(E_ALL);
 			ini_set('display_errors', '1');
 		} else {
@@ -214,12 +219,14 @@ class WebinyFrameworkBase
 	}
 
 	/**
-	 * Checks if a system cache is set.
-	 * If the cache is set, than it is registered with the class loader.
+	 * Tries to get the system cache driver and pass it to ClassLoader component.
 	 */
 	private function _assignCacheToClassLoader() {
-		if(self::$_cache) {
-			ClassLoader::getInstance()->registerCacheDriver(self::$_cache);
+		try{
+			$cache = Cache::getDriverInstance(self::WF_CACHE_ID);
+			ClassLoader::getInstance()->registerCacheDriver($cache);
+		}catch (\Exception $e){
+			// ignore
 		}
 	}
 }

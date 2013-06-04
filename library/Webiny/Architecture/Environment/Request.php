@@ -62,12 +62,23 @@ class Request
      * Returns current domain with its scheme.
      * Example return: http://www.webiny.com
      * The value doesn't contain a trailing slash.
+	 * If you want to get only the host name (www.webiny.com) use the getHost method.
      *
      * @return bool|string
      */
     public function getCurrentDomain() {
         return $this->getCurrentUrl(true)->getDomain();
     }
+
+	/**
+	 * Returns the name of the host. Example: www.webiny.com
+	 * If you want to get the full domain name with schema use getCurrentDomain method.
+	 *
+	 * @return bool|string
+	 */
+	function getHost(){
+		return $this->getCurrentUrl(true)->getHost();
+	}
 
     /**
      * Returns current url as string or as UrlStandardObject.

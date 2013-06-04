@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Cache\Drivers;
 
+use Webiny\Component\Cache\CacheDriver;
 use Webiny\StdLib\ValidatorTrait;
 
 /**
@@ -18,16 +19,18 @@ use Webiny\StdLib\ValidatorTrait;
  */
 class APC
 {
-	use ValidatorTrait;
 
 	/**
 	 * Get an instance of APC cache driver.
 	 *
 	 * @param string $cacheId Cache identifier.
+	 * @param array   $options  Cache options.
 	 *
-	 * @return \Webiny\Bridge\Cache\CacheInterface
+	 * @return CacheDriver
 	 */
-	static function getInstance($cacheId = '') {
-		return \Webiny\Bridge\Cache\APC::getInstance($cacheId);
+	static function getInstance($cacheId = '', array $options = []) {
+		$driver = \Webiny\Bridge\Cache\APC::getInstance($cacheId);
+
+		return new CacheDriver($driver, $options);
 	}
 }

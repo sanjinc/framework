@@ -10,8 +10,6 @@
 
 namespace Webiny\StdLib;
 
-use Webiny\StdLib\Exception\Exception;
-
 /**
  * Description
  *
@@ -20,7 +18,7 @@ use Webiny\StdLib\Exception\Exception;
 
 trait SingletonTrait
 {
-    protected static $_wfInstance;
+    static $_wfInstance;
 
     /**
      * @return $this;
@@ -30,16 +28,17 @@ trait SingletonTrait
 			return static::$_wfInstance;
 		}else{
 			static::$_wfInstance = new static;
+			static::$_wfInstance->init();
 			return static::$_wfInstance;
 		}
-    }
+	}
 
 	/**
 	 * The constructor is set to private to prevent creating new instances.
 	 * If you want to fire a function after the singleton instance is created, just implement 'init' method into your class.
 	 */
 	final private function __construct() {
-		$this->init();
+		//
     }
 
 	/**

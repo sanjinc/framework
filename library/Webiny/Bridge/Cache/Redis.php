@@ -9,6 +9,8 @@
 
 namespace Webiny\Bridge\Cache;
 
+use Webiny\WebinyTrait;
+
 /**
  * Redis cache bridge loader.
  *
@@ -16,6 +18,7 @@ namespace Webiny\Bridge\Cache;
  */
 class Redis extends CacheAbstract
 {
+	use WebinyTrait;
 
 	/**
 	 * Path to the default bridge library for APC.
