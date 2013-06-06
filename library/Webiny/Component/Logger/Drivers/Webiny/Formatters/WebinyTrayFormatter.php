@@ -88,7 +88,10 @@ class WebinyTrayFormatter extends FormatterAbstract
 		$request = [
 			'memory'   => memory_get_peak_usage(true),
 			'datetime' => $this->datetime("now")->format($this->_config->date_format),
-			'url'      => $_SERVER["REQUEST_URI"]
+			'url'      => $_SERVER["REQUEST_URI"],
+			'get'      => $_GET,
+			'post'     => $_POST,
+			'server'   => $_SERVER
 		];
 
 		// Building array like this saves us loads of "if" statements later in the loop
@@ -125,7 +128,7 @@ class WebinyTrayFormatter extends FormatterAbstract
 				'request' => $request
 			]
 		];
-		
+
 		$record->formatted = $this->jsonEncode($json);
 	}
 }
