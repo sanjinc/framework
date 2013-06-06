@@ -37,7 +37,7 @@ components:
         host: 192.168.1.28:41234
     tray: 192.168.1.28:5000        
   crypt:
-      password_alog: 'Blowfish'
+      password_algo: 'Blowfish'
       cipher_mode: 'CCM'
       cipher_block: 'rijndael-128'
       cipher_initialization_vector: '_FOO_VECTOR'

@@ -47,6 +47,23 @@ class CryptLib implements CryptInterface
 	}
 
 	/**
+	 * Generates a random string using the defined character set.
+	 * If $chars param is empty, the string will be generated using numbers, letters and special characters.
+	 *
+	 * @param int    $length Length of the generated string.
+	 * @param string $chars  A string containing a list of chars that will be uses for generating the random string.
+	 *
+	 * @return string Random string with the given $length containing only the provided set of $chars.
+	 */
+	function generateRandomString($length, $chars = '') {
+		if($chars==''){
+			$chars = '0123456789abcdefghijklmnopqrstiuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%/()=?*.@[]{},;:_-><';
+		}
+
+		return $this->_getLowStrengthGenerator()->generateString($length, $chars);
+	}
+
+	/**
 	 * Generates a random string, but without using special characters that are hard to read.
 	 * This method is ok to use for generating random user passwords. (which, of course, should be changed after first login).
 	 *
@@ -57,7 +74,7 @@ class CryptLib implements CryptInterface
 	function generateUserReadableString($length) {
 		$chars = '0123456789abcdefghijklmnopqrstiuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-		return $this->_getLowStrengthGenerator()->generateString($length, $chars);
+		return $this->generateRandomString($length, $chars);
 	}
 
 	/**
@@ -72,7 +89,7 @@ class CryptLib implements CryptInterface
 	function generateHardReadableString($length) {
 		$chars = '0123456789abcdefghijklmnopqrstiuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%/()=?*.@[]{},;:_-><';
 
-		return $this->_getLowStrengthGenerator()->generateString($length, $chars);
+		return $this->generateRandomString($length, $chars);
 	}
 
 	/**
@@ -236,4 +253,5 @@ class CryptLib implements CryptInterface
 
 		return self::$_cipherBlockInstance;
 	}
+
 }
