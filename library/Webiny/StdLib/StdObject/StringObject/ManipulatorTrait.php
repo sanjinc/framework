@@ -11,6 +11,7 @@
 namespace Webiny\StdLib\StdObject\StringObject;
 
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\StdLib\StdObject\ArrayObject\ArrayObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
 
 /**
@@ -738,9 +739,18 @@ trait ManipulatorTrait
 	 * @param string $regEx        Regular expression to match.
 	 * @param bool   $matchAll     Use preg_match_all, or just preg_match. Default is preg_match_all.
 	 *
+	 * @throws StringObjectException
 	 * @return ArrayObject|bool    If there are matches, an ArrayObject with the the $matches is returned, else, false is returned.
 	 */
 	public function match($regEx, $matchAll = true) {
+		// validate regex delimiters
+		$delimiter = substr($regEx, 0, 1);
+		$validDelimiters = ['/', '+', '#', '%', '|', '{'];
+		// if we cannot match a delimiter, try to add them
+		if(!in_array($delimiter, $validDelimiters)){
+			$regEx = '/'.str_replace(['\/', '/'], '\/', $regEx).'/';
+		}
+
 		if($matchAll) {
 			preg_match_all($regEx, $this->val(), $matches);
 		} else {

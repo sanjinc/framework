@@ -96,4 +96,13 @@ class Redis extends RedisObject implements CacheInterface
 	public function acquireKey($key, &$autoUnlocker) {
 		return $this->acquire_key($key, $autoUnlocker);
 	}
+
+	/**
+	 * Get cache id.
+	 *
+	 * @return string Cache id.
+	 */
+	public function getCacheId() {
+		return $this->get_ID();
+	}
 }

@@ -31,5 +31,5 @@ For better performance you can provide a Cache component to ClassLoader. Doing s
 files resulting in a faster performance.
 
 ```php
-    ClassLoader::getLoader()->setCache(Cache::getInstance(Cache::APC));
+    ClassLoader::getLoader()->registerCacheDriver($instanceOfCacheInterface);
 ```

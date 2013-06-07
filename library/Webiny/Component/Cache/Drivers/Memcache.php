@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Cache\Drivers;
 
+use Webiny\Component\Cache\CacheDriver;
 use Webiny\StdLib\ValidatorTrait;
 
 /**
@@ -23,13 +24,16 @@ class Memcache
 	/**
 	 * Get an instance of Memcache cache driver.
 	 *
-	 * @param string       $cacheId    Cache identifier.
-	 * @param string       $host       Host on which memcached is running.
-	 * @param int          $port       Port on which memcached is running.
+	 * @param string $cacheId    Cache identifier.
+	 * @param string $host       Host on which memcached is running.
+	 * @param int    $port       Port on which memcached is running.
+	 * @param bool   $status     Cache status.
 	 *
-	 * @return \Webiny\Bridge\Cache\CacheInterface
+	 * @return CacheDriver
 	 */
-	static function getInstance($cacheId = '', $host = 'locahost', $port = 11211) {
-		return \Webiny\Bridge\Cache\Memcache::getInstance($cacheId, $host, $port);
+	static function getInstance($cacheId = '', $host = 'locahost', $port = 11211, $status = true) {
+		$driver = \Webiny\Bridge\Cache\Memcache::getInstance($cacheId, $host, $port);
+
+		return new CacheDriver($driver, $status);
 	}
 }

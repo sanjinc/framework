@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Cache\Drivers;
 
+use Webiny\Component\Cache\CacheDriver;
 use Webiny\StdLib\ValidatorTrait;
 
 /**
@@ -28,10 +29,13 @@ class Couchbase
 	 * @param string $password  Couchbase password.
 	 * @param string $bucket    Couchbase bucket.
 	 * @param string $host      Couchbase host (with port number).
+	 * @param bool   $status    Cache status.
 	 *
-	 * @return \Webiny\Bridge\Cache\CacheInterface
+	 * @return CacheDriver
 	 */
-	static function getInstance($cacheId, $user, $password, $bucket, $host) {
-		return \Webiny\Bridge\Cache\Couchbase::getInstance($cacheId, $user, $password, $bucket, $host);
+	static function getInstance($cacheId, $user, $password, $bucket, $host, $status = true) {
+		$driver = \Webiny\Bridge\Cache\Couchbase::getInstance($cacheId, $user, $password, $bucket, $host);
+
+		return new CacheDriver($driver, $status);
 	}
 }

@@ -122,4 +122,11 @@ interface CacheInterface
 	 * @return boolean
 	 */
 	public function acquireKey($key, &$autoUnlocker);
+
+	/**
+	 * Get cache id.
+	 *
+	 * @return string Cache id.
+	 */
+	public function getCacheId();
 }
