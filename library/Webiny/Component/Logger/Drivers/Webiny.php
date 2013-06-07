@@ -40,11 +40,18 @@ class Webiny implements LoggerDriverInterface
 
 	/**
 	 * Create instance of logger driver
-	 * @param string $name Name of the logger which will appear in the log records
 	 */
-	public function __construct($name) {
-		$this->_name = $name;
+	public function __construct() {
 		$this->_handlers = $this->arr();
+	}
+
+	/**
+	 * Set logger name
+	 *
+	 * @param string $name Logger name
+	 */
+	public function setName($name){
+		$this->_name = $name;
 	}
 
 	/**

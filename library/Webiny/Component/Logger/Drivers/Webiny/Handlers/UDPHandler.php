@@ -7,6 +7,7 @@ use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
+use Webiny\StdLib\StdObject\UrlObject\UrlObject;
 use Webiny\WebinyTrait;
 
 /**
@@ -16,17 +17,20 @@ class UDPHandler extends HandlerAbstract
 {
 	use StdLibTrait, WebinyTrait;
 
+	/**
+	 * Host URL
+	 * @var UrlObject
+	 */
 	private $_host;
-	private $_port;
 
-	public function __construct($levels = [], $bubble = true, $buffer = false, $host = null) {
+	public function __construct($levels = [], $bubble = true, $buffer = false, UrlObject $host = null) {
 		parent::__construct($levels, $bubble, $buffer);
 
 		if($this->isNull($host)) {
 			$host = $this->webiny()->getConfig()->components->logger->handlers->udp->host;
+			$host = $this->url($host);
 		}
-
-		list($this->_host, $this->_port) = explode(':', $host);
+		$this->_host = $host;
 	}
 
 	/**
@@ -39,9 +43,9 @@ class UDPHandler extends HandlerAbstract
 	 */
 	protected function write(Record $record) {
 		try {
-			$fp = fsockopen("udp://$this->_host", $this->_port, $errno, $errstr);
+			$fp = fsockopen("udp://".$this->_host->getHost(), $this->_host->getPort(), $errno, $errstr);
 			if(!$fp) {
-				return;
+				throw new LoggerException('Could not open socket for writing!');
 			}
 
 			if(!$this->isString($record->formatted) && !$this->isStringObject($record->formatted)){

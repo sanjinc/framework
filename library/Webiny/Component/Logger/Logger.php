@@ -22,22 +22,33 @@ class Logger
 	private $_driverInstance = null;
 
 	/**
+	 * Create new logger using given name and driver.<br>
+	 * A name is used to identify log messages from different loggers.<br><br>
+	 * Having two loggers ("Payment Gateway" and "Invoice Payment") would result in the following output:<br>
+	 * <br>
+	 * [Payment Gateway][info] Request sent.<br>
+	 * [Invoice Payment][alert] Paid invoice amount is too small.
+	 *
+	 *
+	 * @param string                $name Logger name
 	 * @param LoggerDriverInterface $driverInstance
 	 *
 	 * @return \Webiny\Component\Logger\Logger
 	 */
-	public function __construct($driverInstance) {
+	public function __construct($name, $driverInstance) {
 		$this->_driverInstance = $driverInstance;
+		$this->_driverInstance->setName($name);
 	}
 
 	/**
 	 * Get Webiny logger
+	 *
 	 * @param $name
 	 *
 	 * @return Webiny Webiny logger instance
 	 */
-	public static function Webiny($name){
-		return new static(new Webiny($name));
+	public static function Webiny($name) {
+		return new static($name, new Webiny());
 	}
 
 	/**

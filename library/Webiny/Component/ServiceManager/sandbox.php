@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Webiny Framework (http://www.webiny.com/framework)
  *
@@ -7,19 +8,11 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Bridge\Logger;
-
-use Psr\Log\LoggerInterface;
-
-
 /**
- * Logger driver interface
- * Uses PSR-3 Logger Interface
- *
- * @package   Webiny\Bridge\Logger
- */
-
-interface LoggerDriverInterface extends LoggerInterface
-{
-	public function setName($name);
-}
+EventManager:
+	class: "%logger.class%"
+	arguments: ["EventManager", "%logger.driver.class%"]
+	calls:
+	  - [addHandler, ["@logger.handlers.UDPTray"]]
+	scope: container #Singleton - default
+*/
