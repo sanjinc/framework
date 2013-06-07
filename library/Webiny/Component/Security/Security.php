@@ -9,7 +9,10 @@
 
 namespace Webiny\Component\Security;
 
+use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\Security\Authentication\Firewall;
 use Webiny\StdLib\SingletonTrait;
+use Webiny\WebinyTrait;
 
 /**
  * Description
@@ -18,20 +21,25 @@ use Webiny\StdLib\SingletonTrait;
  */
 
 class Security{
-	use SingletonTrait;
+	use SingletonTrait, WebinyTrait;
 
+	private $_config;
+	private $_firewalls;
 
-	public function init($securityConfig){
+	public function init(){
 		// validate the config
+		if(!isset($this->webiny()->getConfig()->security) || !is_object($this->webiny()->getConfig()->security->firewall)){
+			return false;
+		}
+		$this->_config = $this->webiny()->getConfig()->security;
 
 		// setup authentication layer - firewalls
-
-			// for each firewall setup authorization layer - access control
-
-			// on each firewall validate access to current resource (URL)
+		foreach($this->webiny()->getConfig()->security->firewall as $firewallKey => $firewallConfig){
+			$this->_initFirewall($firewallKey, $firewallConfig);
+		}
 	}
 
-	public function getUser(){
-
+	private function _initFirewall($firewallKey, ConfigObject $config){
+		$this->_firewalls[$firewallKey] = new Firewall($firewallKey, $config);
 	}
 }

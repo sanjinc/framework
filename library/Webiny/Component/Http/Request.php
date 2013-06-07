@@ -11,6 +11,7 @@ namespace Webiny\Component\Http;
 
 use Webiny\Component\Config\Config;
 use Webiny\Component\Http\Request\Cookie;
+use Webiny\Component\Http\Request\Env;
 use Webiny\Component\Http\Request\File;
 use Webiny\Component\Http\Request\Files;
 use Webiny\Component\Http\Request\Query;
@@ -83,6 +84,10 @@ class Request
 	 */
 	private $_server;
 
+	/**
+	 * @var Env
+	 */
+	private $_env;
 
 	/**
 	 * This function prepare the Request and all of its sub-classes.
@@ -97,6 +102,7 @@ class Request
 		$this->_session = new Session($this->_config->session);
 		$this->_server = new Server();
 		$this->_files = new Files();
+		$this->_env = new Env();
 
 		if(isset($this->_config->trusted_proxies)) {
 			$this->_trustedProxies = $this->_config->trusted_proxies;
@@ -112,8 +118,8 @@ class Request
 	 *
 	 * @return mixed Value of the given $key.
 	 */
-	function query($key, $value = null) {
-		return $this->_query->get($key, $value);
+	function query($key = null, $value = null) {
+		return $this->isNull($key) ? $this->_query->val() : $this->_query->get($key, $value);
 	}
 
 	/**
@@ -125,8 +131,21 @@ class Request
 	 *
 	 * @return mixed Value of the given $key.
 	 */
-	function post($key, $value = null) {
-		return $this->_post->get($key, $value);
+	function post($key = null, $value = null) {
+		return $this->isNull($key) ? $this->_post->val() : $this->_post->get($key, $value);
+	}
+
+	/**
+	 * Get a value from $_ENV param for the given $key.
+	 * If key doesn't not exist, $value will be returned and assigned under that key.
+	 *
+	 * @param string $key   Key for which you wish to get the value.
+	 * @param mixed  $value Default value that will be returned if $key doesn't exist.
+	 *
+	 * @return mixed Value of the given $key.
+	 */
+	function env($key = null, $value = null) {
+		return $this->isNull($key) ? $this->_env->val() : $this->_env->get($key, $value);
 	}
 
 	/**
@@ -139,25 +158,12 @@ class Request
 	}
 
 	/**
-	 * Get a value from $_SESSION param for the given $key.
-	 * If key doesn't not exist, $value will be returned and assigned under that key.
+	 * Get current session handler instance.
 	 *
-	 * @param string $key   Key for which you wish to get the value.
-	 * @param mixed  $value Default value that will be returned if $key doesn't exist.
-	 *
-	 * @return string Value of the given $key.
+	 * @return Session
 	 */
-	function session($key, $value = null) {
-		return $this->_session->get($key, $value);
-	}
-
-	/**
-	 * Get current assigned session id.
-	 *
-	 * @return string Current session id.
-	 */
-	function sessionId() {
-		return $this->_session->getSessionId();
+	function session() {
+		return $this->_session;
 	}
 
 	/**

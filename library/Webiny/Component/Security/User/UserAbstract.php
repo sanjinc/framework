@@ -16,7 +16,7 @@ namespace Webiny\Component\Security\User;
  * @package         Webiny\Component\Security\User
  */
 
-abstract class UserAbstract
+abstract class UserAbstract implements UserInterface
 {
 
 	private $_username = '';
@@ -32,7 +32,7 @@ abstract class UserAbstract
 	 * @param array  $roles           Array of assigned roles.
 	 * @param bool   $isAuthenticated Boolean flag that tells us if user is already authenticated or not.
 	 */
-	protected function populate($username, $password, array $roles, $isAuthenticated = false) {
+	function populate($username, $password, array $roles, $isAuthenticated = false) {
 		$this->_username = $username;
 		$this->_password = $password;
 		$this->_roles = $roles;
@@ -62,11 +62,26 @@ abstract class UserAbstract
 	}
 
 	/**
+	 * Check if current user has the defined role.
+	 *
+	 * @param string $role Role name
+	 *
+	 * @return bool True if user has the role, otherwise false.
+	 */
+	public function hasRole($role){
+		return in_array($role, $this->getRoles(), false);
+	}
+
+	/**
 	 * Check if user is already authenticated.
 	 *
 	 * @return bool True if user is authenticated, otherwise false.
 	 */
 	public function isAuthenticated() {
 		return $this->_isAuthenticated;
+	}
+
+	function setIsAuthenticated($bool){
+		$this->_isAuthenticated = $bool;
 	}
 }

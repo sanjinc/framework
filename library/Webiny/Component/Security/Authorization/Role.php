@@ -29,7 +29,7 @@ class Role{
 	}
 
 	/**
-	 * @return
+	 * @return string
 	 */
 	public function getRole()
 	{

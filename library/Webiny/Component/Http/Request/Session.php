@@ -25,6 +25,13 @@ class Session{
 	private $_sessionBag;
 	private $_sessionId;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param ConfigObject $options Config for components.http.session
+	 *
+	 * @throws Session\SessionException
+	 */
 	function __construct(ConfigObject $options){
 		// validate that headers have not already been sent
 		if(headers_sent()){
@@ -61,6 +68,15 @@ class Session{
 		}
 	}
 
+	/**
+	 * Get a session value for the given $key.
+	 * If key doesn't not exist, $value will be returned and assigned under that key.
+	 *
+	 * @param string $key   Key for which you wish to get the value.
+	 * @param mixed  $value Default value that will be returned if $key doesn't exist.
+	 *
+	 * @return string Value of the given $key.
+	 */
 	function get($key, $value=null){
 		$return = $this->_sessionBag->key($key, $value, false);
 		$_SESSION[$key] = $return;
@@ -68,10 +84,35 @@ class Session{
 		return $return;
 	}
 
+	/**
+	 * Save, or overwrite, a session value under the given $key with the given $value.
+	 *
+	 * @param string $key   Key for which you wish to get the value.
+	 * @param mixed  $value Value that will be stored under the $key.
+	 *
+	 * @return $this
+	 */
+	function save($key, $value){
+		$this->_sessionBag->removeKey($key)->append($key, $value);
+		$_SESSION[$key] = $value;
+
+		return $this;
+	}
+
+	/**
+	 * Get current session id.
+	 *
+	 * @return string Session id.
+	 */
 	function getSessionId(){
 		return $this->_sessionId;
 	}
 
+	/**
+	 * Get all session values.
+	 *
+	 * @return array Key-value array of all session entries.
+	 */
 	function getAll(){
 		return $this->_sessionBag->val();
 	}

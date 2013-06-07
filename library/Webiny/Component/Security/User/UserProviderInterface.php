@@ -9,6 +9,9 @@
 
 namespace Webiny\Component\Security\User;
 
+use Webiny\Component\Security\Encoder\EncoderDriverInterface;
+use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
+
 /**
  * Description
  *
@@ -19,53 +22,12 @@ interface UserProviderInterface
 {
 
 	/**
-	 * @return string Username.
-	 */
-	public function getUsername();
-
-	/**
-	 * @return string Hashed password.
-	 */
-	public function getPassword();
-
-	/**
-	 * Get a list of assigned roles
-	 * @return array List of assigned roles.
-	 */
-	public function getRoles();
-
-	/**
-	 * Check if user is already authenticated.
+	 * Get the user from user provided for the given $username.
 	 *
-	 * @return bool True if user is authenticated, otherwise false.
-	 */
-	public function isAuthenticated();
-
-	/**
-	 * Erase current authentication credentials.
-	 * @return bool True if everything went ok.
-	 */
-	public function eraseCredentials();
-
-	/**
-	 * Authenticate user by $username and $password.
+	 * @param string $username Username
 	 *
-	 * @param string $username Username.
-	 * @param string $password Password in raw format.
-	 *
-	 * @return bool|UserProviderInterface Instance of UserProviderInterface is returned if authentication was successful,
-	 * otherwise false is returned
+	 * @return UserAbstract
+	 * @throws UserNotFoundException
 	 */
-	static function authenticate($username, $password);
-
-	/**
-	 * Returns a user for the given $username.
-	 *
-	 * @param string $username
-	 *
-	 * @return bool|UserProviderInterface Instance of UserProviderInterface is returned if a user is found,
-	 * otherwise false is returned.
-	 */
-	static function loadByUsername($username);
-
+	function getUserByUsername($username);
 }

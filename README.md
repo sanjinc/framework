@@ -18,4 +18,10 @@ Some notes on coding:
 
 COMPONENT NOTES:
 ================
-The "Response" object must utilize HTTP Cache (http://symfony.com/doc/current/book/http_cache.html)
+The "Http\Response" object must utilize HTTP Cache (http://symfony.com/doc/current/book/http_cache.html)
+
+Modules:
+ServiceProvider => http://symfony.com/doc/master/book/service_container.html
+                => http://symfony.com/doc/master/cookbook/service_container/scopes.html
+QueryBuilder => https://github.com/laravel/laravel/tree/3.0/laravel/database
+Mail => SwiftMail

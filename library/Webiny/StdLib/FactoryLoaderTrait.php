@@ -27,19 +27,19 @@ trait FactoryLoaderTrait
 	 * @param string $className           Full class name, with namespace, of the class you wish to load.
 	 * @param string $classImplementation If you wish to validate that $className implements this $classImplementation,
 	 *                                    just pass full classified interface or class name here.
-	 * @param array  $arguments           A list of arguments passed to $className constructor.
+	 * @param array|null  $arguments           A list of arguments passed to $className constructor.
 	 *
 	 * @throws Exception\Exception
 	 * @return mixed|string
 	 */
-	static function factory($className, $classImplementation = '', array $arguments = []) {
+	static function factory($className, $classImplementation = '', $arguments = null) {
 		try {
 			if(class_exists($className)) {
 				try {
 					$instance = call_user_func_array([
 													 new \ReflectionClass($className),
 													 'newInstance'
-													 ], $arguments);
+													 ], ((is_null($arguments) ? [] : $arguments)));
 				} catch (\Exception $e) {
 					throw new Exception($e->getMessage());
 				}

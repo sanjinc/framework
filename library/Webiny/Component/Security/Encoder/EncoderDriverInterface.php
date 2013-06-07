@@ -15,7 +15,7 @@ namespace Webiny\Component\Security\Encoder;
  * @package		 Webiny\Component\Security\Encoder
  */
  
-interface EncoderProviderInterface{
+interface EncoderDriverInterface{
 
 	/**
 	 * Create a hash for the given password.

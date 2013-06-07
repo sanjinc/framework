@@ -18,6 +18,8 @@ namespace Webiny\Component\Http;
 trait HttpTrait{
 
 	/**
+	 * Get Request component instance.
+	 *
 	 * @return Request
 	 */
 	function request(){

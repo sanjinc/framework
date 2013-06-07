@@ -2,5 +2,11 @@
 # Use this file to overwrite the main config file.
 ###############################################################################
 
-system
-  cache: 'APC'
+system:
+    cache: false
+
+#############
+## SECURITY READING
+## http://symfony.com/doc/master/book/security.html
+## http://symfony.com/doc/current/reference/configuration/security.html
+## http://www.symfonycentral.com/securing-your-web-application-with-symfony.html

@@ -7,17 +7,17 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Security\Encoder\Providers;
+namespace Webiny\Component\Security\Encoder\Drivers;
 
-use Webiny\Component\Security\Encoder\EncoderProviderInterface;
+use Webiny\Component\Security\Encoder\EncoderDriverInterface;
 
 /**
  * This is the Crypt implementation of EncoderProviderInterface.
  *
- * @package		 Webiny\Component\Security\Encoder\Providers
+ * @package		 Webiny\Component\Security\Encoder\Drivers
  */
  
-class Crypt implements EncoderProviderInterface{
+class Crypt implements EncoderDriverInterface{
 	/**
 	 * @var null|\Webiny\Component\Crypt\Crypt
 	 */

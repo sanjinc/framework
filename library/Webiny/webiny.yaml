@@ -61,3 +61,33 @@ components:
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400
+security:
+    firewall:
+        administration:
+            realm_name: 'My administration realm'
+            url_pattern: '^/'
+            anonymous: true
+            remember_me: true
+            authorization:
+                login_form_url: '^/login'
+                login_service_provider: 'Webiny\Component\Security\HTTPAuth'
+            logout:
+                path: '/logout'
+                target: '/'
+            encoder:
+                driver: '\Webiny\Component\Security\Encoder\Drivers\Crypt'
+                salt: 'I_WANT_TO_KEEP_THIS_A_SECRET'
+            providers:
+                #session:
+                #   driver: '\Webiny\Component\Security\UserProviders\Session'
+                #   params:
+                memory:
+                    sven: {password: delmania, roles: 'ROLE_USER'}
+                    admin: {password: admin, roles: 'ROLE_ADMIN'}
+            #provider_chain: ['session', 'memory']
+            role_hierarchy:
+                ROLE_ADMIN: ROLE_USER
+                ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
+            access_control:
+                - {path: ^/admin, roles: ROLE_ADMIN}
+                - {path: ^/login}
