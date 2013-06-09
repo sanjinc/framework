@@ -47,11 +47,9 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate, \Arra
 	 * @throws ArrayObjectException
 	 */
 	public function __construct($array = null, $values = null) {
-		if(!$this->isArray($array)) {
+		if(!$this->isArray($array) && !$this->isArrayObject($array)) {
 			if($this->isNull($array)) {
 				$this->_value = array();
-			} elseif(StdObjectWrapper::isArrayObject($array)) {
-				return $array;
 			} else {
 				throw new ArrayObjectException(ArrayObjectException::MSG_INVALID_PARAM, [
 																						'$array',

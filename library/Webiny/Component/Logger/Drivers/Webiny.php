@@ -41,8 +41,9 @@ class Webiny implements LoggerDriverInterface
 	/**
 	 * Create instance of logger driver
 	 */
-	public function __construct() {
+	public function __construct($randomParam = null) {
 		$this->_handlers = $this->arr();
+		$this->_randomParam = $randomParam;
 	}
 
 	/**
@@ -51,7 +52,7 @@ class Webiny implements LoggerDriverInterface
 	 * @param string $name Logger name
 	 */
 	public function setName($name){
-		$this->_name = $name;
+		$this->_name = $name.$this->_randomParam;
 	}
 
 	/**

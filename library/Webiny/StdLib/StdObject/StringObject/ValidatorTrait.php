@@ -120,11 +120,10 @@ trait ValidatorTrait
 		$string = StdObjectWrapper::toString($string);
 
 		// calculate the end position
-		$endString = new StringObject($string);
-		$endPos = $this->length()-$endString->length();
+		$length = strlen($string);
+		$endString = substr($this->val(), -$length);
 
-		$position = $this->stringPosition($string);
-		if($position !== false && $position == $endPos) {
+		if($string == $endString) {
 			return true;
 		}
 

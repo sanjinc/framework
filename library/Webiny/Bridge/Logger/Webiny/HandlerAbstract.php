@@ -46,7 +46,6 @@ abstract class HandlerAbstract
 	 * @param bool              $buffer
 	 */
 	public function __construct($levels = [], $bubble = true, $buffer = false) {
-
 		$this->_levels = $this->arr($levels);
 		$this->_bubble = $bubble;
 		$this->_buffer = $buffer;

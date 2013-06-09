@@ -50,6 +50,10 @@ trait ManipulatorTrait
 			}
 		}
 
+		/**
+		 * @TODO: Handle case when $setOnlyIfDoesntExist == false && $key doesn't exist!!
+		 */
+
 		return $array[$key];
 	}
 
