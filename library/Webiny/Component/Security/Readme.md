@@ -9,3 +9,6 @@ Security Component
 3. The user submits its credentials (e.g. username/password);
 4. The firewall authenticates the user;
 5. The authenticated user re-tries the original request.
+
+# TODO
+on Token\TokenAbstract::encryptUserData -> use the crypt over the service manager so that we don't have to hardcode the data

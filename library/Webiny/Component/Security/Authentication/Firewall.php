@@ -14,6 +14,7 @@ use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
+use Webiny\Component\Security\Token\Token;
 use Webiny\StdLib\FactoryLoaderTrait;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
@@ -34,6 +35,8 @@ class Firewall
 	private $_userProviderChain = [];
 	private $_firewallKey;
 	private $_encoder;
+	private $_token;
+	private $_user = false;
 
 	function __construct($firewallKey, ConfigObject $firewallConfig) {
 		$this->_firewallKey = $firewallKey;
@@ -50,10 +53,23 @@ class Firewall
 		// init encoder
 		$this->_initEncoder();
 
-		// identify user
+		// init token
+		$this->_initToken();
 
+		// get user
+		$user = $this->getUser();
 
-		// check on firewall if user has access
+		// check if user has access
+		// - this is only the auth access check, this means that either we allow anonymous access or don't.
+		if(!$this->getAnonymousAccess() && !$user){
+			// check if we are maybe on the login page
+			if($this->_isLoginPage()){
+				die('trigger login');
+			}
+			// trigger redirect to login page
+			$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path));
+		}
+		die('inside');
 
 		// if true check on authorization layer if user has access
 
@@ -61,7 +77,11 @@ class Firewall
 	}
 
 	function getUser(){
+		if(!$this->_user){
+			$this->_user = $this->getToken()->getUserFromToken();
+		}
 
+		return $this->_user;
 	}
 
 	/**
@@ -166,5 +186,45 @@ class Firewall
 		return $this->_encoder;
 	}
 
+	/**
+	 * Initializes the Token.
+	 */
+	private function _initToken(){
+		$this->_token = new Token($this->_getTokenName(), $this->getConfig()->remember_me);
+	}
 
+	/**
+	 * Get the current token.
+	 *
+	 * @return Token
+	 */
+	function getToken(){
+		return $this->_token;
+	}
+
+	/**
+	 * Returns the token name.
+	 *
+	 * @return string
+	 */
+	private function _getTokenName(){
+		return 'wf_token_'.$this->getRealmName().'_realm';
+	}
+
+	/**
+	 * Checks if current request matches the login page url.
+	 *
+	 * @return bool True if we are on the login page.
+	 *
+	 * @throws FirewallException
+	 */
+	private function _isLoginPage(){
+		$currentUrl = $this->request()->getCurrentUrl();
+		if(!isset($this->getConfig()->login->path)){
+			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "login.path".');
+		}
+		$loginUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path)->__toString();
+
+		return ($currentUrl==$loginUrl);
+	}
 }

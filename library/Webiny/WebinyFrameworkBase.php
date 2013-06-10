@@ -14,6 +14,7 @@ use Webiny\Component\Cache\Cache;
 use Webiny\Component\Cache\CacheDriver;
 use Webiny\Component\ClassLoader\ClassLoader;
 use Webiny\Component\Config\Config;
+use Webiny\Component\Security\Security;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\SingletonTrait;
 
@@ -53,6 +54,11 @@ class WebinyFrameworkBase
 	static private $_config;
 
 	/**
+	 * @var Security
+	 */
+	static private $_security;
+
+	/**
 	 * @var string Path to the Webiny framework folder. (with trailing slash)
 	 */
 	static private $_frameworkPath = '';
@@ -85,13 +91,18 @@ class WebinyFrameworkBase
 
 		self::$_status = 1;
 
+		// config and environment
 		$this->_parseConfigs();
 		$this->_readEnvironment();
 
+		// system core
 		$this->_setupErrorEnvironment();
 		$this->_setupClassLoader();
 		$this->_checkForCache();
 		$this->_assignCacheToClassLoader();
+
+		// initialize other components
+		$this->_setupSecurityLayer();
 	}
 
 	/**
@@ -227,6 +238,12 @@ class WebinyFrameworkBase
 			ClassLoader::getInstance()->registerCacheDriver($cache);
 		}catch (\Exception $e){
 			// ignore
+		}
+	}
+
+	private function _setupSecurityLayer(){
+		if(isset(self::$_config->security)){
+			self::$_security = Security::getInstance();
 		}
 	}
 }
