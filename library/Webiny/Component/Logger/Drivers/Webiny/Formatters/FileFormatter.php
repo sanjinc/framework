@@ -29,7 +29,7 @@ class FileFormatter extends FormatterAbstract
 	 * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
 	 */
 	public function __construct($format = null, $dateFormat = null) {
-		$this->_config = $this->registry()->webiny->components->logger->formatters->file;
+		$this->_config = $this->webiny()->getConfig()->components->logger->formatters->file;
 		if($this->isNull($format)) {
 			$format = str_replace('\n', "\n", $this->_config->record_format);
 		}

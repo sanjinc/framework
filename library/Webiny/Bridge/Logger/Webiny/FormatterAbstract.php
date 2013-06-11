@@ -2,15 +2,15 @@
 
 namespace Webiny\Bridge\Logger\Webiny;
 
-use Webiny\Component\Registry\RegistryTrait;
 use Webiny\StdLib\StdLibTrait;
+use Webiny\WebinyTrait;
 
 /**
  * Base Formatter class providing the Handler structure
  */
 abstract class FormatterAbstract implements FormatterInterface
 {
-	use StdLibTrait, RegistryTrait;
+	use StdLibTrait, WebinyTrait;
 
 	protected $_config = null;
 
@@ -26,14 +26,14 @@ abstract class FormatterAbstract implements FormatterInterface
 	}
 
 	private function _normalizeValue($data) {
-		if($this->isNull($data) || is_scalar($data)) {
+		if($this->isNull($data) || $this->isScalar($data)) {
 			return $data;
 		}
 
 		if($this->isStdObject($data)) {
 			if($this->isDateTimeObject($data)) {
 				if($this->isNull($this->_config->date_format)) {
-					$format = $this->registry()->webiny->components->logger->formatters->default->date_format;
+					$format = $this->webiny()->getConfig()->components->logger->formatters->default->date_format;
 				} else {
 					$format = $this->_config->date_format;
 				}
@@ -42,7 +42,7 @@ abstract class FormatterAbstract implements FormatterInterface
 			$data = $data->val();
 		}
 
-		if(is_array($data) || $data instanceof \Traversable) {
+		if($this->isArray($data) || $data instanceof \Traversable) {
 			$normalized = array();
 			foreach ($data as $key => $value) {
 				$normalized[$key] = $this->_normalizeValue($value);
@@ -51,15 +51,15 @@ abstract class FormatterAbstract implements FormatterInterface
 			return $normalized;
 		}
 
-		if(is_object($data)) {
+		if($this->isObject($data)) {
 			if(method_exists($data, '__toString')) {
 				return '' . $data;
 			}
 
-			return sprintf("[object] (%s: %s)", get_class($data), json_encode($data));
+			return sprintf("[object] (%s: %s)", get_class($data), $this->jsonEncode($data));
 		}
 
-		if(is_resource($data)) {
+		if($this->isResource($data)) {
 			return '[resource]';
 		}
 

@@ -2,16 +2,14 @@
 
 namespace Webiny\Bridge\Logger\Webiny;
 
-use Webiny\StdLib\ValidatorTrait;
-
 /**
  * Logger record container class
+ *
+ * @package Webiny\Bridge\Logger\Webiny
  */
 
 class Record implements \IteratorAggregate
 {
-	use ValidatorTrait;
-
 	public $name;
 	public $message;
 	public $level;

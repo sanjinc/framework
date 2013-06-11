@@ -9,13 +9,12 @@
 
 namespace Webiny\Component\Config\Drivers;
 
+use Webiny\Bridge\Yaml\Spyc\SpycException;
 use Webiny\Bridge\Yaml\Yaml;
 use Webiny\Bridge\Yaml\YamlAbstract;
 use Webiny\Bridge\Yaml\YamlInterface;
 use Webiny\Component\Config\ConfigException;
-use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 use Webiny\StdLib\ValidatorTrait;
@@ -45,7 +44,7 @@ class YamlDriver extends DriverAbstract
 	 *
 	 * @param int $indent
 	 *
-	 * @throws \Webiny\Component\Config\ConfigException
+	 * @throws ConfigException
 	 * @return $this
 	 */
 	public function setIndent($indent) {
@@ -65,7 +64,7 @@ class YamlDriver extends DriverAbstract
 	 *
 	 * @param boolean $wordWrap
 	 *
-	 * @throws \Webiny\Component\Config\ConfigException
+	 * @throws ConfigException
 	 * @return $this
 	 */
 	public function setWordWrap($wordWrap) {
@@ -91,9 +90,15 @@ class YamlDriver extends DriverAbstract
 
 	/**
 	 * Parse config resource and build config array
-	 * @return array
+	 *
+	 * @throws ConfigException
+	 * @return array Config data array
 	 */
 	protected function _getArray() {
-		return $this->_yaml->setResource($this->_resource)->getArray();
+		try {
+			return $this->_yaml->setResource($this->_resource)->getArray();
+		} catch (SpycException $e) {
+			throw new ConfigException($e->getMessage());
+		}
 	}
 }

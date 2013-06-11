@@ -7,21 +7,21 @@
 
 system:
     display_errors: true
-    cache:
-        wfc:
-            driver: '\Webiny\Component\Cache\Drivers\Couchbase::getInstance'
-            params:
-                user: 'webiny'
-                pass: ''
-                bucket: 'default'
-                host: '127.0.0.1:8091'
+    cache: false
+        #wfc:
+        #    driver: '\Webiny\Component\Cache\Drivers\Couchbase::getInstance'
+        #    params:
+        #        user: 'webiny'
+        #        pass: ''
+        #        bucket: 'default'
+        #        host: '127.0.0.1:8091'
     environment: 'development'
 bridges:
-    cache:
-        apc: '\Webiny\Bridge\Cache\Memory\APC'
-        couchbase: '\Webiny\Bridge\Cache\Memory\Couchbase'
-        memcache: '\Webiny\Bridge\Cache\Memory\Memcache'
-        redis: '\Webiny\Bridge\Cache\Memory\Redis'
+    cache: false
+        #apc: '\Webiny\Bridge\Cache\Memory\APC'
+        #couchbase: '\Webiny\Bridge\Cache\Memory\Couchbase'
+        #memcache: '\Webiny\Bridge\Cache\Memory\Memcache'
+        #redis: '\Webiny\Bridge\Cache\Memory\Redis'
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
@@ -36,6 +36,13 @@ components:
                 date_format: 'Y-m-d H:i:s'
             file:
                 record_format: '%datetime% [%name%] [%level%]: %message%\nContext: %context%\nExtra: %extra%\n\n'
+            webiny_tray:
+                method: new_notification
+                date_format: 'Y-m-d H:i:s'
+        handlers:
+            udp:
+                host: 192.168.1.10:41234
+        tray: 192.168.1.10:5000
     crypt:
         password_algo: 'Blowfish'
         cipher_mode: 'CCM'
@@ -91,3 +98,33 @@ security:
             access_control:
                 - {path: ^/admin, roles: ROLE_ADMIN}
                 - {path: ^/login}
+parameters:
+    logger.class: "\Webiny\Component\Logger\Logger"
+    logger.driver.class: "\Webiny\Component\Logger\Drivers\Webiny"
+
+services:
+    logger:
+        drivers:
+            Webiny:
+                class: %logger.driver.class%
+                arguments: []
+        handlers:
+            UDPTray:
+                class: "\Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler"
+                arguments: [[], true, true]
+                calls:
+                    - [setFormatter, [@logger.formatters.Tray]]
+        formatters:
+            Tray:
+                class: "\Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter"
+        TrayLoggerAbstract:
+            abstract: true
+            class: "%logger.class%"
+            calls:
+              - [addHandler, [@logger.handlers.UDPTray]]
+        WebinySystem:
+            parent: @logger.TrayLoggerAbstract
+            arguments: ["System", %logger.driver.class%]
+        WebinyEcommerce:
+            parent: logger.TrayLoggerAbstract
+            arguments: ["Ecommerce", "%logger.driver.class%"]

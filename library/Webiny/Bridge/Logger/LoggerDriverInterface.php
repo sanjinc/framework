@@ -21,5 +21,5 @@ use Psr\Log\LoggerInterface;
 
 interface LoggerDriverInterface extends LoggerInterface
 {
-
+	public function setName($name);
 }
