@@ -29,9 +29,9 @@ class ServiceManagerException extends ExceptionAbstract
 	static protected $_messages = [
 		101 => 'Service "%s" is not defined in services configuration file.',
 		102 => 'Service "%s" must containt `abstract` key in order to be available for inheritance.',
-		103 => 'Service "%s" must contain `class` key! You must specify it in the service itself or in parent service.',
+		103 => 'Service "%s" must contain `class` or `factory` parameter!',
 		104 => 'Service "%s" is creating a circular reference. Check your service definitions and remove circular referencing.',
-		105 => 'Service/class "%s" `arguments` must be in form of an array.',
+		105 => 'Service/class "%s" arguments must be in form of an array.',
 		106 => 'Service class "%s" does not exist!',
 		107 => 'Factory service "%s" `method` key is missing.'
 	];
