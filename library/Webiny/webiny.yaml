@@ -73,11 +73,11 @@ security:
         administration:
             realm_name: 'My administration realm'
             url_pattern: '^/'
-            anonymous: true
+            anonymous: false
             remember_me: true
-            authorization:
-                login_form_url: '^/login'
-                login_service_provider: 'Webiny\Component\Security\HTTPAuth'
+            login:
+                path: '/Test/login.php'
+                provider: 'Webiny\Component\Security\Authentication\Http'
             logout:
                 path: '/logout'
                 target: '/'

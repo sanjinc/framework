@@ -100,6 +100,20 @@ class Session{
 	}
 
 	/**
+	 * Removes the given $key from session.
+	 *
+	 * @param string $key Name of the session key you wish to remove.
+	 *
+	 * @return bool
+	 */
+	function delete($key){
+		$this->_sessionBag->removeKey($key);
+		unset($_SESSION[$key]);
+
+		return true;
+	}
+
+	/**
 	 * Get current session id.
 	 *
 	 * @return string Session id.

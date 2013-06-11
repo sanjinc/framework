@@ -68,8 +68,17 @@ abstract class UserAbstract implements UserInterface
 	 *
 	 * @return bool True if user has the role, otherwise false.
 	 */
-	public function hasRole($role){
+	public function hasRole($role) {
 		return in_array($role, $this->getRoles(), false);
+	}
+
+	/**
+	 * Return the full class name of current provider.
+	 *
+	 * @return string
+	 */
+	public function getProviderName(){
+		return get_called_class();
 	}
 
 	/**
@@ -81,7 +90,12 @@ abstract class UserAbstract implements UserInterface
 		return $this->_isAuthenticated;
 	}
 
-	function setIsAuthenticated($bool){
+	/**
+	 * Sets the auth flag.
+	 *
+	 * @param $bool
+	 */
+	function setIsAuthenticated($bool) {
 		$this->_isAuthenticated = $bool;
 	}
 }
