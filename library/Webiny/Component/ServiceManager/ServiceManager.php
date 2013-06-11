@@ -56,7 +56,7 @@ class ServiceManager
 
 		// Store compiled config
 		$config = $this->_compiledConfig->key($serviceName);
-		
+
 		// Check if arguments for overriding exist
 		if(!$this->isNull($arguments) && $this->isArray($arguments)){
 			$compiler = new ConfigCompiler($serviceName);

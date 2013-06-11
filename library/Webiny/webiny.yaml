@@ -124,14 +124,7 @@ services:
               - [addHandler, [@logger.handlers.UDPTray]]
         WebinySystem:
             parent: @logger.TrayLoggerAbstract
-            #arguments: ["System", %logger.driver.class%]
-            arguments:
-                name: "System"
-                driver:
-                    object: @logger.drivers.Webiny
-                    #object_arguments: ["BUUUUUUUU"]
-            #calls:
-            #    - [addHandler, [@logger.handlers.UDPTray]]
+            arguments: ["System", %logger.driver.class%]
         WebinyEcommerce:
             parent: logger.TrayLoggerAbstract
             arguments: ["Ecommerce", "%logger.driver.class%"]
