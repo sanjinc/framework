@@ -29,8 +29,10 @@ class ConfigCompiler
 		$this->_serviceConfig = $this->_getServiceConfig($this->_serviceName);
 		$this->_manageInheritance();
 		$this->_serviceConfig = $this->_insertParameters($this->_serviceConfig);
-		$this->_buildServiceArguments();
+		$this->_buildArguments('arguments');
+		$this->_buildArguments('method_arguments');
 		$this->_buildCallsArguments();
+		$this->_buildFactoryArgument();
 
 		return $this->_buildServiceConfig();
 	}
@@ -57,9 +59,8 @@ class ConfigCompiler
 			$config = $this->_extendConfig($config, $parentConfig);
 		}
 
-
-		if(!$config->keyExists('class')) {
-			throw new ServiceManagerException(ServiceManagerException::SERVICE_CLASS_NOT_FOUND, [$this->_serviceName]);
+		if(!$config->keyExists('class') && !$config->keyExists('factory')) {
+			throw new ServiceManagerException(ServiceManagerException::SERVICE_CLASS_KEY_NOT_FOUND, [$this->_serviceName]);
 		}
 
 		$this->_serviceConfig = $config;
@@ -143,13 +144,24 @@ class ConfigCompiler
 		return $this->arr($config);
 	}
 
-	private function _buildServiceArguments() {
-		if($this->_serviceConfig->keyExists('arguments')) {
-			$newArguments = [];
-			foreach ($this->_serviceConfig->key('arguments') as $arg) {
+	private function _buildArguments($key) {
+		$newArguments = [];
+		if($this->_serviceConfig->keyExists($key)) {
+			foreach ($this->_serviceConfig->key($key) as $arg) {
 				$newArguments[] = new Argument($arg);
 			}
-			$this->_serviceConfig->key('arguments', $newArguments);
+		}
+		$this->_serviceConfig->key($key, $newArguments);
+	}
+
+	private function _buildFactoryArgument() {
+		if($this->_serviceConfig->keyExists('factory')) {
+			$arguments = $this->_serviceConfig->key('arguments',null,true);
+			if($this->_serviceConfig->key('static',true,true)){
+				$arguments = null;
+			}
+			$factoryArgument = new FactoryArgument($this->_serviceConfig->key('factory'), $arguments);
+			$this->_serviceConfig->key('factory', $factoryArgument);
 		}
 	}
 
@@ -170,11 +182,19 @@ class ConfigCompiler
 	}
 
 	private function _buildServiceConfig() {
-		return new ServiceConfig(
-			$this->_serviceConfig->key('class'),
-			$this->_serviceConfig->key('arguments', [], true),
-			$this->_serviceConfig->key('calls', [], true),
-			$this->_serviceConfig->key('scope', null, true)
-		);
+		/**
+		 * @TODO: add checks for factory service
+		 */
+		$config = new ServiceConfig();
+		$config->setClass($this->_serviceConfig->key('class', null, true));
+		$config->setArguments($this->_serviceConfig->key('arguments', [], true));
+		$config->setCalls($this->_serviceConfig->key('calls', [], true));
+		$config->setScope($this->_serviceConfig->key('scope', ServiceScope::CONTAINER, true));
+		$config->setFactory($this->_serviceConfig->key('factory', null, true));
+		$config->setMethod($this->_serviceConfig->key('method', null, true));
+		$config->setMethodArguments($this->_serviceConfig->key('method_arguments', [], true));
+		$config->setStatic($this->_serviceConfig->key('static', true, true));
+		
+		return $config;
 	}
 }
