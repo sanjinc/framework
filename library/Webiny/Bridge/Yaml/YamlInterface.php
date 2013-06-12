@@ -35,11 +35,10 @@ interface YamlInterface
 	 * Get current Yaml value as string
 	 *
 	 * @param int  $indent
-	 * @param bool $wordWrap
 	 *
 	 * @return string
 	 */
-	function getString($indent = 2, $wordWrap = false);
+	function getString($indent = 4);
 
 	/**
 	 * Get Yaml value as array

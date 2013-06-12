@@ -12,9 +12,9 @@ Available service configuration parameters are:
 Extra parameters, for factory services, are:
 
 * factory - class or service
-* static - defaults to TRUE, means that `method` will be called statically on `factory` object
+* static (Optional) - defaults to TRUE, means that `method` will be called statically on `factory` object
 * method - a method to call on `factory` object
-* method_arguments - method arguments for `method`
+* method_arguments (Optional) - method arguments for `method`
 
 There are 2 possible types of scope:
 

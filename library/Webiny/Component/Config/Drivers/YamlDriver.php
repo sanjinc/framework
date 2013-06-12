@@ -9,7 +9,6 @@
 
 namespace Webiny\Component\Config\Drivers;
 
-use Webiny\Bridge\Yaml\Spyc\SpycException;
 use Webiny\Bridge\Yaml\Yaml;
 use Webiny\Bridge\Yaml\YamlAbstract;
 use Webiny\Bridge\Yaml\YamlInterface;
@@ -27,8 +26,7 @@ use Webiny\StdLib\ValidatorTrait;
 
 class YamlDriver extends DriverAbstract
 {
-	private $_indent = 2;
-	private $_wordWrap = false;
+	private $_indent = 4;
 	/**
 	 * @var null|YamlInterface
 	 */
@@ -60,32 +58,12 @@ class YamlDriver extends DriverAbstract
 	}
 
 	/**
-	 * Set word wrap
-	 *
-	 * @param boolean $wordWrap
-	 *
-	 * @throws ConfigException
-	 * @return $this
-	 */
-	public function setWordWrap($wordWrap) {
-		if(!$this->isBoolean($wordWrap)) {
-			throw new ConfigException(ConfigException::MSG_INVALID_ARG, [
-																		'$wordWrap',
-																		'boolean'
-																		]);
-		}
-		$this->_wordWrap = $wordWrap;
-
-		return $this;
-	}
-
-	/**
 	 * Get config as Yaml string
 	 *
 	 * @return string
 	 */
 	protected function _getString() {
-		return $this->_yaml->setResource($this->_resource)->getString($this->_indent, $this->_wordWrap);
+		return $this->_yaml->setResource($this->_resource)->getString($this->_indent);
 	}
 
 	/**
@@ -97,7 +75,7 @@ class YamlDriver extends DriverAbstract
 	protected function _getArray() {
 		try {
 			return $this->_yaml->setResource($this->_resource)->getArray();
-		} catch (SpycException $e) {
+		} catch (Exception $e) {
 			throw new ConfigException($e->getMessage());
 		}
 	}

@@ -72,14 +72,13 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * Get config as Yaml string
 	 *
 	 * @param int  $indent
-	 * @param bool $wordWrap
 	 *
 	 * @return string
 	 */
-	public function getAsYaml($indent = 2, $wordWrap = false) {
+	public function getAsYaml($indent = 4) {
 		$driver = new YamlDriver($this->toArray());
 
-		return $driver->setIndent($indent)->setWordWrap($wordWrap)->getString();
+		return $driver->setIndent($indent)->getString();
 	}
 
 	public function getAsPhp() {
@@ -118,9 +117,9 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @return $this
 	 */
 
-	public function saveAsYaml($destination, $indent = 2, $wordWrap = false) {
+	public function saveAsYaml($destination, $indent = 4) {
 		$driver = new YamlDriver($this->toArray());
-		$driver->setIndent($indent)->setWordWrap($wordWrap)->saveToFile($destination);
+		$driver->setIndent($indent)->saveToFile($destination);
 
 		return $this;
 	}

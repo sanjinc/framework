@@ -26,7 +26,7 @@ bridges:
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
     'Jamm\Memory': '../Memory'
-    'Spyc\Spyc': '../Spyc'
+    #'Spyc\Spyc': '../Spyc'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
 components:
@@ -48,7 +48,7 @@ components:
         cipher_mode: 'CCM'
         cipher_block: 'rijndael-128'
         cipher_initialization_vector: '_FOO_VECTOR'
-    http:
+    #http:
         session:
             storage:
                 driver: '\Webiny\Component\Http\Request\Session\Storage\CacheStorage'
@@ -68,7 +68,7 @@ components:
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400
-security:
+#security:
     firewall:
         administration:
             realm_name: 'My administration realm'
@@ -107,7 +107,6 @@ services:
         drivers:
             Webiny:
                 class: %logger.driver.class%
-                arguments: []
         handlers:
             UDPTray:
                 class: "\Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler"
@@ -124,7 +123,16 @@ services:
               - [addHandler, [@logger.handlers.UDPTray]]
         WebinySystem:
             parent: @logger.TrayLoggerAbstract
-            arguments: ["System", %logger.driver.class%]
+            arguments: ["System", @logger.drivers.Webiny]
         WebinyEcommerce:
             parent: logger.TrayLoggerAbstract
             arguments: ["Ecommerce", "%logger.driver.class%"]
+    test:
+        MyFactory:
+            class: "\Webiny\Factory"
+            arguments: ["WebinySystem"]
+        MyService:
+            factory: @test.MyFactory
+            arguments: ["WebinyEcommerce"]
+            static: false
+            method: getInstance

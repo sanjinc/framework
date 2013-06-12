@@ -16,7 +16,7 @@ use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
- * Bridge for Spyc Yaml parser
+ * Bridge for Yaml parser
  *
  * @package   Webiny\Bridge\Yaml
  */
@@ -33,7 +33,7 @@ class Yaml implements YamlInterface
 	 * Default Yaml driver class name
 	 * @var string
 	 */
-	private static $_driverClass = 'Webiny\Bridge\Yaml\Spyc\Spyc';
+	private static $_driverClass = 'Webiny\Bridge\Yaml\SymfonyYaml\SymfonyYaml';
 
 	/**
 	 * Instance of Yaml driver to use

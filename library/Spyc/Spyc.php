@@ -166,52 +166,54 @@ class Spyc {
     return $Spyc->__loadString($input);
   }
 
-  /**
-     * Dump YAML from PHP array statically
-     *
-     * The dump method, when supplied with an array, will do its best
-     * to convert the array into friendly YAML.  Pretty simple.  Feel free to
-     * save the returned string as nothing.yaml and pass it around.
-     *
-     * Oh, and you can decide how big the indent is and what the wordwrap
-     * for folding is.  Pretty cool -- just pass in 'false' for either if
-     * you want to use the default.
-     *
-     * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
-     * you can turn off wordwrap by passing in 0.
-     *
-     * @access public
-     * @return string
-     * @param array $array PHP array
-     * @param int $indent Pass in false to use the default, which is 2
-     * @param int $wordwrap Pass in 0 for no wordwrap, false for default (40)
-     */
+	/**
+	 * Dump YAML from PHP array statically
+	 *
+	 * The dump method, when supplied with an array, will do its best
+	 * to convert the array into friendly YAML.  Pretty simple.  Feel free to
+	 * save the returned string as nothing.yaml and pass it around.
+	 *
+	 * Oh, and you can decide how big the indent is and what the wordwrap
+	 * for folding is.  Pretty cool -- just pass in 'false' for either if
+	 * you want to use the default.
+	 *
+	 * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
+	 * you can turn off wordwrap by passing in 0.
+	 *
+	 * @access public
+	 * @return string
+	 *
+	 * @param array    $array    PHP array
+	 * @param bool|int $indent   Pass in false to use the default, which is 2
+	 * @param bool|int $wordwrap Pass in 0 for no wordwrap, false for default (40)
+	 */
   public static function YAMLDump($array,$indent = false,$wordwrap = false) {
     $spyc = new Spyc;
     return $spyc->dump($array,$indent,$wordwrap);
   }
 
 
-  /**
-     * Dump PHP array to YAML
-     *
-     * The dump method, when supplied with an array, will do its best
-     * to convert the array into friendly YAML.  Pretty simple.  Feel free to
-     * save the returned string as tasteful.yaml and pass it around.
-     *
-     * Oh, and you can decide how big the indent is and what the wordwrap
-     * for folding is.  Pretty cool -- just pass in 'false' for either if
-     * you want to use the default.
-     *
-     * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
-     * you can turn off wordwrap by passing in 0.
-     *
-     * @access public
-     * @return string
-     * @param array $array PHP array
-     * @param int $indent Pass in false to use the default, which is 2
-     * @param int $wordwrap Pass in 0 for no wordwrap, false for default (40)
-     */
+	/**
+	 * Dump PHP array to YAML
+	 *
+	 * The dump method, when supplied with an array, will do its best
+	 * to convert the array into friendly YAML.  Pretty simple.  Feel free to
+	 * save the returned string as tasteful.yaml and pass it around.
+	 *
+	 * Oh, and you can decide how big the indent is and what the wordwrap
+	 * for folding is.  Pretty cool -- just pass in 'false' for either if
+	 * you want to use the default.
+	 *
+	 * Indent's default is 2 spaces, wordwrap's default is 40 characters.  And
+	 * you can turn off wordwrap by passing in 0.
+	 *
+	 * @access public
+	 * @return string
+	 *
+	 * @param array    $array    PHP array
+	 * @param bool|int $indent   Pass in false to use the default, which is 2
+	 * @param bool|int $wordwrap Pass in 0 for no wordwrap, false for default (40)
+	 */
   public function dump($array,$indent = false,$wordwrap = false) {
     // Dumps to some very clean YAML.  We'll have to add some more features
     // and options soon.  And better support for folding.
@@ -245,14 +247,18 @@ class Spyc {
     return $string;
   }
 
-  /**
-     * Attempts to convert a key / value array item to YAML
-     * @access private
-     * @return string
-     * @param $key The name of the key
-     * @param $value The value of the item
-     * @param $indent The indent of the current node
-     */
+	/**
+	 * Attempts to convert a key / value array item to YAML
+	 * @access private
+	 * @return string
+	 *
+	 * @param      $key    The name of the key
+	 * @param      $value  The value of the item
+	 * @param      $indent The indent of the current node
+	 * @param      $previous_key
+	 * @param int  $first_key
+	 * @param null $source_array
+	 */
   private function _yamlize($key,$value,$indent, $previous_key = -1, $first_key = 0, $source_array = null) {
     if (is_array($value)) {
       if (empty ($value))
@@ -293,14 +299,18 @@ class Spyc {
     }
   }
 
-  /**
-     * Returns YAML from a key and a value
-     * @access private
-     * @return string
-     * @param $key The name of the key
-     * @param $value The value of the item
-     * @param $indent The indent of the current node
-     */
+	/**
+	 * Returns YAML from a key and a value
+	 * @access private
+	 * @return string
+	 *
+	 * @param      $key    The name of the key
+	 * @param      $value  The value of the item
+	 * @param      $indent The indent of the current node
+	 * @param      $previous_key
+	 * @param int  $first_key
+	 * @param null $source_array
+	 */
   private function _dumpNode($key, $value, $indent, $previous_key = -1, $first_key = 0, $source_array = null) {
     // do some folding here, for blocks
     if (is_string ($value) && ((strpos($value,"\n") !== false || strpos($value,": ") !== false || strpos($value,"- ") !== false ||
@@ -367,12 +377,14 @@ class Spyc {
     return $newValue;
   }
 
-  /**
-     * Folds a string of text, if necessary
-     * @access private
-     * @return string
-     * @param $value The string you wish to fold
-     */
+	/**
+	 * Folds a string of text, if necessary
+	 * @access private
+	 * @return string
+	 *
+	 * @param $value The string you wish to fold
+	 * @param $indent
+	 */
   private function _doFolding($value,$indent) {
     // Don't do anything if wordwrap is set to 0
 
@@ -617,6 +629,7 @@ class Spyc {
      * @return array
      */
   private function _inlineEscape($inline) {
+	  #return explode(',', $inline);
     // There's gotta be a cleaner way to do this...
     // While pure sequences seem to be nesting just fine,
     // pure mappings and mappings with sequences inside can't go very
@@ -993,7 +1006,7 @@ class Spyc {
     } else {
       $array = array ($line);
     }
-    return $array;
+     return $array;
 
   }
 
