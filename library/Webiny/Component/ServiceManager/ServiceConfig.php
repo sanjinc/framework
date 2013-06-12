@@ -8,19 +8,83 @@ class ServiceConfig
 {
 	use StdLibTrait;
 
-	private $_class;
-	private $_arguments;
-	private $_calls;
-	private $_scope;
+	private $_class = null;
+	private $_arguments = null;
+	private $_calls = null;
+	private $_scope = ServiceScope::CONTAINER;
+	private $_factory = null;
+	private $_static = true;
+	private $_method = null;
+	private $_methodArguments = null;
 
-	function __construct($class, $arguments = null, $calls = null, $scope = ServiceScope::CONTAINER) {
-		$this->_class = $class;
-		$this->_arguments = $arguments;
+	/**
+	 * @param null $calls
+	 */
+	public function setCalls($calls) {
 		$this->_calls = $calls;
-		if($this->isNull($scope)){
-			$scope = ServiceScope::CONTAINER;
-		}
-		$this->_scope = $scope;
+	}
+
+	/**
+	 * @param null $class
+	 */
+	public function setClass($class) {
+		$this->_class = $class;
+	}
+
+	/**
+	 * @param null $factory
+	 */
+	public function setFactory($factory) {
+		$this->_factory = $factory;
+	}
+
+	/**
+	 * @return null|FactoryArgument
+	 */
+	public function getFactory() {
+		return $this->_factory;
+	}
+
+	/**
+	 * @param null $method
+	 */
+	public function setMethod($method) {
+		$this->_method = $method;
+	}
+
+	/**
+	 * @return null
+	 */
+	public function getMethod() {
+		return $this->_method;
+	}
+
+	/**
+	 * @param null $methodArguments
+	 */
+	public function setMethodArguments($methodArguments) {
+		$this->_methodArguments = $methodArguments;
+	}
+
+	/**
+	 * @return null
+	 */
+	public function getMethodArguments() {
+		return $this->_methodArguments;
+	}
+
+	/**
+	 * @param boolean $static
+	 */
+	public function setStatic($static) {
+		$this->_static = $static;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getStatic() {
+		return $this->_static;
 	}
 
 	/**
@@ -33,15 +97,25 @@ class ServiceConfig
 	/**
 	 * @return mixed
 	 */
-	public function getScope() {
-		return $this->_scope;
+	public function getArguments() {
+		return $this->_arguments;
+	}
+
+	/**
+	 * @param string $scope
+	 */
+	public function setScope($scope) {
+		if($this->isNull($scope) || !ServiceScope::exists($scope)){
+			$scope = ServiceScope::CONTAINER;
+		}
+		$this->_scope = $scope;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getArguments() {
-		return $this->_arguments;
+	public function getScope() {
+		return $this->_scope;
 	}
 
 	/**
@@ -57,7 +131,4 @@ class ServiceConfig
 	public function getClass() {
 		return $this->_class;
 	}
-
-
-
 }

@@ -130,6 +130,5 @@ class WebinyTrayFormatter extends FormatterAbstract
 		];
 
 		$record->formatted = $this->jsonEncode($json);
-		die(print_r($record->formatted));
 	}
 }
