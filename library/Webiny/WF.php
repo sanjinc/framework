@@ -7,20 +7,18 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Security\Authentication;
+namespace Webiny;
 
 /**
- * Interface for authentication providers.
+ * Description
  *
- * @package		 Webiny\Component\Security\Authentication
+ * @package		 Webiny\
  */
  
-interface AuthenticationInterface{
+final class WF
+{
+	const CACHE = 'WebinyCache';
+	const LOGGER = 'WebinySystemLogger';
 
-	/**
-	 * Must return the Login object.
-	 * @return mixed
-	 */
-	function getLoginCredentials();
-
+	private function __construct(){}
 }

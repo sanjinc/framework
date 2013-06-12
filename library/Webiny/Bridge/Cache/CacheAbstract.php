@@ -16,31 +16,29 @@ use \Webiny\StdLib\ValidatorTrait;
  *
  * @package         Webiny\Bridge\Cache;
  */
-abstract class CacheAbstract implements DriverInterface
+abstract class CacheAbstract implements StorageInterface
 {
 	use ValidatorTrait;
 
 	/**
 	 * Create an instance of a cache driver.
 	 *
-	 * @param $cacheId
-	 *
-	 * @return CacheInterface
+	 * @return CacheStorageInterface
 	 * @throws CacheException
 	 */
-	static function getInstance($cacheId) {
+	static function getInstance() {
 		$driver = static::_getLibrary();
 
 		try {
-			$instance = new $driver($cacheId);
+			$instance = new $driver();
 		} catch (\Exception $e) {
 			throw new CacheException($e->getMessage());
 		}
 
-		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheInterface')) {
+		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheStorageInterface')) {
 			throw new CacheException(CacheException::MSG_INVALID_ARG, [
 																	  'driver',
-																	  '\Webiny\Bridge\Cache\CacheInterface'
+																	  '\Webiny\Bridge\Cache\CacheStorageInterface'
 																	  ]);
 		}
 

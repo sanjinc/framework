@@ -7,17 +7,19 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Bridge\Cache;
+namespace Webiny\Component\Cache\Storage;
+
+use Webiny\Bridge\Cache\CacheStorageInterface;
 
 /**
- * Webiny cache bridge interface.
- * All cache bridges must implement this interface.
+ * Null cache storage.
+ * This storage is used when cache status is set to false.
  *
- * @package         Webiny\Bridge\Cache
+ * @package		 Webiny\Component\Cache\Drivers
  */
+ 
+class Null implements CacheStorageInterface{
 
-interface CacheInterface
-{
 	/**
 	 * Save a value into memory only if it DOESN'T exists (or false will be returned).
 	 *
@@ -28,7 +30,9 @@ interface CacheInterface
 	 *
 	 * @return boolean True if value was added, otherwise false.
 	 */
-	public function add($key, $value, $ttl = 600, $tags = null);
+	public function add($key, $value, $ttl = 600, $tags = null) {
+		return false;
+	}
 
 	/**
 	 * Save a value into memory.
@@ -40,7 +44,9 @@ interface CacheInterface
 	 *
 	 * @return bool True if value was stored successfully, otherwise false.
 	 */
-	public function save($key, $value, $ttl = 600, $tags = null);
+	public function save($key, $value, $ttl = 600, $tags = null) {
+		return false;
+	}
 
 	/**
 	 * Get the cache data for the given $key.
@@ -50,7 +56,9 @@ interface CacheInterface
 	 *
 	 * @return mixed
 	 */
-	public function read($key, &$ttlLeft = -1);
+	public function read($key, &$ttlLeft = -1) {
+		return false;
+	}
 
 	/**
 	 * Delete key or array of keys from storage.
@@ -59,14 +67,18 @@ interface CacheInterface
 	 *
 	 * @return boolean|array If array of keys was passed, on error will be returned array of not deleted keys, or true on success.
 	 */
-	public function delete($key);
+	public function delete($key) {
+		return true;
+	}
 
 	/**
 	 * Delete expired cache values.
 	 *
 	 * @return boolean
 	 */
-	public function deleteOld();
+	public function deleteOld() {
+		return true;
+	}
 
 	/**
 	 * Delete keys by tags.
@@ -75,7 +87,9 @@ interface CacheInterface
 	 *
 	 * @return boolean
 	 */
-	public function deleteByTags($tag);
+	public function deleteByTags($tag) {
+		return true;
+	}
 
 	/**
 	 * Select from storage via callback function.
@@ -86,7 +100,9 @@ interface CacheInterface
 	 *
 	 * @return mixed
 	 */
-	public function selectByCallback($callback, $getArray = false);
+	public function selectByCallback($callback, $getArray = false) {
+		return false;
+	}
 
 	/**
 	 * Increment value of the key.
@@ -101,7 +117,9 @@ interface CacheInterface
 	 *
 	 * @return int|string|array New key value.
 	 */
-	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200);
+	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200) {
+		return true;
+	}
 
 	/**
 	 * Get exclusive mutex for key. Key will be still accessible to read and write, but
@@ -109,8 +127,11 @@ interface CacheInterface
 	 *
 	 * @param mixed $key                    Name of the cache key.
 	 * @param mixed $autoUnlockerVariable   Pass empty, just declared variable
+	 * @return bool
 	 */
-	public function lockKey($key, &$autoUnlockerVariable);
+	public function lockKey($key, &$autoUnlockerVariable) {
+		return true;
+	}
 
 	/**
 	 * Try to lock key, and if key is already locked - wait, until key will be unlocked.
@@ -121,12 +142,7 @@ interface CacheInterface
 	 *
 	 * @return boolean
 	 */
-	public function acquireKey($key, &$autoUnlocker);
-
-	/**
-	 * Get cache id.
-	 *
-	 * @return string Cache id.
-	 */
-	public function getCacheId();
+	public function acquireKey($key, &$autoUnlocker) {
+		return false;
+	}
 }

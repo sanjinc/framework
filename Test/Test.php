@@ -1,4 +1,16 @@
 <?php
 require_once '../library/autoloader.php';
 
-$s = Webiny\Component\Security\Security::getInstance();
+
+class Test{
+
+	use \Webiny\WebinyTrait;
+
+	function __construct(){
+		$a  =$this->webiny();
+		echo $a::WF_CACHE_ID;
+	}
+
+}
+
+$t = new Test();

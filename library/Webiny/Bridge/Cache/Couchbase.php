@@ -55,7 +55,6 @@ class Couchbase extends CacheAbstract
 	 *
 	 * @see      CacheAbstract::getInstance()
 	 *
-	 * @param string $cacheId         Cache identifier.
 	 * @param string $user Couchbase username.
 	 * @param string $password Couchbase password.
 	 * @param string $bucket Couchbase bucket.
@@ -64,9 +63,9 @@ class Couchbase extends CacheAbstract
 	 * @throws \Webiny\Component\Cache\CacheException
 	 * @internal param \Couchbase $couchbase Instance of Couchbase class.
 	 *
-	 * @return void|CacheInterface
+	 * @return void|CacheStorageInterface
 	 */
-	static function getInstance($cacheId, $user='', $password='', $bucket='', $host = '127.0.0.1:8091') {
+	static function getInstance($user='', $password='', $bucket='', $host = '127.0.0.1:8091') {
 		$driver = static::_getLibrary();
 
 		// check if Couchbase extension is loaded
@@ -78,15 +77,15 @@ class Couchbase extends CacheAbstract
 		}
 
 		try {
-			$instance = new $driver($couchbase, $cacheId);
+			$instance = new $driver($couchbase);
 		} catch (\Exception $e) {
 			throw new CacheException($e->getMessage());
 		}
 
-		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheInterface')) {
+		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheStorageInterface')) {
 			throw new CacheException(CacheException::MSG_INVALID_ARG, [
 																	  'driver',
-																	  '\Webiny\Bridge\Cache\CacheInterface'
+																	  '\Webiny\Bridge\Cache\CacheStorageInterface'
 																	  ]);
 		}
 

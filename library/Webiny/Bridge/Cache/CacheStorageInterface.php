@@ -7,97 +7,17 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Cache;
-
-use Webiny\Bridge\Cache\CacheInterface;
+namespace Webiny\Bridge\Cache;
 
 /**
- * Description
+ * Webiny cache bridge interface.
+ * All cache bridges must implement this interface.
  *
- * @package         Webiny\Component\Cache
+ * @package         Webiny\Bridge\Cache
  */
 
-class CacheDriver
+interface CacheStorageInterface
 {
-
-	static private $_nullDriver = null;
-
-	private $_driver;
-	private $_options = [
-		'status' => true,
-		'ttl'    => 86400
-	];
-
-	/**
-	 * Create a cache driver instance.
-	 *
-	 * @param CacheInterface $driver  Instance of CacheInterface.
-	 * @param array          $options Array of options.
-	 */
-	function __construct(CacheInterface $driver, array $options = []) {
-		$this->_driver = $driver;
-
-		foreach ($options as $k => $v) {
-			if(isset($this->_options[$k])) {
-				$this->_options[$k] = $v;
-			}
-		}
-	}
-
-	/**
-	 * Get cache driver id.
-	 *
-	 * @return string Cache driver id.
-	 */
-	function getId() {
-		return $this->_driver->getCacheId();
-	}
-
-	/**
-	 * Get driver instance.
-	 *
-	 * @return CacheInterface
-	 */
-	function getDriver() {
-		// if driver status is false, we return the Null driver
-		if(!$this->getStatus()) {
-			if(self::isNull(self::$_nullDriver)) {
-				self::$_nullDriver = new CacheDriver(new Drivers\Null(), ['status' => false]);
-			}
-
-			return self::$_nullDriver;
-		}
-
-		return $this->_driver;
-	}
-
-	/**
-	 * Get cache status.
-	 *
-	 * @return mixed
-	 */
-	function getStatus() {
-		return $this->_options['status'];
-	}
-
-	/**
-	 * Change the cache status.
-	 *
-	 * @param bool $status Turn caching on or off.
-	 */
-	function setStatus($status){
-		$this->_options['status'] = (bool) $status;
-	}
-
-	/**
-	 * Returns the ttl from options.
-	 *
-	 * @return int
-	 */
-	function getTtl() {
-		return $this->_options['ttl'];
-	}
-
 	/**
 	 * Save a value into memory only if it DOESN'T exists (or false will be returned).
 	 *
@@ -108,9 +28,7 @@ class CacheDriver
 	 *
 	 * @return boolean True if value was added, otherwise false.
 	 */
-	public function add($key, $value, $ttl = null, $tags = null) {
-		return $this->getDriver()->add($key, $value, (is_null($ttl) ? $this->getTtl() : $ttl), $tags);
-	}
+	public function add($key, $value, $ttl = 600, $tags = null);
 
 	/**
 	 * Save a value into memory.
@@ -122,9 +40,7 @@ class CacheDriver
 	 *
 	 * @return bool True if value was stored successfully, otherwise false.
 	 */
-	public function save($key, $value, $ttl = null, $tags = null) {
-		return $this->getDriver()->save($key, $value, (is_null($ttl) ? $this->getTtl() : $ttl), $tags);
-	}
+	public function save($key, $value, $ttl = 600, $tags = null);
 
 	/**
 	 * Get the cache data for the given $key.
@@ -134,9 +50,7 @@ class CacheDriver
 	 *
 	 * @return mixed
 	 */
-	public function read($key, &$ttlLeft = -1) {
-		return $this->getDriver()->read($key, $ttlLeft);
-	}
+	public function read($key, &$ttlLeft = -1);
 
 	/**
 	 * Delete key or array of keys from storage.
@@ -145,18 +59,14 @@ class CacheDriver
 	 *
 	 * @return boolean|array If array of keys was passed, on error will be returned array of not deleted keys, or true on success.
 	 */
-	public function delete($key) {
-		return $this->getDriver()->del($key);
-	}
+	public function delete($key);
 
 	/**
 	 * Delete expired cache values.
 	 *
 	 * @return boolean
 	 */
-	public function deleteOld() {
-		return $this->getDriver()->del_old();
-	}
+	public function deleteOld();
 
 	/**
 	 * Delete keys by tags.
@@ -165,9 +75,7 @@ class CacheDriver
 	 *
 	 * @return boolean
 	 */
-	public function deleteByTags($tag) {
-		return $this->getDriver()->del_by_tags($tag);
-	}
+	public function deleteByTags($tag);
 
 	/**
 	 * Select from storage via callback function.
@@ -178,9 +86,7 @@ class CacheDriver
 	 *
 	 * @return mixed
 	 */
-	public function selectByCallback($callback, $getArray = false) {
-		return $this->getDriver()->select_fx($callback, $getArray);
-	}
+	public function selectByCallback($callback, $getArray = false);
 
 	/**
 	 * Increment value of the key.
@@ -195,9 +101,7 @@ class CacheDriver
 	 *
 	 * @return int|string|array New key value.
 	 */
-	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200) {
-		return $this->getDriver()->increment($key, $byValue, $limitKeysCount, $ttl);
-	}
+	public function increment($key, $byValue = 1, $limitKeysCount = 0, $ttl = 259200);
 
 	/**
 	 * Get exclusive mutex for key. Key will be still accessible to read and write, but
@@ -205,12 +109,8 @@ class CacheDriver
 	 *
 	 * @param mixed $key                    Name of the cache key.
 	 * @param mixed $autoUnlockerVariable   Pass empty, just declared variable
-	 *
-	 * @return bool
 	 */
-	public function lockKey($key, &$autoUnlockerVariable) {
-		return $this->getDriver()->lock_key($key, $autoUnlockerVariable);
-	}
+	public function lockKey($key, &$autoUnlockerVariable);
 
 	/**
 	 * Try to lock key, and if key is already locked - wait, until key will be unlocked.
@@ -221,7 +121,5 @@ class CacheDriver
 	 *
 	 * @return boolean
 	 */
-	public function acquireKey($key, &$autoUnlocker) {
-		return $this->getDriver()->acquire_key($key, $autoUnlocker);
-	}
+	public function acquireKey($key, &$autoUnlocker);
 }

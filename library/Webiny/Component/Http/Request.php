@@ -14,6 +14,7 @@ use Webiny\Component\Http\Request\Cookie;
 use Webiny\Component\Http\Request\Env;
 use Webiny\Component\Http\Request\File;
 use Webiny\Component\Http\Request\Files;
+use Webiny\Component\Http\Request\Headers;
 use Webiny\Component\Http\Request\Query;
 use Webiny\Component\Http\Request\Post;
 use Webiny\Component\Http\Request\Server;
@@ -90,6 +91,11 @@ class Request
 	private $_env;
 
 	/**
+	 * @var Headers
+	 */
+	private $_headers;
+
+	/**
 	 * This function prepare the Request and all of its sub-classes.
 	 * This class is called automatically by SingletonTrait.
 	 */
@@ -103,6 +109,7 @@ class Request
 		$this->_server = new Server();
 		$this->_files = new Files();
 		$this->_env = new Env();
+		$this->_headers = new Headers();
 
 		if(isset($this->_config->trusted_proxies)) {
 			$this->_trustedProxies = $this->_config->trusted_proxies;
@@ -367,13 +374,13 @@ class Request
 	 * Redirect the request to the given url.
 	 *
 	 * @param string|UrlObject $url
-	 * @param string|int       $header Header string or header code that you wish to send.
+	 * @param string|int|array       $headers Headers that you wish to send with your request.
 	 */
-	function redirect($url, $header = null) {
+	function redirect($url, $headers = null) {
 		if(!$this->isStdObject($url)) {
 			$url = $this->url($url);
 		}
 
-		$url->goToUrl($header);
+		$url->goToUrl($headers);
 	}
 }

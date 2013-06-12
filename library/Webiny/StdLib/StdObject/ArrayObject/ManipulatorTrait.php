@@ -41,8 +41,12 @@ trait ManipulatorTrait
 			return $value;
 		} else {
 			if(!$setOnlyIfDoesntExist) {
-				$array[$key] = $value;
-				$this->val($array);
+				if(!$this->isNull($value)) {
+					$array[$key] = $value;
+					$this->val($array);
+
+					return $value;
+				}
 			}
 		}
 

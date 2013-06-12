@@ -17,13 +17,15 @@ namespace Webiny\Component\ServiceManager;
 trait ServiceManagerTrait
 {
 	/**
+	 * Get service based on $serviceName.
 	 *
 	 * @param string $serviceName
 	 * @param null   $arguments
 	 *
 	 * @return object
+	 * @throws ServiceManagerException
 	 */
-	protected static function getService($serviceName, $arguments = null) {
+	protected static function service($serviceName, $arguments = null) {
 		return ServiceManager::getInstance()->getService($serviceName, $arguments);
 	}
 }

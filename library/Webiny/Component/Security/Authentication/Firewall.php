@@ -11,10 +11,14 @@ namespace Webiny\Component\Security\Authentication;
 
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Security\Authentication\Providers\AuthenticationInterface;
+use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Encoder\Encoder;
+use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
 use Webiny\Component\Security\Token\Token;
+use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\FactoryLoaderTrait;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
@@ -37,6 +41,7 @@ class Firewall
 	private $_encoder;
 	private $_token;
 	private $_user = false;
+	private $_authProvider;
 
 	function __construct($firewallKey, ConfigObject $firewallConfig) {
 		$this->_firewallKey = $firewallKey;
@@ -62,9 +67,34 @@ class Firewall
 		// check if user has access
 		// - this is only the auth access check, this means that either we allow anonymous access or don't.
 		if(!$this->getAnonymousAccess() && !$user){
+			// check if we are maybe on the login submit page
+			$status = 1;
+			if($this->_isLoginSubmitPage()){
+				$status = 2;
+				// get the login object
+				try{
+					$login = $this->_getAuthProvider()->getLoginObject($this->getConfig());
+					die(print_r($login));
+					if(!$this->isInstanceOf($login, 'Webiny\Component\Security\Authentication\Providers\Login')){
+						throw new FirewallException('Login provider must return an instance of
+														"Webiny\Component\Security\Authentication\Providers\Login".');
+					}
+				}catch (\Exception $e){
+					throw new FirewallException($e->getMessage());
+				}
+
+				// forward the login object to user providers and validate the credentials
+				if(!$this->_authenticate($login)){
+					// trigger redirect to login page
+					$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path));
+				}
+			}
+
 			// check if we are maybe on the login page
 			if($this->_isLoginPage()){
-				die('trigger login');
+				$this->_getAuthProvider()->triggerLogin($status, $this->getConfig());
+
+				#$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path));
 			}
 			// trigger redirect to login page
 			$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path));
@@ -131,6 +161,33 @@ class Firewall
 		return $this->str($this->request()->getCurrentUrl(true)->getPath())->match($this->getUrlPattern());
 	}
 
+	private function _authenticate(Login $login){
+		foreach($this->_userProviderChain as $provider){
+			try{
+				/**
+				 * @type UserAbstract
+				 */
+				$user = $this->_userProviders[$provider]->getUserByUsername($login->getUsername());
+				die(print_r($user));
+				if($user){
+					// once we have the user, let's validate the credentials
+					if($this->_getEncoder()->verifyPasswordHash($login->getPassword(), $user->getPassword())){
+						// if credentials are valid, let's create the token
+						$this->getToken()->saveUser($user);
+					}else{
+						return false;
+					}
+				}else{
+					return false;
+				}
+			}catch (UserNotFoundException $e){
+				return false;
+			}catch (\Exception $e){
+				throw new FirewallException($e->getMessage());
+			}
+		}
+	}
+
 	/**
 	 * Initialize user providers defined for this firewall.
 	 *
@@ -171,10 +228,16 @@ class Firewall
 	 */
 	private function _initEncoder(){
 		if(isset($this->getConfig()->encoder)){
-			$this->_encoder = new Encoder($this->getConfig()->encoder->driver,
-										  $this->getConfig()->encoder->salt,
-										  $this->getConfig()->params);
+			$encoder = $this->getConfig()->encoder->driver;
+			$salt = isset($this->getConfig()->encoder->salt) ? $this->getConfig()->encoder->salt : '';
+			$params = isset($this->getConfig()->encoder->params) ? $this->getConfig()->encoder->params : null;
+		}else{
+			$encoder = '\Webiny\Component\Security\Encoder\Drivers\Null';
+			$salt = '';
+		 	$params = null;
 		}
+
+		$this->_encoder = new Encoder($encoder, $salt, $params);
 	}
 
 	/**
@@ -226,5 +289,43 @@ class Firewall
 		$loginUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path)->__toString();
 
 		return ($currentUrl==$loginUrl);
+	}
+
+	/**
+	 * Checks if current request matches the login submit page urls.
+	 *
+	 * @return bool
+	 *
+	 * @throws FirewallException
+	 */
+	private function _isLoginSubmitPage(){
+		$currentUrl = $this->request()->getCurrentUrl();
+		if(!isset($this->getConfig()->login->submit_path)){
+			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "login.submit_path".');
+		}
+		$loginSubmitUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->submit_path)->__toString();
+
+		return ($currentUrl==$loginSubmitUrl);
+	}
+
+	/**
+	 * Get the authentication provider.
+	 *
+	 * @return AuthenticationInterface
+	 *
+	 * @throws FirewallException
+	 */
+	private function _getAuthProvider(){
+		if(is_null($this->_authProvider)){
+			try{
+				$this->_authProvider = $this->factory($this->getConfig()->login->provider,
+													  '\Webiny\Component\Security\Authentication\Providers\AuthenticationInterface');
+			}catch (Exception $e){
+				throw new FirewallException($e->getMessage());
+			}
+
+		}
+
+		return $this->_authProvider;
 	}
 }

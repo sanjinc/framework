@@ -25,7 +25,7 @@ trait CacheTrait{
 	 * @param string $cacheId Name of the cache driver
 	 *
 	 * @throws \Exception|CacheException
-	 * @return CacheDriver
+	 * @return CacheStorage
 	 */
 	function cache($cacheId = 'wfc'){
 		try{
