@@ -26,7 +26,6 @@ bridges:
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
     'Jamm\Memory': '../Memory'
-    #'Spyc\Spyc': '../Spyc'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
 components:
