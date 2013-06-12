@@ -39,7 +39,7 @@ class ServiceConfig
 	}
 
 	/**
-	 * @return null
+	 * @return null|FactoryArgument
 	 */
 	public function getFactory() {
 		return $this->_factory;

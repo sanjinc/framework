@@ -45,22 +45,21 @@ class ServiceCreator
 		return $this->_config->getScope();
 	}
 
-	private function _getServiceInstance($arguments){
+	private function _getServiceInstance($arguments) {
 		// Create service instance
-		if($this->isNull($this->_config->getFactory())){
+		if($this->isNull($this->_config->getFactory())) {
 			$reflection = new \ReflectionClass($this->_config->getClass());
+
 			return $reflection->newInstanceArgs($arguments);
 		}
 
 		// Build factory instance
 		$service = $this->_config->getFactory()->value();
-		if(!$this->isNull($this->_config->getMethod())){
-			$arguments = [];
-			foreach ($this->_config->getMethodArguments() as $arg) {
-				$arguments[] = $arg->value();
-			}
-			$service = call_user_func_array([$service, $this->_config->getMethod()], $arguments);
+		$arguments = [];
+		foreach ($this->_config->getMethodArguments() as $arg) {
+			$arguments[] = $arg->value();
 		}
-		return $service;
+
+		return call_user_func_array([$service, $this->_config->getMethod()], $arguments);
 	}
 }
