@@ -23,8 +23,7 @@ product:
 tax  : 251.42
 total: 4443.52
 html: >
-    <div class="top">
-	<ul class="menu" id="small_menu">
+    <div class="top"><ul class="menu" id="small_menu">
     <li class="partners"><a href="http://www.webiny.com/partners/">For Partners</a></li><li class="products"><a href="http://www.webiny.com/products/">Solutions</a></li><li class="http:__qa.webiny.com"><a href="http://qa.webiny.com" title="" target="_blank">Community Forum</a></li></ul>
         <a id="logo" href="http://www.webiny.com/" title="Webiny.com Homepage">Webiny</a>
         <p class="tagline">Create a Perfect Website</p><div class="cart account">Welcome, <span>{name}</span></div></div>

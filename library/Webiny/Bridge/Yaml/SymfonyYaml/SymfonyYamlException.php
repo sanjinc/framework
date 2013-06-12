@@ -18,7 +18,7 @@ use Webiny\StdLib\Exception\ExceptionAbstract;
  * @package      Webiny\Bridge\Yaml\Spyc
  */
 
-class SpycException extends YamlException
+class SymfonyYamlException extends YamlException
 {
 
 }

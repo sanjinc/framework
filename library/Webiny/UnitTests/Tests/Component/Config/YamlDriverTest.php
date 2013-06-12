@@ -6,7 +6,7 @@ use Webiny\Component\Config\ConfigObject;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\FileObject\FileObject;
 
-require_once '../../../../../../WebinyFramework.php';
+require_once '../../../../../autoloader.php';
 
 class YamlDriverTest extends \PHPUnit_Framework_TestCase
 {

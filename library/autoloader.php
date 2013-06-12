@@ -7,7 +7,7 @@ use Webiny\Component\ClassLoader\ClassLoader;
 require_once 'Webiny/Component/ClassLoader/ClassLoader.php';
 ClassLoader::getInstance()->registerMap([
 										'Webiny'      => realpath(dirname(__FILE__)) . '/Webiny',
-										'Spyc'        => realpath(dirname(__FILE__)) . '/Spyc'
+										'Symfony'        => realpath(dirname(__FILE__)) . '/Symfony'
 										]);
 
 /**
