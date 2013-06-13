@@ -19,11 +19,7 @@ class Test
 		$logger = Logger::Webiny('EC.Shipping.Method');
 		$handler = new UDPHandler([], true, true);
 		$formatter = new WebinyTrayFormatter();
-		$handler->setFormatter($formatter)->addProcessor(function(Record $record){
-			if($record->level == 'info'){
-				$record->extra['data'] = strtoupper($record->level);
-			}
-		});
+		$handler->setFormatter($formatter);
 		$logger->addHandler($handler);
 
 

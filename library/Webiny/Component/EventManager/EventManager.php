@@ -10,32 +10,80 @@
 namespace Webiny\Component\EventManager;
 
 use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdObjectTrait;
+use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * @package         Webiny\Component\EventManager
  */
 class EventManager
 {
-	use StdObjectTrait, SingletonTrait;
+	use StdLibTrait, SingletonTrait;
 
+	/**
+	 * @var ArrayObject
+	 */
 	private $_events;
 
-	public function init() {
-		$this->_events = $this->arr();
-	}
+	/**
+	 * @var EventProcessor
+	 */
+	private $_eventProcessor;
 
-	public function listen($eventName) {
-		if($this->_events->keyExists($eventName)) {
-			return $this->_events->key($eventName);
+	/**
+	 * Subscribe to event
+	 *
+	 * @param string        $eventName
+	 * @param EventListener $eventListener
+	 *
+	 * @return EventListener
+	 */
+	public function listen($eventName, EventListener $eventListener = null) {
+		if($this->isNull($eventListener)) {
+			$eventListener = new EventListener();
 		}
-		$eventListener = new EventListener($eventName);
-		$this->_events[$eventName] = $eventListener;
+
+		$eventListeners = $this->_events->key($eventName, [], true);
+		$eventListeners[] = $eventListener;
+		$this->_events->key($eventName, $eventListeners);
 
 		return $eventListener;
 	}
 
+	/**
+	 * Subscribe to events using event subscriber
+	 *
+	 * @param EventSubscriberInterface $subscriber
+	 */
 	public function subscribe(EventSubscriberInterface $subscriber) {
 		$subscriber->subscribe();
+	}
+
+	/**
+	 * Fire event
+	 *
+	 * @param string $eventName
+	 * @param mixed  $data
+	 *
+	 * @return array
+	 */
+	public function fire($eventName, $data = null) {
+		if($this->_events->keyExists($eventName)) {
+			$eventListeners = $this->_events->key($eventName);
+		}
+
+		if(!$this->isInstanceOf($data, 'Event')) {
+			$data = new Event($data);
+		}
+
+		return $this->_eventProcessor->process($eventListeners, $data);
+	}
+
+	/**
+	 * Singleton constructor
+	 */
+	protected function init() {
+		$this->_events = $this->arr();
+		$this->_eventProcessor = EventProcessor::getInstance();
 	}
 }

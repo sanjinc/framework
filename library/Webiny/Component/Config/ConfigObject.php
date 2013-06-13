@@ -235,6 +235,9 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		// Store config to cache
 		if($cache) {
 			$this->_cacheKey = ConfigCache::createCacheKey($originalResource);
+			/**
+			 * @TODO: use real cache
+			 */
 			ConfigCache::setCache($this->_cacheKey, $this);
 		}
 	}
@@ -287,6 +290,9 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		}
 
 		// Update cache with new value
+		/**
+		 * @TODO: use real cache
+		 */
 		ConfigCache::setCache($this->_cacheKey, $this);
 	}
 
