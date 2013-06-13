@@ -38,13 +38,17 @@ class Webiny implements LoggerDriverInterface
 	 */
 	private $_handlers;
 
+	function __construct(){
+		$this->_handlers = $this->arr();
+	}
+
 	/**
 	 * Set logger name
 	 *
 	 * @param string $name Logger name
 	 */
 	public function setName($name){
-		$this->_name = $name.$this->_randomParam;
+		$this->_name = $name;
 	}
 
 	/**
