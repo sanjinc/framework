@@ -31,8 +31,6 @@ class TestProcessor implements ProcessorInterface
 	 * @return Record The formatted record
 	 */
 	public function processRecord(Record $record) {
-		$record->extra['config'] = Config::PHP(WF.'/Test/Configs/config.php');
-		$record->extra['framework_dir'] = WF;
 		return $record;
 	}
 }
