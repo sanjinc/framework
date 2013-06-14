@@ -159,3 +159,10 @@ services:
 ```
 
 In this case, child service `calls` will completely replace parent `calls`.
+
+To use `ServiceManager` in your code, the easiest way is to simply use `ServiceManagerTrait`. This will give you access to `$this->service()`.
+If you do need to access ServiceManager class directly, use it like this:
+
+```php
+ServiceManager::getInstance()->getService('your.service')
+```

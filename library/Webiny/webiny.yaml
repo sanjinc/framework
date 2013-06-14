@@ -120,18 +120,6 @@ services:
             class: "%logger.class%"
             calls:
               - [addHandler, [@logger.handlers.UDPTray]]
-        WebinySystem:
+        webiny_logger:
             parent: @logger.TrayLoggerAbstract
             arguments: ["System", @logger.drivers.Webiny]
-        WebinyEcommerce:
-            parent: logger.TrayLoggerAbstract
-            arguments: ["Ecommerce", "%logger.driver.class%"]
-    test:
-        MyFactory:
-            class: "\Webiny\Factory"
-            arguments: ["WebinySystem"]
-        MyService:
-            factory: @test.MyFactory
-            arguments: ["WebinyEcommerce"]
-            static: false
-            method: getInstance

@@ -42,6 +42,10 @@ abstract class FormatterAbstract implements FormatterInterface
 			$data = $data->val();
 		}
 
+		if($this->isString($data)){
+			return $data;
+		}
+
 		if($this->isArray($data) || $data instanceof \Traversable) {
 			$normalized = array();
 			foreach ($data as $key => $value) {

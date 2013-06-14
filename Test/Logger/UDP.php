@@ -6,13 +6,15 @@ use Webiny\Component\Config\ConfigTrait;
 use Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter;
 use Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler;
 use Webiny\Component\Logger\Logger;
+use Webiny\StdLib\StdLibTrait;
+use Webiny\WebinyTrait;
 
 define('WF', '/www/webiny/framework');
 require_once '../../library/autoloader.php';
 
 class Test
 {
-	use \Webiny\WebinyTrait;
+	use WebinyTrait, StdLibTrait;
 
 	function testLogger() {
 		// Setup Bootstrap logger
@@ -29,7 +31,17 @@ class Test
 		// Log some messages
 		$logger->info('Created new method!');
 		$logger2->info('Digo se sistem!');
-		$logger->alert('Method failed to load!');
+		$ar = [1,2,3];
+		$logger->emergency('Method failed to load!', [
+		 	'value' => $this->str("BUUU"),
+		   	'arr' => $this->arr($ar),
+			'arr2' => [
+				'key' => 'value',
+				'key2' => 12
+			],
+			'arr3' => ['a', 'b', 'c'],
+			'arr3' => ['a', 'b', 'c']
+		]);
 		$logger2->alert('Nes sam usro!');
 		$logger->debug('Method data', ['method' => ['id' => 12, 'name' => 'DHL']]);
 

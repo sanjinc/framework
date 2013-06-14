@@ -17,13 +17,14 @@ namespace Webiny\Component\ServiceManager;
 trait ServiceManagerTrait
 {
 	/**
+	 * Get service
 	 *
-	 * @param string $serviceName
-	 * @param null   $arguments
+	 * @param string     $serviceName Service name
+	 * @param null|array $arguments (Optional) Arguments for service constructor if you want to override default arguments
 	 *
 	 * @return object
 	 */
-	protected static function getService($serviceName, $arguments = null) {
+	protected static function service($serviceName, $arguments = null) {
 		return ServiceManager::getInstance()->getService($serviceName, $arguments);
 	}
 }

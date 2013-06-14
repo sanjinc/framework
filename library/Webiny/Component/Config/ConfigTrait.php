@@ -28,7 +28,7 @@ trait ConfigTrait
 	 *
 	 * @return ConfigObject
 	 */
-	protected static function getIniConfig($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
+	protected static function iniConfig($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
 		return Config::Ini($resource, $flushCache, $useSections, $nestDelimiter);
 	}
 
@@ -41,7 +41,7 @@ trait ConfigTrait
 	 *
 	 * @return ConfigObject
 	 */
-	protected static function getJsonConfig($resource, $flushCache = false) {
+	protected static function jsonConfig($resource, $flushCache = false) {
 		return Config::Json($resource, $flushCache);
 	}
 
@@ -54,7 +54,7 @@ trait ConfigTrait
 	 *
 	 * @return ConfigObject
 	 */
-	protected static function getYamlConfig($resource, $flushCache = false) {
+	protected static function yamlConfig($resource, $flushCache = false) {
 		return Config::Yaml($resource, $flushCache);
 	}
 
@@ -68,7 +68,7 @@ trait ConfigTrait
 	 *
 	 * @return ConfigObject
 	 */
-	protected static function getPhpConfig($resource, $flushCache = false) {
+	protected static function phpConfig($resource, $flushCache = false) {
 		return Config::Php($resource, $flushCache);
 	}
 
@@ -81,7 +81,7 @@ trait ConfigTrait
 	 *
 	 * @return ConfigObject
 	 */
-	protected static function getCustomConfig($resource, $flushCache = false) {
+	protected static function customConfig($resource, $flushCache = false) {
 		return Config::parseResource($resource, $flushCache);
 	}
 }

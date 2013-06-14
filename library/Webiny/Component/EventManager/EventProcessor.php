@@ -31,15 +31,19 @@ class EventProcessor
 	 * @return array
 	 */
 	public function process($eventListeners, Event $event, $resultType = null) {
-		/**
-		 * @TODO: Order listeners by priority
-		 */
+
+		$eventListeners = $this->_orderByPriority($eventListeners);
 
 		$results = [];
 
 		/* @var $eventListener EventListener */
 		foreach ($eventListeners as $eventListener) {
+
 			$handler = $eventListener->getHandler();
+			if($this->isNull($handler)){
+				continue;
+			}
+
 			$method = $eventListener->getMethod();
 
 			if($this->isCallable($handler)) {
@@ -59,5 +63,17 @@ class EventProcessor
 		}
 
 		return $results;
+	}
+
+	private function _orderByPriority($eventListeners){
+		$comparisonFunction = function($a, $b){
+			if ($a->getPriority() == $b->getPriority()) {
+				// This will keep the order of same priority listeners in the order of subscribing
+				return 1;
+			}
+			return ($a->getPriority() > $b->getPriority()) ? -1 : 1;
+		};
+
+		return $this->arr($eventListeners)->sortUsingFunction($comparisonFunction)->val();
 	}
 }

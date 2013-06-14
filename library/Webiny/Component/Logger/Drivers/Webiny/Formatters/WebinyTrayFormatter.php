@@ -91,24 +91,26 @@ class WebinyTrayFormatter extends FormatterAbstract
 			'url'      => $_SERVER["REQUEST_URI"],
 			'get'      => $_GET,
 			'post'     => $_POST,
-			'server'   => $_SERVER
+			'server'   => $_SERVER,
+			'level'    => ''
 		];
 
 		// Building array like this saves us loads of "if" statements later in the loop
 		$keys = [
-			'emergency',
-			'alert',
-			'critical',
-			'error',
-			'warning',
-			'notice',
-			'info',
-			'debug'
+			'debug' => 100,
+			'info' => 200,
+			'notice' => 250,
+			'warning' => 300,
+			'error' => 400,
+			'critical' => 500,
+			'alert' => 550,
+			'emergency' => 600
 		];
 
-		$stats = $this->arr($keys)->fillKeys(0)->val();
+		$levels = array_keys($keys);
+		$stats = $this->arr($levels)->fillKeys(0)->val();
 
-		/* @var $record Record */
+		/* @var $rec Record */
 		foreach ($records as $rec) {
 			unset($rec->formatted);
 			$request['messages'][] = $this->formatRecord($rec);
@@ -118,6 +120,16 @@ class WebinyTrayFormatter extends FormatterAbstract
 		// Remove loge levels which are empty
 		$stats = array_filter($stats);
 
+		// Determine highest log level
+		$highestLevelCode = 0;
+		foreach ($records as $rec) {
+			$levelCode = $keys[$rec->level];
+			if($levelCode > $highestLevelCode) {
+				$highestLevelCode = $levelCode;
+				$request['level'] = $rec->level;
+			}
+		}
+		
 		$request['stats'] = $stats;
 
 		$json = [
