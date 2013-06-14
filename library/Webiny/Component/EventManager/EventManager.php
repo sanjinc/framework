@@ -65,18 +65,21 @@ class EventManager
 	 * @param string $eventName
 	 * @param mixed  $data
 	 *
+	 * @param null   $resultType
+	 *
 	 * @return array
 	 */
-	public function fire($eventName, $data = null) {
-		if($this->_events->keyExists($eventName)) {
-			$eventListeners = $this->_events->key($eventName);
+	public function fire($eventName, $data = null, $resultType = null) {
+		if(!$this->_events->keyExists($eventName)) {
+			return null;
 		}
 
+		$eventListeners = $this->_events->key($eventName);
 		if(!$this->isInstanceOf($data, 'Event')) {
 			$data = new Event($data);
 		}
 
-		return $this->_eventProcessor->process($eventListeners, $data);
+		return $this->_eventProcessor->process($eventListeners, $data, $resultType);
 	}
 
 	/**

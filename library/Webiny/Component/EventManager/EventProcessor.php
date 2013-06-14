@@ -26,9 +26,11 @@ class EventProcessor
 	 * @param array|ArrayObject $eventListeners EventListeners that are subscribed to this event
 	 * @param Event             $event          Event data object
 	 *
+	 * @param null|string       $resultType Type of event result to enforce (can be any class or interface name)
+	 *
 	 * @return array
 	 */
-	public function process($eventListeners, Event $event) {
+	public function process($eventListeners, Event $event, $resultType = null) {
 		/**
 		 * @TODO: Order listeners by priority
 		 */
@@ -40,13 +42,20 @@ class EventProcessor
 			$handler = $eventListener->getHandler();
 			$method = $eventListener->getMethod();
 
-			if($this->isCallable($handler)){
+			if($this->isCallable($handler)) {
 				/** @var $handler \Closure */
 				$result = $handler($event);
 			} else {
 				$result = call_user_func_array([$handler, $method], [$event]);
 			}
-			$results[] = $result;
+
+			if($this->isNull($resultType) || (!$this->isNull($resultType) && $this->isInstanceOf($result, $resultType))) {
+				$results[] = $result;
+			}
+
+			if($event->isPropagationStopped()) {
+				break;
+			}
 		}
 
 		return $results;
