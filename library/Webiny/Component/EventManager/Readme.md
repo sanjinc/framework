@@ -1,4 +1,4 @@
-Event Manager
+Event Manager Component
 ===============
 
 `EventManager` allows you to easily manage events throughout your application.
@@ -59,7 +59,7 @@ $data = ['some' => 'data'];
 $this->eventManager()->fire('some.event', $data);
 ```
 
-After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandle`, `customHandle`, `thirdCustomHandle`. Default priority is `101`, so `thirdCustomHandle` is executed last.
+After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority, the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandle`, `customHandle`, `thirdCustomHandle`. Default priority is `101`, so `thirdCustomHandle` is executed last.
 
 As you noticed, we passed a `$data` array to `fire()` method. Any give data that is not an `Event` object, will be converted to generic `Event` object and your data will be accessible either by using array keys, or as object properties:
 
@@ -77,7 +77,7 @@ class YourHandler{
 
 ## Custom Event Classes
 
-When firing events, you can also pass your own event classes, that extend generic `Event` class. For example, you want to fire an event called `cms.page_saved` and pass the `Page` object. Of course, you could simple pass an array like `['page' => $pageObject]`, but for the sake of the example, let's pretend it's more complicated than that:
+When firing events, you can also pass your own event classes, that extend generic `Event` class. For example, you want to fire an event called `cms.page_saved` and pass the `Page` object. Of course, you could simply pass an array like `['page' => $pageObject]`, but for the sake of the example, let's pretend it's more complicated than that:
 
 ```php
 // Create your `PageEvent` class

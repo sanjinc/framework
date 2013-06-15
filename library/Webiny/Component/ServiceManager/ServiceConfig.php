@@ -1,8 +1,21 @@
 <?php
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
+
 namespace Webiny\Component\ServiceManager;
 
-
 use Webiny\StdLib\StdLibTrait;
+
+/**
+ * ServiceConfig class contains compiled service config and serves as a parameter for ServiceCreator when constructing services.
+ *
+ * @package         Webiny\Component\ServiceManager
+ */
 
 class ServiceConfig
 {
@@ -105,7 +118,7 @@ class ServiceConfig
 	 * @param string $scope
 	 */
 	public function setScope($scope) {
-		if($this->isNull($scope) || !ServiceScope::exists($scope)){
+		if($this->isNull($scope) || !ServiceScope::exists($scope)) {
 			$scope = ServiceScope::CONTAINER;
 		}
 		$this->_scope = $scope;

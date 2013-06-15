@@ -10,16 +10,29 @@ namespace Webiny\Component\ServiceManager;
 
 use Webiny\StdLib\StdLibTrait;
 
+/**
+ * ServiceCreator class is responsible for taking a ServiceConfig and building a service instance.
+ *
+ * @package         Webiny\Component\ServiceManager
+ */
+
 class ServiceCreator
 {
 	use StdLibTrait;
 
 	private $_config;
 
+	/**
+	 * @param ServiceConfig $config Compiled service config
+	 */
 	public function __construct(ServiceConfig $config) {
 		$this->_config = $config;
 	}
 
+	/**
+	 * Get service instance
+	 * @return object
+	 */
 	public function getService() {
 		// Get real arguments values
 		$arguments = [];
@@ -35,14 +48,13 @@ class ServiceCreator
 			foreach ($call[1] as $arg) {
 				$arguments[] = $arg->value();
 			}
-			call_user_func_array([$service, $call[0]], $arguments);
+			call_user_func_array([
+								 $service,
+								 $call[0]
+								 ], $arguments);
 		}
 
 		return $service;
-	}
-
-	public function getScope() {
-		return $this->_config->getScope();
 	}
 
 	private function _getServiceInstance($arguments) {
@@ -60,6 +72,9 @@ class ServiceCreator
 			$arguments[] = $arg->value();
 		}
 
-		return call_user_func_array([$service, $this->_config->getMethod()], $arguments);
+		return call_user_func_array([
+									$service,
+									$this->_config->getMethod()
+									], $arguments);
 	}
 }

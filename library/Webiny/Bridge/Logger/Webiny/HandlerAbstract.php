@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
 namespace Webiny\Bridge\Logger\Webiny;
 
 use Webiny\Bridge\Logger\LoggerException;
@@ -8,6 +14,7 @@ use Webiny\Bridge\Logger\Webiny\Record;
 
 /**
  * Base Handler class providing the Handler structure
+ * @package Webiny\Bridge\Logger\Webiny
  */
 abstract class HandlerAbstract
 {
@@ -44,6 +51,8 @@ abstract class HandlerAbstract
 	 * @param array|ArrayObject $levels  The minimum logging level at which this handler will be triggered
 	 * @param Boolean           $bubble  Whether the messages that are handled can bubble up the stack or not
 	 * @param bool              $buffer
+	 *
+	 * @return HandlerAbstract Instance of HandlerAbstract
 	 */
 	public function __construct($levels = [], $bubble = true, $buffer = false) {
 		$this->_levels = $this->arr($levels);
@@ -52,6 +61,9 @@ abstract class HandlerAbstract
 		$this->_processors = $this->arr();
 	}
 
+	/**
+	 * Destructor
+	 */
 	public function __destruct() {
 		try {
 			$this->stopHandling();
@@ -60,6 +72,13 @@ abstract class HandlerAbstract
 		}
 	}
 
+	/**
+	 * Check if this handler can handle the given Record
+	 *
+	 * @param Record $record
+	 *
+	 * @return bool Boolean telling whether this handler can handle the given Record
+	 */
 	public function canHandle(Record $record) {
 		if($this->_levels->count() < 1) {
 			return true;
@@ -69,9 +88,10 @@ abstract class HandlerAbstract
 	}
 
 	/**
-	 * Stop handling
-	 *
+	 * Stop handling<br />
 	 * This will be called automatically when the object is destroyed
+	 *
+	 * @return void
 	 */
 	public function stopHandling() {
 		if($this->_buffer) {
@@ -81,18 +101,27 @@ abstract class HandlerAbstract
 
 	/**
 	 * Add processor to this handler
+	 *
 	 * @param mixed $callback Callable or instance of ProcessorInterface
+	 *
+	 * @param bool  $processBufferRecord
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return $this
 	 */
-	public function addProcessor($callback) {
+	public function addProcessor($callback, $processBufferRecord = false) {
 		if(!is_callable($callback) && !$this->isInstanceOf($callback,
 														   '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')
 		) {
 			throw new \InvalidArgumentException('Processor must be valid callable or an instance of \Webiny\Bridge\Logger\Webiny\ProcessorInterface');
 		}
-		$this->_processors->prepend($callback);
+
+		if($processBufferRecord) {
+			$this->_bufferProcessors->prepend($callback);
+		} else {
+			$this->_processors->prepend($callback);
+		}
+
 
 		return $this;
 	}
@@ -106,6 +135,7 @@ abstract class HandlerAbstract
 	/**
 	 * Process given record
 	 * This will pass given record to ProcessorInterface instance, then format the record and output it according to current HandlerAbstract instance
+	 *
 	 * @param Record $record
 	 *
 	 * @return bool Bubble flag (this either continues propagation of the Record to other handlers, or stops the logger from processing this record any further)
@@ -113,7 +143,9 @@ abstract class HandlerAbstract
 	public function process(Record $record) {
 
 		if($this->_buffer) {
+			$this->_processRecord($record);
 			$this->_records[] = $record;
+
 			return $this->_bubble;
 		}
 
@@ -132,23 +164,24 @@ abstract class HandlerAbstract
 	 * @return Record Processed Record object
 	 */
 	protected function _processRecord(Record $record) {
-		if($this->_processors) {
-			foreach ($this->_processors as $processor) {
-				if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')) {
-					$processor->processRecord($record);
-				} else {
-					call_user_func($processor, $record);
-				}
 
+		foreach ($this->_processors as $processor) {
+			if($this->isInstanceOf($processor, '\Webiny\Bridge\Logger\Webiny\ProcessorInterface')) {
+				$processor->processRecord($record);
+			} else {
+				call_user_func($processor, $record);
 			}
 		}
 	}
 
+	/**
+	 * Process batch of records
+	 *
+	 * @param array $records Batch of records to process
+	 *
+	 * @return bool Bubble flag (this either continues propagation of the Record to other handlers, or stops the logger from processing this record any further)
+	 */
 	protected function _processRecords(array $records) {
-		foreach ($records as $rec) {
-			$this->_processRecord($rec);
-		}
-
 		$record = new Record();
 		$formatter = $this->_getFormatter();
 		if($this->isInstanceOf($formatter, '\Webiny\Bridge\Logger\Webiny\FormatterInterface')) {
@@ -156,6 +189,7 @@ abstract class HandlerAbstract
 		}
 
 		$this->write($record);
+
 		return $this->_bubble;
 	}
 

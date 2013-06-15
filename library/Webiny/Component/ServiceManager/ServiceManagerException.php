@@ -13,7 +13,7 @@ use Webiny\StdLib\Exception\ExceptionAbstract;
 /**
  * Exception class for the ServiceManager component.
  *
- * @package		 Webiny\Component\ServiceManager
+ * @package         Webiny\Component\ServiceManager
  */
 class ServiceManagerException extends ExceptionAbstract
 {

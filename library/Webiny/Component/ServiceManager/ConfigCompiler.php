@@ -1,8 +1,25 @@
 <?php
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
+
 namespace Webiny\Component\ServiceManager;
 
 use Webiny\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
+
+
+/**
+ * ConfigCompiler class is responsible for compiling a valid ServiceConfig object.<br />
+ * It parses the config file, manages inheritance, wraps arguments into Argument objects
+ * and makes sure the config is valid.
+ *
+ * @package         Webiny\Component\ServiceManager
+ */
 
 class ConfigCompiler
 {

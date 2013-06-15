@@ -1,0 +1,36 @@
+parameters:
+    logger.class: "\Webiny\Component\Logger\Logger"
+    logger.driver.class: "\Webiny\Component\Logger\Drivers\Webiny"
+
+services:
+    logger:
+        handlers:
+            UDPTray:
+                class: "\Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler"
+                arguments: [[], true, true]
+                calls:
+                    - [setFormatter, [@logger.formatters.Tray]]
+        formatters:
+            Tray:
+                class: "\Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter"
+        TrayLoggerAbstract:
+            abstract: true
+            class: "%logger.class%"
+            calls:
+              - [addHandler, [@logger.handlers.UDPTray]]
+        WebinySystem:
+            parent: @logger.TrayLoggerAbstract
+            arguments: ["System", "%logger.driver.class%"]
+            #calls:
+            #    - [addHandler, ["Myhandler"]]
+            #    - [setSomething, [12345]]
+        WebinyEcommerce:
+            parent: logger.TrayLoggerAbstract
+            arguments: ["Ecommerce", "%logger.driver.class%"]
+
+
+#arguments:
+#    name: "ECommerce"
+#    driver:
+#        object: "@logger.drivers.Webiny"
+#        object_arguments: ["ECommerce.ShoppingCart"]

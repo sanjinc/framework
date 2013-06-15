@@ -16,5 +16,9 @@ namespace Webiny\Component\EventManager;
  */
 interface EventSubscriberInterface
 {
+	/**
+	 * Subscribe to events
+	 * @return void
+	 */
 	public function subscribe();
 }

@@ -65,6 +65,20 @@ class WebinyTrayFormatter extends FormatterAbstract
 		$record = $this->normalizeValues($record);
 
 		$output = [];
+		
+		$extra = $this->arr($record->extra);
+		if($extra->keyExists('line') && $extra->keyExists('file')){
+			$output['line'] = $extra['line'];
+			$output['file'] = $extra['file'];
+			$extra->removeKey('line')->removeKey('file');
+		}
+
+		if($extra->keyExists('memory_usage')){
+			$output['memory'] = $extra['memory_usage'];
+			$extra->removeKey('memory_usage');
+		}
+
+		$record->extra = $extra->val();
 
 		// Handle main record values
 		foreach ($record as $var => $val) {
@@ -116,7 +130,7 @@ class WebinyTrayFormatter extends FormatterAbstract
 			$request['messages'][] = $this->formatRecord($rec);
 			$stats[$rec->level]++;
 		}
-
+		
 		// Remove loge levels which are empty
 		$stats = array_filter($stats);
 

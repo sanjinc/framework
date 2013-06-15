@@ -15,6 +15,9 @@ use Webiny\Bridge\Logger\LoggerHandlerAbstract;
 use Webiny\StdLib\StdLibTrait;
 
 /**
+ * NullDriver is used to avoid exceptions when logger you are trying to use is not available.<br />
+ * It acts as if everything went fine and no exceptions will be throw, but nothing is logged.
+ *
  * @package         Webiny\Component\Logger\Drivers
  */
 class NullDriver implements LoggerDriverInterface

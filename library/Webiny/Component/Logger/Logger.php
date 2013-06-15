@@ -1,4 +1,11 @@
 <?php
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
 
 namespace Webiny\Component\Logger;
 
@@ -9,8 +16,10 @@ use Webiny\Component\Logger\Drivers\Webiny;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Webiny Logger
+ * Webiny Logger is used to log any kind of messages.<br />
+ * The way you log a message can be implement through a driver, message handler and message formatter
  *
+ * @package Webiny\Component\Logger
  */
 class Logger
 {
