@@ -15,7 +15,7 @@ namespace Webiny\Bridge\Cache;
  * @package         Webiny\Bridge\Cache
  */
 
-interface DriverInterface
+interface StorageInterface
 {
 	/**
 	 * Get the name of bridge library which will be used as the driver.

@@ -148,7 +148,7 @@ class UrlObject extends StdObjectAbstract
 	/**
 	 * Redirect the current address.
 	 *
-	 * @param null $header
+	 * @param null|string|array $header
 	 */
 	public function goToUrl($header = null) {
 
@@ -166,7 +166,11 @@ class UrlObject extends StdObjectAbstract
 
 				// issue the first header
 				header($protocol . ' ' . $code . ' ' . $text);
-			} else {
+			} else if ($this->isArray($header)) {
+				foreach($header as $h){
+					header($h);
+				}
+			}else{
 				header($header);
 			}
 		}

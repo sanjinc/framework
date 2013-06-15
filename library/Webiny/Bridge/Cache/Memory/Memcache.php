@@ -10,15 +10,25 @@
 namespace Webiny\Bridge\Cache\Memory;
 
 use Jamm\Memory\MemcacheObject;
-use Webiny\Bridge\Cache\CacheInterface;
+use Webiny\Bridge\Cache\CacheStorageInterface;
 
 /**
  * Bridget to Jamm\Memory Memcache library.
  *
  * @package         Webiny\Bridge\Cache\Memory
  */
-class Memcache extends MemcacheObject implements CacheInterface
+class Memcache extends MemcacheObject implements CacheStorageInterface
 {
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string $host
+	 * @param string $port
+	 */
+	function __construct($host, $port){
+		parent::__construct('webiny', $host, $port);
+	}
 
 	/**
 	 * Delete key or array of keys from storage.
@@ -88,14 +98,5 @@ class Memcache extends MemcacheObject implements CacheInterface
 	 */
 	public function acquireKey($key, &$autoUnlocker) {
 		return $this->acquire_key($key, $autoUnlocker);
-	}
-
-	/**
-	 * Get cache id.
-	 *
-	 * @return string Cache id.
-	 */
-	public function getCacheId() {
-		return $this->get_ID();
 	}
 }

@@ -10,15 +10,24 @@
 namespace Webiny\Bridge\Cache\Memory;
 
 use Jamm\Memory\CouchbaseObject;
-use Webiny\Bridge\Cache\CacheInterface;
+use Webiny\Bridge\Cache\CacheStorageInterface;
 
 /**
  * Bridget to Jamm\Memory Couchbase library.
  *
  * @package         Webiny\Bridge\Cache\Memory
  */
-class Couchbase extends CouchbaseObject implements CacheInterface
+class Couchbase extends CouchbaseObject implements CacheStorageInterface
 {
+
+	/**
+	 * Constructor.
+	 *
+	 * @param \Couchbase $couchbase
+	 */
+	function __construct(\Couchbase $couchbase){
+		parent::__construct($couchbase, 'webiny');
+	}
 
 	/**
 	 * Delete key or array of keys from storage.
@@ -88,14 +97,5 @@ class Couchbase extends CouchbaseObject implements CacheInterface
 	 */
 	public function acquireKey($key, &$autoUnlocker) {
 		return $this->acquire_key($key, $autoUnlocker);
-	}
-
-	/**
-	 * Get cache id.
-	 *
-	 * @return string Cache id.
-	 */
-	public function getCacheId() {
-		return $this->get_ID();
 	}
 }

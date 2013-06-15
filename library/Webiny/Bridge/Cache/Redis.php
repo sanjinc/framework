@@ -54,26 +54,25 @@ class Redis extends CacheAbstract
 	 *
 	 * @see CacheAbstract::getInstance()
 	 *
-	 * @param string       $cacheId    Cache identifier.
 	 * @param string       $host       Host on which Redis server is running.
 	 * @param int          $port       Port on which Redis server is running.
 	 *
 	 * @throws CacheException
-	 * @return void|CacheInterface
+	 * @return void|CacheStorageInterface
 	 */
-	static function getInstance($cacheId = '', $host = '127.0.0.1', $port = 6379) {
+	static function getInstance($host = '127.0.0.1', $port = 6379) {
 		$driver = static::_getLibrary();
 
 		try {
-			$instance = new $driver($cacheId, $host, $port);
+			$instance = new $driver($host, $port);
 		} catch (\Exception $e) {
 			throw new CacheException($e->getMessage());
 		}
 
-		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheInterface')) {
+		if(!self::isInstanceOf($instance, '\Webiny\Bridge\Cache\CacheStorageInterface')) {
 			throw new CacheException(CacheException::MSG_INVALID_ARG, [
 																	  'driver',
-																	  '\Webiny\Bridge\Cache\CacheInterface'
+																	  '\Webiny\Bridge\Cache\CacheStorageInterface'
 																	  ]);
 		}
 
