@@ -75,7 +75,7 @@ class YourHandler{
 }
 ```
 
-## Custom Event Classes
+## Custom event classes
 
 When firing events, you can also pass your own event classes, that extend generic `Event` class. For example, you want to fire an event called `cms.page_saved` and pass the `Page` object. Of course, you could simply pass an array like `['page' => $pageObject]`, but for the sake of the example, let's pretend it's more complicated than that:
 
