@@ -206,7 +206,7 @@ services:
         webiny_system:
             parent: @logger.tray_logger_abstract
             !calls:
-            - [setSomething, [someParameter], 0]
+            - [setSomething, [someParameter]]
 ```
 
 In this case, child service `calls` will completely replace parent `calls`.
