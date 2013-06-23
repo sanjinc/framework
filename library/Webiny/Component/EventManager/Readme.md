@@ -1,31 +1,145 @@
-<?php
-EventManager::getInstance()->listen('neki.event')->handler(function(){});
-EventManager::getInstance()->listen('drugi.event')->handler($handler)->method('process');
-EventManager::getInstance()->subscribe($subscriber);
+Event Manager Component
+===============
 
-class MyHandler implements EventHandlerInterface{
+`EventManager` allows you to easily manage events throughout your application.
+Accessing `EventManager` can be done in 2 ways. The preferable way is using `EventManagerTrait`, but you can also access it directly, using `EventManager::getInstance()`. Let's see a simple example of subscribing to an event called `some.event` with an instance of `YourHandler`:
 
-	public function process($eventData){
-
-	}
-
+```php
+class YourClass{
+    use EventManagerTrait;
+    
+    public function index(){
+        $this->eventManager()->listen('some.event')->handler(new YourHandler());
+    }
 }
 
-class UserEventSubscriber implements EventSubscriberInterface {
+```
+You're done! You have just subscribed to an event and the moment `some.event` is fired, your handler will process it.
+
+## Event handlers
+
+Now let's take a look at `YourHandler`. An event handler can be any class. `EventManager` will call `handle(Event $event)` method on your handler object, by default. You can, however, specify a method you want `EventManager` to call:
+
+```php
+class YourHandler{
+
+    public function customHandle(Event $event){
+        // Do something with the $event...
+    }
+    
+}
+
+// Using your custom method
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('customHandle');
+```
+
+Besides using classes, you can also respond to an event using a callable:
+
+```
+// Using callable as event handler
+
+$handler = function(Event $event){
+    // Do something with the $event...
+};
+
+$this->eventManager()->listen('some.event')->handler($handler);
+```
+
+## Execution priority
+`EventManager` allows you to specify an execution priority using `priority()` method. Here's an example:
+
+```php
+// Specify a priority of execution for your event listeners
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('customHandle')->priority(250);
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('secondCustomHandle')->priority(400);
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('thirdCustomHandle');
+
+// Now let's fire an event
+$data = ['some' => 'data'];
+$this->eventManager()->fire('some.event', $data);
+```
+
+After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority, the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandle`, `customHandle`, `thirdCustomHandle`. Default priority is `101`, so `thirdCustomHandle` is executed last.
+
+As you noticed, we passed a `$data` array to `fire()` method. Any give data that is not an `Event` object, will be converted to generic `Event` object and your data will be accessible either by using array keys, or as object properties:
+
+```php
+class YourHandler{
+
+    public function customHandle(Event $event){
+        // Access your data 
+        echo $event->some; // 'data'
+        echo $event['some'] // 'data'
+    }
+    
+}
+```
+
+## Custom event classes
+
+When firing events, you can also pass your own event classes, that extend generic `Event` class. For example, you want to fire an event called `cms.page_saved` and pass the `Page` object. Of course, you could simply pass an array like `['page' => $pageObject]`, but for the sake of the example, let's pretend it's more complicated than that:
+
+```php
+// Create your `PageEvent` class
+
+class PageEvent extends Event{
+
+    private $_page;
+
+    public function __construct(Page $page){
+        // Call constructor of parent Event class
+        parent::__construct();
+        
+        // Set your page object
+        $this->_page = $page;
+    }
+
+    public function getPage(){
+        return $this->_page;
+    }
+    
+}
+
+// Fire an event
+
+$pageEvent = new PageEvent($pageObject);
+
+$this->eventManager()->fire('cms.page_saved', $pageEvent);
+
+// In your handler, you can now access page object using $event->getPage()
+
+class YourHandler{
+
+    public function customHandle(PageEvent $event){
+        $pageObject = $event->getPage();
+    }
+    
+}
+
+```
+
+This is a simple example, but it shows the power of creating your own `Event` classes and add as much functionality to your events as you need.
+
+## Event subscriber
+
+Another cool feature of the `EventManager` is the ability to subscribe to multiple events at once. You will need to create a subscriber class implementing `EventSubscriberInterface`:
+
+```php
+class PageEventSubscriber implements EventSubscriberInterface {
 	use EventManagerTrait;
 
     /**
-     * Handle user login events.
+     * Handle page creation event
      */
-    public function onUserLogin($event)
+    public function onPageCreated($event)
     {
         //
     }
 
     /**
-     * Handle user logout events.
+     * Handle page update
      */
-    public function onUserLogout($event)
+    public function onPageUpdated($event)
     {
         //
     }
@@ -35,81 +149,12 @@ class UserEventSubscriber implements EventSubscriberInterface {
      */
     public function subscribe()
     {
-        $this->eventManager()->listen('user.login')->handler($this)->method('onUserLogin');
-        $this->eventManager()->listen('user.logout')->handler($this)->method('onUserLogout');
+        $this->eventManager()->listen('cms.page_created')->handler($this)->method('onPageCreated');
+        $this->eventManager()->listen('cms.page_updated')->handler($this)->method('onPageUpdated');
     }
 
 }
 
-class EventManager{
-	use SingletonTrait;
-
-	private $_events = [];
-
-	public function listen($eventName){
-		$event = new Event($eventName);
-		$this->_events[$eventName] = $event;
-		return $event;
-	}
-
-	public function subscribe(EventSubscriberInterface $subscriber){
-		$subscriber->subscribe();
-	}
-}
-
-class Event implements ArrayAccess{
-
-	private $_name;
-	private $_propagationStopped;
-	private $_handlers = [];
-	private $_eventData [];
-
-	public function __get($name){
-
-	}
-
-	public function __set($name){
-
-	}
-
-	public function __construct($eventName){
-		$this->_name = $eventName;
-	}
-
-	public function handler($handler){
-		$eventHandler = new EventHandler($handler);
-		$this->_handlers[] = $eventHandler;
-		return $eventHandler;
-	}
-
-	public function isPropagationStopped()
-    {
-        return $this->propagationStopped;
-    }
-
-    /**
-     * Stops the propagation of the event to further event listeners.
-     *
-     * If multiple event listeners are connected to the same event, no
-     * further event listener will be triggered once any trigger calls
-     * stopPropagation().
-     *
-     * @api
-     */
-    public function stopPropagation()
-    {
-        $this->propagationStopped = true;
-    }
-
-    /**
-     * Gets the event's name.
-     *
-     * @return string
-     *
-     * @api
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-}
+// Subscriber to multiple events using your new subscriber class
+$this->eventManager()->subscribe($subscriber);
+```

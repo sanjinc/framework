@@ -1,4 +1,12 @@
 <?php
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
+
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
 
@@ -11,6 +19,15 @@ use Webiny\StdLib\StdObject\UrlObject\UrlObject;
 use Webiny\WebinyTrait;
 
 /**
+ * UDP handler is used for sending UDP messages to host and port specified in the system configuration file.<br />
+ * Example of the config:
+ *
+ * components:
+ *		logger:
+ *			handlers:
+ *				udp:
+ *					host: 192.168.1.10:41234
+ *
  * @package Webiny\Component\Logger\Drivers\Webiny\Handlers
  */
 class UDPHandler extends HandlerAbstract

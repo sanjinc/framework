@@ -10,6 +10,7 @@
 
 namespace Webiny\StdLib\StdObject\ArrayObject;
 
+use Webiny\StdLib\StdObject\StdObjectException;
 use Webiny\StdLib\StdObject\StdObjectManipulatorTrait;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
@@ -439,8 +440,34 @@ trait ManipulatorTrait
 		if($this->isInstanceOf($array, $this)) {
 			$array = $array->val();
 		}
-		
+
 		$this->val(array_merge_recursive($this->val(), $array));
+
+		return $this;
+	}
+
+	/**
+	 * Sort an array by values using a user-defined comparison function<br />
+	 * This function assigns new keys to the elements in array. It will remove any existing keys that may have been assigned, rather than just reordering the keys.<br />
+	 * The comparison function must return an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
+	 *
+	 * @param callable $comparisonFunction
+	 *
+	 * @throws ArrayObjectException
+	 *
+	 * @return $this
+	 */
+	public function sortUsingFunction($comparisonFunction) {
+		if(!is_callable($comparisonFunction)) {
+			throw new ArrayObjectException(ArrayObjectException::MSG_INVALID_ARG, [
+																				  '$comparisonFunction',
+																				  'callable'
+																				  ]);
+		}
+
+		$val = $this->val();
+		usort($val, $comparisonFunction);
+		$this->val($val);
 
 		return $this;
 	}
@@ -475,7 +502,7 @@ trait ManipulatorTrait
 
 	/**
 	 * Sort the array by its values.
-	 * This sort function take two flags. One defines the sort algorithm, and the other othe, the sort direction.
+	 * This sort function take two flags. One defines the sort algorithm, and the other one, the sort direction.
 	 * Default behavior equals to the standard asort function.
 	 *
 	 * @param int $direction In which direction you want to sort. You can use SORT_ASC or SORT_DESC.

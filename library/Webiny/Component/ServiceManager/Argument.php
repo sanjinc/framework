@@ -1,9 +1,22 @@
 <?php
-namespace Webiny\Component\ServiceManager;
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
 
+namespace Webiny\Component\ServiceManager;
 
 use Webiny\StdLib\StdLibTrait;
 
+/**
+ * Argument class serves as a wrapper for service arguments.<br />
+ * It contains the value from config file and knows how to get the real value of it, like including other services, instantiating classes, etc.
+ *
+ * @package         Webiny\Component\ServiceManager
+ */
 class Argument
 {
 	use StdLibTrait;
@@ -13,6 +26,10 @@ class Argument
 	 */
 	private $_value;
 
+	/**
+	 * Create Argument instance
+	 * @param mixed $argument Value to wrap into Argument instance
+	 */
 	public function __construct($argument) {
 		$this->_value = $argument;
 	}

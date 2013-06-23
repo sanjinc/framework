@@ -41,6 +41,17 @@ trait ValidatorTrait
 	}
 
 	/**
+	 * Checks if given value is empty.
+	 *
+	 * @param mixed $var Value to check
+	 *
+	 * @return bool
+	 */
+	static protected function isEmpty($var) {
+		return empty($var);
+	}
+
+	/**
 	 * Check if given value is an object.
 	 *
 	 * @param mixed $var Value to check

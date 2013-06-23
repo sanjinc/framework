@@ -20,6 +20,9 @@ use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
+ * Webiny logger driver covers most of your logging needs.<br />
+ * The way the message is output is controlled through handlers and formatters so you can use this driver in most cases.
+ *
  * @package         Webiny\Component\Logger\Drivers
  */
 class Webiny implements LoggerDriverInterface

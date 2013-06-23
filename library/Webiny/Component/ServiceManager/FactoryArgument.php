@@ -1,8 +1,23 @@
 <?php
+/**
+ * Webiny Framework (http://www.webiny.com/framework)
+ *
+ * @link      http://www.webiny.com/wf-snv for the canonical source repository
+ * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
+ * @license   http://www.webiny.com/framework/license
+ */
+
 namespace Webiny\Component\ServiceManager;
 
-
 use Webiny\StdLib\StdLibTrait;
+
+/**
+ * FactoryArgument class is responsible for handling factory services. It is different from Argument class
+ * in that it differentiates static and non-static calls to your 'factory' parameter and it only supports
+ * handling of services and classes.
+ *
+ * @package         Webiny\Component\ServiceManager
+ */
 
 class FactoryArgument
 {
@@ -16,9 +31,9 @@ class FactoryArgument
 	private $_static;
 
 	/**
-	 * @param                                           $resource
-	 * @param array $arguments If arguments are empty, it's a static call
-	 * @param bool                                      $static
+	 * @param string $resource
+	 * @param array  $arguments If arguments are empty, it's a static call
+	 * @param bool   $static
 	 */
 	public function __construct($resource, $arguments = [], $static = true) {
 		$this->_value = $this->str($resource);

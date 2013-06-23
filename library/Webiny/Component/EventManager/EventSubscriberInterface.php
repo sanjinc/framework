@@ -7,19 +7,18 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-
-namespace Webiny\Bridge\Logger;
-
-use Psr\Log\LogLevel;
+namespace Webiny\Component\EventManager;
 
 /**
- * Logger message levels
- * Uses PSR-3 Log Levels
+ * This interface is used for event subscriber classes
  *
- * @package Webiny\Bridge\Logger
+ * @package   Webiny\Component\EventManager
  */
-
-class LoggerLevel extends LogLevel
+interface EventSubscriberInterface
 {
-
+	/**
+	 * Subscribe to events
+	 * @return void
+	 */
+	public function subscribe();
 }

@@ -97,11 +97,11 @@ class WebinyFrameworkBase
 		// system core
 		$this->_setupErrorEnvironment();
 		$this->_setupClassLoader();
-		$this->_checkForCache();
-		$this->_assignCacheToClassLoader();
+		#$this->_checkForCache();
+		#$this->_assignCacheToClassLoader();
 
 		// initialize other components
-		$this->_setupSecurityLayer();
+		#$this->_setupSecurityLayer();
 	}
 
 	/**

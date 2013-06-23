@@ -11,18 +11,15 @@ namespace Webiny\Component\Logger\Drivers\Webiny\Processors;
 
 use Webiny\Bridge\Logger\Webiny\ProcessorInterface;
 use Webiny\Bridge\Logger\Webiny\Record;
-use Webiny\Component\Config\Config;
-use Webiny\Component\Registry\RegistryTrait;
-use Webiny\StdLib\ValidatorTrait;
-
 
 /**
- * Formats incoming records into a one-line string
- *
- * @package         Webiny\Component\Logger\Formatters
+ * MemoryUsageProcessor adds 'memory_usage' (current allocated amount of memory) to the Record 'extra' data
+ * 
+ * @package Webiny\Component\Logger\Drivers\Webiny\Processors
  */
-class TestProcessor implements ProcessorInterface
+class MemoryUsageProcessor implements ProcessorInterface
 {
+
 	/**
 	 * Processes a log record.
 	 *
@@ -31,6 +28,6 @@ class TestProcessor implements ProcessorInterface
 	 * @return Record The formatted record
 	 */
 	public function processRecord(Record $record) {
-		return $record;
+		$record->extra['memory_usage'] = memory_get_usage(true);
 	}
 }
