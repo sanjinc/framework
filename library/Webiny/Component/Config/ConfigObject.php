@@ -178,6 +178,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 
 	/**
 	 * Get value or return $default if there is no element set.
+	 * You can also access deeper values by using dotted key notation: level1.level2.level3.key
 	 *
 	 * @param  string $name
 	 * @param  mixed  $default
@@ -185,6 +186,17 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @return mixed Config value or default value
 	 */
 	public function get($name, $default = null) {
+		if($this->str($name)->contains('.')){
+			$keys = $this->str($name)->trim('.')->explode('.', 2);
+
+			if($this->_data->keyExists($keys[0])){
+				$value = $this->_data->key($keys[0])->get($keys[1], $default);
+			} else {
+				return $default;
+			}
+			return $value;
+		}
+
 		if($this->_data->keyExists($name)) {
 			return $this->_data->key($name);
 		}
