@@ -21,12 +21,14 @@ class EventManagerTest
 	use EventManagerTrait;
 
 	function index() {
-		$this->eventManager()->listen('webiny.payment')->handler(new Handler());
-
 		$handler = function(Event $event){
 			return $event->name;
 		};
+
 		$this->eventManager()->listen('webiny.payment')->handler($handler);
+		$this->eventManager()->listen('webiny.payment')->handler(new Handler())->priority(500);
+
+
 	}
 
 	function event() {
@@ -35,7 +37,7 @@ class EventManagerTest
 			'id'     => 12,
 			'amount' => 124.99
 		];
-		$result = $this->eventManager()->fire('webiny.payment', $data);
+		$result = $this->eventManager()->fire('webiny.*', $data);
 		die(print_r($result));
 	}
 

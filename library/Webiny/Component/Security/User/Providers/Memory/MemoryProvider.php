@@ -72,6 +72,7 @@ class MemoryProvider implements UserProviderInterface
 	 * @param string $username Username
 	 *
 	 * @return UserAbstract
+	 *
 	 * @throws UserNotFoundException
 	 */
 	function getUserByUsername($username) {
@@ -83,5 +84,7 @@ class MemoryProvider implements UserProviderInterface
 
 		$user = new User();
 		$user->populate($username, $userData['password'], $userData['roles'], false);
+
+		return $user;
 	}
 }

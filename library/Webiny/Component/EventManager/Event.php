@@ -13,8 +13,10 @@ use Webiny\StdLib\StdLibTrait;
 
 
 /**
- * Event class holds event data<br />
- * Each time an event is fired, an instance of Event class is passed to handlers
+ * Event class holds event data. Data can be accessed using array keys or as object properties.<br />
+ * Each time an event is fired, an instance of Event class is passed to handlers.<br />
+ * By extending this class you can implement your own event class and expand it with whatever functionality you might need.
+ *
  * @package         Webiny\Component\EventManager
  */
 class Event implements \ArrayAccess, \IteratorAggregate
@@ -26,6 +28,9 @@ class Event implements \ArrayAccess, \IteratorAggregate
 
 	public function __construct($eventData = null) {
 		if(!$this->isNull($eventData)) {
+			if(!$this->isArray($eventData) && !$this->isArrayObject($eventData)){
+				throw new EventManagerException(EventManagerException::MSG_INVALID_ARG, ['$eventData', 'array|ArrayObject']);
+			}
 			$this->_eventData = $this->arr($eventData);
 		} else {
 			$this->_eventData = $this->arr();
@@ -33,7 +38,7 @@ class Event implements \ArrayAccess, \IteratorAggregate
 	}
 
 	/**
-	 * Check of propagation for this event is stopped
+	 * Check if propagation for this event is stopped
 	 * @return bool
 	 */
 	public function isPropagationStopped() {

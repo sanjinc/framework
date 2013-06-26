@@ -11,20 +11,27 @@ namespace Webiny\Bridge\Cache\Memory;
 
 use Jamm\Memory\RedisObject;
 use Jamm\Memory\RedisServer;
-use Webiny\Bridge\Cache\CacheInterface;
+use Webiny\Bridge\Cache\CacheStorageInterface;
 
 /**
  * Bridget to Jamm\Memory Redis library.
  *
  * @package         Webiny\Bridge\Cache\Memory
  */
-class Redis extends RedisObject implements CacheInterface
+class Redis extends RedisObject implements CacheStorageInterface
 {
 
-	public function __construct($cacheId, $host, $port) {
+	/**
+	 * Constructor.
+	 *
+	 * @param string                    $host
+	 * @param \Jamm\Memory\IRedisServer $port
+	 *
+	 */
+	public function __construct($host, $port) {
 		$redisServer = new RedisServer($host, $port);
 
-		parent::__construct($cacheId, $redisServer);
+		parent::__construct('webiny', $redisServer);
 	}
 
 	/**
@@ -95,14 +102,5 @@ class Redis extends RedisObject implements CacheInterface
 	 */
 	public function acquireKey($key, &$autoUnlocker) {
 		return $this->acquire_key($key, $autoUnlocker);
-	}
-
-	/**
-	 * Get cache id.
-	 *
-	 * @return string Cache id.
-	 */
-	public function getCacheId() {
-		return $this->get_ID();
 	}
 }

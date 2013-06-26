@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Cache;
 
-use Webiny\Component\Cache\CacheException;
+use Webiny\Component\Cache\CacheStorage;
 
 /**
  * Webiny cache component.
@@ -26,106 +26,56 @@ use Webiny\Component\Cache\CacheException;
  */
 class Cache
 {
-	/**
-	 * @var array Array of cache driver instances.
-	 */
-	static private $_driverInstances = [];
-
-	/**
-	 * Stores an instance of CacheDriver into the Cache object.
-	 *
-	 * @param CacheDriver $driver
-	 *
-	 * @throws CacheException
-	 */
-	static function addDriver(CacheDriver $driver) {
-		if(isset(self::$_driverInstances[$driver->getId()])) {
-			throw new CacheException('Unable to add a new cache driver. A driver with id "' . $driver->getId() . '"
-										is already registered.');
-		}
-
-		self::$_driverInstances[$driver->getId()] = $driver;
-	}
 
 	/**
 	 * Create a cache instance with APC as cache driver.
 	 *
-	 * @param string $cacheId  Cache identifier.
 	 * @param array  $options  Cache options.
 	 *
-	 * @return CacheDriver
+	 * @return CacheStorage
 	 */
-	static function APC($cacheId, array $options = []) {
-		self::addDriver(Drivers\APC::getInstance($cacheId), $options);
-
-		return self::getDriverInstance($cacheId);
+	static function APC(array $options = []) {
+		return new CacheStorage(Storage\APC::getInstance(), $options);
 	}
 
 	/**
 	 * Create a cache instance with Couchbase as cache driver.
 	 *
-	 * @param string $cacheId   Cache identifier.
-	 * @param string $user      Couchbase username.
-	 * @param string $password  Couchbase password.
-	 * @param string $bucket    Couchbase bucket.
-	 * @param string $host      Couchbase host (with port number).
-	 * @param bool   $status    Cache status.
+	 * @param string $user       Couchbase username.
+	 * @param string $password   Couchbase password.
+	 * @param string $bucket     Couchbase bucket.
+	 * @param string $host       Couchbase host (with port number).
+	 * @param array  $options    Cache options.
 	 *
-	 * @return CacheDriver
+	 * @return CacheStorage
 	 */
-	static function Couchbase($cacheId, $user, $password, $bucket, $host = '127.0.0.1:8091', $status = true) {
-		self::addDriver(Drivers\Couchbase::getInstance($cacheId, $user, $password, $bucket, $host), $status);
-
-		return self::getDriverInstance($cacheId);
+	static function Couchbase($user, $password, $bucket, $host = '127.0.0.1:8091', $options = []) {
+		return new CacheStorage(Storage\Couchbase::getInstance($user, $password, $bucket, $host), $options);
 	}
 
 	/**
 	 * Create a cache instance with Memcache as cache driver.
 	 *
-	 * @param string $cacheId   Cache identifier.
-	 * @param string $host      Host where the memcached is running.
-	 * @param int    $port      Port where memcached is running.
-	 * @param bool   $status    Cache status.
+	 * @param string $host       Host where the memcached is running.
+	 * @param int    $port       Port where memcached is running.
+	 * @param array  $options    Cache options.
 	 *
-	 * @return CacheDriver
+	 * @return CacheStorage
 	 */
-	static function Memcache($cacheId, $host = '127.0.0.1', $port = 11211, $status = true) {
-		self::addDriver(Drivers\Memcache::getInstance($cacheId, $host, $port), $status);
-
-		return self::getDriverInstance($cacheId);
+	static function Memcache($host = '127.0.0.1', $port = 11211, $options = []) {
+		return new CacheStorage(Storage\Memcache::getInstance($host, $port), $options);
 	}
 
 	/**
 	 * Create a cache instance with Redis as cache driver.
 	 *
-	 * @param string $cacheId   Cache identifier.
-	 * @param string $host      Host where the Redis server is running.
-	 * @param int    $port      Port where Redis server is running.
-	 * @param bool   $status    Cache status.
+	 * @param string $host       Host where the Redis server is running.
+	 * @param int    $port       Port where Redis server is running.
+	 * @param array  $options    Cache options.
 	 *
-	 * @return CacheDriver
+	 * @return CacheStorage
 	 */
-	static function Redis($cacheId, $host = '127.0.0.1', $port = 6379, $status = true) {
-		self::addDriver(Drivers\Redis::getInstance($cacheId, $host, $port), $status);
-
-		return self::getDriverInstance($cacheId);
-	}
-
-	/**
-	 * Get driver instance for the given $cacheId.
-	 *
-	 * @param string $cacheId The identifier of the cache driver.
-	 *
-	 * @return CacheDriver
-	 * @throws CacheException
-	 */
-	static public function getDriverInstance($cacheId) {
-		if(!isset(self::$_driverInstances[$cacheId])) {
-			throw new CacheException('Cache driver instance not found for the key "' . $cacheId . '".');
-		}
-
-		$driver = self::$_driverInstances[$cacheId];
-
-		return $driver;
+	static function Redis($host = '127.0.0.1', $port = 6379, $options = []) {
+		return new CacheStorage(Storage\Redis::getInstance($host, $port), $options);
 	}
 }

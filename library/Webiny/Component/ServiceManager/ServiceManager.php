@@ -14,6 +14,11 @@ use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
+/**
+ * ServiceManager is the main class for working with services.
+ * @package         Webiny\Component\ServiceManager
+ */
+
 class ServiceManager
 {
 	use StdLibTrait, SingletonTrait, WebinyTrait;
@@ -22,6 +27,14 @@ class ServiceManager
 	private $_services;
 	private static $_references;
 
+	/**
+	 * Get service instance by given name nad optional arguments
+	 *
+	 * @param string     $serviceName Requested service name
+	 * @param null|array $arguments   (Optional) Arguments for service constructor
+	 *
+	 * @return object
+	 */
 	public function getService($serviceName, $arguments = null) {
 		return $this->_getService($serviceName, $arguments);
 	}
@@ -36,7 +49,7 @@ class ServiceManager
 		$serviceName = $this->str($serviceName)->trimLeft("@")->val();
 
 		// Check circular referencing
-		if(self::$_references->keyExists($serviceName)){
+		if(self::$_references->keyExists($serviceName)) {
 			throw new ServiceManagerException(ServiceManagerException::SERVICE_CIRCULAR_REFERENCE, [$serviceName]);
 		}
 
@@ -54,15 +67,17 @@ class ServiceManager
 			$this->_compiledConfig->key($serviceName, $configCompiler->compile());
 		}
 
-		// Store compiled config
+		/**
+		 * @var $config ServiceConfig
+		 */
 		$config = $this->_compiledConfig->key($serviceName);
 
 		// Check if arguments for overriding exist
-		if(!$this->isNull($arguments) && $this->isArray($arguments)){
+		if(!$this->isNull($arguments) && $this->isArray($arguments)) {
 			$compiler = new ConfigCompiler($serviceName);
 			$compiler->replaceArguments($config, $arguments);
 		}
-		
+
 		// Construct service container and get service instance
 		$serviceCreator = new ServiceCreator($config, $arguments);
 		$service = $serviceCreator->getService();
@@ -71,7 +86,7 @@ class ServiceManager
 		self::$_references->removeKey($serviceName);
 
 		// Store instance if this service has a CONTAINER scope
-		if($serviceCreator->getScope() == ServiceScope::CONTAINER) {
+		if($config->getScope() == ServiceScope::CONTAINER) {
 			$this->_services->key($serviceName, $service);
 		}
 

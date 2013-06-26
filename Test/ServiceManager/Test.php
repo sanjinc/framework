@@ -9,10 +9,10 @@ class Test
 	use ServiceManagerTrait;
 
 	function index() {
-		$service = $this->getService('logger.webiny_logger');
+		$service = $this->service('logger.webiny_logger');
 		$service->info('System booted!');
-		$service->debug('New log sent');
-		$service->emergency('Shit just hit the fan!');
+		$service->debug('Got a big file...');
+		$service->debug('Dumped a big file!');
 	}
 	
 }

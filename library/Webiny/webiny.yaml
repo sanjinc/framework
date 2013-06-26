@@ -98,40 +98,24 @@ components:
                 - {path: ^/admin, roles: ROLE_ADMIN}
                 - {path: ^/login}
 parameters:
-    logger.class: "\Webiny\Component\Logger\Logger"
-    logger.driver.class: "\Webiny\Component\Logger\Drivers\Webiny"
+    logger.class: \Webiny\Component\Logger\Logger
+    logger.driver.class: \Webiny\Component\Logger\Drivers\Webiny
+    logger.formatter.tray.class: \Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter
+    logger.processor.file_line.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor
+    logger.processor.memory_usage.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor
 
 services:
     logger:
-        drivers:
-            Webiny:
-                class: %logger.driver.class%
         handlers:
-            UDPTray:
-                class: "\Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler"
+            udp:
+                class: \Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler
                 arguments: [[], true, true]
                 calls:
-                    - [setFormatter, [@logger.formatters.Tray]]
-        formatters:
-            Tray:
-                class: "\Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter"
-        TrayLoggerAbstract:
-            abstract: true
-            class: "%logger.class%"
+                    - [addProcessor, [%logger.processor.file_line.class%]]
+                    - [addProcessor, [%logger.processor.memory_usage.class%]]
+                    - [setFormatter, [%logger.formatter.tray.class%]]
+        webiny_logger:
+            class: %logger.class%
+            arguments: [System, %logger.driver.class%]
             calls:
-              - [addHandler, [@logger.handlers.UDPTray]]
-        WebinySystem:
-            parent: @logger.TrayLoggerAbstract
-            arguments: ["System", @logger.drivers.Webiny]
-        WebinyEcommerce:
-            parent: logger.TrayLoggerAbstract
-            arguments: ["Ecommerce", "%logger.driver.class%"]
-    test:
-        MyFactory:
-            class: "\Webiny\Factory"
-            arguments: ["WebinySystem"]
-        MyService:
-            factory: @test.MyFactory
-            arguments: ["WebinyEcommerce"]
-            static: false
-            method: getInstance
+                - [addHandler, [@logger.handlers.udp]]
