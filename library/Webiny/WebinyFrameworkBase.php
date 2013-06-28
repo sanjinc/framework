@@ -12,10 +12,14 @@ namespace Webiny;
 use Webiny\Bridge\Cache\CacheStorageInterface;
 use Webiny\Component\Cache\Cache;
 use Webiny\Component\Cache\CacheStorage;
+use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\ClassLoader\ClassLoader;
 use Webiny\Component\Config\Config;
+use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\Security\Security;
 use Webiny\Component\ServiceManager\ServiceManager;
+use Webiny\Component\ServiceManager\ServiceManagerException;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\SingletonTrait;
 
@@ -40,7 +44,7 @@ use Webiny\StdLib\SingletonTrait;
 
 class WebinyFrameworkBase
 {
-	use SingletonTrait;
+	use SingletonTrait, CacheTrait, LoggerTrait;
 
 	/**
 	 * @var int Is the framework loaded or not.
@@ -97,15 +101,16 @@ class WebinyFrameworkBase
 		// system core
 		$this->_setupErrorEnvironment();
 		$this->_setupClassLoader();
-		#$this->_checkForCache();
-		#$this->_assignCacheToClassLoader();
+		$this->_setupSystemLogger();
+		$this->_checkForCache();
+		$this->_assignCacheToClassLoader();
 
 		// initialize other components
-		#$this->_setupSecurityLayer();
+		$this->_setupSecurityLayer();
 	}
 
 	/**
-	 * @return mixed
+	 * @return ConfigObject
 	 */
 	public function getConfig() {
 		return self::$_config;
@@ -176,8 +181,8 @@ class WebinyFrameworkBase
 	private function _checkForCache() {
 		try{
 			// we don't have to assign the cache anywhere, it will be stored in global cache registry
-			ServiceManager::getInstance()->getService('cache.'.self::WF_CACHE_ID);
-		}catch (Exception $e){
+			ServiceManager::getInstance()->getService('cache.'.WF::CACHE);
+		}catch (ServiceManagerException $e){
 			// system cache is not defined => omit the exception
 		}
 	}
@@ -209,12 +214,20 @@ class WebinyFrameworkBase
 		}
 	}
 
+	private function _setupSystemLogger(){
+		try{
+			$this->logger(WF::LOGGER)->info('System up and running');
+		}catch (\Exception $e){
+			// ignore
+		}
+	}
+
 	/**
 	 * Tries to get the system cache driver and pass it to ClassLoader component.
 	 */
 	private function _assignCacheToClassLoader() {
 		try{
-			$cache = Cache::getDriverInstance(WF::CACHE);
+			$cache = $this->cache(WF::CACHE);
 			ClassLoader::getInstance()->registerCacheDriver($cache);
 		}catch (\Exception $e){
 			// ignore

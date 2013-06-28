@@ -9,14 +9,22 @@
 
 namespace Webiny\Component\Cache;
 
+use Webiny\Component\Cache\Storage\Null;
+use Webiny\Component\ServiceManager\ServiceManager;
+use Webiny\Component\ServiceManager\ServiceManagerException;
+use Webiny\WF;
+
 /**
  * Cache trait.
  * The cache trait uses WebinyFrameworkBase since the framework stores th
  *
- * @package		 Webiny\
+ * @package         Webiny\
  */
- 
-trait CacheTrait{
+
+trait CacheTrait
+{
+
+	static private $_nullStorage = null;
 
 	/**
 	 * Returns instance of cache driver.
@@ -24,13 +32,21 @@ trait CacheTrait{
 	 *
 	 * @param string $cacheId Name of the cache driver
 	 *
-	 * @throws \Exception|CacheException
+	 * @throws \Exception|ServiceManagerException
 	 * @return CacheStorage
 	 */
-	function cache($cacheId = 'wfc'){
-		try{
-			return Cache::getDriverInstance($cacheId);
-		}catch (CacheException $e){
+	function cache($cacheId = WF::CACHE) {
+		try {
+			return ServiceManager::getInstance()->getService('cache.' . $cacheId);
+		} catch (ServiceManagerException $e) {
+			if($e->getCode() == ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND) {
+				if(is_null(self::$_nullStorage)) {
+					self::$_nullStorage = new Null();
+				}
+
+				return self::$_nullStorage;
+			}
+
 			throw $e;
 		}
 	}

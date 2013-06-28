@@ -151,13 +151,17 @@ class ConfigCompiler
 		$config = $this->_config;
 
 		foreach ($namespaces as $namespace) {
+			if(empty($config[$namespace])){
+				throw new ServiceManagerException(ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND, [$this->_serviceName]);
+			}
+
 			$config = $config[$namespace];
 		}
 
-		if($this->isNull($config)) {
+/*		if($this->isNull($config)) {
 			throw new ServiceManagerException(ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND, [$this->_serviceName]);
 		}
-
+*/
 		return $this->arr($config);
 	}
 

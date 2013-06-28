@@ -17,8 +17,8 @@ namespace Webiny;
  
 final class WF
 {
-	const CACHE = 'WebinyCache';
-	const LOGGER = 'WebinySystemLogger';
+	const CACHE = 'webiny_cache';
+	const LOGGER = 'webiny_logger';
 
 	private function __construct(){}
 }
