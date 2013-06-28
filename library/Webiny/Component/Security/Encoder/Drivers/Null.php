@@ -39,7 +39,6 @@ class Null implements EncoderDriverInterface{
 	 * @return bool True if $password matches $hash. Otherwise false is returned.
 	 */
 	function verifyPasswordHash($password, $hash) {
-		die($password.' => '.$hash);
 		return ($password===$hash);
 	}
 }

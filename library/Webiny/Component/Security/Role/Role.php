@@ -7,7 +7,7 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Security\Authorization;
+namespace Webiny\Component\Security\Role;
 
 /**
  * Description

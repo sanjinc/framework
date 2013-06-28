@@ -14,10 +14,11 @@ use Webiny\Component\Security\User\UserAbstract;
 /**
  * Token storage interface.
  *
- * @package		 Webiny\Component\Security\User\TokenStorage
+ * @package         Webiny\Component\Security\User\TokenStorage
  */
- 
-interface TokenStorageInterface{
+
+interface TokenStorageInterface
+{
 
 	/**
 	 * This function provides the token name to the storage.
@@ -29,11 +30,11 @@ interface TokenStorageInterface{
 	/**
 	 * Save user authentication token.
 	 *
-	 * @param UserAbstract $user
+	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */
-	function saveUserToken($user);
+	function saveUserToken(UserAbstract $user);
 
 	/**
 	 * Check if auth token is present, if true, try to load the right user and return it's username.

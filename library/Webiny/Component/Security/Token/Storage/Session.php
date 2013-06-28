@@ -17,22 +17,24 @@ use Webiny\Component\Security\User\UserAbstract;
 /**
  * Session token provider.
  *
- * @package		 Webiny\Component\Security\User\Token\Storage
+ * @package         Webiny\Component\Security\User\Token\Storage
  */
 
-class Session extends TokenStorageAbstract{
+class Session extends TokenStorageAbstract
+{
 
 	use HttpTrait;
 
 	/**
 	 * Save user authentication token.
 	 *
-	 * @param UserAbstract $user
+	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */
-	function saveUserToken($user) {
-		return $this->request()->session()->save($this->getTokenName(), $this->encryptUserData($user));
+	function saveUserToken(UserAbstract $user) {
+		return $this->request()->session()
+			   ->save($this->getTokenName(), $this->encryptUserData($user));
 	}
 
 	/**
@@ -42,7 +44,7 @@ class Session extends TokenStorageAbstract{
 	 */
 	function loadUserFromToken() {
 		$token = $this->request()->session()->get($this->getTokenName());
-		if(!$token){
+		if(!$token) {
 			return false;
 		}
 

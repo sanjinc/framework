@@ -9,6 +9,9 @@
 
 namespace Webiny\Component\Security\User;
 
+use Webiny\Component\Security\Token\TokenData;
+use Webiny\StdLib\StdLibTrait;
+
 /**
  * This is the abstract user class with common helpers functions for UserProviders.
  * You can optionally extend this class if you want to inherit the common getter functions.
@@ -18,6 +21,7 @@ namespace Webiny\Component\Security\User;
 
 abstract class UserAbstract implements UserInterface
 {
+	use StdLibTrait;
 
 	private $_username = '';
 	private $_password = '';
@@ -29,7 +33,7 @@ abstract class UserAbstract implements UserInterface
 	 *
 	 * @param string $username        Username.
 	 * @param string $password        Hashed password.
-	 * @param array  $roles           Array of assigned roles.
+	 * @param array  $roles           Array of the assigned roles.
 	 * @param bool   $isAuthenticated Boolean flag that tells us if user is already authenticated or not.
 	 */
 	function populate($username, $password, array $roles, $isAuthenticated = false) {
@@ -73,15 +77,6 @@ abstract class UserAbstract implements UserInterface
 	}
 
 	/**
-	 * Return the full class name of current provider.
-	 *
-	 * @return string
-	 */
-	public function getProviderName(){
-		return get_called_class();
-	}
-
-	/**
 	 * Check if user is already authenticated.
 	 *
 	 * @return bool True if user is authenticated, otherwise false.
@@ -95,7 +90,22 @@ abstract class UserAbstract implements UserInterface
 	 *
 	 * @param $bool
 	 */
-	function setIsAuthenticated($bool) {
+	public function setIsAuthenticated($bool) {
 		$this->_isAuthenticated = $bool;
+	}
+
+	/**
+	 * This method compares the $tokenData against the current user and returns true if users are identical,
+	 * otherwise false is returned.
+	 *
+	 * @param TokenData $tokenData
+	 *
+	 * @return bool
+	 */
+	public function isTokenValid(TokenData $tokenData) {
+		$currentUser = $this->str($this->getUsername() . implode(',', $this->getRoles()))->hash('md5');
+		$tokenUser = $this->str($tokenData->getUsername() . implode(',', $tokenData->getRoles()))->hash('md5');
+
+		return ($currentUser == $tokenUser);
 	}
 }
