@@ -423,11 +423,11 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @throws ConfigException
 	 */
 	public static function determineResourceType($resource) {
-		if(self::isArray($resource) || self::isArrayobject($resource)) {
+		if(self::isArray($resource) || self::isArrayObject($resource)) {
 			return self::ARRAY_RESOURCE;
 		} elseif(self::isFile($resource) || self::isFileObject($resource)) {
 			return self::FILE_RESOURCE;
-		} elseif(self::isString($resource) || self::isStringobject($resource)) {
+		} elseif(self::isString($resource) || self::isStringObject($resource)) {
 			return self::STRING_RESOURCE;
 		}
 		throw new ConfigException("Given ConfigObject resource is not allowed!");
