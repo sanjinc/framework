@@ -95,7 +95,7 @@ class ConfigCompiler
 			$configCalls = $config->key('!calls');
 			$overrideCalls = true;
 		}
-		$parentCalls = $parentConfig->key('calls');
+		$parentCalls = $parentConfig->key('calls', [], true);
 
 		// Merge basic values
 		$config = $parentConfig->merge($config);
