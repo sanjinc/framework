@@ -76,7 +76,7 @@ class YourHandler{
 }
 ```
 
-If you want to use custom `Event` data types, refer to section [Custom event classes](#custom-events)
+If you want to use custom `Event` data types, refer to section [Custom event classes](#custom-event-classes)
 
 ## Firing events using a wildcard
 You can also use wildcard to fire multiple events at once. The following code will fire all events starting with `event.` and pass `$data` to each one of them:
@@ -99,7 +99,7 @@ $this->eventManager()->fire('some.event');
 
 After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority, the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandler`, `customHandler`, `thirdCustomHandler`. Default priority is `101`, so `thirdCustomHandler` is executed last.
 
-## <a id="custom-events"></a>Custom event classes
+## Custom event classes
 
 When firing events, you can also pass your own event classes, that extend generic `Event` class. For example, you want to fire an event called `cms.page_saved` and pass the `Page` object. Of course, you could simply pass an array like `['page' => $pageObject]`, but for the sake of the example, let's pretend it's more complicated than that:
 
