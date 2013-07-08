@@ -73,7 +73,7 @@ class EventManager
 	/**
 	 * Fire event
 	 *
-	 * @param string $eventName Event to fire
+	 * @param string $eventName Event to fire. You can also use wildcards to fire multiple events at once, ex: 'event.*'
 	 * @param mixed|Event  $data
 	 *
 	 * @param null   $resultType

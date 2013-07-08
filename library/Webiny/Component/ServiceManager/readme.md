@@ -230,3 +230,44 @@ If you do need to access ServiceManager class directly, use it like this:
 ```php
 ServiceManager::getInstance()->getService('your.service')
 ```
+
+## Accessing services by tags
+You can group services by using tags and load all of related services using single call. To achieve that, you need to add `tags` key to your service configuration:
+
+
+```yaml
+services:   
+    logger:
+        webiny_system:
+            parent: @logger.tray_logger_abstract
+            !calls:
+            - [setSomething, [someParameter]]
+            tags: [logger]
+        webiny_custom:
+            parent: @logger.tray_logger_abstract
+            tags: [logger, custom_logger]
+```
+
+Now execute the following piece of code. The result will be an array containing two services: `webiny_system` and `webiny_custom`:
+
+```php
+class YourClass{
+    use ServiceManagerTrait;
+    
+    public function yourMethod(){
+        $services = $this->servicesByTag('logger');
+    }
+}
+```
+
+You can also tell `ServiceManager` to filter the services using a given interface or a class name. It fill first fetch all services containing the requested tag and then filter them using the given class or interface name, before returning the final resultset to you. This way you are sure you only get what you need and don't have to make checks yourself, resulting in a cleaner code:
+
+```php
+class YourClass{
+    use ServiceManagerTrait;
+    
+    public function yourMethod(){
+        $services = $this->servicesByTag('cms_plugin', '\Your\Expected\Class\Or\Interface');
+    }
+}
+```
