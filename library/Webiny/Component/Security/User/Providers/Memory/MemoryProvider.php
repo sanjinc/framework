@@ -58,8 +58,10 @@ class MemoryProvider implements UserProviderInterface
 				$data['password'] = '';
 			}
 
-			if(!isset($data['roles']) || !$this->isArray($data['roles'])){
+			if(!isset($data['roles']) || empty($data['roles'])){
 				$data['roles'] = [];
+			}else{
+				$data['roles'] = (array) $data['roles'];
 			}
 
 			$this->_users[$username] = $data;

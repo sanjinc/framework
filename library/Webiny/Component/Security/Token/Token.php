@@ -63,9 +63,9 @@ class Token
 	}
 
 	/**
-	 * Tries to load current user from token.
+	 * Tries to load current user from token and if succeeds, an instance of TokenData is returned.
 	 *
-	 * @return bool|UserAbstract UserAbstract is returned is the token exists, otherwise false is returned.
+	 * @return bool|TokenData Instance of TokenData is returned is the token exists, otherwise false is returned.
 	 */
 	function getUserFromToken() {
 		return $this->_storage->loadUserFromToken();

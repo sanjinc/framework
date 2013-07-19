@@ -54,7 +54,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	 * @return string
 	 */
 	function encryptUserData(UserAbstract $user) {
-		// data (we user short syntax to reduce the size of the cookie or session)
+		// data (we use short syntax to reduce the size of the cookie or session)
 		$data = [
 			// username
 			'u'  => $user->getUsername(),
@@ -68,7 +68,8 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	}
 
 	/**
-	 * Decrypts the provided $tokenData, unserializes the string and tries to recreate and return the user object.
+	 * Decrypts the provided $tokenData, unserializes the string, creates an instance of TokenData and validates it.
+	 * If TokenData is valid, its instance is returned, otherwise false is returned.
 	 *
 	 * @param string $tokenData Encrypted data.
 	 *

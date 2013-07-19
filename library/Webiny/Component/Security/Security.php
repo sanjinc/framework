@@ -11,10 +11,13 @@ namespace Webiny\Component\Security;
 
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Security\Authentication\Firewall;
+use Webiny\Component\Security\Authorization\AccessControl;
 use Webiny\Component\Security\Encoder\Encoder;
+use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
 use Webiny\Component\ServiceManager\ServiceManager;
 use Webiny\Component\ServiceManager\ServiceManagerException;
+use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
@@ -36,6 +39,7 @@ class Security
 	private $_firewall;
 	private $_encoders = [];
 	private $_userProviders = [];
+	private $_roleHierarchy;
 
 	/**
 	 * Initializes the security layer.
@@ -75,7 +79,8 @@ class Security
 			throw new SecurityException($e);
 		}
 
-		// setup authentication layer - firewalls -> we only keep the firewall that accepts the request
+		// setup authentication layer - firewalls -> we only keep the firewall that accepts the current request
+		$user = false;
 		$firewalls = $this->_getConfig()->get('firewalls', []);
 		foreach ($firewalls as $firewallKey => $firewallConfig) {
 			$this->_firewall = new Firewall($firewallKey,
@@ -83,18 +88,48 @@ class Security
 											$this->_getFirewallProviders($firewallKey),
 											$this->_getFirewallEncoder($firewallKey));
 
-			$user = $this->_firewall->init();
-
-			if($user) {
+			if($this->_firewall){
 				break;
 			}
 		}
+		// lets validate the user
+		$user = $this->_firewall->init();
+		if((!$user || !$user->isAuthenticated()) && !$this->_firewall->getAnonymousAccess()){
+			//launch the auth process because user is not authenticated
+			try{
+				$user = $this->_firewall->setupAuth();
+			}catch (\Exception $e){
+				throw $e;
+			}
 
-		// read roles
-		die(print_r($user));
+			if(!$user){
+				throw new Exception('Unable to authenticate the user.');
+			}
+		}
 
+		// read role hierarchy
+		$roleHierarchy = new RoleHierarchy($this->_getConfig()->role_hierarchy->toArray());
 
-		// check if user has access based on his role
+		// update users roles based on the role hierarchy
+		$user->setRoles($roleHierarchy->getAccessibleRoles($user->getRoles()));
+
+		// process access control
+		$accessControl = new AccessControl($user, $this->_getConfig()->get('access_control', false));
+		if(!$accessControl->isUserAllowedAccess()){
+			echo 'acc invalid';
+			die(print_r($user));
+			try{
+				$user = $this->_firewall->setupAuth();
+			}catch (\Exception $e){
+				throw $e;
+			}
+
+			if(!$user){
+				throw new Exception('Unable to authenticate the user.');
+			}
+		}
+		print_r($user);
+		#die('accout valid');
 	}
 
 	/**

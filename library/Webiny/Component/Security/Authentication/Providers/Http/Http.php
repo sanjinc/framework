@@ -49,6 +49,8 @@ class Http implements AuthenticationInterface
 	}
 
 	/**
+	 * This method is triggered when the user opens the login page.
+	 * On this page you must ask the user to provide you his credentials which should then be passed to the login submit page.
 	 * @param ConfigObject $config Firewall config
 	 *
 	 * @return mixed
@@ -69,10 +71,11 @@ class Http implements AuthenticationInterface
 		}
 
 		// once we get the username and password, we store them into the session and redirect to login submit path
-		if($this->request()->server()->get(self::USERNAME, '')!='') { // php Basic HTTP auth
+		if($this->request()->server()->get(self::USERNAME, '')!='' && $this->request()->session()->get('logout', 'false')!='true') { // php Basic HTTP auth
 			$username = $this->request()->server()->get(self::USERNAME);
 			$password = $this->request()->server()->get(self::PASSWORD);
 		} else {
+			$this->request()->session()->delete('logout');
 			die('Your are not authenticated.');
 		}
 
@@ -80,29 +83,6 @@ class Http implements AuthenticationInterface
 		$this->request()->session()->save('password', $password);
 
 		$this->request()->redirect($config->login->submit_path);
-	}
-
-	function httpDigestParse($txt) {
-		// protect against missing data
-		$needed_parts = ['nonce'    => 1,
-						 'nc'       => 1,
-						 'cnonce'   => 1,
-						 'qop'      => 1,
-						 'username' => 1,
-						 'uri'      => 1,
-						 'response' => 1
-		];
-		$data = [];
-		$keys = implode('|', array_keys($needed_parts));
-
-		preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
-
-		foreach ($matches as $m) {
-			$data[$m[1]] = $m[3] ? $m[3] : $m[4];
-			unset($needed_parts[$m[1]]);
-		}
-
-		return $needed_parts ? false : $data;
 	}
 
 	/**
@@ -122,11 +102,11 @@ class Http implements AuthenticationInterface
 	 * @param UserAbstract $user
 	 */
 	function loginSuccessfulCallback(UserAbstract $user) {
-		// noting to do
+		// nothing to do
 	}
 
 	/**
-	 * This callback is triggered when the system has managed to retrieve the user from the storred token (either session)
+	 * This callback is triggered when the system has managed to retrieve the user from the stored token (either session)
 	 * or cookie.
 	 *
 	 * @param UserAbstract $user
@@ -136,5 +116,11 @@ class Http implements AuthenticationInterface
 	 */
 	function userAuthorizedByTokenCallback(UserAbstract $user, Token $token) {
 		// nothing to do
+	}
+
+	function logoutCallback() {
+		$this->invalidLoginProvidedCallback();
+		$this->request()->session()->delete('login_retry');
+		$this->request()->session()->save('logout', 'true');
 	}
 }
