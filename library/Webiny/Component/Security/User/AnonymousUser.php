@@ -9,6 +9,9 @@
 
 namespace Webiny\Component\Security\User;
 
+use Webiny\Component\Security\Authentication\Providers\Login;
+use Webiny\Component\Security\Encoder\Encoder;
+
 /**
  * Anonymous user class.
  * This is the user class that is created if we cannot identify the user.
@@ -25,4 +28,15 @@ class AnonymousUser extends UserAbstract{
 		parent::populate('anonymous', '', [], false);
 	}
 
+	/**
+	 * This method verifies the credentials of current user with the credentials provided from the Login object.
+	 *
+	 * @param Login   $login
+	 * @param Encoder $encoder
+	 *
+	 * @return bool Return true if credentials are valid, otherwise return false.
+	 */
+	function authenticate(Login $login, Encoder $encoder) {
+		return true;
+	}
 }

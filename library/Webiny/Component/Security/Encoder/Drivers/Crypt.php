@@ -31,7 +31,7 @@ class Crypt implements EncoderDriverInterface{
 	 *
 	 * @param string $crypt Name of the crypt service.
 	 *
-	 * @throw \Exception
+	 * @throw    \Exception
 	 */
 	public function __construct($cryptName){
 		try{

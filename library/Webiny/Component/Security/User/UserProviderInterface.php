@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\User;
 
-use Webiny\Component\Security\Encoder\EncoderDriverInterface;
+use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 
 /**
@@ -22,12 +22,12 @@ interface UserProviderInterface
 {
 
 	/**
-	 * Get the user from user provided for the given $username.
+	 * Get the user from user provided for the given instance of Login object.
 	 *
-	 * @param string $username Username
+	 * @param Login $login Instance of Login object.
 	 *
 	 * @return UserAbstract
 	 * @throws UserNotFoundException
 	 */
-	function getUserByUsername($username);
+	function getUser(Login $login);
 }

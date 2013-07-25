@@ -10,7 +10,7 @@
 namespace Webiny\Component\Security\Role;
 
 /**
- * Description
+ * This class holds the name of current role.
  *
  * @package		 Webiny\Component\Security\Authorization
  */
@@ -21,7 +21,7 @@ class Role{
 	/**
 	 * Constructor.
 	 *
-	 * @param string $role The role name
+	 * @param string $role The role name.
 	 */
 	public function __construct($role)
 	{
@@ -29,6 +29,8 @@ class Role{
 	}
 
 	/**
+	 * Returns the name of the role.
+	 *
 	 * @return string
 	 */
 	public function getRole()

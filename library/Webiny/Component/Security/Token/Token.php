@@ -34,6 +34,15 @@ class Token
 	private $_storage;
 	private $_rememberMe = false;
 
+	/**
+	 * Base constructor.
+	 *
+	 * @param string $tokenName  Name of the token.
+	 * @param bool   $rememberMe Do you want to store the token into cookie, or not. If you don't store it into cookie, the
+	 *                           token is only valid for current session.
+	 *
+	 * @throws TokenException
+	 */
 	function __construct($tokenName, $rememberMe = false) {
 
 		$this->_rememberMe = $rememberMe;

@@ -11,10 +11,14 @@ Security Component
 5. The authenticated user re-tries the original request.
 
 # TODO
-Voters:
-http://symfony.com/doc/current/cookbook/security/voters.html
-http://kriswallsmith.net/post/15994931191/symfony2-security-voters
+Na token storage-u vidi da encKey provučemo negdje kroz konfiguraciju
+Ubaci evente unutar security-a
+Provuci čitanje votera preko taga iz service manager-a
+Dodaj još par oauth2 login sistema.
+Vidi što je sa twitterom.
+SecurityTrait
+Dokumentacija!?!?
+
 
 STAO:
-1. FORM login sada radi submit i logira korisnika..sada napravi form logout te zatim JAKO dobro testiraj access rules
-4. oauth login?!?!
+-> problem je kod logout-a sta se ne moze trigerati logoutCallback jer se ne moze loadati auth provider

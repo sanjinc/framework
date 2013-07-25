@@ -51,13 +51,4 @@ class TokenData
 	function getRoles(){
 		return $this->_roles;
 	}
-
-	/**
-	 * Checks if the token is still valid or if it has expired.
-	 *
-	 * @return bool True if token is still valid.
-	 */
-	function isValid(){
-		return !$this->datetime()->setTimestamp($this->_validUntil)->isPast();
-	}
 }
