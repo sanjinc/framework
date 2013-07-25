@@ -7,11 +7,16 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\
+namespace Webiny\Component\Security;
+
+use Webiny\StdLib\Exception\ExceptionAbstract;
 
 /**
- * Description
+ * Security exception class.
  *
- * @package		 Webiny\
+ * @package         Webiny\Component\Security
  */
- 
+
+class SecurityException extends ExceptionAbstract
+{
+}

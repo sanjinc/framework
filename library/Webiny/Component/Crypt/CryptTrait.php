@@ -9,6 +9,8 @@
 
 namespace Webiny\Component\Crypt;
 
+use Webiny\Component\ServiceManager\ServiceManager;
+
 /**
  * Crypt trait.
  *
@@ -17,18 +19,19 @@ namespace Webiny\Component\Crypt;
  
 trait CryptTrait{
 
-	private $_wfCryptInstance;
-
 	/**
 	 * Get Crypt component instance.
 	 *
+	 * @param string $cryptId Name of the crypt service.
+	 *
+	 * @throws \Exception|ServiceManagerException
 	 * @return Crypt
 	 */
-	function crypt(){
-		if(!isset($this->_wfCryptInstance)){
-			$this->_wfCryptInstance = new Crypt();
+	function crypt($cryptId = 'webiny_crypt'){
+		try {
+			return ServiceManager::getInstance()->getService('crypt.' . $cryptId);
+		} catch (ServiceManagerException $e) {
+			throw $e;
 		}
-
-		return $this->_wfCryptInstance;
 	}
 }

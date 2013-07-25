@@ -183,7 +183,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @param  string $name
 	 * @param  mixed  $default
 	 *
-	 * @return mixed Config value or default value
+	 * @return mixed|ConfigObject Config value or default value
 	 */
 	public function get($name, $default = null) {
 		if($this->str($name)->contains('.')){

@@ -45,7 +45,7 @@ class Session{
 		if(isset($options->storage->driver) && $options->storage->driver!='native'){
 			$saveHandler = $options->storage->driver;
 		}else{
-			$saveHandler = '\Webiny\Component\Http\Request\Session\Storage\Native';
+			$saveHandler = '\Webiny\Component\Http\Request\Session\Storage\NativeStorage';
 		}
 
 		try{
@@ -78,7 +78,7 @@ class Session{
 	 * @return string Value of the given $key.
 	 */
 	function get($key, $value=null){
-		$return = $this->_sessionBag->key($key, $value, false);
+		$return = $this->_sessionBag->key($key, $value, true);
 		$_SESSION[$key] = $return;
 
 		return $return;

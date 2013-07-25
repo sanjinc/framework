@@ -26,7 +26,7 @@ class NativeStorage extends \SessionHandler implements SessionStorageInterface{
 	 * @param ConfigObject $config Session config.
 	 */
 	function __construct(ConfigObject $config) {
-		parent::__construct();
+
 	}
 
 }

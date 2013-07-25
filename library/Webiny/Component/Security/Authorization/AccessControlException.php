@@ -9,16 +9,12 @@
 
 namespace Webiny\Component\Security\Authorization;
 
+use Webiny\StdLib\Exception\ExceptionAbstract;
+
 /**
- * Description
+ * Access controll exception class.
  *
  * @package		 Webiny\Component\Security\Authorization
  */
  
-class Authorization{
-
-	function __construct($accessControl){
-
-	}
-
-}
+class AccessControlException extends ExceptionAbstract{}

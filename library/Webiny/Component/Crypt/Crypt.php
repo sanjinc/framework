@@ -25,18 +25,18 @@ class Crypt
 	/**
 	 * @var null|CryptInterface
 	 */
-	static private $_driverInstance = null;
+	private $_driverInstance = null;
 
 
 	/**
 	 * Create a Crypt instance.
 	 */
-	public function __construct() {
-		if($this->isNull(self::$_driverInstance)) {
+	public function __construct($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector) {
+		if($this->isNull($this->_driverInstance)) {
 			try {
-				self::$_driverInstance = \Webiny\Bridge\Crypt\Crypt::getInstance();
+				$this->_driverInstance = \Webiny\Bridge\Crypt\Crypt::getInstance($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector);
 
-				if(!$this->isInstanceOf(self::$_driverInstance, '\Webiny\Bridge\Crypt\CryptInterface')) {
+				if(!$this->isInstanceOf($this->_driverInstance, '\Webiny\Bridge\Crypt\CryptInterface')) {
 					throw new CryptException('The provided bridge does not implement the required
 												interface "\Webiny\Bridge\Crypt\CryptInterface"');
 				}
@@ -57,7 +57,7 @@ class Crypt
 	 */
 	function generateRandomInt($min, $max) {
 		try {
-			return self::$_driverInstance->generateRandomInt($min, $max);
+			return $this->_driverInstance->generateRandomInt($min, $max);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -75,7 +75,7 @@ class Crypt
 	 */
 	function generateRandomString($length, $chars = ''){
 		try {
-			return self::$_driverInstance->generateRandomString($length, $chars);
+			return $this->_driverInstance->generateRandomString($length, $chars);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -92,7 +92,7 @@ class Crypt
 	 */
 	function generateUserReadableString($length) {
 		try {
-			return self::$_driverInstance->generateUserReadableString($length);
+			return $this->_driverInstance->generateUserReadableString($length);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -109,7 +109,7 @@ class Crypt
 	 */
 	function generateHardReadableString($length) {
 		try {
-			return self::$_driverInstance->generateHardReadableString($length);
+			return $this->_driverInstance->generateHardReadableString($length);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -127,7 +127,7 @@ class Crypt
 	 */
 	function createPasswordHash($password) {
 		try {
-			return self::$_driverInstance->createPasswordHash($password);
+			return $this->_driverInstance->createPasswordHash($password);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -144,7 +144,7 @@ class Crypt
 	 */
 	function verifyPasswordHash($password, $hash) {
 		try {
-			return self::$_driverInstance->verifyPasswordHash($password, $hash);
+			return $this->_driverInstance->verifyPasswordHash($password, $hash);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -165,7 +165,7 @@ class Crypt
 	 */
 	function encrypt($string, $key, $initializationVector = null) {
 		try {
-			return self::$_driverInstance->encrypt($string, $key, $initializationVector);
+			return $this->_driverInstance->encrypt($string, $key, $initializationVector);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}
@@ -186,7 +186,7 @@ class Crypt
 	 */
 	function decrypt($string, $key, $initializationVector = null) {
 		try {
-			return self::$_driverInstance->decrypt($string, $key, $initializationVector);
+			return $this->_driverInstance->decrypt($string, $key, $initializationVector);
 		} catch (\Exception $e) {
 			throw new CryptException($e->getMessage());
 		}

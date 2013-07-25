@@ -9,6 +9,11 @@
 
 namespace Webiny\Component\Security\User;
 
+use Webiny\Component\Security\Role\Role;
+use Webiny\Component\Security\Token\TokenData;
+use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+
 /**
  * This is the abstract user class with common helpers functions for UserProviders.
  * You can optionally extend this class if you want to inherit the common getter functions.
@@ -18,25 +23,46 @@ namespace Webiny\Component\Security\User;
 
 abstract class UserAbstract implements UserInterface
 {
+	use StdLibTrait;
 
+	/**
+	 * @var string Users username.
+	 */
 	private $_username = '';
+
+	/**
+	 * @var string Users password.
+	 */
 	private $_password = '';
+
+	/**
+	 * @var bool Is user authenticated flag.
+	 */
 	private $_isAuthenticated = false;
-	private $_roles = [];
+
+	/**
+	 * @var ArrayObject An list of user roles.
+	 */
+	private $_roles;
 
 	/**
 	 * Populate the user object.
 	 *
 	 * @param string $username        Username.
 	 * @param string $password        Hashed password.
-	 * @param array  $roles           Array of assigned roles.
+	 * @param array  $roles           Array of the assigned roles.
 	 * @param bool   $isAuthenticated Boolean flag that tells us if user is already authenticated or not.
 	 */
 	function populate($username, $password, array $roles, $isAuthenticated = false) {
+		// store general data
 		$this->_username = $username;
 		$this->_password = $password;
-		$this->_roles = $roles;
 		$this->_isAuthenticated = $isAuthenticated;
+
+		$this->_roles = $this->arr([]);
+		foreach($roles as $r){
+			$this->_roles->append(new Role($r));
+		}
 	}
 
 	/**
@@ -58,7 +84,7 @@ abstract class UserAbstract implements UserInterface
 	 * @return array List of assigned roles.
 	 */
 	public function getRoles() {
-		return $this->_roles;
+		return $this->_roles->val();
 	}
 
 	/**
@@ -69,16 +95,7 @@ abstract class UserAbstract implements UserInterface
 	 * @return bool True if user has the role, otherwise false.
 	 */
 	public function hasRole($role) {
-		return in_array($role, $this->getRoles(), false);
-	}
-
-	/**
-	 * Return the full class name of current provider.
-	 *
-	 * @return string
-	 */
-	public function getProviderName(){
-		return get_called_class();
+		return $this->_roles->keyExists($role, false);
 	}
 
 	/**
@@ -95,7 +112,40 @@ abstract class UserAbstract implements UserInterface
 	 *
 	 * @param $bool
 	 */
-	function setIsAuthenticated($bool) {
+	public function setIsAuthenticated($bool) {
 		$this->_isAuthenticated = $bool;
+	}
+
+	/**
+	 * This method compares the $tokenData against the current user and returns true if users are identical,
+	 * otherwise false is returned.
+	 *
+	 * @param TokenData $tokenData
+	 *
+	 * @return bool
+	 */
+	public function isTokenValid(TokenData $tokenData) {
+		$roles = [];
+		foreach($this->_roles as $role){
+			$roles[] = $role->getRole();
+		}
+		$currentUser = $this->str($this->getUsername() . implode(',', $roles))->hash('md5');
+
+		$tokenRoles = [];
+		foreach($tokenData->getRoles() as $role){
+			$tokenRoles[] = $role->getRole();
+		}
+		$tokenUser = $this->str($tokenData->getUsername() . implode(',', $tokenRoles))->hash('md5');
+
+		return ($currentUser == $tokenUser);
+	}
+
+	/**
+	 * Sets the user roles.
+	 *
+	 * @param array $roles An array of Role instances.
+	 */
+	public function setRoles(array $roles){
+		$this->_roles = $this->arr($roles);
 	}
 }

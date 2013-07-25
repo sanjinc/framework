@@ -7,21 +7,13 @@
 
 system:
     display_errors: true
-    cache: false
-        #wfc:
-        #    driver: '\Webiny\Component\Cache\Drivers\Couchbase::getInstance'
-        #    params:
-        #        user: 'webiny'
-        #        pass: ''
-        #        bucket: 'default'
-        #        host: '127.0.0.1:8091'
     environment: 'development'
 bridges:
-    cache: false
-        #apc: '\Webiny\Bridge\Cache\Memory\APC'
-        #couchbase: '\Webiny\Bridge\Cache\Memory\Couchbase'
-        #memcache: '\Webiny\Bridge\Cache\Memory\Memcache'
-        #redis: '\Webiny\Bridge\Cache\Memory\Redis'
+    cache:
+        apc: '\Webiny\Bridge\Cache\Memory\APC'
+        couchbase: '\Webiny\Bridge\Cache\Memory\Couchbase'
+        memcache: '\Webiny\Bridge\Cache\Memory\Memcache'
+        redis: '\Webiny\Bridge\Cache\Memory\Redis'
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
 additional_libraries:
@@ -42,17 +34,12 @@ components:
             udp:
                 host: 192.168.1.10:41234
         tray: 192.168.1.10:5000
-    crypt:
-        password_algo: 'Blowfish'
-        cipher_mode: 'CCM'
-        cipher_block: 'rijndael-128'
-        cipher_initialization_vector: '_FOO_VECTOR'
-    #http:
+    http:
         session:
             storage:
                 driver: '\Webiny\Component\Http\Request\Session\Storage\CacheStorage'
                 params:
-                    cache_id: 'wfc'
+                    cache_id: 'webiny_cache'
             prefix: 'wfs_'
             expiretime: 86400
         trusted_proxies: ['192.168.1.9', '192.168.1.128', '127.0.0.1']
@@ -67,44 +54,59 @@ components:
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400
-#security:
-    firewall:
+security:
+    encoders:
+        default:
+            driver: '\Webiny\Component\Security\Encoder\Drivers\Crypt'
+            params: ['webiny_crypt']
+            salt: 'CHANGE THIS SECRET'
+    providers:
+        memory:
+            sven: {password: delmania, roles: 'ROLE_USER'}
+            admin: {password: pero, roles: 'ROLE_ADMIN'}
+    chain_providers:
+        default_chain: ['memory']
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
+    access_control:
+        - {path: ^/admin, roles: ROLE_ADMIN}
+        - {path: ^/login}
+    firewalls:
         administration:
             realm_name: 'My administration realm'
-            url_pattern: '^/'
+            url_pattern: '^/Test/'
             anonymous: false
             remember_me: true
+            #encoder: default
+            provider: default_chain
             login:
                 path: '/Test/login.php'
-                provider: 'Webiny\Component\Security\Authentication\Http'
+                submit_path: '/Test/loginsubmit.php'
+                provider: 'Webiny\Component\Security\Authentication\Providers\Http\Http'
             logout:
                 path: '/logout'
                 target: '/'
-            encoder:
-                driver: '\Webiny\Component\Security\Encoder\Drivers\Crypt'
-                salt: 'I_WANT_TO_KEEP_THIS_A_SECRET'
-            providers:
-                #session:
-                #   driver: '\Webiny\Component\Security\UserProviders\Session'
-                #   params:
-                memory:
-                    sven: {password: delmania, roles: 'ROLE_USER'}
-                    admin: {password: admin, roles: 'ROLE_ADMIN'}
-            #provider_chain: ['session', 'memory']
-            role_hierarchy:
-                ROLE_ADMIN: ROLE_USER
-                ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
-            access_control:
-                - {path: ^/admin, roles: ROLE_ADMIN}
-                - {path: ^/login}
+
 parameters:
     logger.class: \Webiny\Component\Logger\Logger
     logger.driver.class: \Webiny\Component\Logger\Drivers\Webiny
     logger.formatter.tray.class: \Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter
     logger.processor.file_line.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor
     logger.processor.memory_usage.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor
+    cache.class: '\Webiny\Component\Cache\Cache'
+    crypt.class: '\Webiny\Component\Crypt\Crypt'
 
 services:
+    crypt:
+        webiny_crypt:
+            class: %crypt.class%
+            arguments: ['Blowfish', 'CCM', 'rijndael-128', '_FOO_VECTOR']
+    cache:
+        webiny_cache:
+            factory: "%cache.class%"
+            method: "Couchbase"
+            method_arguments: ["webiny", '', "default"]
     logger:
         handlers:
             udp:

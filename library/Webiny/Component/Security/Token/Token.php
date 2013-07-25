@@ -18,28 +18,30 @@ use Webiny\WebinyTrait;
 /**
  * Token abstract.
  *
- * @package		 Webiny\Component\Security\User\Token
+ * @package         Webiny\Component\Security\User\Token
  */
- 
-class Token {
+
+class Token
+{
 	use WebinyTrait, FactoryLoaderTrait;
 
 	const TOKEN_COOKIE_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
 	const TOKEN_SESSION_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
 
 	/**
-	 * @var TokenStorageInterface
+	 * @var TokenStorageAbstract
 	 */
 	private $_storage;
 	private $_rememberMe = false;
 
-	function __construct($tokenName, $rememberMe = false){
+	function __construct($tokenName, $rememberMe = false) {
 
 		$this->_rememberMe = $rememberMe;
 
-		try{
-			$this->_storage = $this->factory($this->_getStorageName(), '\Webiny\Component\Security\Token\TokenStorageAbstract');
-		}catch (Exception $e){
+		try {
+			$this->_storage = $this->factory($this->_getStorageName(),
+											 '\Webiny\Component\Security\Token\TokenStorageAbstract');
+		} catch (Exception $e) {
 			throw new TokenException($e->getMessage());
 		}
 
@@ -52,8 +54,8 @@ class Token {
 	 *
 	 * @return string
 	 */
-	private function _getStorageName(){
-		if($this->_rememberMe){
+	private function _getStorageName() {
+		if($this->_rememberMe) {
 			return self::TOKEN_COOKIE_STORAGE;
 		}
 
@@ -61,22 +63,22 @@ class Token {
 	}
 
 	/**
-	 * Tries to load current user from token.
+	 * Tries to load current user from token and if succeeds, an instance of TokenData is returned.
 	 *
-	 * @return bool|UserAbstract UserAbstract is returned is the token exists, otherwise false is returned.
+	 * @return bool|TokenData Instance of TokenData is returned is the token exists, otherwise false is returned.
 	 */
-	function getUserFromToken(){
+	function getUserFromToken() {
 		return $this->_storage->loadUserFromToken();
 	}
 
 	/**
 	 * Creates a token for the given $user.
 	 *
-	 * @param UserAbstract $user
+	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */
-	function saveUser(UserAbstract $user){
+	function saveUser(UserAbstract $user) {
 		return $this->_storage->saveUserToken($user);
 	}
 
@@ -85,7 +87,7 @@ class Token {
 	 *
 	 * @return bool
 	 */
-	function deleteUserToken(){
+	function deleteUserToken() {
 		return $this->_storage->deleteUserToken();
 	}
 }

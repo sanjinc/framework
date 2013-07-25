@@ -21,7 +21,7 @@ use Webiny\StdLib\StdLibTrait;
  * @package         Webiny\Component\Http\Request\Cookie\Storage
  */
 
-class Native implements CookieStorageInterface
+class NativeStorage implements CookieStorageInterface
 {
 	use HttpTrait;
 

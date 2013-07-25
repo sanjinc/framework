@@ -34,18 +34,19 @@ class Encoder
 
 
 	/**
-	 * @param string     $encoderProviderName Name of the encoder provider class.
+	 * @param string     $driver Name of the encoder provider class.
 	 * @param string     $salt                Salt used to add more security to passwords.
 	 * @param array|null $params              Optional encoder params.
 	 *
 	 * @throws EncoderException
 	 */
-	function __construct($encoderProviderName, $salt = '', $params = null) {
+	function __construct($driver, $salt = '', $params = null) {
 		$this->_salt = $salt;
 
 		try {
-			$this->_encoderProviderInstance = $this->factory($encoderProviderName,
-															 '\Webiny\Component\Security\Encoder\EncoderDriverInterface');
+			$this->_encoderProviderInstance = $this->factory($driver,
+															 '\Webiny\Component\Security\Encoder\EncoderDriverInterface',
+															$params);
 		} catch (\Exception $e) {
 			throw new EncoderException($e->getMessage());
 		}

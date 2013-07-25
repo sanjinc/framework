@@ -35,7 +35,7 @@ trait LoggerTrait
 	 */
 	public static function logger($name) {
 		try {
-			return ServiceManager::getInstance()->getService('logger.' . $name);
+			return ServiceManager::getInstance()->getService('logger.'.$name);
 		} catch (ServiceManagerException $e) {
 			if($e->getCode() == ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND) {
 				return new Logger($name, new NullDriver());
