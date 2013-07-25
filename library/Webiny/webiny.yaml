@@ -37,7 +37,7 @@ components:
     http:
         session:
             storage:
-                driver: '\Webiny\Component\Http\Request\Session\Storage\CacheStorage'
+                driver: '\Webiny\Component\Http\Request\Session\Storage\NativeStorage'
                 params:
                     cache_id: 'webiny_cache'
             prefix: 'wfs_'
@@ -50,7 +50,7 @@ components:
             client_port: 'X_FORWARDED_PORT'
         cookie:
             storage:
-                driver: '\Webiny\Component\Http\Request\Cookie\Storage\Native'
+                driver: '\Webiny\Component\Http\Request\Cookie\Storage\NativeStorage'
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400

@@ -165,8 +165,10 @@ abstract class DriverAbstract
 			return true;
 		}
 
+		// @TODO: possibility to load config from relative path (debug backtrace parsing?)
+
 		// Check if it's a valid file path
-		if(dirname($this->_resource) != '.' && !file_exists($this->_resource)) {
+		if((dirname($this->_resource) != '.' && !file_exists($this->_resource)) || dirname($this->_resource) == '.') {
 			throw new ConfigException('Config resource file does not exist!');
 		}
 
