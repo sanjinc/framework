@@ -747,21 +747,48 @@ trait ManipulatorTrait
 		$delimiter = substr($regEx, 0, 1);
 		$validDelimiters = ['/', '+', '#', '%', '|', '{'];
 		// if we cannot match a delimiter, try to add them
+
 		if(!in_array($delimiter, $validDelimiters)){
 			$regEx = '/'.str_replace(['\/', '/'], '\/', $regEx).'/';
 		}
 
 		if($matchAll) {
 			preg_match_all($regEx, $this->val(), $matches);
+
+			if(count($matches[0]) > 0) {
+				return new ArrayObject($matches);
+			}
 		} else {
 			preg_match($regEx, $this->val(), $matches);
-		}
 
-		if(count($matches) > 0) {
-			return new ArrayObject($matches);
+			if(count($matches) > 0) {
+				return new ArrayObject($matches);
+			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Url encodes the current string.
+	 *
+	 * @return $this
+	 */
+	function urlEncode(){
+		$this->val(urlencode($this->val()));
+
+		return $this;
+	}
+
+	/**
+	 * Url decodes the current string.
+	 *
+	 * @return $this
+	 */
+	function urlDecode(){
+		$this->val(urldecode($this->val()));
+
+		return $this;
 	}
 
 	public function cryptEncode($key, $salt = '') {

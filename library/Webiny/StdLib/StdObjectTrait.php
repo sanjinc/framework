@@ -35,7 +35,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\ArrayObject\ArrayObject
 	 */
-	static public function arr(&$array = null) {
+	static public function arr($array = null) {
 		return new StdObject\ArrayObject\ArrayObject($array);
 	}
 

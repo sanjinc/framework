@@ -214,6 +214,9 @@ class WebinyFrameworkBase
 		}
 	}
 
+	/**
+	 * Creates an instance of system logger.
+	 */
 	private function _setupSystemLogger(){
 		try{
 			$this->logger(WF::LOGGER)->info('System up and running');
@@ -234,6 +237,10 @@ class WebinyFrameworkBase
 		}
 	}
 
+	/**
+	 * Initializes the security layer.
+	 * NOTE: This initialization might trigger a redirect.
+	 */
 	private function _setupSecurityLayer(){
 		if(isset(self::$_config->security)){
 			self::$_security = Security::getInstance();

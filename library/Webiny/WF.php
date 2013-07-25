@@ -10,9 +10,10 @@
 namespace Webiny;
 
 /**
- * Description
+ * This is just a helper class for WebinyFramework.
+ * This class doesn't do anything, it just holds some of the system constants.
  *
- * @package		 Webiny\
+ * @package		 Webiny
  */
  
 final class WF
