@@ -45,7 +45,7 @@ class Session{
 		if(isset($options->storage->driver) && $options->storage->driver!='native'){
 			$saveHandler = $options->storage->driver;
 		}else{
-			$saveHandler = '\Webiny\Component\Http\Request\Session\Storage\Native';
+			$saveHandler = '\Webiny\Component\Http\Request\Session\Storage\NativeStorage';
 		}
 
 		try{

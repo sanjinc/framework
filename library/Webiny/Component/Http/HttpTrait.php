@@ -22,7 +22,7 @@ trait HttpTrait{
 	 *
 	 * @return Request
 	 */
-	function request(){
+	static function request(){
 		return Request::getInstance();
 	}
 }

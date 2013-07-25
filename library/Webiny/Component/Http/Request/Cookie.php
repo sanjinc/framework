@@ -26,7 +26,7 @@ class Cookie
 {
 	use StdLibTrait, FactoryLoaderTrait;
 
-	static private $_nativeDriver = '\Webiny\Component\Http\Request\Cookie\Storage\Native';
+	static private $_nativeDriver = '\Webiny\Component\Http\Request\Cookie\Storage\NativeStorage';
 
 	private $_cookieBag;
 	private $_storage;
