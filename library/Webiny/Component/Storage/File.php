@@ -103,7 +103,7 @@ class File
 	}
 
 	public function save(){
-		return $this->_storage->write($this->_key, $this->_content);
+		return $this->_storage->write($this);
 	}
 
 	public function rename($newKey){

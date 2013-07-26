@@ -23,7 +23,7 @@ require_once '../../../Dropbox/src/Dropbox/autoload.php';
 class Dropbox extends GaufretteDropbox implements DriverInterface
 {
 
-	public function __construct(\Dropbox_API $client) {
+	public function __construct( $client) {
 		parent::__construct($client);
 	}
 

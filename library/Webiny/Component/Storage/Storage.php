@@ -11,6 +11,8 @@ namespace Webiny\Component\Storage;
 
 use Webiny\Bridge\Storage\DriverInterface;
 use Webiny\Bridge\Storage\StorageException;
+use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 
 /**
  * Description
@@ -19,6 +21,7 @@ use Webiny\Bridge\Storage\StorageException;
  */
 class Storage
 {
+	use StdLibTrait;
 	/**
 	 * @var DriverInterface
 	 */
@@ -26,6 +29,10 @@ class Storage
 
 	public function __construct(DriverInterface $driver){
 		$this->_driver = $driver;
+	}
+
+	public function getURL($key){
+		return $this->_driver->getURL($key);
 	}
 
 	/**
@@ -47,8 +54,8 @@ class Storage
 	 *
 	 * @return integer|boolean The number of bytes that were written into the file
 	 */
-	public function write($key, $content){
-		return $this->_driver->write($key, $content);
+	public function write(File $file){
+		return $this->_driver->write($file->getKey(), $file->getContent());
 	}
 
 	/**
@@ -79,7 +86,8 @@ class Storage
 	 * @return integer|boolean An UNIX like timestamp or false
 	 */
 	public function timeModified($key){
-		return $this->_driver->timeModified($key);
+		$time = $this->_driver->timeModified($key);
+		return $this->datetime()->setTimestamp($time);
 	}
 
 	/**

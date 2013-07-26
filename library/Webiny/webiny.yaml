@@ -30,7 +30,8 @@ additional_libraries:
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
     'App': '../../app'
     'Gaufrette': '../KnpLabs-Gaufrette/src/Gaufrette'
-    'Dropbox': '../Dropbox/src/Dropbox'
+    #'Dropbox': '../Dropbox/src/Dropbox'
+    'Dropbox': '../Dropbox-SDK/lib/Dropbox'
 components:
     logger:
         formatters:
