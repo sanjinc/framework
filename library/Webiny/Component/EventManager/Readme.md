@@ -45,23 +45,24 @@ $handler = function(Event $event){
 $this->eventManager()->listen('some.event')->handler($handler);
 ```
 
-## Execution priority
-`EventManager` allows you to specify an execution priority using `priority()` method. Here's an example:
+## Firing events
+To fire a simple event use the following code:
 
 ```php
-// Specify a priority of execution for your event listeners
-$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('customHandle')->priority(250);
-$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('secondCustomHandle')->priority(400);
-$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('thirdCustomHandle');
+$this->eventManager()->fire('some.event');
+```
+You can also pass some data when firing an event, which will be passed to every event listener:
 
-// Now let's fire an event
-$data = ['some' => 'data'];
+```php
+$data = [
+    'some' => 'data',
+    'ip' => '192.168.1.10'
+];
+
 $this->eventManager()->fire('some.event', $data);
 ```
 
-After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority, the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandle`, `customHandle`, `thirdCustomHandle`. Default priority is `101`, so `thirdCustomHandle` is executed last.
-
-As you noticed, we passed a `$data` array to `fire()` method. Any give data that is not an `Event` object, will be converted to generic `Event` object and your data will be accessible either by using array keys, or as object properties:
+Any given data that is not an `Event` object, will be converted to generic `Event` object and your data will be accessible either by using array keys, or as object properties:
 
 ```php
 class YourHandler{
@@ -74,6 +75,29 @@ class YourHandler{
     
 }
 ```
+
+If you want to use custom `Event` data types, refer to section [Custom event classes](#custom-event-classes)
+
+## Firing events using a wildcard
+You can also use wildcard to fire multiple events at once. The following code will fire all events starting with `event.` and pass `$data` to each one of them:
+```php
+$this->eventManager()->fire('event.*', $data);
+```
+
+## Execution priority
+`EventManager` allows you to specify an execution priority using `priority()` method. Here's an example:
+
+```php
+// Specify a priority of execution for your event listeners
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('customHandler')->priority(250);
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('secondCustomHandler')->priority(400);
+$this->eventManager()->listen('some.event')->handler(new YourHandler())->method('thirdCustomHandler');
+
+// Now let's fire an event
+$this->eventManager()->fire('some.event');
+```
+
+After firing an event, the event listeners will be ordered by priority in descending order. The higher the priority, the sooner the listener will be executed. In this example, the order of execution will be as follows: `secondCustomHandler`, `customHandler`, `thirdCustomHandler`. Default priority is `101`, so `thirdCustomHandler` is executed last.
 
 ## Custom event classes
 
@@ -126,7 +150,7 @@ Another cool feature of the `EventManager` is the ability to subscribe to multip
 
 ```php
 class PageEventSubscriber implements EventSubscriberInterface {
-	use EventManagerTrait;
+    use EventManagerTrait;
 
     /**
      * Handle page creation event

@@ -27,4 +27,16 @@ trait ServiceManagerTrait
 	protected static function service($serviceName, $arguments = null) {
 		return ServiceManager::getInstance()->getService($serviceName, $arguments);
 	}
+
+	/**
+	 * Get multiple services by tag
+	 *
+	 * @param string $tag       Tag to use for services filter
+	 * @param null   $forceType (Optional) Return only services which are instances of $forceType
+	 *
+	 * @return array
+	 */
+	protected static function servicesByTag($tag, $forceType = null) {
+		return ServiceManager::getInstance()->getServicesByTag($tag, $forceType);
+	}
 }
