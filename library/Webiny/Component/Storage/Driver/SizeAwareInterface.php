@@ -15,5 +15,12 @@ namespace Webiny\Component\Storage\Driver;
 
 interface SizeAwareInterface
 {
+	/**
+	 * Get file size
+	 *
+	 * @param $key
+	 *
+	 * @return int
+	 */
 	public function size($key);
 }

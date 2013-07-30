@@ -22,7 +22,7 @@ class LocalFile extends File implements TouchableInterface
 {
 	use StdObjectTrait;
 
-	private $_size;
+	protected $_size;
 
 	/**
 	 * Get file size in bytes
@@ -37,10 +37,20 @@ class LocalFile extends File implements TouchableInterface
 		return $this->_size;
 	}
 
+	/**
+	 * Get absolute file path
+	 *
+	 * @return string
+	 */
 	public function getAbsolutePath(){
 		return $this->_storage->getAbsolutePath($this->_key);
 	}
 
+	/**
+	 * Touch a file (change time modified)
+	 *
+	 * @return $this
+	 */
 	public function touch() {
 		$this->_storage->touch($this->_key);
 		$this->_timeModified = null;

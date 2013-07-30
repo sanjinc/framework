@@ -79,29 +79,4 @@ interface DriverInterface
 	 * @return boolean
 	 */
 	public function rename($sourceKey, $targetKey);
-
-	/**
-	 * Check if key is directory
-	 *
-	 * @param string $key
-	 *
-	 * @return boolean
-	 */
-	public function isDirectory($key);
-
-	/**
-	 * Touch a file (change time modified)
-	 *
-	 * @param $key
-	 *
-	 * @return mixed
-	 */
-	public function touch($key);
-
-	/**
-	 * @param $key
-	 *
-	 * @return int
-	 */
-	public function size($key);
 }

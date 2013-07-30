@@ -9,7 +9,10 @@
 
 namespace Webiny\Component\Storage\File;
 
+use Webiny\Bridge\Storage\StorageException;
+use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Storage\Storage;
+use Webiny\Component\Storage\StorageEvent;
 use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 use Webiny\StdLib\StdObjectTrait;
 
@@ -21,21 +24,18 @@ use Webiny\StdLib\StdObjectTrait;
 
 class File
 {
-	use StdObjectTrait;
+	use StdObjectTrait, EventManagerTrait;
 
-	protected $_key;
 	/**
 	 * @var Storage
 	 */
 	protected $_storage;
-
+	protected $_key;
 	protected $_content;
-	protected $_contentChanged = false;
-	protected $_size;
 	protected $_isDirectory;
 	protected $_timeModified;
 
-	public function __construct($key, $storage) {
+	public function __construct($key, Storage $storage) {
 		$this->_storage = $storage;
 		$this->_key = $key;
 	}
@@ -59,71 +59,82 @@ class File
 	}
 
 	/**
-	 * @return mixed
-	 */
-	public function getSize() {
-		if($this->_size == null) {
-			$this->_size = $this->_storage->size($this->_key);
-		}
-
-		return $this->_size;
-	}
-
-	/**
+	 * Is item a directory
 	 * @return mixed
 	 */
 	public function isDirectory() {
-		if($this->_isDirectory == null) {
-			$this->_isDirectory = $this->_storage->isDirectory($this->_key);
-		}
-
-		return $this->_isDirectory;
+		return false;
 	}
 
 	/**
-	 * Set file content
+	 * Set file content (writes content to storage)<br />
+	 *
+	 * Fires an event StorageEvent::FILE_SAVED after the file content was written.
 	 *
 	 * @param mixed $content
 	 *
 	 * @return $this
 	 */
 	public function setContent($content) {
-		if($this->_content != $content) {
-			$this->_contentChanged = true;
-		}
 		$this->_content = $content;
-
-		return $this;
+		if($this->_storage->write($this->_key, $this->_content)){
+			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
+		}
+		return false;
 	}
 
 	/**
 	 * Get file content
 	 *
+	 * @throws \Webiny\Bridge\Storage\StorageException
 	 * @return string|boolean String on success, false if could not read content
 	 */
 	public function getContent() {
 		if($this->_content == null) {
+			if($this->_storage->isDirectory($this->_key)){
+				throw new StorageException(StorageException::FILE_OBJECT_CAN_NOT_READ_DIRECTORY, [$this->_key]);
+			}
 			$this->_content = $this->_storage->read($this->_key);
 		}
 
 		return $this->_content;
 	}
 
-	public function save() {
-		return $this->_storage->write($this->_key, $this->_content);
-	}
-
+	/**
+	 * Rename a file<br />
+	 *
+	 * Fires an event StorageEvent::FILE_RENAMED after the file was renamed.
+	 *
+	 * @param string $newKey New file name
+	 *
+	 * @return bool
+	 */
 	public function rename($newKey) {
 		if($this->_storage->rename($this->_key, $newKey)) {
+			$event = new StorageEvent($this);
+			// Set `oldKey` property that will be available only on rename
+			$event->oldKey = $this->_key;
 			$this->_key = $newKey;
+			$this->eventManager()->fire(StorageEvent::FILE_RENAMED, $event);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Delete a file<br />
+	 *
+	 * Fires an event StorageEvent::FILE_DELETED after the file was deleted.
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		if($this->_storage->delete($this->_key)) {
+			$this->eventManager()->fire(StorageEvent::FILE_DELETED, new StorageEvent($this));
 
 			return true;
 		}
 
 		return false;
-	}
-
-	public function delete() {
-		return $this->_storage->delete($this->_key);
 	}
 }

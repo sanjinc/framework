@@ -27,6 +27,7 @@ class StorageException extends ExceptionAbstract
 	const DRIVER_CAN_NOT_ACCESS_SIZE = 104;
 	const DRIVER_CAN_NOT_WORK_WITH_DIRECTORIES = 105;
 	const DRIVER_DOES_NOT_SUPPORT_ABSOLUTE_PATHS = 106;
+	const FILE_OBJECT_CAN_NOT_READ_DIRECTORY = 107;
 
 	static protected $_messages = [
 		101 => 'File not found!',
@@ -34,6 +35,7 @@ class StorageException extends ExceptionAbstract
 		103 => 'Storage driver `%s` does not support touching of files!',
 		104 => 'Storage driver `%s` can not access file size info!',
 		105 => 'Storage driver `%s` can not work with directories!',
-		106 => 'Storage driver `%s` does not support absolute paths!'
+		106 => 'Storage driver `%s` does not support absolute paths!',
+		107 => 'File can not read a directory (attempting to read `%s`)! Use Directory class instead.'
 	];
 }

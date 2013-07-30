@@ -7,20 +7,13 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Storage\Driver;
+namespace Webiny\Component\Storage\File;
 
 /**
  * @package   Webiny\Component\Storage
  */
 
-interface TouchableInterface
+interface FileInterface
 {
-	/**
-	 * Touch a file (change time modified)
-	 *
-	 * @param $key
-	 *
-	 * @return mixed
-	 */
-	public function touch($key);
+	public function touch();
 }

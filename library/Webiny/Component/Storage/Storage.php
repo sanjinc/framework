@@ -21,6 +21,8 @@ use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
  */
 class Storage
 {
+	use StdLibTrait;
+
 	/**
 	 * @var DriverInterface
 	 */
@@ -39,7 +41,7 @@ class Storage
 	 *
 	 * @param string key
 	 *
-	 * @return string|boolean if cannot read content
+	 * @return string|bool if cannot read content
 	 */
 	public function read($key) {
 		return $this->_driver->read($key);
@@ -51,7 +53,7 @@ class Storage
 	 * @param string $key
 	 * @param string $content
 	 *
-	 * @return integer|boolean The number of bytes that were written into the file
+	 * @return integer|bool The number of bytes that were written into the file
 	 */
 	public function write($key, $content) {
 		return $this->_driver->write($key, $content);
@@ -62,7 +64,7 @@ class Storage
 	 *
 	 * @param File $file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists(File $file) {
 		return $this->_driver->exists($file);
@@ -102,7 +104,7 @@ class Storage
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function delete($key) {
 		return $this->_driver->delete($key);
@@ -114,7 +116,7 @@ class Storage
 	 * @param string $sourceKey Old key
 	 * @param string $targetKey New key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rename($sourceKey, $targetKey) {
 		return $this->_driver->rename($sourceKey, $targetKey);
@@ -127,7 +129,7 @@ class Storage
 	 * @param string $key
 	 *
 	 * @throws \Webiny\Bridge\Storage\StorageException
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDirectory($key) {
 		if($this->supportsDirectories()) {
@@ -160,7 +162,7 @@ class Storage
 	 * @param string $key
 	 *
 	 * @throws \Webiny\Bridge\Storage\StorageException
-	 * @return int|boolean The size of the file in bytes or false
+	 * @return int|bool The size of the file in bytes or false
 	 */
 	public function size($key) {
 		if($this->supportsSize()) {
