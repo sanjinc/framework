@@ -10,14 +10,14 @@
 namespace Webiny\Component\Security;
 
 use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Security\Authentication\Firewall;
 use Webiny\Component\Security\Authorization\AccessControl;
 use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
+use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\ServiceManager\ServiceManager;
-use Webiny\Component\ServiceManager\ServiceManagerException;
-use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\FactoryLoaderTrait;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
@@ -31,29 +31,37 @@ use Webiny\WebinyTrait;
 
 class Security
 {
-	use SingletonTrait, WebinyTrait, StdLibTrait, FactoryLoaderTrait;
+	use SingletonTrait, WebinyTrait, StdLibTrait, FactoryLoaderTrait, EventManagerTrait;
 
 	/**
 	 * @var ConfigObject
 	 */
 	private $_config;
+
 	/**
 	 * @var Firewall
 	 */
 	private $_firewall;
+
 	/**
 	 * @var array
 	 */
 	private $_encoders = [];
+
 	/**
 	 * @var array
 	 */
 	private $_userProviders = [];
 
 	/**
+	 * @var bool|UserAbstract
+	 */
+	private $_user = false;
+
+	/**
 	 * Initializes the security layer.
 	 *
-	 * @throws \Exception|\Webiny\Component\ServiceManager\ServiceManagerException
+	 * @throws SecurityException
 	 * @return bool
 	 */
 	public function init() {
@@ -97,11 +105,11 @@ class Security
 			try{
 				$user = $this->_firewall->setupAuth();
 			}catch (\Exception $e){
-				throw $e;
+				throw new SecurityException($e->getMessage());
 			}
 
 			if(!$user){
-				throw new Exception('Unable to authenticate the user.');
+				throw new SecurityException('Unable to authenticate the user.');
 			}
 		}
 
@@ -116,16 +124,27 @@ class Security
 		if(!$accessControl->isUserAllowedAccess()){
 			try{
 				$user = $this->_firewall->setupAuth();
+				$this->eventManager()->fire('wf.security.role_invalid', new SecurityEvent($user));
 			}catch (\Exception $e){
-				throw $e;
+				throw new SecurityException($e->getMessage());
 			}
 
 			if(!$user){
-				throw new Exception('Unable to authenticate the user.');
+				throw new SecurityException('Unable to authenticate the user.');
 			}
 		}
-		echo 'security: account valid';
-		print_r($user);
+
+		$this->_user = $user;
+	}
+
+	/**
+	 * Returns the instance of current user.
+	 * If user doesn't exist, false is returned.
+	 *
+	 * @return bool|UserAbstract
+	 */
+	public function getUser(){
+		return $this->_user;
 	}
 
 	/**

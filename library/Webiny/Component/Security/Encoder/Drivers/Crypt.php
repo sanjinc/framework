@@ -29,9 +29,9 @@ class Crypt implements EncoderDriverInterface{
 	/**
 	 * Constructor
 	 *
-	 * @param string $crypt Name of the crypt service.
+	 * @param string $cryptName Name of the crypt service.
 	 *
-	 * @throw    \Exception
+	 * @throws \Exception
 	 */
 	public function __construct($cryptName){
 		try{
@@ -39,7 +39,6 @@ class Crypt implements EncoderDriverInterface{
 		}catch (\Exception $e){
 			throw $e;
 		}
-
 	}
 
 	/**

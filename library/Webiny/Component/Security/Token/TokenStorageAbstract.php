@@ -27,7 +27,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	use HttpTrait, CryptTrait, StdLibTrait;
 
 	private $_tokenName;
-	private $_encKey = 'WF-AUTH-KEY-SECU';
+	private $_securityKey = 'WF-AUTH-KEY-SECU';
 
 	/**
 	 * This function provides the token name to the storage.
@@ -63,15 +63,17 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 			'r'   => $user->getRoles(),
 			// valid until
 			'vu'  => time() + (86400 * 30),
-			// sid
-			'sid' => $this->request()->session()->getSessionId()
+			// session id
+			'sid' => $this->request()->session()->getSessionId(),
+			// auth provider driver
+			'ap'  => $user->getAuthProviderDriver()
 		];
 
 		// build and add token to $data
-		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_encKey)->hash()->val();
+		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_securityKey)->hash()->val();
 		$data['t'] = $token;
 
-		return $this->crypt()->encrypt(serialize($data), $this->_encKey);
+		return $this->crypt()->encrypt(serialize($data), $this->_securityKey);
 	}
 
 	/**
@@ -86,7 +88,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	function decryptUserData($tokenData) {
 		// decrypt token data
 		try {
-			$data = $this->crypt()->decrypt($tokenData, $this->_encKey);
+			$data = $this->crypt()->decrypt($tokenData, $this->_securityKey);
 			$data = unserialize($data);
 		} catch (\Exception $e) {
 			$this->deleteUserToken();
@@ -100,6 +102,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 			|| !isset($data['vu'])
 			|| !isset($data['sid'])
 			|| !isset($data['t'])
+			|| !isset($data['ap'])
 		) {
 			$this->deleteUserToken();
 
@@ -114,7 +117,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 		}
 
 		// validate token-token :)
-		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_encKey)->hash()->val();
+		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_securityKey)->hash()->val();
 		if($token != $data['t']) {
 			$this->deleteUserToken();
 
@@ -130,5 +133,14 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 
 		// return TokenData instance
 		return new TokenData($data);
+	}
+
+	/**
+	 * Sets the security key that will be used for encryption of token data.
+	 *
+	 * @param string $securityKey Must have 16/32/64 chars.
+	 */
+	public function setSecurityKey($securityKey) {
+		$this->_securityKey = $securityKey;
 	}
 }

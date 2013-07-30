@@ -49,4 +49,11 @@ interface TokenStorageInterface
 	 * @return bool
 	 */
 	function deleteUserToken();
+
+	/**
+	 * Sets the security key that will be used for encryption of token data.
+	 *
+	 * @param string $securityKey Must have 16/32/64 chars.
+	 */
+	function setSecurityKey($securityKey);
 }

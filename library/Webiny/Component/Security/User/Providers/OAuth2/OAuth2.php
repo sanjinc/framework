@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Security\User\Providers\OAuth2;
 
+use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\UserAbstract;
@@ -22,6 +23,7 @@ use Webiny\Component\Security\User\UserProviderInterface;
 
 class OAuth2 implements UserProviderInterface
 {
+	use HttpTrait;
 
 	/**
 	 * Get the user from user provided for the given instance of Login object.

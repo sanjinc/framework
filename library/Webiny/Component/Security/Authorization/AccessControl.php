@@ -17,6 +17,7 @@ use Webiny\Component\Security\Authorization\Voters\RoleVoterInterface;
 use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\UserAbstract;
+use Webiny\Component\ServiceManager\ServiceManagerTrait;
 use Webiny\StdLib\StdLibTrait;
 
 /**
@@ -28,12 +29,12 @@ use Webiny\StdLib\StdLibTrait;
 class AccessControl
 {
 
-	use StdLibTrait, HttpTrait;
+	use StdLibTrait, HttpTrait, ServiceManagerTrait;
 
 	// 1 single voter denies access
 	const VOTER_STR_UNANIMOUS = 'unanimous';
 
-	// 1 single voter grants access
+	// 1 single vote grants access
 	const VOTER_STR_AFFIRMATIVE = 'affirmative';
 
 	// Majority wins
@@ -79,8 +80,7 @@ class AccessControl
 	 */
 	private function _getVoters() {
 		// we have 2 built in voters
-		// @TODO: Read the registered voter services by 'tag' property once it's implemented
-		$voters = [];
+		$voters = $this->servicesByTag('security.voter', '\Webiny\Component\Security\Authorization\Voters\RoleVoterInterface');
 
 		$voters[] = new AuthenticationVoter();
 		$voters[] = new RoleVoter();
@@ -111,8 +111,8 @@ class AccessControl
 				}
 
 				// covert the role names to Role instances
-				foreach ($roles as &$r) {
-					$r = new Role($r);
+				foreach ($roles as &$role) {
+					$role = new Role($role);
 				}
 
 				return $roles;
@@ -141,7 +141,7 @@ class AccessControl
 	 * @throws AccessControlException
 	 */
 	private function _setDecisionStrategy() {
-		$strategy = $this->_config->get('decision_stategy', 'unanimous');
+		$strategy = $this->_config->get('decision_strategy', 'unanimous');
 		if($strategy != self::VOTER_STR_AFFIRMATIVE
 			&& $strategy != self::VOTER_STR_CONSENSUS
 			&& $strategy != self::VOTER_STR_UNANIMOUS
@@ -172,8 +172,23 @@ class AccessControl
 			 * @var $v RoleVoterInterface
 			 */
 			if($v->supportsUserClass($userClassName)) {
-				$maxScore++;
-				$voteScore += $v->vote($this->_user, $requestedRoles);
+				$vote = $v->vote($this->_user, $requestedRoles);
+				if($this->_strategy==self::VOTER_STR_AFFIRMATIVE){
+					if($vote>0){
+						$maxScore++;
+						$voteScore+=$vote;
+					}
+				} else if($this->_strategy==self::VOTER_STR_CONSENSUS){
+					if($vote>0){
+						$voteScore+=$vote;
+					}
+					$maxScore++;
+				}else{
+					if($vote<>0){
+						$maxScore++;
+						$voteScore+=$vote;
+					}
+				}
 			}
 		}
 

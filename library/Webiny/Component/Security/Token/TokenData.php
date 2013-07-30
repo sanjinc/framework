@@ -24,6 +24,7 @@ class TokenData
 	private $_username;
 	private $_roles;
 	private $_validUntil;
+	private $_authProviderDriver;
 
 	/**
 	 * @param array $tokenData Decrypted token data array.
@@ -32,6 +33,7 @@ class TokenData
 		$this->_username = $tokenData['u'];
 		$this->_roles = $tokenData['r'];
 		$this->_validUntil = $tokenData['vu'];
+		$this->_authProviderDriver = $tokenData['ap'];
 	}
 
 	/**
@@ -50,5 +52,14 @@ class TokenData
 	 */
 	function getRoles(){
 		return $this->_roles;
+	}
+
+	/**
+	 * Returns the name of auth provider driver.
+	 *
+	 * @return string
+	 */
+	function getAuthProviderDriver(){
+		return $this->_authProviderDriver;
 	}
 }

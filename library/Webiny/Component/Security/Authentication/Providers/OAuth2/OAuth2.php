@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Security\Authentication\Providers\OAuth2;
 
+use Webiny\Component\Crypt\CryptTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\OAuth2\OAuth2Loader;
 use Webiny\Component\Security\Authentication\Providers\AuthenticationInterface;
@@ -27,7 +28,7 @@ use Webiny\WebinyTrait;
  
 class OAuth2 implements AuthenticationInterface{
 
-	use StdLibTrait, HttpTrait, WebinyTrait;
+	use StdLibTrait, HttpTrait, WebinyTrait, CryptTrait;
 
 	/**
 	 * @var null|\Webiny\Component\OAuth2\OAuth2
@@ -71,6 +72,12 @@ class OAuth2 implements AuthenticationInterface{
 		$oauth2 = $this->_getOAuth2Instance($config);
 		if(!$this->request()->query('code', false)){
 			$this->request()->session()->delete('oauth_token');
+
+			// append state param to make the request more secured
+			$state = $this->_createOAuth2State();
+			$this->request()->session()->save('oauth_state', $state);
+			$oauth2->setState($state);
+
 			$oauth2 = $this->_getOAuth2Instance();
 			$authUrl = $oauth2->getAuthenticationUrl();
 
@@ -82,6 +89,14 @@ class OAuth2 implements AuthenticationInterface{
 		}else{
 			$accessToken = $this->request()->session()->get('oauth_token', false);
 		}
+
+		// verify oauth state
+		$oauthState = $this->request()->query('state', '');
+		$state = $this->request()->session()->get('oauth_state', 'invalid');
+		if($oauthState!=$state){
+			throw new OAuth2Exception('The state parameter from OAuth2 response doens\'t match the users state parameter.');
+		}
+
 		$oauth2->setAccessToken($accessToken);
 
 		if($this->isArray($accessToken) && isset($accessToken['result']['error']))
@@ -156,5 +171,11 @@ class OAuth2 implements AuthenticationInterface{
 
 		$this->request()->redirect($redirectUri->val());
 		die();
+	}
+
+	private function _createOAuth2State(){
+		$state = $this->crypt()->generateUserReadableString(10);
+
+		return $state;
 	}
 }
