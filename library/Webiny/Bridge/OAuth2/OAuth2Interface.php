@@ -46,10 +46,12 @@ interface OAuth2Interface
 	 * Requests the access token from the OAuth server.
 	 * You can call this method only on the OAuth redirect_uri page or else the request will fail.
 	 *
+	 * @param string $tokenUrl Url to the page where we can get the access token.
+	 *
 	 * @throws \Webiny\Bridge\OAuth2\OAuth2Exception
 	 * @return string Access token.
 	 */
-	function requestAccessToken();
+	function requestAccessToken($tokenUrl);
 
 	/**
 	 * Get access  token.
@@ -129,11 +131,4 @@ interface OAuth2Interface
 	 * @return string
 	 */
 	function getAccessTokenName();
-
-	/**
-	 * Returns the authentication url.
-	 *
-	 * @return string Authentication url
-	 */
-	function getAuthenticationUrl();
 }

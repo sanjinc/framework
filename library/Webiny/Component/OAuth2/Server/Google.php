@@ -9,31 +9,26 @@
 
 namespace Webiny\Component\OAuth2\Server;
 
-use OAuth2\Exception;
-use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\OAuth2User;
+use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\ServerAbstract;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Facebook OAuth2 wrapper for the Graph API.
+ * Google OAuth2 API wrapper.
  *
- * @package         Webiny\Component\OA2W
+ * @package         Webiny\Component\OAuth2\Server
  */
 
-class Facebook extends ServerAbstract
+class Google extends ServerAbstract
 {
+
 	use StdLibTrait;
 
 	/**
-	 * @link https://developers.facebook.com/docs/reference/api/user/
+	 * Google API authorize url
 	 */
-	const API_ME = 'https://graph.facebook.com/me';
-
-	/**
-	 * Facebook Graph API authorize url
-	 */
-	const API_AUTH_URL = 'https://graph.facebook.com/oauth/authorize
+	const API_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth
 											?response_type=code
 											&client_id={CLIENT_ID}
 											&redirect_uri={REDIRECT_URI}
@@ -41,9 +36,14 @@ class Facebook extends ServerAbstract
 											&state={STATE}';
 
 	/**
-	 * Facebook Graph API access token url.
+	 * Google API access token url.
 	 */
-	const API_ACCESS_TOKEN = 'https://graph.facebook.com/oauth/access_token';
+	const API_ACCESS_TOKEN = 'https://accounts.google.com/o/oauth2/token';
+
+	/**
+	 * Google API - get user info.
+	 */
+	const API_USER_INFO = 'https://www.googleapis.com/oauth2/v1/userinfo';
 
 
 	/**
@@ -73,7 +73,7 @@ class Facebook extends ServerAbstract
 	 */
 	protected function _getUserDetailsTargetData() {
 		return [
-			'url'    => self::API_ME,
+			'url'    => self::API_USER_INFO,
 			'params' => []
 		];
 	}
@@ -85,21 +85,20 @@ class Facebook extends ServerAbstract
 	 * @param array $result OAuth2 server response.
 	 *
 	 * @return OAuth2User
-	 * @throws \OAuth2\Exception
+	 * @throws OAuth2Exception
 	 */
-	function _processUserDetails($result) {
+	protected function _processUserDetails($result) {
 		$result = self::arr($result['result']);
 		if($result->keyExists('error')) {
-			throw new Exception($result->key('error')['message']);
+			throw new OAuth2Exception($result->key('error'));
 		}
 
-		$user = new OAuth2User($result->key('username'), $result->key('email', '', true));
+		$user = new OAuth2User($result->key('given_name'), $result->key('email', '', true));
 		$user->setProfileId($result->key('id'));
-		$user->setFirstName($result->key('first_name'));
-		$user->setLastName($result->key('last_name'));
+		$user->setFirstName($result->key('given_name'));
+		$user->setLastName($result->key('family_name'));
 		$user->setProfileUrl($result->key('link'));
-		$user->setAvatarUrl('http://graph.facebook.com/' . $user->profileId . '/picture?type=large');
-		$user->setLastUpdateTime(strtotime($result->key('updated_time')));
+		$user->setAvatarUrl($result->key('picture'));
 
 		return $user;
 	}
@@ -111,7 +110,7 @@ class Facebook extends ServerAbstract
 	 *
 	 * @param array $response Response from the OAuth2 server.
 	 *
-	 * @throws \Webiny\Component\OAuth2\OAuth2Exception
+	 * @throws OAuth2Exception
 	 * @return string Access token.
 	 */
 	public function processAuthResponse($response) {
@@ -120,11 +119,9 @@ class Facebook extends ServerAbstract
 		}
 
 		if(isset($response['result']['error'])) {
-			throw new OAuth2Exception($this->jsonEncode($response['result']['error']['message']));
+			throw new OAuth2Exception($response['result']['error']);
 		}
 
-		parse_str($response['result'], $info);
-
-		return $info['access_token'];
+		return $response['result']['access_token'];
 	}
 }

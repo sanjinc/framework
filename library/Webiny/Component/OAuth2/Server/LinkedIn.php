@@ -9,41 +9,39 @@
 
 namespace Webiny\Component\OAuth2\Server;
 
-use OAuth2\Exception;
-use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\OAuth2User;
+use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\ServerAbstract;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Facebook OAuth2 wrapper for the Graph API.
+ * LinkedIn OAuth2 API wrapper.
  *
- * @package         Webiny\Component\OA2W
+ * @package         Webiny\Component\OAuth2\Server
  */
 
-class Facebook extends ServerAbstract
+class LinkedIn extends ServerAbstract
 {
 	use StdLibTrait;
 
 	/**
-	 * @link https://developers.facebook.com/docs/reference/api/user/
+	 * LinkedIn API authorize url
 	 */
-	const API_ME = 'https://graph.facebook.com/me';
+	const API_AUTH_URL = 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code
+                                           &client_id={CLIENT_ID}
+                                           &scope={SCOPE}
+                                           &state={STATE}
+                                           &redirect_uri={REDIRECT_URI}';
 
 	/**
-	 * Facebook Graph API authorize url
+	 * LinkedIn API access token url.
 	 */
-	const API_AUTH_URL = 'https://graph.facebook.com/oauth/authorize
-											?response_type=code
-											&client_id={CLIENT_ID}
-											&redirect_uri={REDIRECT_URI}
-											&scope={SCOPE}
-											&state={STATE}';
+	const API_ACCESS_TOKEN = 'https://www.linkedin.com/uas/oauth2/accessToken';
 
 	/**
-	 * Facebook Graph API access token url.
+	 * LinkedIn API - user profile.
 	 */
-	const API_ACCESS_TOKEN = 'https://graph.facebook.com/oauth/access_token';
+	const API_PROFILE = 'https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address,public-profile-url)';
 
 
 	/**
@@ -64,6 +62,7 @@ class Facebook extends ServerAbstract
 		return self::API_ACCESS_TOKEN;
 	}
 
+
 	/**
 	 * Returns an array [url, params].
 	 * 'url' - holds the destination url for accessing user details on the OAuth2 server.
@@ -73,8 +72,8 @@ class Facebook extends ServerAbstract
 	 */
 	protected function _getUserDetailsTargetData() {
 		return [
-			'url'    => self::API_ME,
-			'params' => []
+			'url'    => self::API_PROFILE,
+			'params' => ['format' => 'json']
 		];
 	}
 
@@ -85,21 +84,20 @@ class Facebook extends ServerAbstract
 	 * @param array $result OAuth2 server response.
 	 *
 	 * @return OAuth2User
-	 * @throws \OAuth2\Exception
+	 * @throws OAuth2Exception
 	 */
-	function _processUserDetails($result) {
+	protected function _processUserDetails($result) {
 		$result = self::arr($result['result']);
-		if($result->keyExists('error')) {
-			throw new Exception($result->key('error')['message']);
+		if($result->keyExists('status') && $result->key('status') != 200) {
+			throw new OAuth2Exception($result->key('message'));
 		}
 
-		$user = new OAuth2User($result->key('username'), $result->key('email', '', true));
+		$user = new OAuth2User($result->key('firstName'), $result->key('emailAddress', '', true));
 		$user->setProfileId($result->key('id'));
-		$user->setFirstName($result->key('first_name'));
-		$user->setLastName($result->key('last_name'));
-		$user->setProfileUrl($result->key('link'));
-		$user->setAvatarUrl('http://graph.facebook.com/' . $user->profileId . '/picture?type=large');
-		$user->setLastUpdateTime(strtotime($result->key('updated_time')));
+		$user->setFirstName($result->key('firstName'));
+		$user->setLastName($result->key('lastName'));
+		$user->setProfileUrl($result->key('publicProfileUrl'));
+		$user->setAvatarUrl($result->key('pictureUrl'));
 
 		return $user;
 	}
@@ -111,7 +109,7 @@ class Facebook extends ServerAbstract
 	 *
 	 * @param array $response Response from the OAuth2 server.
 	 *
-	 * @throws \Webiny\Component\OAuth2\OAuth2Exception
+	 * @throws OAuth2Exception
 	 * @return string Access token.
 	 */
 	public function processAuthResponse($response) {
@@ -119,12 +117,10 @@ class Facebook extends ServerAbstract
 			throw new OAuth2Exception('Invalid response while trying to get the access token.');
 		}
 
-		if(isset($response['result']['error'])) {
-			throw new OAuth2Exception($this->jsonEncode($response['result']['error']['message']));
+		if(isset($response['result']['status']) && $response['result']['status'] != 200) {
+			throw new OAuth2Exception($response['result']['message']);
 		}
 
-		parse_str($response['result'], $info);
-
-		return $info['access_token'];
+		return $response['result']['access_token'];
 	}
 }

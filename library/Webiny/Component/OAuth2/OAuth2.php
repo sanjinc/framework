@@ -24,7 +24,13 @@ class OAuth2{
 
 	use WebinyTrait;
 
+	/**
+	 * @var OAuth2Abstract
+	 */
 	private $_instance;
+	/**
+	 * @var ServerAbstract
+	 */
 	private $_server;
 
 	/**
@@ -94,7 +100,12 @@ class OAuth2{
 	 * @return string Access token.
 	 */
 	function requestAccessToken() {
-		return $this->_instance->requestAccessToken();
+		$tokenUrl = $this->_processUrl($this->_server->getAccessTokenUrl());
+		$response = $this->_instance->requestAccessToken($tokenUrl);
+		$accessToken = $this->_server->processAuthResponse($response);
+		$this->_instance->setAccessToken($accessToken);
+
+		return $accessToken;
 	}
 
 	/**
@@ -154,7 +165,7 @@ class OAuth2{
 	 * @return void
 	 */
 	function setScope($scope) {
-		return $this->_instance->setScope($scope);
+		$this->_instance->setScope($scope);
 	}
 
 	/**
@@ -174,7 +185,7 @@ class OAuth2{
 	 * @return void.
 	 */
 	function setState($state) {
-		return $this->_instance->setState($state);
+		$this->_instance->setState($state);
 	}
 
 	/**
@@ -201,6 +212,23 @@ class OAuth2{
 	 * @return string Authentication url
 	 */
 	function getAuthenticationUrl() {
-		return $this->_instance->getAuthenticationUrl();
+		return $this->_processUrl($this->_server->getAuthorizeUrl());
+	}
+
+	private function _processUrl($url){
+		$vars = [
+			'{CLIENT_ID}'    => $this->getClientId(),
+			'{REDIRECT_URI}' => $this->getRedirectURI(),
+			'{SCOPE}'        => $this->getScope(),
+			'{STATE}'        => $this->getState(),
+			" "				 => '',
+			"\n"			 => '',
+			"\r"			 => '',
+			"\t"			 => ''
+		];
+
+		$url = str_replace(array_keys($vars), array_values($vars), $url);
+
+		return $url;
 	}
 }

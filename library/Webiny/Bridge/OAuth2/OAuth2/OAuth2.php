@@ -49,33 +49,18 @@ class OAuth2 extends OAuth2Abstract
 	 * Requests the access token from the OAuth server.
 	 * You can call this method only on the OAuth redirect_uri page or else the request will fail.
 	 *
-	 * @throws \Webiny\Bridge\OAuth2\OAuth2Exception
+	 * @param string $tokenUrl Url to the page where we can get the access token.
+	 *
 	 * @return string Access token.
 	 */
-	function requestAccessToken() {
-
-		$oauthServer = $this->_getOAuth2Server();
+	function requestAccessToken($tokenUrl) {
 
 		$params = [
 			'code'         => $this->request()->query('code', ''),
 			'redirect_uri' => $this->getRedirectURI()
 		];
 
-		$response = $this->_instance->getAccessToken($oauthServer['token_url'], 'authorization_code', $params);
-
-		if(!$this->isArray($response)){
-			throw new OAuth2Exception('Invalid response while trying to get the access token.');
-		}
-
-		if(isset($response['result']['error'])){
-			throw new OAuth2Exception($response['result']['error']['message']);
-		}
-
-		parse_str($response['result'], $info);
-		$this->_instance->setAccessToken($info['access_token']);
-		$this->_accessToken = $info['access_token'];
-
-		return $info['access_token'];
+		return $this->_instance->getAccessToken($tokenUrl, 'authorization_code', $params);
 	}
 
 	/**

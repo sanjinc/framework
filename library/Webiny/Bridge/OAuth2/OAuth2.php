@@ -80,6 +80,10 @@ class OAuth2
 															]);
 		}
 
+		if($certificateFile!=''){
+			$instance->setCertificate($certificateFile);
+		}
+
 		return $instance;
 	}
 }
