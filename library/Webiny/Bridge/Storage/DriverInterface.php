@@ -27,17 +27,17 @@ interface DriverInterface
 	public function read($key);
 
 	/**
-	 * Writes the given content into the file
+	 * Writes the given File
 	 *
-	 * @param string $key
-	 * @param string $content
+	 * @param $key
+	 * @param $content
 	 *
 	 * @return integer|boolean The number of bytes that were written into the file
 	 */
 	public function write($key, $content);
 
 	/**
-	 * Indicates whether the file exists
+	 * Checks whether the file exists
 	 *
 	 * @param string $key
 	 *
@@ -57,7 +57,7 @@ interface DriverInterface
 	 *
 	 * @param string $key
 	 *
-	 * @return integer|boolean An UNIX like timestamp or false
+	 * @return integer|boolean A UNIX like timestamp or false
 	 */
 	public function timeModified($key);
 

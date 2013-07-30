@@ -7,8 +7,9 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Storage;
+namespace Webiny\Component\Storage\File;
 
+use Webiny\Component\Storage\Storage;
 use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 use Webiny\StdLib\StdObjectTrait;
 
@@ -22,31 +23,38 @@ class File
 {
 	use StdObjectTrait;
 
-	private $_key;
+	protected $_key;
 	/**
 	 * @var Storage
 	 */
-	private $_storage;
+	protected $_storage;
 
-	private $_content;
-	private $_contentChanged = false;
-	private $_size;
-	private $_isDirectory;
-	private $_timeModified;
+	protected $_content;
+	protected $_contentChanged = false;
+	protected $_size;
+	protected $_isDirectory;
+	protected $_timeModified;
 
-	public function __construct($key, $storage){
+	public function __construct($key, $storage) {
 		$this->_storage = $storage;
 		$this->_key = $key;
 	}
 
 	/**
-	 * @return DateTimeObject
+	 * Get time modified
+	 *
+	 * @param bool $asDateTimeObject
+	 *
+	 * @return int|DateTimeObject UNIX timestamp or DateTimeObject
 	 */
-	public function getTimeModified() {
-		if($this->_timeModified == null){
-			$time = $this->_storage->timeModified($this->_key);
-			$this->_timeModified = $time ? $this->datetime()->setTimestamp($time) : false;
+	public function getTimeModified($asDateTimeObject = false) {
+		if($this->_timeModified == null) {
+			$this->_timeModified = $time = $this->_storage->timeModified($this->_key);
+			if($time) {
+				$this->_timeModified = $asDateTimeObject ? $this->datetime()->setTimestamp($time) : $time;
+			}
 		}
+
 		return $this->_timeModified;
 	}
 
@@ -54,9 +62,10 @@ class File
 	 * @return mixed
 	 */
 	public function getSize() {
-		if($this->_size == null){
+		if($this->_size == null) {
 			$this->_size = $this->_storage->size($this->_key);
 		}
+
 		return $this->_size;
 	}
 
@@ -64,9 +73,10 @@ class File
 	 * @return mixed
 	 */
 	public function isDirectory() {
-		if($this->_isDirectory == null){
+		if($this->_isDirectory == null) {
 			$this->_isDirectory = $this->_storage->isDirectory($this->_key);
 		}
+
 		return $this->_isDirectory;
 	}
 
@@ -74,13 +84,15 @@ class File
 	 * Set file content
 	 *
 	 * @param mixed $content
+	 *
 	 * @return $this
 	 */
 	public function setContent($content) {
-		if($this->_content != $content){
+		if($this->_content != $content) {
 			$this->_contentChanged = true;
 		}
 		$this->_content = $content;
+
 		return $this;
 	}
 
@@ -90,31 +102,28 @@ class File
 	 * @return string|boolean String on success, false if could not read content
 	 */
 	public function getContent() {
-		if($this->_content == null){
+		if($this->_content == null) {
 			$this->_content = $this->_storage->read($this->_key);
 		}
+
 		return $this->_content;
 	}
 
-	public function touch(){
-		$this->_storage->touch($this->_key);
-		$this->_timeModified = null;
-		return $this;
+	public function save() {
+		return $this->_storage->write($this->_key, $this->_content);
 	}
 
-	public function save(){
-		return $this->_storage->write($this);
-	}
-
-	public function rename($newKey){
-		if($this->_storage->rename($this->_key, $newKey)){
+	public function rename($newKey) {
+		if($this->_storage->rename($this->_key, $newKey)) {
 			$this->_key = $newKey;
+
 			return true;
 		}
+
 		return false;
 	}
 
-	public function delete(){
+	public function delete() {
 		return $this->_storage->delete($this->_key);
 	}
 }
