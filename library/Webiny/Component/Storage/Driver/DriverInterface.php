@@ -7,7 +7,7 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Bridge\Storage;
+namespace Webiny\Component\Storage\Driver;
 
 /**
  * DriverInterface
@@ -24,7 +24,7 @@ interface DriverInterface
 	 *
 	 * @return string|boolean if cannot read content
 	 */
-	public function read($key);
+	public function getContent($key);
 
 	/**
 	 * Writes the given File
@@ -34,7 +34,7 @@ interface DriverInterface
 	 *
 	 * @return integer|boolean The number of bytes that were written into the file
 	 */
-	public function write($key, $content);
+	public function setContent($key, $content);
 
 	/**
 	 * Checks whether the file exists
@@ -43,14 +43,14 @@ interface DriverInterface
 	 *
 	 * @return boolean
 	 */
-	public function exists($key);
+	public function keyExists($key);
 
 	/**
 	 * Returns an array of all keys (files and directories)
 	 *
 	 * @return array
 	 */
-	public function keys();
+	public function getKeys();
 
 	/**
 	 * Returns the last modified time
@@ -59,7 +59,7 @@ interface DriverInterface
 	 *
 	 * @return integer|boolean A UNIX like timestamp or false
 	 */
-	public function timeModified($key);
+	public function getTimeModified($key);
 
 	/**
 	 * Deletes the file
@@ -68,7 +68,7 @@ interface DriverInterface
 	 *
 	 * @return boolean
 	 */
-	public function delete($key);
+	public function deleteKey($key);
 
 	/**
 	 * Renames a file
@@ -78,5 +78,21 @@ interface DriverInterface
 	 *
 	 * @return boolean
 	 */
-	public function rename($sourceKey, $targetKey);
+	public function renameKey($sourceKey, $targetKey);
+
+	/**
+	 * Returns most recent file key that was used by a storage
+	 *
+	 * @return string|null
+	 */
+	public function getRecentKey();
+
+	/**
+	 * Returns public file URL
+	 *
+	 * @param $key
+	 *
+	 * @return mixed
+	 */
+	public function getURL($key);
 }

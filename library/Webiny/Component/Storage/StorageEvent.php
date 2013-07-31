@@ -24,15 +24,15 @@ class StorageEvent extends Event{
 	 * This event is fired after a file was renamed, it also sets a property `oldKey` into the event object.<br />
 	 * You can use it if you need to know what file was renamed.
 	 */
-	const FILE_RENAMED = "storage.file_renamed";
+	const FILE_RENAMED = "wf.storage.file_renamed";
 	/**
 	 * This event is fired after the file content was written to storage.
 	 */
-	const FILE_SAVED = "storage.file_saved";
+	const FILE_SAVED = "wf.storage.file_saved";
 	/**
 	 * This event is fired after the file was deleted from the storage.
 	 */
-	const FILE_DELETED = "storage.file_deleted";
+	const FILE_DELETED = "wf.storage.file_deleted";
 
 	/**
 	 * @var File
@@ -63,9 +63,5 @@ class StorageEvent extends Event{
 	 */
 	public function getStorage(){
 		return $this->_storage;
-	}
-
-	public function setOldFile(File $file){
-
 	}
 }

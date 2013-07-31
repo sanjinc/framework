@@ -22,5 +22,5 @@ interface SizeAwareInterface
 	 *
 	 * @return int
 	 */
-	public function size($key);
+	public function getSize($key);
 }

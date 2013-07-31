@@ -9,8 +9,12 @@
 
 namespace Webiny\Component\Storage;
 
-use Webiny\Bridge\Storage\DriverInterface;
-use Webiny\Bridge\Storage\StorageException;
+use Webiny\Component\Storage\Driver\DriverInterface;
+use Webiny\Component\Storage\Driver\AbsolutePathInterface;
+use Webiny\Component\Storage\Driver\DirectoryAwareInterface;
+use Webiny\Component\Storage\Driver\SizeAwareInterface;
+use Webiny\Component\Storage\Driver\TouchableInterface;
+use Webiny\Component\Storage\StorageException;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 
@@ -21,8 +25,6 @@ use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
  */
 class Storage
 {
-	use StdLibTrait;
-
 	/**
 	 * @var DriverInterface
 	 */
@@ -33,7 +35,9 @@ class Storage
 	}
 
 	public function getURL($key) {
-		return $this->_driver->getURL($key);
+		if(!$this->isDirectory($key)){
+			return $this->_driver->getURL($key);
+		}
 	}
 
 	/**
@@ -43,8 +47,8 @@ class Storage
 	 *
 	 * @return string|bool if cannot read content
 	 */
-	public function read($key) {
-		return $this->_driver->read($key);
+	public function getContent($key) {
+		return $this->_driver->getContent($key);
 	}
 
 	/**
@@ -55,8 +59,8 @@ class Storage
 	 *
 	 * @return integer|bool The number of bytes that were written into the file
 	 */
-	public function write($key, $content) {
-		return $this->_driver->write($key, $content);
+	public function setContent($key, $content) {
+		return $this->_driver->setContent($key, $content);
 	}
 
 	/**
@@ -66,8 +70,8 @@ class Storage
 	 *
 	 * @return bool
 	 */
-	public function exists(File $file) {
-		return $this->_driver->exists($file);
+	public function keyExists(File $file) {
+		return $this->_driver->keyExists($file);
 	}
 
 	/**
@@ -75,8 +79,8 @@ class Storage
 	 *
 	 * @return array
 	 */
-	public function keys() {
-		return $this->_driver->keys();
+	public function getKeys() {
+		return $this->_driver->getKeys();
 	}
 
 	/**
@@ -88,8 +92,8 @@ class Storage
 	 *
 	 * @return UNIX Timestamp or DateTimeObject
 	 */
-	public function timeModified($key, $asDateTimeObject = false) {
-		$time = $this->_driver->timeModified($key);
+	public function getTimeModified($key, $asDateTimeObject = false) {
+		$time = $this->_driver->getTimeModified($key);
 		if($asDateTimeObject) {
 			$datetime = new DateTimeObject();
 
@@ -106,8 +110,8 @@ class Storage
 	 *
 	 * @return bool
 	 */
-	public function delete($key) {
-		return $this->_driver->delete($key);
+	public function deleteKey($key) {
+		return $this->_driver->deleteKey($key);
 	}
 
 	/**
@@ -118,8 +122,8 @@ class Storage
 	 *
 	 * @return bool
 	 */
-	public function rename($sourceKey, $targetKey) {
-		return $this->_driver->rename($sourceKey, $targetKey);
+	public function renameKey($sourceKey, $targetKey) {
+		return $this->_driver->renameKey($sourceKey, $targetKey);
 	}
 
 	/**
@@ -128,7 +132,7 @@ class Storage
 	 *
 	 * @param string $key
 	 *
-	 * @throws \Webiny\Bridge\Storage\StorageException
+	 * @throws StorageException
 	 * @return bool
 	 */
 	public function isDirectory($key) {
@@ -145,12 +149,12 @@ class Storage
 	 *
 	 * @param string $key
 	 *
-	 * @throws \Webiny\Bridge\Storage\StorageException
+	 * @throws StorageException
 	 * @return mixed
 	 */
-	public function touch($key) {
+	public function touchKey($key) {
 		if($this->supportsTouching()) {
-			return $this->_driver->touch($key);
+			return $this->_driver->touchKey($key);
 		}
 		throw new StorageException(StorageException::DRIVER_DOES_NOT_SUPPORT_TOUCH, [get_class($this->_driver)]);
 	}
@@ -161,12 +165,12 @@ class Storage
 	 *
 	 * @param string $key
 	 *
-	 * @throws \Webiny\Bridge\Storage\StorageException
+	 * @throws StorageException
 	 * @return int|bool The size of the file in bytes or false
 	 */
-	public function size($key) {
+	public function getSize($key) {
 		if($this->supportsSize()) {
-			return $this->_driver->size($key);
+			return $this->_driver->getSize($key);
 		}
 		throw new StorageException(StorageException::DRIVER_CAN_NOT_ACCESS_SIZE, [get_class($this->_driver)]);
 	}
@@ -177,8 +181,8 @@ class Storage
 	 *
 	 * @param $key
 	 *
+	 * @throws StorageException
 	 * @return mixed
-	 * @throws \Webiny\Bridge\Storage\StorageException
 	 */
 	public function getAbsolutePath($key) {
 		if($this->supportsAbsolutePaths()){
@@ -187,12 +191,16 @@ class Storage
 		throw new StorageException(StorageException::DRIVER_DOES_NOT_SUPPORT_ABSOLUTE_PATHS, [get_class($this->_driver)]);
 	}
 
+	public function getRecentKey(){
+		return $this->_driver->getRecentKey();
+	}
+
 	/**
 	 * Can this storage handle directories?
 	 * @return mixed
 	 */
 	public function supportsDirectories() {
-		return $this->isInstanceOf($this->_driver, '\Webiny\Component\Storage\Driver\DirectoryAwareInterface');
+		return $this->_driver instanceof DirectoryAwareInterface;
 	}
 
 	/**
@@ -200,7 +208,7 @@ class Storage
 	 * @return mixed
 	 */
 	public function supportsTouching() {
-		return $this->isInstanceOf($this->_driver, '\Webiny\Component\Storage\Driver\TouchableInterface');
+		return $this->_driver instanceof TouchableInterface;
 	}
 
 	/**
@@ -208,7 +216,7 @@ class Storage
 	 * @return mixed
 	 */
 	public function supportsAbsolutePaths() {
-		return $this->isInstanceOf($this->_driver, '\Webiny\Component\Storage\Driver\AbsolutePathInterface');
+		return $this->_driver instanceof AbsolutePathInterface;
 	}
 
 	/**
@@ -216,6 +224,6 @@ class Storage
 	 * @return mixed
 	 */
 	public function supportsSize() {
-		return $this->isInstanceOf($this->_driver, '\Webiny\Component\Storage\Driver\SizeAwareInterface');
+		return $this->_driver instanceof SizeAwareInterface;
 	}
 }

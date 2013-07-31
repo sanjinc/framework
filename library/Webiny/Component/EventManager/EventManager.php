@@ -91,7 +91,7 @@ class EventManager
 		}
 
 		$eventListeners = $this->_events->key($eventName);
-		if(!$this->isInstanceOf($data, 'Event')) {
+		if(!$this->isInstanceOf($data, '\Webiny\Component\EventManager\Event')) {
 			$data = new Event($data);
 		}
 
@@ -126,7 +126,7 @@ class EventManager
 		}
 
 		if($this->arr($events)->count() > 0){
-			if(!$this->isInstanceOf($data, 'Event')) {
+			if(!$this->isInstanceOf($data, '\Webiny\Component\EventManager\Event')) {
 				$data = new Event($data);
 			}
 

@@ -71,7 +71,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	/**
 	 * Get config as Yaml string
 	 *
-	 * @param int  $indent
+	 * @param int $indent
 	 *
 	 * @return string
 	 */
@@ -148,7 +148,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	/**
 	 * Save config using given DriverAbstract instance
 	 *
-	 * @param DriverAbstract                  $driver
+	 * @param DriverAbstract                 $driver
 	 * @param string|StringObject|FileObject $destination
 	 *
 	 * @return $this
@@ -186,14 +186,15 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	 * @return mixed|ConfigObject Config value or default value
 	 */
 	public function get($name, $default = null) {
-		if($this->str($name)->contains('.')){
+		if($this->str($name)->contains('.')) {
 			$keys = $this->str($name)->trim('.')->explode('.', 2);
 
-			if($this->_data->keyExists($keys[0])){
+			if($this->_data->keyExists($keys[0])) {
 				$value = $this->_data->key($keys[0])->get($keys[1], $default);
 			} else {
 				return $default;
 			}
+
 			return $value;
 		}
 
@@ -255,10 +256,13 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	}
 
 	/**
-	 * Get Config data in form of an array
-	 * @return array Config data array
+	 * Get Config data in form of an array or ArrayObject
+	 *
+	 * @param bool $asArrayObject (Optional) Defaults to false
+	 *
+	 * @return array|ArrayObject Config data array or ArrayObject
 	 */
-	public function toArray() {
+	public function toArray($asArrayObject = false) {
 		$data = [];
 		foreach ($this->_data as $k => $v) {
 			if($this->isInstanceOf($v, $this)) {
@@ -266,6 +270,10 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			} else {
 				$data[$k] = $v;
 			}
+		}
+
+		if($asArrayObject) {
+			return $this->arr($data);
 		}
 
 		return $data;
@@ -399,7 +407,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		}
 	}
 
-	public function __toString(){
+	public function __toString() {
 		return var_export($this->toArray(), true);
 	}
 

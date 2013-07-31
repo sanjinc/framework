@@ -34,10 +34,20 @@ class File
 	protected $_content;
 	protected $_isDirectory;
 	protected $_timeModified;
+	protected $_url;
 
 	public function __construct($key, Storage $storage) {
 		$this->_storage = $storage;
 		$this->_key = $key;
+	}
+
+	/**
+	 * Get file storage
+	 *
+	 * @return Storage
+	 */
+	public function getStorage(){
+		return $this->_storage;
 	}
 
 	/**
@@ -49,7 +59,7 @@ class File
 	 */
 	public function getTimeModified($asDateTimeObject = false) {
 		if($this->_timeModified == null) {
-			$this->_timeModified = $time = $this->_storage->timeModified($this->_key);
+			$this->_timeModified = $time = $this->_storage->getTimeModified($this->_key);
 			if($time) {
 				$this->_timeModified = $asDateTimeObject ? $this->datetime()->setTimestamp($time) : $time;
 			}
@@ -77,8 +87,9 @@ class File
 	 */
 	public function setContent($content) {
 		$this->_content = $content;
-		if($this->_storage->write($this->_key, $this->_content)){
-			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
+		if($this->_storage->setContent($this->_key, $this->_content)){
+			$this->_key = $this->_storage->getRecentKey();
+			$this->eventManager()->fire(StorageEvent::FILE_SAVED,  new StorageEvent($this));
 		}
 		return false;
 	}
@@ -94,7 +105,7 @@ class File
 			if($this->_storage->isDirectory($this->_key)){
 				throw new StorageException(StorageException::FILE_OBJECT_CAN_NOT_READ_DIRECTORY, [$this->_key]);
 			}
-			$this->_content = $this->_storage->read($this->_key);
+			$this->_content = $this->_storage->getContent($this->_key);
 		}
 
 		return $this->_content;
@@ -110,7 +121,7 @@ class File
 	 * @return bool
 	 */
 	public function rename($newKey) {
-		if($this->_storage->rename($this->_key, $newKey)) {
+		if($this->_storage->renameKey($this->_key, $newKey)) {
 			$event = new StorageEvent($this);
 			// Set `oldKey` property that will be available only on rename
 			$event->oldKey = $this->_key;
@@ -129,12 +140,32 @@ class File
 	 * @return bool
 	 */
 	public function delete() {
-		if($this->_storage->delete($this->_key)) {
+		if($this->_storage->deleteKey($this->_key)) {
 			$this->eventManager()->fire(StorageEvent::FILE_DELETED, new StorageEvent($this));
 
 			return true;
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get file key
+	 *
+	 * @return string
+	 */
+	public function getKey(){
+		return $this->_key;
+	}
+
+	/**
+	 * Get file public URL
+	 * @return string
+	 */
+	public function getUrl(){
+		if($this->_url == null){
+			$this->_url = $this->_storage->getURL($this->_key);
+		}
+		return $this->_url;
 	}
 }

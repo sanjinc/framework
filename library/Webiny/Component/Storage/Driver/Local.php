@@ -9,7 +9,9 @@
 
 namespace Webiny\Component\Storage\Driver;
 
+use Gaufrette\Adapter\Local as GaufretteLocal;
 use Webiny\Bridge\Storage\Driver\Local as LocalBridge;
+use Webiny\Bridge\Storage\Driver\StorageException;
 
 /**
  * Local storage
@@ -17,5 +19,13 @@ use Webiny\Bridge\Storage\Driver\Local as LocalBridge;
  * @package   Webiny\Component\Storage\Driver
  */
 class Local extends LocalBridge{
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __construct($directory, $publicUrl, $dateFolderStructure = false, $create = false) {
+		parent::__construct($directory, $publicUrl, $dateFolderStructure, $create);
+	}
+
 
 }

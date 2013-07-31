@@ -22,5 +22,5 @@ interface TouchableInterface
 	 *
 	 * @return mixed
 	 */
-	public function touch($key);
+	public function touchKey($key);
 }

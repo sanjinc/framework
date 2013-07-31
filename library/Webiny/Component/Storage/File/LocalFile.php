@@ -31,7 +31,7 @@ class LocalFile extends File implements TouchableInterface
 	 */
 	public function getSize() {
 		if($this->_size == null) {
-			$this->_size = $this->_storage->size($this->_key);
+			$this->_size = $this->_storage->getSize($this->_key);
 		}
 
 		return $this->_size;
@@ -52,7 +52,7 @@ class LocalFile extends File implements TouchableInterface
 	 * @return $this
 	 */
 	public function touch() {
-		$this->_storage->touch($this->_key);
+		$this->_storage->touchKey($this->_key);
 		$this->_timeModified = null;
 
 		return $this;
