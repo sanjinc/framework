@@ -48,9 +48,15 @@ interface DriverInterface
 	/**
 	 * Returns an array of all keys (files and directories)
 	 *
+	 * For storages that do not support directories, both parameters are irrelevant.
+	 *
+	 * @param string $key       (Optional) Key of a directory to get keys from. If not set - keys will be read from the storage root.
+	 *
+	 * @param bool   $recursive (Optional) Read all items recursively
+	 *
 	 * @return array
 	 */
-	public function getKeys();
+	public function getKeys($key = '', $recursive = false);
 
 	/**
 	 * Returns the last modified time

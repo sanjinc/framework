@@ -35,7 +35,7 @@ class Storage
 	}
 
 	public function getURL($key) {
-		if(!$this->isDirectory($key)){
+		if(!$this->isDirectory($key)) {
 			return $this->_driver->getURL($key);
 		}
 	}
@@ -64,23 +64,27 @@ class Storage
 	}
 
 	/**
-	 * Indicates whether the file exists
+	 * Indicates whether the key exists
 	 *
-	 * @param File $file
+	 * @param string $key
 	 *
 	 * @return bool
 	 */
-	public function keyExists(File $file) {
-		return $this->_driver->keyExists($file);
+	public function keyExists($key) {
+		return $this->_driver->keyExists($key);
 	}
 
 	/**
 	 * Returns an array of all keys (files and directories)
 	 *
+	 * @param string $key Key of a directory to get keys from. If not set - keys will be read from the storage root.
+	 *
+	 * @param bool   $recursive
+	 *
 	 * @return array
 	 */
-	public function getKeys() {
-		return $this->_driver->getKeys();
+	public function getKeys($key = '', $recursive = false) {
+		return $this->_driver->getKeys($key, $recursive);
 	}
 
 	/**
@@ -185,13 +189,13 @@ class Storage
 	 * @return mixed
 	 */
 	public function getAbsolutePath($key) {
-		if($this->supportsAbsolutePaths()){
+		if($this->supportsAbsolutePaths()) {
 			return $this->_driver->getAbsolutePath($key);
 		}
 		throw new StorageException(StorageException::DRIVER_DOES_NOT_SUPPORT_ABSOLUTE_PATHS, [get_class($this->_driver)]);
 	}
 
-	public function getRecentKey(){
+	public function getRecentKey() {
 		return $this->_driver->getRecentKey();
 	}
 

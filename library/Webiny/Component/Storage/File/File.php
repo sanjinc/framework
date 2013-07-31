@@ -9,10 +9,10 @@
 
 namespace Webiny\Component\Storage\File;
 
-use Webiny\Bridge\Storage\StorageException;
 use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Storage\Storage;
 use Webiny\Component\Storage\StorageEvent;
+use Webiny\Component\Storage\StorageException;
 use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 use Webiny\StdLib\StdObjectTrait;
 
@@ -22,7 +22,7 @@ use Webiny\StdLib\StdObjectTrait;
  * @package   Webiny\Component\Storage
  */
 
-class File
+class File implements FileInterface
 {
 	use StdObjectTrait, EventManagerTrait;
 
@@ -36,26 +36,33 @@ class File
 	protected $_timeModified;
 	protected $_url;
 
+	/**
+	 * Construct a File instance
+	 *
+	 * @param string  $key     File key
+	 * @param Storage $storage Storage to use
+	 *
+	 * @throws \Webiny\Component\Storage\StorageException
+	 */
 	public function __construct($key, Storage $storage) {
 		$this->_storage = $storage;
 		$this->_key = $key;
+
+		// Make sure a file path is given
+		if($this->_storage->keyExists($key) && $this->_storage->isDirectory($this->_key)) {
+			throw new StorageException(StorageException::FILE_CAN_NOT_READ_DIRECTORIES, [$key]);
+		}
 	}
 
 	/**
-	 * Get file storage
-	 *
-	 * @return Storage
+	 * @inheritdoc
 	 */
-	public function getStorage(){
+	public function getStorage() {
 		return $this->_storage;
 	}
 
 	/**
-	 * Get time modified
-	 *
-	 * @param bool $asDateTimeObject
-	 *
-	 * @return int|DateTimeObject UNIX timestamp or DateTimeObject
+	 * @inheritdoc
 	 */
 	public function getTimeModified($asDateTimeObject = false) {
 		if($this->_timeModified == null) {
@@ -69,42 +76,23 @@ class File
 	}
 
 	/**
-	 * Is item a directory
-	 * @return mixed
-	 */
-	public function isDirectory() {
-		return false;
-	}
-
-	/**
-	 * Set file content (writes content to storage)<br />
-	 *
-	 * Fires an event StorageEvent::FILE_SAVED after the file content was written.
-	 *
-	 * @param mixed $content
-	 *
-	 * @return $this
+	 * @inheritdoc
 	 */
 	public function setContent($content) {
 		$this->_content = $content;
-		if($this->_storage->setContent($this->_key, $this->_content)){
+		if($this->_storage->setContent($this->_key, $this->_content)) {
 			$this->_key = $this->_storage->getRecentKey();
-			$this->eventManager()->fire(StorageEvent::FILE_SAVED,  new StorageEvent($this));
+			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
 		}
+
 		return false;
 	}
 
 	/**
-	 * Get file content
-	 *
-	 * @throws \Webiny\Bridge\Storage\StorageException
-	 * @return string|boolean String on success, false if could not read content
+	 * @inheritdoc
 	 */
 	public function getContent() {
 		if($this->_content == null) {
-			if($this->_storage->isDirectory($this->_key)){
-				throw new StorageException(StorageException::FILE_OBJECT_CAN_NOT_READ_DIRECTORY, [$this->_key]);
-			}
 			$this->_content = $this->_storage->getContent($this->_key);
 		}
 
@@ -112,13 +100,7 @@ class File
 	}
 
 	/**
-	 * Rename a file<br />
-	 *
-	 * Fires an event StorageEvent::FILE_RENAMED after the file was renamed.
-	 *
-	 * @param string $newKey New file name
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function rename($newKey) {
 		if($this->_storage->renameKey($this->_key, $newKey)) {
@@ -127,17 +109,15 @@ class File
 			$event->oldKey = $this->_key;
 			$this->_key = $newKey;
 			$this->eventManager()->fire(StorageEvent::FILE_RENAMED, $event);
+
 			return true;
 		}
+
 		return false;
 	}
 
 	/**
-	 * Delete a file<br />
-	 *
-	 * Fires an event StorageEvent::FILE_DELETED after the file was deleted.
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function delete() {
 		if($this->_storage->deleteKey($this->_key)) {
@@ -150,22 +130,20 @@ class File
 	}
 
 	/**
-	 * Get file key
-	 *
-	 * @return string
+	 * @inheritdoc
 	 */
-	public function getKey(){
+	public function getKey() {
 		return $this->_key;
 	}
 
 	/**
-	 * Get file public URL
-	 * @return string
+	 * @inheritdoc
 	 */
-	public function getUrl(){
-		if($this->_url == null){
+	public function getUrl() {
+		if($this->_url == null) {
 			$this->_url = $this->_storage->getURL($this->_key);
 		}
+
 		return $this->_url;
 	}
 }

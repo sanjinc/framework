@@ -27,7 +27,7 @@ class StorageException extends ExceptionAbstract
 	const DRIVER_CAN_NOT_ACCESS_SIZE = 104;
 	const DRIVER_CAN_NOT_WORK_WITH_DIRECTORIES = 105;
 	const DRIVER_DOES_NOT_SUPPORT_ABSOLUTE_PATHS = 106;
-	const FILE_OBJECT_CAN_NOT_READ_DIRECTORY = 107;
+	const FILE_CAN_NOT_READ_DIRECTORIES = 107;
 	const STORAGE_DIRECTORY_DOES_NOT_EXIST = 108;
 	const STORAGE_DIRECTORY_COULD_NOT_BE_CREATED = 109;
 
@@ -38,7 +38,7 @@ class StorageException extends ExceptionAbstract
 		104 => 'Storage driver `%s` can not access file size info!',
 		105 => 'Storage driver `%s` can not work with directories!',
 		106 => 'Storage driver `%s` does not support absolute paths!',
-		107 => 'File can not read a directory (attempting to read `%s`)! Use Directory class instead.',
+		107 => 'File can not read a directory (attempting to read `%s`)! Use `\Webiny\Component\Storage\Directory\Directory` class instead.',
 		108 => 'Storage directory `%s` does not exist!',
 		109 => 'Storage directory `%s` could not be created!'
 	];

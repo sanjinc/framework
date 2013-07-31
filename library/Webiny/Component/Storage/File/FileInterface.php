@@ -9,11 +9,92 @@
 
 namespace Webiny\Component\Storage\File;
 
+use Webiny\Component\Storage\Storage;
+
 /**
- * @package   Webiny\Component\Storage
+ * Basic File interface
+ *
+ * @package   Webiny\Component\Storage\File
  */
 
 interface FileInterface
 {
-	public function touch();
+
+	/**
+	 * Constructor
+	 *
+	 * @param string  $key     File key
+	 * @param Storage $storage Storage to use
+	 */
+	public function __construct($key, Storage $storage);
+
+	/**
+	 * Get file storage
+	 *
+	 * @return Storage
+	 */
+	public function getStorage();
+
+	/**
+	 * Get file key
+	 *
+	 * @return string
+	 */
+	public function getKey();
+
+	/**
+	 * Get file public URL
+	 *
+	 * @return string
+	 */
+	public function getUrl();
+
+	/**
+	 * Get file content
+	 *
+	 * @throws StorageException
+	 *
+	 * @return string|boolean String on success, false if could not read content
+	 */
+	public function getContent();
+
+	/**
+	 * Get time modified
+	 *
+	 * @param bool $asDateTimeObject
+	 *
+	 * @return int|DateTimeObject UNIX timestamp or DateTimeObject
+	 */
+	public function getTimeModified($asDateTimeObject = false);
+
+	/**
+	 * Set file content (writes content to storage)<br />
+	 *
+	 * Fires an event StorageEvent::FILE_SAVED after the file content was written.
+	 *
+	 * @param mixed $content
+	 *
+	 * @return $this
+	 */
+	public function setContent($content);
+
+	/**
+	 * Rename a file<br />
+	 *
+	 * Fires an event StorageEvent::FILE_RENAMED after the file was renamed.
+	 *
+	 * @param string $newKey New file name
+	 *
+	 * @return bool
+	 */
+	public function rename($newKey);
+
+	/**
+	 * Delete a file<br />
+	 *
+	 * Fires an event StorageEvent::FILE_DELETED after the file was deleted.
+	 *
+	 * @return bool
+	 */
+	public function delete();
 }

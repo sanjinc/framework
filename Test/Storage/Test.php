@@ -2,12 +2,13 @@
 
 use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Storage\Driver\Dropbox;
-use Webiny\Component\Storage\Driver\Local;
+use Webiny\Component\Storage\Driver\Local\Local;
 use Webiny\Component\Storage\File\LocalFile;
+use Webiny\Component\Storage\Directory\Directory;
 use Webiny\Component\Storage\Storage;
 
-define('WF', '/var/www/newwebiny/framework');
-define('ABS_ROOT', '/var/www/newwebiny/framework/Test/Storage/uploads');
+define('WF', '/www/webiny/framework');
+define('ABS_ROOT', '/www/webiny/framework/Test/Storage/uploads');
 define('URL_ROOT', 'http://wf.com/Test/Storage/uploads');
 require_once '../../library/autoloader.php';
 use \Dropbox as dbx;
@@ -17,24 +18,15 @@ class Test
 {
 	use EventManagerTrait;
 
-	function storage() {
-
-/*		$this->eventManager()->listen(StorageEvent::FILE_SAVED)->handler(function(StorageEvent $e){
-			$e->getFile()->getTimeModified();
-			echo $e->getFile()->getAbsolutePath();
-			die(print_r($e->getFile()));
-		});*/
-
+	function file() {
 		$driver = new Local(ABS_ROOT, URL_ROOT, true, true);
 		$storage = new Storage($driver);
 
-		$file = new LocalFile('2013/07/31/test.gif', $storage);
-		$file->delete();
+		$file = new LocalFile('superfile', $storage);
+		$content = file_get_contents('http://www.w3schools.com/images/w3schoolslogoNEW310113.gif');
+		$file->setContent($content);
 
-		/*$content = file_get_contents('http://www.w3schools.com/images/w3schoolslogoNEW310113.gif');
-		$file->setContent($content);*/
-
-		/*echo $file->getAbsolutePath();
+		echo $file->getAbsolutePath();
 		echo "<br /> URL: ";
 		echo $file->getUrl();
 		echo "<br /> Size: ";
@@ -42,10 +34,30 @@ class Test
 		echo "<br /> Time modified: ";
 		echo $file->getTimeModified(true);
 		echo "<br />Key: ";
-		echo $file->getKey();*/
+		echo $file->getKey();
+
+	}
+
+	function directory() {
+		$driver = new Local(ABS_ROOT, URL_ROOT, true, true);
+		$storage = new Storage($driver);
+
+		$dir = new Directory('2013', $storage, false);
+
+		foreach($dir as $item){
+			if($item instanceof Directory){
+				echo $item->getKey()."<br />";
+				foreach($item as $i){
+					echo "----".$i->getKey()."<br />";
+				}
+			} else {
+				echo $item->getKey()."<br />";
+			}
+
+		}
 
 	}
 }
 
 $test = new Test();
-$test->storage();
+$test->directory();
