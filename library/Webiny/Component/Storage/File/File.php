@@ -17,7 +17,7 @@ use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
 use Webiny\StdLib\StdObjectTrait;
 
 /**
- * Description
+ * Basic File object that supports all common storage methods
  *
  * @package   Webiny\Component\Storage
  */
