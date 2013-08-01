@@ -27,11 +27,11 @@ class MyClass
     use SecurityTrait;
 
     function myMethod(){
-        $user = $this->getUser();
+        $user = $this->security()->getUser();
     }
 
     function onlyForAdmin(){
-        if(!$this->isGranted('ROLE_ADMIN')){
+        if(!$this->security()->isGranted('ROLE_ADMIN')){
             die('You are not the Admin');
         }
     }

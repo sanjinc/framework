@@ -18,23 +18,11 @@ namespace Webiny\Component\Security;
 trait SecurityTrait{
 
 	/**
-	 * Returns the instance of current user, if available.
-	 * If user doesn't exist, false is returned.
+	 * Returns the current security instance.
 	 *
-	 * @return bool|User\UserAbstract
+	 * @return Security
 	 */
-	function getUser(){
-		return Security::getInstance()->getUser();
-	}
-
-	/**
-	 * Checks if current user is granted with the given role.
-	 *
-	 * @param string $role Role name.
-	 *
-	 * @return bool True if user is granted with the role, otherwise false is returned.
-	 */
-	function isGranted($role){
-		return Security::getInstance()->getUser()->hasRole($role);
+	function security(){
+		return Security::getInstance();
 	}
 }

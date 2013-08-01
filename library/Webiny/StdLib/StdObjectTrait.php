@@ -24,7 +24,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\StringObject\StringObject
 	 */
-	static public function str($string) {
+	static protected function str($string) {
 		return new StdObject\StringObject\StringObject($string);
 	}
 
@@ -35,7 +35,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\ArrayObject\ArrayObject
 	 */
-	static public function arr($array = null) {
+	static protected function arr($array = null) {
 		return new StdObject\ArrayObject\ArrayObject($array);
 	}
 
@@ -46,7 +46,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\UrlObject\UrlObject
 	 */
-	static public function url(&$url) {
+	static protected function url(&$url) {
 		return new StdObject\UrlObject\UrlObject($url);
 	}
 
@@ -57,7 +57,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\FileObject\FileObject
 	 */
-	static function file($pathToFile) {
+	static protected function file($pathToFile) {
 		return new StdObject\FileObject\FileObject($pathToFile);
 	}
 
@@ -71,7 +71,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\DateTimeObject\DateTimeObject
 	 */
-	static function datetime($time = "now", $timezone = null) {
+	static protected function datetime($time = "now", $timezone = null) {
 		return new StdObject\DateTimeObject\DateTimeObject($time, $timezone);
 	}
 }
