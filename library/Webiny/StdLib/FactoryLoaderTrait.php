@@ -24,15 +24,15 @@ trait FactoryLoaderTrait
 	/**
 	 * Create an instance of given $className.
 	 *
-	 * @param string $className           Full class name, with namespace, of the class you wish to load.
-	 * @param string $classImplementation If you wish to validate that $className implements this $classImplementation,
-	 *                                    just pass full classified interface or class name here.
-	 * @param array|null  $arguments           A list of arguments passed to $className constructor.
+	 * @param string     $className           Full class name, with namespace, of the class you wish to load.
+	 * @param string     $classImplementation If you wish to validate that $className implements this $classImplementation,
+	 *                                        just pass full classified interface or class name here.
+	 * @param array|null $arguments           A list of arguments passed to $className constructor.
 	 *
 	 * @throws Exception\Exception
 	 * @return mixed|string
 	 */
-	static function factory($className, $classImplementation = '', $arguments = null) {
+	static protected function factory($className, $classImplementation = '', $arguments = null) {
 		try {
 			if(class_exists($className)) {
 				try {

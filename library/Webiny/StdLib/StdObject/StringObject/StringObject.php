@@ -52,7 +52,7 @@ class StringObject extends StdObjectAbstract
 	 */
 	public function __construct($value) {
 		if(!$this->isString($value) && !$this->isNumber($value)) {
-			if($this->isInstanceOf($value, $this)){
+			if($this->isInstanceOf($value, $this)) {
 				return $value;
 			}
 
@@ -102,4 +102,17 @@ class StringObject extends StdObjectAbstract
 		return $this->val();
 	}
 
+	/**
+	 * Get number of string occurrences in current string.
+	 *
+	 * @param string   $string String to search for
+	 * @param null|int $offset The offset where to start counting
+	 * @param null|int $length The maximum length after the specified offset to search for the substring.
+	 *                         It outputs a warning if the offset plus the length is greater than the haystack length.
+	 *
+	 * @return int
+	 */
+	public function subStringCount($string, $offset = null, $length = null) {
+		return substr_count($this->val(), $string, $offset, $length);
+	}
 }
