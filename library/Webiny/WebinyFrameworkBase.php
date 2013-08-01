@@ -208,7 +208,11 @@ class WebinyFrameworkBase
 			// we must add the absolute path to the additional libraries
 			$maps = self::$_config->additional_libraries->toArray();
 			foreach ($maps as $k => $v) {
-				$maps[$k] = self::$_frameworkPath . $v;
+				if(strpos($v, '/')===0 || strpos($v, ':')===1){ // linux and windows absolute path
+					$maps[$k] = $v;
+				}else{
+					$maps[$k] = self::$_frameworkPath . $v;
+				}
 			}
 			ClassLoader::getInstance()->registerMap($maps);
 		}

@@ -130,3 +130,36 @@ components:
       cipher_block: 'rijndael-128'
       cipher_initialization_vector: '_FOO_VECTOR'
 ```
+
+## Crypt as a service
+
+To define a crypt service, you just need to register it with the service manager inside you config like this:
+
+```yaml
+parameters:
+    crypt.class: '\Webiny\Component\Crypt\Crypt'
+
+services:
+    crypt:
+        webiny_crypt:
+            class: %crypt.class%
+            arguments: ['Blowfish', 'CCM', 'rijndael-128', '_FOO_VECTOR']
+```
+
+Then you can use is by getting the instance over the `CryptTrait`
+
+```php
+class MyClass
+{
+    use CryptTrait;
+
+    function myMethod(){
+        $crypt = $this->crypt('webiny_crypt');
+    }
+}
+```
+
+### System crypt service
+
+WebinyFramework needs the crypt service inside several of its components, like the `Security` component. To define the
+**system crypt service** you just need to create a crypt service with `**webiny_crypt**` as the key.
