@@ -12,7 +12,7 @@ namespace Webiny\Component\Security\Token;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Token data class holds user data that has been decrypted from token storrage.
+ * Token data class holds user data that has been decrypted from token storage.
  *
  * @package         Webiny\Component\Security\Token
  */
@@ -21,17 +21,40 @@ class TokenData
 {
 	use StdLibTrait;
 
+	/**
+	 * Users username.
+	 * @var string
+	 */
 	private $_username;
+
+	/**
+	 * Array of roles.
+	 * @var array
+	 */
 	private $_roles;
+
+	/**
+	 * Timestamp until the token data is valid.
+	 * @var int
+	 */
 	private $_validUntil;
 
 	/**
+	 * Name of the class that was used to provide the user authentication.
+	 * @var string
+	 */
+	private $_authProviderDriver;
+
+	/**
+	 * Base constructor.
+	 *
 	 * @param array $tokenData Decrypted token data array.
 	 */
-	function __construct(array $tokenData){
+	function __construct(array $tokenData) {
 		$this->_username = $tokenData['u'];
 		$this->_roles = $tokenData['r'];
 		$this->_validUntil = $tokenData['vu'];
+		$this->_authProviderDriver = $tokenData['ap'];
 	}
 
 	/**
@@ -39,7 +62,7 @@ class TokenData
 	 *
 	 * @return string
 	 */
-	function getUsername(){
+	function getUsername() {
 		return $this->_username;
 	}
 
@@ -48,16 +71,16 @@ class TokenData
 	 *
 	 * @return array
 	 */
-	function getRoles(){
+	function getRoles() {
 		return $this->_roles;
 	}
 
 	/**
-	 * Checks if the token is still valid or if it has expired.
+	 * Returns the name of auth provider driver.
 	 *
-	 * @return bool True if token is still valid.
+	 * @return string
 	 */
-	function isValid(){
-		return !$this->datetime()->setTimestamp($this->_validUntil)->isPast();
+	function getAuthProviderDriver() {
+		return $this->_authProviderDriver;
 	}
 }

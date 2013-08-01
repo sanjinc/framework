@@ -441,7 +441,7 @@ class UrlObject extends StdObjectAbstract
 				$text = 'HTTP Version not supported';
 				break;
 			default:
-				throw new UrlObjectException(UrlObjectException::MSG_ARG_OUT_OF_RANGE, ['$headerCode']);
+				throw new UrlObjectException(UrlObjectException::MSG_ARG_OUT_OF_RANGE, [$headerCode]);
 				break;
 		}
 

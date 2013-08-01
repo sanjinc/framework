@@ -116,7 +116,7 @@ trait ManipulatorTrait
 		$array = $this->val();
 
 		if(count(func_get_args()) > 0) {
-			$assign = $this->first();
+			$assign = $this->first()->val();
 		}
 		array_shift($array);
 
@@ -758,7 +758,7 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 */
-	public function unique($sortFlag = SORT_STRING) {
+	public function unique($sortFlag = SORT_REGULAR) {
 		$this->val(array_unique($this->val(), $sortFlag));
 
 		return $this;

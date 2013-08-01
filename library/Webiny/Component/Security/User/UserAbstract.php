@@ -9,6 +9,8 @@
 
 namespace Webiny\Component\Security\User;
 
+use Webiny\Component\Security\Authentication\Providers\Login;
+use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\Token\TokenData;
 use Webiny\StdLib\StdLibTrait;
@@ -46,6 +48,22 @@ abstract class UserAbstract implements UserInterface
 	private $_roles;
 
 	/**
+	 * @var string The name of the driver that has authenticated the current user.
+	 */
+	private $_authProviderDriver = '';
+
+
+	/**
+	 * This method verifies the credentials of current user with the credentials provided from the Login object.
+	 *
+	 * @param Login   $login
+	 * @param Encoder $encoder
+	 *
+	 * @return bool Return true if credentials are valid, otherwise return false.
+	 */
+	abstract function authenticate(Login $login, Encoder $encoder);
+
+	/**
 	 * Populate the user object.
 	 *
 	 * @param string $username        Username.
@@ -60,8 +78,12 @@ abstract class UserAbstract implements UserInterface
 		$this->_isAuthenticated = $isAuthenticated;
 
 		$this->_roles = $this->arr([]);
-		foreach($roles as $r){
-			$this->_roles->append(new Role($r));
+		foreach ($roles as $r) {
+			if($this->isInstanceOf($r, '\Webiny\Component\Security\Role\Role')) {
+				$this->_roles->append($r);
+			} else {
+				$this->_roles->append(new Role($r));
+			}
 		}
 	}
 
@@ -126,13 +148,13 @@ abstract class UserAbstract implements UserInterface
 	 */
 	public function isTokenValid(TokenData $tokenData) {
 		$roles = [];
-		foreach($this->_roles as $role){
+		foreach ($this->_roles as $role) {
 			$roles[] = $role->getRole();
 		}
 		$currentUser = $this->str($this->getUsername() . implode(',', $roles))->hash('md5');
 
 		$tokenRoles = [];
-		foreach($tokenData->getRoles() as $role){
+		foreach ($tokenData->getRoles() as $role) {
 			$tokenRoles[] = $role->getRole();
 		}
 		$tokenUser = $this->str($tokenData->getUsername() . implode(',', $tokenRoles))->hash('md5');
@@ -145,7 +167,25 @@ abstract class UserAbstract implements UserInterface
 	 *
 	 * @param array $roles An array of Role instances.
 	 */
-	public function setRoles(array $roles){
+	public function setRoles(array $roles) {
 		$this->_roles = $this->arr($roles);
+	}
+
+	/**
+	 * Set the name of the auth provider driver.
+	 *
+	 * @param string $driver
+	 */
+	public function setAuthProviderDriver($driver) {
+		$this->_authProviderDriver = $driver;
+	}
+
+	/**
+	 * Returns the name of auth provider driver.
+	 *
+	 * @return string
+	 */
+	public function getAuthProviderDriver() {
+		return $this->_authProviderDriver;
 	}
 }

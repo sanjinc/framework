@@ -13,7 +13,6 @@ use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\AuthenticationInterface;
 use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Token\Token;
-use Webiny\Component\Security\User\User;
 use Webiny\Component\Security\User\UserAbstract;
 
 /**
@@ -27,6 +26,9 @@ class Http implements AuthenticationInterface
 
 	use HttpTrait;
 
+	/**
+	 * Constants for PHP_AUTH variable names.
+	 */
 	const USERNAME = 'PHP_AUTH_USER';
 	const PASSWORD = 'PHP_AUTH_PW';
 	const DIGEST = 'PHP_AUTH_DIGEST';
@@ -41,6 +43,10 @@ class Http implements AuthenticationInterface
 	 * @return Login
 	 */
 	function getLoginObject($config) {
+
+		if(!$this->request()->session()->get('username', false)){
+			$this->triggerLogin($config);
+		}
 
 		$username = $this->request()->session()->get('username', '');
 		$password = $this->request()->session()->get('password', '');
@@ -81,8 +87,6 @@ class Http implements AuthenticationInterface
 
 		$this->request()->session()->save('username', $username);
 		$this->request()->session()->save('password', $password);
-
-		$this->request()->redirect($config->login->submit_path);
 	}
 
 	/**
@@ -118,6 +122,9 @@ class Http implements AuthenticationInterface
 		// nothing to do
 	}
 
+	/**
+	 * Logout callback is called when user auth token was deleted.
+	 */
 	function logoutCallback() {
 		$this->invalidLoginProvidedCallback();
 		$this->request()->session()->delete('login_retry');

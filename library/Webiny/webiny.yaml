@@ -7,14 +7,6 @@
 
 system:
     display_errors: true
-    cache: false
-        #wfc:
-        #    driver: '\Webiny\Component\Cache\Drivers\Couchbase::getInstance'
-        #    params:
-        #        user: 'webiny'
-        #        pass: ''
-        #        bucket: 'default'
-        #        host: '127.0.0.1:8091'
     environment: 'development'
 bridges:
     cache:
@@ -24,13 +16,12 @@ bridges:
         redis: '\Webiny\Bridge\Cache\Memory\Redis'
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
+    oauth2: '\Webiny\Bridge\OAuth2\OAuth2\OAuth2'
 additional_libraries:
     'Jamm\Memory': '../Memory'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
-    'App': '../../app'
-    'Gaufrette': '../KnpLabs-Gaufrette/src/Gaufrette'
-    'Dropbox': '../Dropbox-SDK/lib/Dropbox'
+    'OAuth2': '../OAuth2'
 components:
     logger:
         formatters:
@@ -43,16 +34,14 @@ components:
                 date_format: 'Y-m-d H:i:s'
         handlers:
             udp:
-                host: 192.168.1.10:41234
-        tray: 192.168.1.10:5000
-    crypt:
-        password_algo: 'Blowfish'
-        cipher_mode: 'CCM'
-        cipher_block: 'rijndael-128'
-        cipher_initialization_vector: '_FOO_VECTOR'
+                host: 192.168.1.6:41234
+        tray: 192.168.1.6:5000
     http:
         session:
-            storage: false
+            storage:
+                driver: '\Webiny\Component\Http\Request\Session\Storage\CacheStorage'
+                params:
+                    cache_id: 'webiny_cache'
             prefix: 'wfs_'
             expiretime: 86400
         trusted_proxies: ['192.168.1.9', '192.168.1.128', '127.0.0.1']
@@ -63,55 +52,126 @@ components:
             client_port: 'X_FORWARDED_PORT'
         cookie:
             storage:
-                driver: '\Webiny\Component\Http\Request\Cookie\Storage\Native'
+                driver: '\Webiny\Component\Http\Request\Cookie\Storage\NativeStorage'
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400
-#security:
-    firewall:
+    oauth2:
+        servers:
+            facebook: '\Webiny\Component\OAuth2\Server\Facebook'
+            google: '\Webiny\Component\OAuth2\Server\Google'
+            linkedin: '\Webiny\Component\OAuth2\Server\LinkedIn'
+            twitter: '\Webiny\Component\OAuth2\Server\Twitter'
+
+oauth2:
+    webiny_test:
+        server: facebook
+        client_id: 102119699873470
+        client_secret: 3a617d0a94f5e805a6e1ad24b6f8a05b
+        scope: email
+        redirect_uri: /Test/Security/oauth_fbsubmit.php
+    google_test:
+        server: google
+        client_id: 280548463887.apps.googleusercontent.com
+        client_secret: X7TklIJTNFm46yPOKBlg3-dT
+        scope: openid%20profile%20email
+        redirect_uri: /Test/Security/oauth_gsubmit.php
+    linkedin_test:
+        server: linkedin
+        client_id: 0fys926ire4b
+        client_secret: SxHqk6qjOllUoILz
+        scope: r_basicprofile%20r_emailaddress
+        redirect_uri: /Test/Security/oauth_lisubmit.php
+
+security:
+    encoders:
+        default:
+            driver: '\Webiny\Component\Security\Encoder\Drivers\Crypt'
+            params: ['webiny_crypt']
+            salt: 'CHANGE THIS SECRET'
+    providers:
+        memory:
+            john: {password: secret, roles: 'ROLE_USER'}
+            admin: {password: login123, roles: 'ROLE_SUPERADMIN'}
+        oauth2:
+            driver: 'Webiny\Component\Security\User\Providers\OAuth2\OAuth2'
+    chain_providers:
+        default_chain: [oauth2, memory]
+    role_hierarchy:
+        ROLE_USER: ROLE_EDITOR
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
+    access_control:
+        rules:
+            - {path: ^/admin, roles: ROLE_ADMIN}
+            - {path: ^/Test, roles: [ROLE_ADMIN]}
+        decision_strategy: consensus
+    firewalls:
         administration:
             realm_name: 'My administration realm'
-            url_pattern: '^/'
+            url_pattern: '^/Test/'
             anonymous: false
             remember_me: true
+            #encoder: default
+            security_key: THIS_IS_MY_KEY98
+            provider: default_chain
             login:
-                path: '/Test/login.php'
-                provider: 'Webiny\Component\Security\Authentication\Http'
+                login_path: '/Test/Security/login.php'
+                failure_path: '/Test/Security/loginfailed.php'
+                target_path: 'Test/Test.php'
+                providers:
+                    form:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\Form\Form'
+                        submit_path: '/Test/Security/form_loginsubmit.php'
+                    http:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\Http\Http'
+                        submit_path: '/Test/Security/http_loginsubmit.php'
+                    facebook:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_fbsubmit.php'
+                        params:
+                            server: webiny_test
+                            roles: [ROLE_ADMIN]
+                    google:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_gsubmit.php'
+                        params:
+                            server: google_test
+                            roles: [ROLE_ADMIN]
+                    linkedin:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_lisubmit.php'
+                        params:
+                            server: linkedin_test
+                            roles: [ROLE_ADMIN]
             logout:
-                path: '/logout'
-                target: '/'
-            encoder:
-                driver: '\Webiny\Component\Security\Encoder\Drivers\Crypt'
-                salt: 'I_WANT_TO_KEEP_THIS_A_SECRET'
-            providers:
-                #session:
-                #   driver: '\Webiny\Component\Security\UserProviders\Session'
-                #   params:
-                memory:
-                    sven: {password: delmania, roles: 'ROLE_USER'}
-                    admin: {password: admin, roles: 'ROLE_ADMIN'}
-            #provider_chain: ['session', 'memory']
-            role_hierarchy:
-                ROLE_ADMIN: ROLE_USER
-                ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
-            access_control:
-                - {path: ^/admin, roles: ROLE_ADMIN}
-                - {path: ^/login}
+                path: '/Test/Security/logout.php'
+                target: '/Test/Security/logoutsuccess.php'
+
 parameters:
     logger.class: \Webiny\Component\Logger\Logger
     logger.driver.class: \Webiny\Component\Logger\Drivers\Webiny
     logger.formatter.tray.class: \Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter
     logger.processor.file_line.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor
     logger.processor.memory_usage.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor
+    cache.class: '\Webiny\Component\Cache\Cache'
+    crypt.class: '\Webiny\Component\Crypt\Crypt'
+    security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
 
 services:
+    crypt:
+        webiny_crypt:
+            class: %crypt.class%
+            arguments: ['Blowfish', 'CCM', 'rijndael-128', '_FOO_VECTOR']
+    cache:
+        webiny_cache:
+            factory: "%cache.class%"
+            method: "Couchbase"
+            method_arguments: ["webiny", '', "default"]
     logger:
         handlers:
-            abstract:
-                abstract: true
-                class: \Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler
             udp:
-                parent: @logger.handlers.abstract
+                class: \Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler
                 arguments: [[], true, true]
                 calls:
                     - [addProcessor, [%logger.processor.file_line.class%]]
@@ -122,15 +182,3 @@ services:
             arguments: [System, %logger.driver.class%]
             calls:
                 - [addHandler, [@logger.handlers.udp]]
-            tags: [voters]
-    storage:
-        local:
-            class: \Webiny\Component\Storage\Storage
-            arguments:
-                driver:
-                    object: \Webiny\Component\Storage\Driver\Local\Local
-                    object_arguments:
-                        - /var/www/newwebiny/framework/Test/Storage/uploads # Absolute root path
-                        - http://wf.com/Test/Storage/uploads # Web root path
-                        - true # DateFolderStructure
-                        - true # Create folder if it doesn't exist

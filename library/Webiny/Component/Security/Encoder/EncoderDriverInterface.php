@@ -10,12 +10,14 @@
 namespace Webiny\Component\Security\Encoder;
 
 /**
- * Description
+ * Encoder driver interface.
+ * Every encoder driver must implement this interface so that is compatible with the encoder requirements.
  *
- * @package		 Webiny\Component\Security\Encoder
+ * @package         Webiny\Component\Security\Encoder
  */
- 
-interface EncoderDriverInterface{
+
+interface EncoderDriverInterface
+{
 
 	/**
 	 * Create a hash for the given password.

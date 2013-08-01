@@ -26,13 +26,20 @@ class CryptLib implements CryptInterface
 	static $_lowStrengthGenerator = null;
 
 	static $_passwordImplementationLibrary = null;
-	static $_defaultPassImplLibrary = 'Blowfish';
-
 	static $_cipherModeInstance = null;
 	static $_cipherBlockInstance = null;
-	static $_defaultCipherMode = 'CCM';
-	static $_defaultCipherBlock = 'rijndael-128';
-	static $_defaultInitVector = '_FOO_VECTOR';
+
+	private $_passwordAlgo;
+	private $_cipherBlock;
+	private $_cipherMode;
+	private $_cipherInitVector;
+
+	function __construct($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector){
+		$this->_passwordAlgo = $passwordAlgo;
+		$this->_cipherInitVector = $cipherInitVector;
+		$this->_cipherMode = $cipherMode;
+		$this->_cipherBlock = $cipherBlock;
+	}
 
 	/**
 	 * Generates a random integer between the given $min and $max values.
@@ -194,11 +201,7 @@ class CryptLib implements CryptInterface
 			return self::$_passwordImplementationLibrary;
 		}
 
-		$library = '\CryptLib\Password\Implementation\\' . self::$_defaultPassImplLibrary;
-		if(isset($this->webiny()->getConfig()->components->crypt->password_algo)) {
-			$library = '\CryptLib\Password\Implementation\\' . $this->webiny()
-															   ->getConfig()->components->crypt->password_algo;
-		}
+		$library = '\CryptLib\Password\Implementation\\' . $this->_passwordAlgo;
 		self::$_passwordImplementationLibrary = new $library;
 
 		return self::$_passwordImplementationLibrary;
@@ -214,16 +217,10 @@ class CryptLib implements CryptInterface
 	 * @return \CryptLib\Cipher\Block\AbstractCipher Instance of \CryptLib\Cipher\Block\AbstractMode
 	 */
 	private function _getCipherMode($secretKey, $initializationVector = null) {
-		$mode = '\CryptLib\Cipher\Block\Cipher\\' . self::$_defaultCipherMode;
-		if(isset($this->webiny()->getConfig()->components->crypt->cipher_mode)) {
-			$mode = '\CryptLib\Cipher\Block\Mode\\' . $this->webiny()->getConfig()->components->crypt->cipher_mode;
-		}
+		$mode = '\CryptLib\Cipher\Block\Mode\\' . $this->_cipherMode;
 
 		if(is_null($initializationVector)) {
-			$initializationVector = self::$_defaultInitVector;
-			if(isset($this->webiny()->getConfig()->components->crypt->cipher_initialization_vector)) {
-				$initializationVector = $this->webiny()->getConfig()->components->crypt->cipher_initialization_vector;
-			}
+			$initializationVector = $this->_cipherInitVector;
 		}
 
 		$cipherBlock = $this->_getCipherBlock();
@@ -243,13 +240,8 @@ class CryptLib implements CryptInterface
 			return self::$_cipherBlockInstance;
 		}
 
-		$cipherBlock = self::$_defaultCipherBlock;
-		if(isset($this->webiny()->getConfig()->components->crypt->cipher_block)) {
-			$cipherBlock = $this->webiny()->getConfig()->components->crypt->cipher_block;
-		}
-
 		$factory = new \CryptLib\Cipher\Factory();
-		self::$_cipherBlockInstance = $factory->getBlockCipher($cipherBlock);
+		self::$_cipherBlockInstance = $factory->getBlockCipher($this->_cipherBlock);
 
 		return self::$_cipherBlockInstance;
 	}

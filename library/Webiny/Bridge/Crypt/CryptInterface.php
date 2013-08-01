@@ -17,6 +17,9 @@ namespace Webiny\Bridge\Crypt;
 
 interface CryptInterface
 {
+
+	function __construct($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector);
+
 	// randoms
 	/**
 	 * Generates a random integer between the given $min and $max values.

@@ -42,12 +42,12 @@ class RoleHierarchy
 	 */
 	public function getAccessibleRoles(array $roles) {
 		$accessibleRoles = $roles;
-		foreach($roles as $role){
+		foreach ($roles as $role) {
 			/**
 			 * @var $role Role
 			 */
-			if(isset($this->_map[$role->getRole()])){
-				foreach($this->_map[$role->getRole()] as $r){
+			if(isset($this->_map[$role->getRole()])) {
+				foreach ($this->_map[$role->getRole()] as $r) {
 					$accessibleRoles[] = new Role($r);
 				}
 			}
@@ -63,9 +63,9 @@ class RoleHierarchy
 	 */
 	private function _buildRoleMap($hierarchy) {
 		$this->_map = $this->arr();
-		foreach ($hierarchy as &$roles) {
-			$roles = (array)$roles;
-			$roles = $this->arr($roles);
+
+		foreach ($hierarchy as $main => $roles) {
+			$hierarchy[$main] = $this->arr((array)$roles);
 		}
 
 		$hierarchy = $this->arr($hierarchy);

@@ -10,42 +10,70 @@
 namespace Webiny\Component\Security;
 
 use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Security\Authentication\Firewall;
 use Webiny\Component\Security\Authorization\AccessControl;
 use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
+use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\ServiceManager\ServiceManager;
-use Webiny\Component\ServiceManager\ServiceManagerException;
-use Webiny\StdLib\Exception\Exception;
+use Webiny\StdLib\FactoryLoaderTrait;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**
- * Description
+ * The security class initializes the whole security layer that consists of firewall and access controls.
+ * The class checks if we are inside the firewall, and what is the state of the current user, is he authenticated or not.
+ * Once we have the user, the security class check with the authorization layer (UAC) what roles are required to access
+ * the current part of the site, and check is current user has the necessary role to enter this area.
  *
  * @package         Webiny\Component\Security
  */
 
 class Security
 {
-	use SingletonTrait, WebinyTrait, StdLibTrait;
+	use SingletonTrait, WebinyTrait, StdLibTrait, FactoryLoaderTrait, EventManagerTrait;
 
 	/**
+	 * Security configuration.
+	 *
 	 * @var ConfigObject
 	 */
 	private $_config;
+
+	/**
+	 * Current firewall that took over the request.
+	 * @var Firewall
+	 */
 	private $_firewall;
+
+	/**
+	 * List of encoder instances.
+	 * @var array
+	 */
 	private $_encoders = [];
+
+	/**
+	 * List of user provider instances.
+	 * @var array
+	 */
 	private $_userProviders = [];
-	private $_roleHierarchy;
+
+	/**
+	 * Current user instance, or bool false if user is not authenticated.
+	 *
+	 * @var bool|UserAbstract
+	 */
+	private $_user = false;
+
 
 	/**
 	 * Initializes the security layer.
 	 *
-	 * @throws \Exception|\Webiny\Component\ServiceManager\ServiceManagerException
-	 * @return bool
+	 * @throws SecurityException
+	 * @return bool False is returned if security layer is not initialized. (could be that we don't have a firewall)
 	 */
 	public function init() {
 		// validate the config
@@ -54,15 +82,10 @@ class Security
 			return false;
 		}
 
-		// validate additional requirement
-		try {
-			ServiceManager::getInstance()->getService('crypt.webiny_crypt');
-		} catch (ServiceManagerException $e) {
-			if($e->getCode() == ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND) {
-				throw new SecurityException('Security component requires that you have a service "crypt.webiny_crypt" defined');
-			}
-
-			throw $e;
+		// check if we have firewalls defined
+		if(count($this->_config->get('firewalls'))<1){
+			// we don't have any firewalls defined
+			return false;
 		}
 
 		// initialize user providers..there has to be at least one user provider
@@ -80,18 +103,24 @@ class Security
 		}
 
 		// setup authentication layer - firewalls -> we only keep the firewall that accepts the current request
-		$user = false;
 		$firewalls = $this->_getConfig()->get('firewalls', []);
 		foreach ($firewalls as $firewallKey => $firewallConfig) {
-			$this->_firewall = new Firewall($firewallKey,
+			$fw = new Firewall($firewallKey,
 											$firewallConfig,
 											$this->_getFirewallProviders($firewallKey),
 											$this->_getFirewallEncoder($firewallKey));
 
-			if($this->_firewall){
+			if($fw->isInsideFirewall()){
+				$this->_firewall = $fw;
 				break;
 			}
 		}
+
+		if(!isset($this->_firewall)){
+			// no firewall accepted the request -> we are not inside the firewall
+			return false;
+		}
+
 		// lets validate the user
 		$user = $this->_firewall->init();
 		if((!$user || !$user->isAuthenticated()) && !$this->_firewall->getAnonymousAccess()){
@@ -99,11 +128,11 @@ class Security
 			try{
 				$user = $this->_firewall->setupAuth();
 			}catch (\Exception $e){
-				throw $e;
+				throw new SecurityException($e->getMessage());
 			}
 
 			if(!$user){
-				throw new Exception('Unable to authenticate the user.');
+				throw new SecurityException('Unable to authenticate the user.');
 			}
 		}
 
@@ -116,20 +145,31 @@ class Security
 		// process access control
 		$accessControl = new AccessControl($user, $this->_getConfig()->get('access_control', false));
 		if(!$accessControl->isUserAllowedAccess()){
-			echo 'acc invalid';
-			die(print_r($user));
 			try{
 				$user = $this->_firewall->setupAuth();
+				$this->eventManager()->fire(SecurityEvent::ROLE_INVALID, new SecurityEvent($user));
 			}catch (\Exception $e){
-				throw $e;
+				throw new SecurityException($e->getMessage());
 			}
 
 			if(!$user){
-				throw new Exception('Unable to authenticate the user.');
+				throw new SecurityException('Unable to authenticate the user.');
 			}
 		}
-		print_r($user);
-		#die('accout valid');
+
+		$this->_user = $user;
+
+		return true;
+	}
+
+	/**
+	 * Returns the instance of current user.
+	 * If user doesn't exist, false is returned.
+	 *
+	 * @return bool|UserAbstract
+	 */
+	public function getUser(){
+		return $this->_user;
 	}
 
 	/**
@@ -148,7 +188,7 @@ class Security
 				if(isset($provider->driver)) {
 					try {
 						$params = $provider->get('params', []);
-						$this->_userProviders[$pk] = $this->factory($provider,
+						$this->_userProviders[$pk] = $this->factory($provider->driver,
 																	'\Webiny\Component\Security\User\UserProviderInterface',
 																	$params);
 					} catch (\Exception $e) {
@@ -177,7 +217,10 @@ class Security
 					throw new SecurityException('Encoder "driver" param must be present.');
 				}
 				$salt = $encoder->get('salt', '');
-				$params = $encoder->get('params', null)->toArray();
+				$params = $encoder->get('params', false);
+				if($params){
+					$params = $params->toArray();
+				}
 
 				// encoder instance
 				$this->_encoders[$ek] = new Encoder($driver, $salt, $params);

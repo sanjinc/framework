@@ -18,7 +18,7 @@ use Webiny\Component\Security\User\UserAbstract;
  * @package         Webiny\Component\Security\Authorization\Voters
  */
 
-class AuthenticationVoter implements RoleVoterInterface
+class AuthenticationVoter implements VoterInterface
 {
 
 	/**

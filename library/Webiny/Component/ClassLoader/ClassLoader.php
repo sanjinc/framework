@@ -236,7 +236,7 @@ class ClassLoader
 					}
 
 					// build the full path
-					$file = $dir . DIRECTORY_SEPARATOR . $normalizedClass;
+					$file = $dir . DIRECTORY_SEPARATOR . ltrim($normalizedClass, '/');
 
 					// no check if a file exists or not
 					return $file;

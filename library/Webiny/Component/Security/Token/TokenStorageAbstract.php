@@ -14,6 +14,7 @@ use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Token\TokenStorageInterface;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\StdLib\Exception\Exception;
+use Webiny\StdLib\StdLibTrait;
 
 /**
  * Token storage abstract.
@@ -23,10 +24,19 @@ use Webiny\StdLib\Exception\Exception;
 
 abstract class TokenStorageAbstract implements TokenStorageInterface
 {
-	use HttpTrait, CryptTrait;
+	use HttpTrait, CryptTrait, StdLibTrait;
 
+	/**
+	 * Name of the token.
+	 * @var string
+	 */
 	private $_tokenName;
-	private $_encKey = 'WF-AUTH-KEY-SECU';
+
+	/**
+	 * Security key used for encrypting the token data.
+	 * @var string
+	 */
+	private $_securityKey;
 
 	/**
 	 * This function provides the token name to the storage.
@@ -49,7 +59,7 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	/**
 	 * Stores user data into an array, encrypts it and returns the encrypted string.
 	 *
-	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
+	 * @param UserAbstract $user Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return string
 	 */
@@ -57,14 +67,22 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 		// data (we use short syntax to reduce the size of the cookie or session)
 		$data = [
 			// username
-			'u'  => $user->getUsername(),
+			'u'   => $user->getUsername(),
 			// rules
-			'r'  => $user->getRoles(),
+			'r'   => $user->getRoles(),
 			// valid until
-			'vu' => time() + (86400 * 30),
+			'vu'  => time() + (86400 * 30),
+			// session id
+			'sid' => $this->request()->session()->getSessionId(),
+			// auth provider driver
+			'ap'  => $user->getAuthProviderDriver()
 		];
 
-		return $this->crypt()->encrypt(serialize($data), $this->_encKey);
+		// build and add token to $data
+		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_securityKey)->hash()->val();
+		$data['t'] = $token;
+
+		return $this->crypt()->encrypt(serialize($data), $this->_securityKey);
 	}
 
 	/**
@@ -77,34 +95,61 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 	 * @throws TokenException
 	 */
 	function decryptUserData($tokenData) {
+		// decrypt token data
 		try {
-			// decrypt token data
-			$data = $this->crypt()->decrypt($tokenData, $this->_encKey);
+			$data = $this->crypt()->decrypt($tokenData, $this->_securityKey);
 			$data = unserialize($data);
-
-			// validate token data
-			if(!isset($data['u']) || !isset($data['r']) || !isset($data['vu']))
-			{
-				$this->deleteUserToken();
-				return false;
-			}
-
-			// create token data instance
-			$tokenData = new TokenData($data);
-
-			// check that token data is still valid
-			if(!$tokenData->isValid()){
-				$this->deleteUserToken();
-
-				return false;
-			}
-
-			return $tokenData;
-		} catch (Exception $e) {
-			// delete the token before we throw the exception
+		} catch (\Exception $e) {
 			$this->deleteUserToken();
 
-			throw new TokenException($e->getMessage());
+			return false;
 		}
+
+		// validate token data
+		if(!isset($data['u'])
+			|| !isset($data['r'])
+			|| !isset($data['vu'])
+			|| !isset($data['sid'])
+			|| !isset($data['t'])
+			|| !isset($data['ap'])
+		) {
+			$this->deleteUserToken();
+
+			return false;
+		}
+
+		// validate sid so we are sure that nobody stole a cookie
+		if($this->request()->session()->getSessionId() != $data['sid']) {
+			$this->deleteUserToken();
+
+			return false;
+		}
+
+		// validate token-token :)
+		$token = $this->str($data['u'], '|' . $data['vu'] . '|' . $this->_securityKey)->hash()->val();
+		if($token != $data['t']) {
+			$this->deleteUserToken();
+
+			return false;
+		}
+
+		// check that token data is still valid
+		if($this->datetime()->setTimestamp($data['vu'])->isPast()) {
+			$this->deleteUserToken();
+
+			return false;
+		}
+
+		// return TokenData instance
+		return new TokenData($data);
+	}
+
+	/**
+	 * Sets the security key that will be used for encryption of token data.
+	 *
+	 * @param string $securityKey Must have 16/32/64 chars.
+	 */
+	public function setSecurityKey($securityKey) {
+		$this->_securityKey = $securityKey;
 	}
 }

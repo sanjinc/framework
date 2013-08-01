@@ -277,4 +277,16 @@ trait ValidatorTrait
 	static protected function classExists($className) {
 		return class_exists($className, true);
 	}
+
+	/**
+	 * Checks if given object $instance has the given method.
+	 *
+	 * @param object $instance Object instance.
+	 * @param string $methodName Name of the method you wish to check.
+	 *
+	 * @return bool
+	 */
+	static protected function methodExists($instance, $methodName){
+		return method_exists($instance, $methodName);
+	}
 }
