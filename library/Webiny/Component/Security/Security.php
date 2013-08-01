@@ -173,6 +173,17 @@ class Security
 	}
 
 	/**
+	 * Checks if current user has the given role.
+	 *
+	 * @param string $role Name of the role.
+	 *
+	 * @return bool True if user has the role, otherwise false.
+	 */
+	public function isGranted($role){
+		return $this->_user->hasRole($role);
+	}
+
+	/**
 	 * Initialize user providers defined for this firewall.
 	 *
 	 * @throws SecurityException
