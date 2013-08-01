@@ -30,7 +30,7 @@ interface TokenStorageInterface
 	/**
 	 * Save user authentication token.
 	 *
-	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
+	 * @param UserAbstract $user Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */

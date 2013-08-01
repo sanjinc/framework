@@ -20,7 +20,20 @@ use Webiny\Component\Security\User\UserAbstract;
  
 class SecurityEvent extends Event{
 
+	// invalid login credentials submitted
+	const LOGIN_INVALID = 'wf.security.login_invalid';
+
+	// valid login credentials submitted
+	const LOGIN_VALID = 'wf.security.login_valid';
+
+	// user is authenticated, but doesn't have the right role to access the current area
+	const ROLE_INVALID = 'wf.security.role_invalid';
+
+	/**
+	 * @var User\UserAbstract
+	 */
 	private $_user;
+
 
 	/**
 	 * Base constructor.
@@ -30,6 +43,8 @@ class SecurityEvent extends Event{
 	function __construct(UserAbstract $user)
 	{
 		$this->_user = $user;
+
+		parent::__construct();
 	}
 
 	/**

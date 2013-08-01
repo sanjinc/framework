@@ -14,17 +14,18 @@ use Webiny\Component\Security\Encoder\Encoder;
 
 /**
  * Anonymous user class.
- * This is the user class that is created if we cannot identify the user.
+ * This is the user class that is created if we cannot identify the user or when we return the user from the token.
  *
- * @package		 Webiny\Component\Security\User
+ * @package         Webiny\Component\Security\User
  */
- 
-class AnonymousUser extends UserAbstract{
+
+class AnonymousUser extends UserAbstract
+{
 
 	/**
 	 * Base constructor.
 	 */
-	function __construct(){
+	function __construct() {
 		parent::populate('anonymous', '', [], false);
 	}
 

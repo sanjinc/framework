@@ -13,7 +13,7 @@ use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authorization\Voters\AuthenticationVoter;
 use Webiny\Component\Security\Authorization\Voters\RoleVoter;
-use Webiny\Component\Security\Authorization\Voters\RoleVoterInterface;
+use Webiny\Component\Security\Authorization\Voters\VoterInterface;
 use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\UserAbstract;
@@ -21,14 +21,14 @@ use Webiny\Component\ServiceManager\ServiceManagerTrait;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Description
+ * Access control class talks to the voters and accumulates the vote scoring. Then, based on the selected decision
+ * strategy, makes a ruling either to allow the access for the current user, or deny.
  *
  * @package         Webiny\Component\Security\Authorization
  */
 
 class AccessControl
 {
-
 	use StdLibTrait, HttpTrait, ServiceManagerTrait;
 
 	// 1 single voter denies access
@@ -40,8 +40,22 @@ class AccessControl
 	// Majority wins
 	const VOTER_STR_CONSENSUS = 'consensus';
 
+	/**
+	 * Access control configuration
+	 * @var \Webiny\Component\Config\ConfigObject
+	 */
 	private $_config;
+
+	/**
+	 * Selected decision strategy.
+	 * @var string
+	 */
 	private $_strategy;
+
+	/**
+	 * Current path - based on current request.
+	 * @var \Webiny\StdLib\StdObject\StringObject\StringObject
+	 */
 	protected $_currentPath;
 
 	/**
@@ -66,7 +80,7 @@ class AccessControl
 		$requestedRoles = $this->_getRequestedRoles();
 
 		// we allow access if there are no requested roles that the user must have
-		if(count($requestedRoles)<1){
+		if(count($requestedRoles) < 1) {
 			return true;
 		}
 
@@ -80,7 +94,8 @@ class AccessControl
 	 */
 	private function _getVoters() {
 		// we have 2 built in voters
-		$voters = $this->servicesByTag('security.voter', '\Webiny\Component\Security\Authorization\Voters\RoleVoterInterface');
+		$voters = $this->servicesByTag('security.voter',
+									   '\Webiny\Component\Security\Authorization\Voters\RoleVoterInterface');
 
 		$voters[] = new AuthenticationVoter();
 		$voters[] = new RoleVoter();
@@ -157,7 +172,7 @@ class AccessControl
 	 * This method get the votes from all the voters and sends them to the ruling.
 	 * The result of ruling is then returned.
 	 *
-	 * @param array        $requestedRoles An array of requested roles for the current access map.
+	 * @param array $requestedRoles An array of requested roles for the current access map.
 	 *
 	 * @return bool True if access is allowed to the current user, otherwise false.
 	 */
@@ -169,24 +184,26 @@ class AccessControl
 		$maxScore = 0;
 		foreach ($voters as $v) {
 			/**
-			 * @var $v RoleVoterInterface
+			 * @var $v VoterInterface
 			 */
 			if($v->supportsUserClass($userClassName)) {
 				$vote = $v->vote($this->_user, $requestedRoles);
-				if($this->_strategy==self::VOTER_STR_AFFIRMATIVE){
-					if($vote>0){
+				if($this->_strategy == self::VOTER_STR_AFFIRMATIVE) {
+					if($vote > 0) {
 						$maxScore++;
-						$voteScore+=$vote;
+						$voteScore += $vote;
 					}
-				} else if($this->_strategy==self::VOTER_STR_CONSENSUS){
-					if($vote>0){
-						$voteScore+=$vote;
-					}
-					$maxScore++;
-				}else{
-					if($vote<>0){
+				} else {
+					if($this->_strategy == self::VOTER_STR_CONSENSUS) {
+						if($vote > 0) {
+							$voteScore += $vote;
+						}
 						$maxScore++;
-						$voteScore+=$vote;
+					} else {
+						if($vote <> 0) {
+							$maxScore++;
+							$voteScore += $vote;
+						}
 					}
 				}
 			}

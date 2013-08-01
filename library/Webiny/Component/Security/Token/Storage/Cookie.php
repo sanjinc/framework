@@ -15,20 +15,19 @@ use Webiny\Component\Security\Token\TokenStorageAbstract;
 use Webiny\Component\Security\User\UserAbstract;
 
 /**
- * Session token provider.
+ * Cookie token storage.
  *
  * @package         Webiny\Component\Security\User\Token\Storage
  */
 
 class Cookie extends TokenStorageAbstract
 {
-
 	use HttpTrait;
 
 	/**
 	 * Save user authentication token.
 	 *
-	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
+	 * @param UserAbstract $user Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */

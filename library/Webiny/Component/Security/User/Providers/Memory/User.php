@@ -31,9 +31,9 @@ class User extends UserAbstract
 	 * @return bool Return true if credentials are valid, otherwise return false.
 	 */
 	function authenticate(Login $login, Encoder $encoder) {
-		try{
+		try {
 			$result = $encoder->verifyPasswordHash($login->getPassword(), $this->getPassword());
-		}catch (\Exception $e){
+		} catch (\Exception $e) {
 			throw new MemoryException($e->getMessage());
 		}
 

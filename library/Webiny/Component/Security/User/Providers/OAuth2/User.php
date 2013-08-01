@@ -9,7 +9,6 @@
 
 namespace Webiny\Component\Security\User\Providers\OAuth2;
 
-use Webiny\Component\OA2Wrapper\Facebook;
 use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\User\UserAbstract;
@@ -17,10 +16,11 @@ use Webiny\Component\Security\User\UserAbstract;
 /**
  * OAuth2 user class.
  *
- * @package		 namespace Webiny\Component\Security\User\Providers\OAuth2
+ * @package         namespace Webiny\Component\Security\User\Providers\OAuth2
  */
- 
-class User extends UserAbstract{
+
+class User extends UserAbstract
+{
 
 	/**
 	 * This method verifies the credentials of current user with the credentials provided from the Login object.

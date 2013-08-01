@@ -16,13 +16,11 @@ use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\AuthenticationInterface;
 use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Encoder\Encoder;
-use Webiny\Component\Security\Security;
 use Webiny\Component\Security\SecurityEvent;
 use Webiny\Component\Security\User\AnonymousUser;
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\Token\Token;
-use Webiny\Component\Security\User\User;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\FactoryLoaderTrait;
@@ -100,7 +98,7 @@ class Firewall
 	 * Checks if the auth layer should be installed for current request.
 	 * If we cannot match the current url using the pattern from the config, auth layer will not be installed.
 	 *
-	 * @return bool|\Webiny\StdLib\StdObject\ArrayObject\ArrayObject|User
+	 * @return bool
 	 */
 	public function isInsideFirewall() {
 		return $this->str($this->request()->getCurrentUrl(true)->getPath())->match($this->getUrlPattern());
@@ -153,14 +151,14 @@ class Firewall
 			// forward the login object to user providers and validate the credentials
 			if(!($user = $this->_authenticate($login))) { // login failed
 				$this->_getAuthProvider()->invalidLoginProvidedCallback();
-				$this->eventManager()->fire('wf.security.login_invalid', new SecurityEvent(new AnonymousUser()));
+				$this->eventManager()->fire(SecurityEvent::LOGIN_INVALID, new SecurityEvent(new AnonymousUser()));
 
 				// redirect to failure_path
 				$this->request()->redirect($this->request()->getCurrentUrl(true)
 										   ->setPath($this->getConfig()->login->failure_path));
 			} else {
 				$this->_getAuthProvider()->loginSuccessfulCallback($user);
-				$this->eventManager()->fire('wf.security.login_valid', new SecurityEvent($user));
+				$this->eventManager()->fire(SecurityEvent::LOGIN_VALID, new SecurityEvent($user));
 
 				// redirect to target
 				$url = $this->url($this->request()->getCurrentUrl(true)->getDomain())

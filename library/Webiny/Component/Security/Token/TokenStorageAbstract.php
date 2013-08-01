@@ -26,8 +26,17 @@ abstract class TokenStorageAbstract implements TokenStorageInterface
 {
 	use HttpTrait, CryptTrait, StdLibTrait;
 
+	/**
+	 * Name of the token.
+	 * @var string
+	 */
 	private $_tokenName;
-	private $_securityKey = 'WF-AUTH-KEY-SECU';
+
+	/**
+	 * Security key used for encrypting the token data.
+	 * @var string
+	 */
+	private $_securityKey;
 
 	/**
 	 * This function provides the token name to the storage.

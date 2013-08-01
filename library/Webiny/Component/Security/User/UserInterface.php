@@ -11,11 +11,14 @@ namespace Webiny\Component\Security\User;
 
 /**
  * User interface.
+ * Every user provider User class must implement this interface.
  *
- * @package		 Webiny\Component\Security\User
+ * @package         Webiny\Component\Security\User
  */
- 
-interface UserInterface{
+
+interface UserInterface
+{
+
 	/**
 	 * @return string Username.
 	 */

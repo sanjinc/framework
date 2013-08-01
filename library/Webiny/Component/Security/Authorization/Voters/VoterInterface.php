@@ -19,7 +19,7 @@ use Webiny\Component\Security\User\UserAbstract;
  * @package         Webiny\Component\Security\Authorization\Voters
  */
 
-interface RoleVoterInterface
+interface VoterInterface
 {
 
 	const ACCESS_GRANTED = 1;

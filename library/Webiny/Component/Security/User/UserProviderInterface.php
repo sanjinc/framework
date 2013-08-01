@@ -13,7 +13,8 @@ use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 
 /**
- * Description
+ * User provider interface.
+ * Every user provider must implement this interface.
  *
  * @package         Webiny\Component\Security\User
  */

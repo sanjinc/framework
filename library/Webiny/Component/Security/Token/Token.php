@@ -24,13 +24,19 @@ class Token
 {
 	use WebinyTrait, FactoryLoaderTrait;
 
+	// store token into cookie -> only if remember me is TRUE
 	const TOKEN_COOKIE_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
+	// store token into session -> only if remember me is FALSE
 	const TOKEN_SESSION_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
 
 	/**
 	 * @var TokenStorageAbstract
 	 */
 	private $_storage;
+
+	/**
+	 * @var bool
+	 */
 	private $_rememberMe = false;
 
 	/**

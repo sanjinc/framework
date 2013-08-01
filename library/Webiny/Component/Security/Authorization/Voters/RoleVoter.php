@@ -19,7 +19,7 @@ use Webiny\StdLib\StdLibTrait;
  * @package         Webiny\Component\Security\Authorization\Voters
  */
 
-class RoleVoter implements RoleVoterInterface
+class RoleVoter implements VoterInterface
 {
 	use StdLibTrait;
 
