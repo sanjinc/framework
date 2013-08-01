@@ -123,3 +123,14 @@ services:
             calls:
                 - [addHandler, [@logger.handlers.udp]]
             tags: [voters]
+    storage:
+        local:
+            class: \Webiny\Component\Storage\Storage
+            arguments:
+                driver:
+                    object: \Webiny\Component\Storage\Driver\Local\Local
+                    object_arguments:
+                        - /var/www/newwebiny/framework/Test/Storage/uploads # Absolute root path
+                        - http://wf.com/Test/Storage/uploads # Web root path
+                        - true # DateFolderStructure
+                        - true # Create folder if it doesn't exist

@@ -17,7 +17,7 @@ use Webiny\StdLib\SingletonTrait;
  *
  * @package   Webiny\Component\Storage\Driver;
  *
- * The class is taken from KnpLabs-Gaufrette library and is adapted to suite WebinyFramework
+ * The class was taken from KnpLabs-Gaufrette library and was adapted to suite WebinyFramework
  * Original author: Antoine Hérault <antoine.herault@gmail.com>
  */
 
@@ -41,35 +41,7 @@ class LocalHelper
 	}
 
 	/**
-	 * Indicates whether the given path is absolute or not
-	 *
-	 * @param string $path A normalized path
-	 *
-	 * @return boolean
-	 */
-	public function isAbsolute($path) {
-		return '' !== $this->getAbsolutePrefix($path);
-	}
-
-	/**
-	 * Returns the absolute prefix of the given path
-	 *
-	 * @param string $path A normalized path
-	 *
-	 * @return string
-	 */
-	public function getAbsolutePrefix($path) {
-		preg_match('|^(?P<prefix>([a-zA-Z]:)?/)|', $path, $matches);
-
-		if(empty($matches['prefix'])) {
-			return '';
-		}
-
-		return strtolower($matches['prefix']);
-	}
-
-	/**
-	 * Gets the key from the specified path
+	 * Gets the key using file $path and storage $directory
 	 *
 	 * @param string $path      Path to extract file key from
 	 *
@@ -86,15 +58,15 @@ class LocalHelper
 	/**
 	 * Make sure the target directory exists
 	 *
-	 * @param      $directory
-	 * @param bool $create
+	 * @param string $directory Path to check
+	 * @param bool   $create    (Optional) Create path if doesn't exist
 	 *
 	 * @throws \Webiny\Component\Storage\StorageException
 	 */
 	public function ensureDirectoryExists($directory, $create = false) {
 		if(!is_dir($directory)) {
 			if(!$create) {
-				throw new StorageException(StorageException::STORAGE_DIRECTORY_DOES_NOT_EXIST, [$directory]);
+				throw new StorageException(StorageException::DIRECTORY_DOES_NOT_EXIST, [$directory]);
 			}
 			$this->_createDirectory($directory);
 		}
@@ -117,13 +89,20 @@ class LocalHelper
 		return $path;
 	}
 
+	/**
+	 * Create directory
+	 *
+	 * @param string $directory Directory path to create
+	 *
+	 * @throws \Webiny\Component\Storage\StorageException
+	 */
 	protected function _createDirectory($directory) {
 		$umask = umask(0);
 		$created = mkdir($directory, 0777, true);
 		umask($umask);
 
 		if(!$created) {
-			throw new StorageException(StorageException::STORAGE_DIRECTORY_COULD_NOT_BE_CREATED, [$directory]);
+			throw new StorageException(StorageException::DIRECTORY_COULD_NOT_BE_CREATED, [$directory]);
 		}
 	}
 
@@ -136,7 +115,7 @@ class LocalHelper
 	 */
 	protected function _normalizePath($path) {
 		$path = str_replace('\\', '/', $path);
-		$prefix = $this->getAbsolutePrefix($path);
+		$prefix = $this->_getAbsolutePrefix($path);
 		$path = substr($path, strlen($prefix));
 		$parts = array_filter(explode('/', $path), 'strlen');
 		$tokens = array();
@@ -146,7 +125,7 @@ class LocalHelper
 				case '.':
 					continue;
 				case '..':
-					if(0 !== count($tokens)) {
+					if(count($tokens) !== 0) {
 						array_pop($tokens);
 						continue;
 					} elseif(!empty($prefix)) {
@@ -158,5 +137,22 @@ class LocalHelper
 		}
 
 		return $prefix . implode('/', $tokens);
+	}
+
+	/**
+	 * Returns the absolute prefix of the given path
+	 *
+	 * @param string $path A normalized path
+	 *
+	 * @return string
+	 */
+	protected function _getAbsolutePrefix($path) {
+		preg_match('|^(?P<prefix>([a-zA-Z]:)?/)|', $path, $matches);
+
+		if(empty($matches['prefix'])) {
+			return '';
+		}
+
+		return strtolower($matches['prefix']);
 	}
 }

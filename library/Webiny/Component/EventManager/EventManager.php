@@ -24,6 +24,13 @@ class EventManager
 	use StdLibTrait, SingletonTrait;
 
 	/**
+	 * Suppress EventManager events
+	 * @var bool
+	 */
+	private $_suppressEvents = false;
+
+	/**
+	 * Registered events and event subscribers
 	 * @var ArrayObject
 	 */
 	private $_events;
@@ -36,15 +43,15 @@ class EventManager
 	/**
 	 * Subscribe to event
 	 *
-	 * @param string        $eventName
-	 * @param EventListener $eventListener
+	 * @param string        $eventName     Event name you want to listen
+	 * @param EventListener $eventListener (Optional) If specified, given EventListener will be used for this event
 	 *
 	 * @throws EventManagerException
 	 * @return EventListener Return instance of EventListener
 	 */
 	public function listen($eventName, EventListener $eventListener = null) {
 
-		if(!$this->isString($eventName) || $this->str($eventName)->length() == 0){
+		if(!$this->isString($eventName) || $this->str($eventName)->length() == 0) {
 			throw new EventManagerException(EventManagerException::INVALID_EVENT_NAME);
 		}
 
@@ -62,27 +69,32 @@ class EventManager
 	/**
 	 * Subscribe to events using event subscriber
 	 *
-	 * @param EventSubscriberInterface $subscriber
+	 * @param EventSubscriberInterface $subscriber Subscriber class
+	 *
 	 * @return $this Return instance of EventManager
 	 */
 	public function subscribe(EventSubscriberInterface $subscriber) {
 		$subscriber->subscribe();
+
 		return $this;
 	}
 
 	/**
 	 * Fire event
 	 *
-	 * @param string $eventName Event to fire. You can also use wildcards to fire multiple events at once, ex: 'event.*'
-	 * @param mixed|Event  $data
-	 *
-	 * @param null   $resultType
+	 * @param string      $eventName  Event to fire. You can also use wildcards to fire multiple events at once, ex: 'event.*'
+	 * @param array|Event $data       Array or Event object
+	 * @param null        $resultType If specified, the event results will be filtered using given class/interface name
 	 *
 	 * @return array Array of results from EventListeners
 	 */
 	public function fire($eventName, $data = null, $resultType = null) {
 
-		if($this->str($eventName)->endsWith('*')){
+		if($this->_suppressEvents) {
+			return null;
+		}
+
+		if($this->str($eventName)->endsWith('*')) {
 			return $this->_fireWildcardEvents($eventName, $data, $resultType);
 		}
 
@@ -99,6 +111,32 @@ class EventManager
 	}
 
 	/**
+	 * Enable event handling
+	 *
+	 * After calling this method EventManager will process all fired events.
+	 *
+	 * @return $this
+	 */
+	public function enable() {
+		$this->_suppressEvents = false;
+
+		return $this;
+	}
+
+	/**
+	 * Disable event handling
+	 *
+	 * After calling this method EventManager will ignore all fired events.
+	 *
+	 * @return $this
+	 */
+	public function disable() {
+		$this->_suppressEvents = true;
+
+		return $this;
+	}
+
+	/**
 	 * Singleton constructor
 	 */
 	protected function init() {
@@ -108,35 +146,38 @@ class EventManager
 
 	/**
 	 * Process events starting with given prefix (ex: webiny.* will process all events starting with 'webiny.')
+	 *
 	 * @param $eventName
 	 * @param $data
 	 * @param $resultType
 	 *
 	 * @return null|array
 	 */
-	private function _fireWildcardEvents($eventName, $data, $resultType){
+	private function _fireWildcardEvents($eventName, $data, $resultType) {
 		// Get event prefix
 		$eventPrefix = $this->str($eventName)->subString(0, -1)->val();
 		// Find events starting with the prefix
 		$events = [];
-		foreach($this->_events as $eventName => $eventListeners){
-			if($this->str($eventName)->startsWith($eventPrefix)){
+		foreach ($this->_events as $eventName => $eventListeners) {
+			if($this->str($eventName)->startsWith($eventPrefix)) {
 				$events[$eventName] = $eventListeners;
 			}
 		}
 
-		if($this->arr($events)->count() > 0){
+		if($this->arr($events)->count() > 0) {
 			if(!$this->isInstanceOf($data, '\Webiny\Component\EventManager\Event')) {
 				$data = new Event($data);
 			}
 
 			$results = $this->arr();
-			foreach($events as $eventListeners){
+			foreach ($events as $eventListeners) {
 				$result = $this->_eventProcessor->process($eventListeners, $data, $resultType);
 				$results->merge($result);
 			}
+
 			return $results->val();
 		}
+
 		return null;
 	}
 }

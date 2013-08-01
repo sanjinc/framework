@@ -43,6 +43,7 @@ class File implements FileInterface
 	 * @param Storage $storage Storage to use
 	 *
 	 * @throws \Webiny\Component\Storage\StorageException
+	 * @return \Webiny\Component\Storage\File\File
 	 */
 	public function __construct($key, Storage $storage) {
 		$this->_storage = $storage;
@@ -50,7 +51,7 @@ class File implements FileInterface
 
 		// Make sure a file path is given
 		if($this->_storage->keyExists($key) && $this->_storage->isDirectory($this->_key)) {
-			throw new StorageException(StorageException::FILE_CAN_NOT_READ_DIRECTORIES, [$key]);
+			throw new StorageException(StorageException::FILE_OBJECT_CAN_NOT_READ_DIRECTORY_PATHS, [$key]);
 		}
 	}
 
@@ -80,7 +81,7 @@ class File implements FileInterface
 	 */
 	public function setContent($content) {
 		$this->_content = $content;
-		if($this->_storage->setContent($this->_key, $this->_content)) {
+		if($this->_storage->setContents($this->_key, $this->_content)) {
 			$this->_key = $this->_storage->getRecentKey();
 			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
 		}
@@ -91,9 +92,9 @@ class File implements FileInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function getContent() {
+	public function getContents() {
 		if($this->_content == null) {
-			$this->_content = $this->_storage->getContent($this->_key);
+			$this->_content = $this->_storage->getContents($this->_key);
 		}
 
 		return $this->_content;

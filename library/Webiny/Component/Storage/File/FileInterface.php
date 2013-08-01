@@ -50,13 +50,13 @@ interface FileInterface
 	public function getUrl();
 
 	/**
-	 * Get file content
+	 * Get file contents
 	 *
 	 * @throws StorageException
 	 *
 	 * @return string|boolean String on success, false if could not read content
 	 */
-	public function getContent();
+	public function getContents();
 
 	/**
 	 * Get time modified

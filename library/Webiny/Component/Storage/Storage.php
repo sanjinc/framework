@@ -41,26 +41,26 @@ class Storage
 	}
 
 	/**
-	 * Reads the content of the file
+	 * Reads the contents of the file
 	 *
 	 * @param string key
 	 *
 	 * @return string|bool if cannot read content
 	 */
-	public function getContent($key) {
-		return $this->_driver->getContent($key);
+	public function getContents($key) {
+		return $this->_driver->getContents($key);
 	}
 
 	/**
-	 * Writes the given content into the file
+	 * Writes the given contents into the file
 	 *
 	 * @param string $key
-	 * @param string $content
+	 * @param string $contents
 	 *
 	 * @return integer|bool The number of bytes that were written into the file
 	 */
-	public function setContent($key, $content) {
-		return $this->_driver->setContent($key, $content);
+	public function setContents($key, $contents) {
+		return $this->_driver->setContents($key, $contents);
 	}
 
 	/**

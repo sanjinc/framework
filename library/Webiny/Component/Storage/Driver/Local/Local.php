@@ -15,6 +15,7 @@ use Webiny\Component\Storage\Driver\DirectoryAwareInterface;
 use Webiny\Component\Storage\Driver\Local\LocalHelper;
 use Webiny\Component\Storage\Driver\SizeAwareInterface;
 use Webiny\Component\Storage\Driver\TouchableInterface;
+use Webiny\Component\Storage\StorageException;
 use Webiny\StdLib\StdObject\StringObject\StringObject;
 
 /**
@@ -101,7 +102,7 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 	/**
 	 * @inheritdoc
 	 */
-	public function getContent($key) {
+	public function getContents($key) {
 		$this->_recentKey = $key;
 		$data = file_get_contents($this->_buildPath($key));
 		if(!$data) {
@@ -114,7 +115,7 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 	/**
 	 * @inheritdoc
 	 */
-	public function setContent($key, $content) {
+	public function setContents($key, $contents) {
 		if($this->_dateFolderStructure) {
 			if(!$this->keyExists($key)) {
 				$key = new StringObject($key);
@@ -126,7 +127,7 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 		$path = $this->_buildPath($key);
 		$this->_helper->ensureDirectoryExists(dirname($path), true);
 
-		return file_put_contents($path, $content);
+		return file_put_contents($path, $contents);
 	}
 
 	/**
@@ -166,6 +167,7 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 			}
 			$files = iterator_to_array($iterator);
 		} else {
+			$files = [];
 			$iterator = new \DirectoryIterator($path);
 			foreach ($iterator as $fileinfo) {
 				$name = $fileinfo->getFilename();
@@ -236,6 +238,10 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 	}
 
 	private function _buildPath($key) {
-		return $this->_helper->buildPath($key, $this->_directory, $this->_create);
+		$path = $this->_helper->buildPath($key, $this->_directory, $this->_create);
+		if (strpos($path, $this->_directory) !== 0)  {
+			throw new StorageException(StorageException::PATH_IS_OUT_OF_STORAGE_ROOT, [$path, $this->_directory]);
+		}
+		return $path;
 	}
 }

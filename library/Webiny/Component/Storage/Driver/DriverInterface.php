@@ -18,23 +18,23 @@ namespace Webiny\Component\Storage\Driver;
 interface DriverInterface
 {
 	/**
-	 * Reads the content of the file
+	 * Reads the contents of the file
 	 *
 	 * @param string $key
 	 *
 	 * @return string|boolean if cannot read content
 	 */
-	public function getContent($key);
+	public function getContents($key);
 
 	/**
 	 * Writes the given File
 	 *
 	 * @param $key
-	 * @param $content
+	 * @param $contents
 	 *
 	 * @return integer|boolean The number of bytes that were written into the file
 	 */
-	public function setContent($key, $content);
+	public function setContents($key, $contents);
 
 	/**
 	 * Checks whether the file exists

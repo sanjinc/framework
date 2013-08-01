@@ -182,3 +182,16 @@ class PageEventSubscriber implements EventSubscriberInterface {
 // Subscriber to multiple events using your new subscriber class
 $this->eventManager()->subscribe($subscriber);
 ```
+
+There are situations when you need to temporarily disable EventManager. For example, deleting a huge portion of files that are not directly related to the application (local cache files) does not require firing all of related events. In this case use the following methods:
+
+```php
+// Disabling EventManager
+$this->eventManager()->disable();
+
+// Do some work that would fire loads of unnecessary events...
+
+// Enabling EventManager
+$this->eventManager()->enable();
+
+```

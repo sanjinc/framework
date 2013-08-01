@@ -10,8 +10,11 @@
 namespace Webiny\Component\Storage\Directory;
 
 use Traversable;
+use Webiny\Component\EventManager\EventManagerTrait;
+use Webiny\Component\Storage\Driver\Local\LocalHelper;
 use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\Storage;
+use Webiny\Component\Storage\StorageException;
 use Webiny\StdLib\StdLibTrait;
 
 
@@ -21,9 +24,9 @@ use Webiny\StdLib\StdLibTrait;
  * @package Webiny\Component\Storage\Directory
  */
 
-class Directory implements DirectoryInterface, \IteratorAggregate
+class LocalDirectory implements DirectoryInterface, \IteratorAggregate
 {
-	use StdLibTrait;
+	use StdLibTrait, EventManagerTrait;
 
 	protected $_key;
 	protected $_storage;
@@ -34,16 +37,23 @@ class Directory implements DirectoryInterface, \IteratorAggregate
 	/**
 	 * Constructor
 	 *
-	 * @param string      $key           File key
-	 * @param Storage     $storage       Storage to use
-	 * @param bool        $recursive     (Optional) By default, Directory will only read the first level if items.
-	 *                                   If set to false, Directory will read all children items and list them as one-dimensional array.
-	 * @param null|string $filter        (Optional) Filter to use when reading directory items
+	 * @param string      $key               File key
+	 * @param Storage     $storage           Storage to use
+	 * @param bool        $recursive         (Optional) By default, Directory will only read the first level if items.
+	 *                                       If set to false, Directory will read all children items and list them as one-dimensional array.
+	 * @param null|string $filter            (Optional) Filter to use when reading directory items
+	 *
+	 * @throws \Webiny\Component\Storage\StorageException
 	 */
 	public function __construct($key, Storage $storage, $recursive = false, $filter = null) {
 		$this->_key = $key;
 		$this->_recursive = $recursive;
 		$this->_storage = $storage;
+
+		if($this->_storage->keyExists($key) && !$this->_storage->isDirectory($key)){
+			throw new StorageException(StorageException::DIRECTORY_OBJECT_CAN_NOT_READ_FILE_PATHS, [$key]);
+		}
+
 		$this->_parseFilter($filter);
 	}
 
@@ -58,10 +68,10 @@ class Directory implements DirectoryInterface, \IteratorAggregate
 	 *
 	 * @param string $condition
 	 *
-	 * @return Directory
+	 * @return LocalDirectory
 	 */
 	public function filter($condition) {
-		return new static($this->_key, $this->_storage, $condition);
+		return new static($this->_key, $this->_storage, $this->_recursive, $condition);
 	}
 
 	/**
@@ -136,11 +146,55 @@ class Directory implements DirectoryInterface, \IteratorAggregate
 			$this->_items = [];
 			foreach($keys as $key){
 				if($this->_storage->isDirectory($key)){
-					$this->_items[$key] = new Directory($key, $this->_storage);
+					$this->_items[$key] = new static($key, $this->_storage);
 				} else {
 					$this->_items[$key] = new LocalFile($key, $this->_storage);
 				}
 			}
 		}
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function delete($fireStorageEvents = true) {
+		if(!$fireStorageEvents){
+			$this->eventManager()->disable();
+		}
+		/**
+		 * If directory was loaded recursively, we do not have the subdirectories in $this->_items.
+		 * We need to reset the items and load directory non-recursively.
+		 */
+
+		if($this->_recursive){
+			$this->_items = null;
+			$this->_recursive = false;
+		}
+
+		$this->_loadItems();
+		foreach($this->_items as $item){
+			$item->delete();
+		}
+
+		if(!$fireStorageEvents){
+			$this->eventManager()->enable();
+		}
+
+		return $this->_storage->deleteKey($this->_key);
+	}
+
+	/**
+	 * Get directory size
+	 *
+	 * WARNING! This is a very intensive operation especially on deep directory structures!
+	 * It is performed by recursively walking through directory stucture and getting each file's size.
+	 */
+	public function getSize(){
+		$size = 0;
+		$this->_loadItems();
+		foreach($this->_items as $item){
+			$size += $item->getSize();
+		}
+		return $size;
 	}
 }

@@ -66,4 +66,13 @@ interface DirectoryInterface
 	 * @return string Directory key
 	 */
 	public function getKey();
+
+	/**
+	 * Delete directory and all of it's contents recursively
+	 *
+	 * @param bool $fireStorageEvents (Optional) If you don't want to fire StorageEvent::FILE_DELETED set this to false
+	 *
+	 * @return bool
+	 */
+	public function delete($fireStorageEvents = true);
 }
