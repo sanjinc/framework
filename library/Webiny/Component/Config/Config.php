@@ -14,6 +14,7 @@ use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
 use Webiny\Component\Config\Drivers\PhpDriver;
 use Webiny\Component\Config\Drivers\YamlDriver;
+use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\StdLib\StdObject\StdObjectWrapper;
@@ -23,13 +24,13 @@ use Webiny\StdLib\ValidatorTrait;
  * Config class creates config objects from files, strings and arrays.
  *
  * Example usage:
- * $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini');
+ * $config = \Webiny\Components\Config\Config::getInstance()->ini('path/to/file.ini');
  *
  * @package         Webiny\Component\Config
  */
 class Config
 {
-	use StdLibTrait;
+	use StdLibTrait, SingletonTrait;
 
 	/**
 	 * Get Config object from INI file or string
@@ -43,7 +44,7 @@ class Config
 	 *
 	 * @return ConfigObject
 	 */
-	public static function Ini($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
+	public function ini($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
 		$config = ConfigCache::getCache($resource);
 		if($flushCache || !$config) {
 			$driver = new IniDriver($resource);
@@ -64,7 +65,7 @@ class Config
 	 *
 	 * @return ConfigObject
 	 */
-	public static function Json($resource, $flushCache = false) {
+	public function json($resource, $flushCache = false) {
 		$config = ConfigCache::getCache($resource);
 		if($flushCache || !$config) {
 			return new ConfigObject(new JsonDriver($resource));
@@ -83,7 +84,7 @@ class Config
 	 *
 	 * @return ConfigObject
 	 */
-	public static function Yaml($resource, $flushCache = false) {
+	public function yaml($resource, $flushCache = false) {
 		$config = ConfigCache::getCache($resource);
 		if($flushCache || !$config) {
 			return new ConfigObject(new YamlDriver($resource));
@@ -102,7 +103,7 @@ class Config
 	 *
 	 * @return ConfigObject
 	 */
-	public static function Php($resource, $flushCache = false) {
+	public function php($resource, $flushCache = false) {
 		$config = ConfigCache::getCache($resource);
 		if($flushCache || !$config) {
 			return new ConfigObject(new PhpDriver($resource));
@@ -120,7 +121,7 @@ class Config
 	 *
 	 * @return ConfigObject
 	 */
-	public static function parseResource($resource, $flushCache = false) {
+	public function parseResource($resource, $flushCache = false) {
 		$driver = $resource;
 		$driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
 		if(self::isInstanceOf($resource, $driverAbstractClassName)) {
@@ -133,9 +134,5 @@ class Config
 		}
 
 		return $cache;
-	}
-
-	private function __construct() {
-		// Prevent instantiation
 	}
 }

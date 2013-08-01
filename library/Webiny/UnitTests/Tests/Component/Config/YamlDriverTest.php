@@ -12,7 +12,7 @@ class YamlDriverTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testYamlConfigRead() {
-		$config = Config::Yaml(realpath(__DIR__) . '/Configs/config.yaml');
+		$config = Config::getInstance()->yaml(realpath(__DIR__) . '/Configs/config.yaml');
 		$this->assertInstanceOf('Webiny\Component\Config\ConfigObject', $config);
 
 		return $config;
@@ -35,7 +35,7 @@ class YamlDriverTest extends \PHPUnit_Framework_TestCase
 	 * @depends testYamlConfigWrite
 	 */
 	public function testConfigObjectValue($testPath) {
-		$config = Config::Yaml($testPath);
+		$config = Config::getInstance()->yaml($testPath);
 		$this->assertEquals('Chris', $config->{'bill-to'}->given);
 	}
 }

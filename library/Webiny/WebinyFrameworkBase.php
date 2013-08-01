@@ -160,7 +160,7 @@ class WebinyFrameworkBase
 	 * Read the system config and store it into registry
 	 */
 	private function _parseConfigs() {
-		self::$_config = \Webiny\Component\Config\Config::Yaml(dirname(__FILE__) . '/webiny.yaml');
+		self::$_config = Config::getInstance()->yaml(dirname(__FILE__) . '/webiny.yaml');
 	}
 
 	/**

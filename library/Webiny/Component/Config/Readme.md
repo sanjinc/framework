@@ -14,7 +14,7 @@ Example INI:
 
 Here is an example of creating a `ConfigObject`:
 ```php
-    $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini');
+    $config = \Webiny\Components\Config\Config::getInstance()->ini('path/to/file.ini');
 ```
 
 This will result in $config object containing the following properties:
@@ -29,12 +29,12 @@ Config is using internal caching system, so if you call this twice, you will get
 If, however, you need an original config from file, you need to specify the second parameter, $flushCache. This will reload the file and overwrite the existing cache:
 
 ```php
-    $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini', true);
+    $config = \Webiny\Components\Config\Config::getInstance()->ini('path/to/file.ini', true);
 ```
 
 If you don't want to use INI sections, or set custom nest delimiter, specify the following arguments:
 ```php
-    $config = \Webiny\Components\Config\Config::Ini('path/to/file.ini', false, false, '_');
+    $config = \Webiny\Components\Config\Config::getInstance()->ini('path/to/file.ini', false, false, '_');
 ```
 
 You can save your config in any format using the following methods:

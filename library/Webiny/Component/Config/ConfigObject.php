@@ -454,7 +454,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			$configs = StdObjectWrapper::toArray($config);
 			// Make sure it's an array of ConfigObject
 			if(!$this->isInstanceOf($this->arr($configs)->first()->val(), $this)) {
-				$configs = [Config::Php($configs)];
+				$configs = [Config::getInstance()->php($configs)];
 			}
 		} elseif($this->isInstanceOf($config, $this)) {
 			$configs = [$config];
@@ -466,7 +466,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		foreach ($configs as $config) {
 			// If it's a PHP array or ArrayObject, convert it to ConfigObject
 			if($this->isArray($config) || $this->isArrayObject($config)) {
-				$config = Config::Php($config);
+				$config = Config::getInstance()->php($config);
 			}
 
 			foreach ($config as $key => $value) {

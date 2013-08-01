@@ -12,7 +12,7 @@ class IniDriverTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testIniConfigRead() {
-		$config = Config::Ini(realpath(__DIR__) . '/Configs/config.ini');
+		$config = Config::getInstance()->ini(realpath(__DIR__) . '/Configs/config.ini');
 		$this->assertInstanceOf('Webiny\Component\Config\ConfigObject', $config);
 
 		return $config;
@@ -37,7 +37,7 @@ class IniDriverTest extends \PHPUnit_Framework_TestCase
 	 * @depends testIniConfigWrite
 	 */
 	public function testConfigObjectValue($testPath) {
-		$config = Config::Ini($testPath);
+		$config = Config::getInstance()->ini($testPath);
 		$this->assertEquals(12, $config->group1->someProperty);
 	}
 }
