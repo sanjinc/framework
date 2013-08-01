@@ -12,7 +12,7 @@ class JsonDriverTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testJsonConfigRead() {
-		$config = Config::Json(realpath(__DIR__) . '/Configs/config.json');
+		$config = Config::getInstance()->json(realpath(__DIR__) . '/Configs/config.json');
 		$this->assertInstanceOf('Webiny\Component\Config\ConfigObject', $config);
 
 		return $config;
@@ -37,7 +37,7 @@ class JsonDriverTest extends \PHPUnit_Framework_TestCase
 	 * @depends testJsonConfigWrite
 	 */
 	public function testConfigObjectValue($testPath) {
-		$config = Config::Json($testPath);
+		$config = Config::getInstance()->json($testPath);
 		$this->assertEquals('www.webiny.com', $config->website->url);
 	}
 }

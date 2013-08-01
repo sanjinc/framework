@@ -12,7 +12,7 @@ class PhpDriverTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testPhpConfigRead() {
-		$config = Config::Php(realpath(__DIR__) . '/Configs/config.php');
+		$config = Config::getInstance()->php(realpath(__DIR__) . '/Configs/config.php');
 		$this->assertInstanceOf('Webiny\Component\Config\ConfigObject', $config);
 
 		return $config;
@@ -37,7 +37,7 @@ class PhpDriverTest extends \PHPUnit_Framework_TestCase
 	 * @depends testPhpConfigWrite
 	 */
 	public function testConfigObjectValue($testPath) {
-		$config = Config::Php($testPath);
+		$config = Config::getInstance()->php($testPath);
 		$this->assertEquals('London', $config->default->name->address);
 	}
 }

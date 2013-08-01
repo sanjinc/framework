@@ -16,72 +16,13 @@ namespace Webiny\Component\Config;
  */
 trait ConfigTrait
 {
-	/**
-	 * Get Config object from INI file or string
-	 *
-	 * @param string $resource      Config resource in form of a file path or config string
-	 *
-	 * @param bool   $flushCache    Flush existing cache and load config file
-	 *
-	 * @param bool   $useSections
-	 * @param string $nestDelimiter Delimiter for nested properties, ex: a.b.c or a-b-c
-	 *
-	 * @return ConfigObject
-	 */
-	protected static function iniConfig($resource, $flushCache = false, $useSections = true, $nestDelimiter = '.') {
-		return Config::Ini($resource, $flushCache, $useSections, $nestDelimiter);
-	}
 
 	/**
-	 * Get Config object from JSON file or string
+	 * Get Config tool
 	 *
-	 * @param string $resource      Config resource in form of a file path or config string
-	 *
-	 * @param bool   $flushCache    Flush existing cache and load config file
-	 *
-	 * @return ConfigObject
+	 * @return Config
 	 */
-	protected static function jsonConfig($resource, $flushCache = false) {
-		return Config::Json($resource, $flushCache);
-	}
-
-	/**
-	 * Get ConfigObject from YAML file or string
-	 *
-	 * @param string $resource      Config resource in form of a file path or config string
-	 *
-	 * @param bool   $flushCache    Flush existing cache and load config file
-	 *
-	 * @return ConfigObject
-	 */
-	protected static function yamlConfig($resource, $flushCache = false) {
-		return Config::Yaml($resource, $flushCache);
-	}
-
-
-	/**
-	 * Get Config object from PHP file or array
-	 *
-	 * @param string|array $resource      Config resource in form of a file path or config string
-	 *
-	 * @param bool         $flushCache    Flush existing cache and load config file
-	 *
-	 * @return ConfigObject
-	 */
-	protected static function phpConfig($resource, $flushCache = false) {
-		return Config::Php($resource, $flushCache);
-	}
-
-	/**
-	 * Parse resource and create a Config object
-	 * A valid resource is a PHP array, ArrayObject or an instance of DriverAbstract
-	 *
-	 * @param array|ArrayObject|DriverAbstract $resource   Config resource
-	 * @param bool                             $flushCache Flush existing cache and load config file
-	 *
-	 * @return ConfigObject
-	 */
-	protected static function customConfig($resource, $flushCache = false) {
-		return Config::parseResource($resource, $flushCache);
+	protected static function config(){
+		return Config::getInstance();
 	}
 }

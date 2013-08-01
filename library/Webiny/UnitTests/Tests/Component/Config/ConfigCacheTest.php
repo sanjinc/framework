@@ -12,18 +12,18 @@ class ConfigCacheTest extends \PHPUnit_Framework_TestCase
 {
 
 	public function testConfigCache() {
-		$config = Config::Php(realpath(__DIR__) . '/Configs/config.php');
+		$config = Config::getInstance()->php(realpath(__DIR__) . '/Configs/config.php');
 		$config->testKey = 'value';
-		$config2 = Config::Php(realpath(__DIR__) . '/Configs/config.php');
+		$config2 = Config::getInstance()->php(realpath(__DIR__) . '/Configs/config.php');
 
 		$this->assertEquals($config->testKey, $config2->testKey);
 
 	}
 
 	public function testConfigCacheFlush() {
-		$config = Config::Php(realpath(__DIR__) . '/Configs/config.php');
+		$config = Config::getInstance()->php(realpath(__DIR__) . '/Configs/config.php');
 		$config->testKey = 'value';
-		$config2 = Config::Php(realpath(__DIR__) . '/Configs/config.php', true);
+		$config2 = Config::getInstance()->php(realpath(__DIR__) . '/Configs/config.php', true);
 
 		$this->assertNull($config2->testKey);
 
