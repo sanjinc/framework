@@ -10,6 +10,7 @@
 namespace Webiny\Component\Security\User\Providers\Memory;
 
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
+use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\User\Providers\Memory\MemoryException;
 use Webiny\Component\Security\User\Providers\Memory\User;
 use Webiny\Component\Security\User\UserAbstract;
@@ -17,7 +18,8 @@ use Webiny\Component\Security\User\UserProviderInterface;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Description
+ * Memory user provider.
+ * This provider is used when user accounts are defined inside the system configuration (hard-coded).
  *
  * @package        Webiny\Component\Security\User\Providers
  */
@@ -41,7 +43,6 @@ class MemoryProvider implements UserProviderInterface
 	 *
 	 * @param array $users List of user accounts.
 	 *
-	 * @return bool
 	 * @throws MemoryException
 	 */
 	private function _addUsers($users) {
@@ -50,18 +51,18 @@ class MemoryProvider implements UserProviderInterface
 		}
 
 		foreach ($users as $username => $data) {
-			if($username=='' || !$this->isString($username)) {
+			if($username == '' || !$this->isString($username)) {
 				throw new MemoryException('Cannot store a user that doesn\'t have a username.');
 			}
 
-			if(!isset($data['password'])){
+			if(!isset($data['password'])) {
 				$data['password'] = '';
 			}
 
-			if(!isset($data['roles']) || empty($data['roles'])){
+			if(!isset($data['roles']) || empty($data['roles'])) {
 				$data['roles'] = [];
-			}else{
-				$data['roles'] = (array) $data['roles'];
+			} else {
+				$data['roles'] = (array)$data['roles'];
 			}
 
 			$this->_users[$username] = $data;
@@ -69,17 +70,18 @@ class MemoryProvider implements UserProviderInterface
 	}
 
 	/**
-	 * Get the user from user provided for the given $username.
+	 * Get the user from user provided for the given instance of Login object.
 	 *
-	 * @param string $username Username
+	 * @param Login $login Instance of Login object.
 	 *
 	 * @return UserAbstract
-	 *
 	 * @throws UserNotFoundException
 	 */
-	function getUserByUsername($username) {
-		if(!isset($this->_users[$username]) || !$this->isArray($this->_users[$username])){
-			throw new UserNotFoundException('User "'.$username.'" was not found.');
+	function getUser(Login $login) {
+		$username = $login->getUsername();
+
+		if(!isset($this->_users[$username]) || !$this->isArray($this->_users[$username])) {
+			throw new UserNotFoundException('User "' . $username . '" was not found.');
 		}
 
 		$userData = $this->_users[$username];

@@ -9,6 +9,11 @@ class Test
 	use ServiceManagerTrait;
 
 	function index() {
+
+		$services = $this->servicesByTag('voters');
+
+		die(print_r($services));
+
 		$service = $this->service('logger.webiny_logger');
 		$service->info('System booted!');
 		$service->debug('Got a big file...');

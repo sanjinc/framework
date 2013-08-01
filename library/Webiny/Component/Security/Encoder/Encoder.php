@@ -13,7 +13,9 @@ use Webiny\StdLib\FactoryLoaderTrait;
 use Webiny\StdLib\StdLibTrait;
 
 /**
- * Description
+ * Security encoder class.
+ * This class loads the defined encoder and uses it to create a hash from the submitted password and verifies if it
+ * matches the password from the user provider.
  *
  * @package         Webiny\Component\Security\Encoder
  */
@@ -34,7 +36,7 @@ class Encoder
 
 
 	/**
-	 * @param string     $driver Name of the encoder provider class.
+	 * @param string     $driver              Name of the encoder provider class.
 	 * @param string     $salt                Salt used to add more security to passwords.
 	 * @param array|null $params              Optional encoder params.
 	 *
@@ -46,7 +48,7 @@ class Encoder
 		try {
 			$this->_encoderProviderInstance = $this->factory($driver,
 															 '\Webiny\Component\Security\Encoder\EncoderDriverInterface',
-															$params);
+															 $params);
 		} catch (\Exception $e) {
 			throw new EncoderException($e->getMessage());
 		}

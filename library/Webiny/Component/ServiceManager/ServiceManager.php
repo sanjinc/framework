@@ -12,6 +12,7 @@ use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\StdLib\SingletonTrait;
 use Webiny\StdLib\StdLibTrait;
+use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\WebinyTrait;
 
 /**
@@ -25,6 +26,7 @@ class ServiceManager
 
 	private $_compiledConfig;
 	private $_services;
+	private $_taggedServices = null;
 	private static $_references;
 
 	/**
@@ -37,6 +39,31 @@ class ServiceManager
 	 */
 	public function getService($serviceName, $arguments = null) {
 		return $this->_getService($serviceName, $arguments);
+	}
+
+	/**
+	 * Get multiple services by tag
+	 *
+	 * @param string      $tag       Tag to use for services filter
+	 * @param null|string $forceType (Optional) Return only services which are instances of $forceType
+	 *
+	 * @return array
+	 */
+	public function getServicesByTag($tag, $forceType = null) {
+		if($this->isNull($this->_taggedServices)) {
+			$this->_tagifyServices($this->webiny()->getConfig()->services->toArray());
+		}
+
+		$services = [];
+		foreach ($this->_taggedServices->key($tag, [], true) as $serviceName) {
+			$service = $this->getService($serviceName);
+			if(!$this->isNull($forceType) && !$this->isInstanceOf($service, $forceType)) {
+				continue;
+			}
+			$services[$serviceName] = $service;
+		}
+
+		return $services;
 	}
 
 	protected function init() {
@@ -91,5 +118,38 @@ class ServiceManager
 		}
 
 		return $service;
+	}
+
+	/**
+	 * Traverse services config array and group services by tags
+	 *
+	 * @param array|ArrayObject $config Config array
+	 * @param string            $prefix Previous level of nesting (needed to construct full service name)
+	 */
+	private function _tagifyServices($config, $prefix = '') {
+		$this->_taggedServices = $this->arr();
+		foreach ($config as $serviceName => $sConfig) {
+			$level = $this->str($prefix . '.' . $serviceName)->trimLeft('.')->val();
+			$sConfig = $this->arr($sConfig);
+			if($sConfig->keyExists('tags')) {
+				// Abstract service can not contain 'tags' key
+				if($sConfig->keyExists('abstract') && $sConfig->key('abstract') === true) {
+					/**
+					 * @TODO: if you need to use 'tags' in abstract services you will add extra pass on the entire
+					 * services config array, to find child services
+					 *
+					 * You will also need to handle 'tags' key in parent/child config merging to be able to add/override
+					 * 'tags' in your child service
+					 */
+					continue;
+				}
+				// Concrete services
+				foreach ($sConfig->key('tags') as $tag) {
+					$this->_taggedServices->key($tag, $this->arr(), true)->append($level);
+				}
+			} elseif(!$sConfig->keyExists('class') && !$sConfig->keyExists('factory') && !$sConfig->keyExists('parent')) {
+				$this->_tagifyServices($sConfig, $level);
+			}
+		}
 	}
 }

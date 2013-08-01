@@ -56,14 +56,20 @@ class Crypt
 	/**
 	 * Create an instance of a crypt driver.
 	 *
+	 *
+	 * @param $passwordAlgo
+	 * @param $cipherMode
+	 * @param $cipherBlock
+	 * @param $cipherInitVector
+	 *
 	 * @throws \Webiny\StdLib\Exception\Exception
 	 * @return CryptInterface
 	 */
-	static function getInstance() {
+	static function getInstance($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector) {
 		$driver = static::_getLibrary();
 
 		try {
-			$instance = new $driver();
+			$instance = new $driver($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector);
 		} catch (\Exception $e) {
 			throw new Exception('Unable to create an instance of '.$driver);
 		}

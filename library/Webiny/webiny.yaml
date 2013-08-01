@@ -16,10 +16,12 @@ bridges:
         redis: '\Webiny\Bridge\Cache\Memory\Redis'
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
+    oauth2: '\Webiny\Bridge\OAuth2\OAuth2\OAuth2'
 additional_libraries:
     'Jamm\Memory': '../Memory'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
+    'OAuth2': '../OAuth2'
 components:
     logger:
         formatters:
@@ -32,8 +34,8 @@ components:
                 date_format: 'Y-m-d H:i:s'
         handlers:
             udp:
-                host: 192.168.1.10:41234
-        tray: 192.168.1.10:5000
+                host: 192.168.1.6:41234
+        tray: 192.168.1.6:5000
     http:
         session:
             storage:
@@ -50,10 +52,37 @@ components:
             client_port: 'X_FORWARDED_PORT'
         cookie:
             storage:
-                driver: '\Webiny\Component\Http\Request\Cookie\Storage\Native'
+                driver: '\Webiny\Component\Http\Request\Cookie\Storage\NativeStorage'
             prefix: 'wfc_'
             http_only: 'true'
             expiretime: 86400
+    oauth2:
+        servers:
+            facebook: '\Webiny\Component\OAuth2\Server\Facebook'
+            google: '\Webiny\Component\OAuth2\Server\Google'
+            linkedin: '\Webiny\Component\OAuth2\Server\LinkedIn'
+            twitter: '\Webiny\Component\OAuth2\Server\Twitter'
+
+oauth2:
+    webiny_test:
+        server: facebook
+        client_id: 102119699873470
+        client_secret: 3a617d0a94f5e805a6e1ad24b6f8a05b
+        scope: email
+        redirect_uri: /Test/Security/oauth_fbsubmit.php
+    google_test:
+        server: google
+        client_id: 280548463887.apps.googleusercontent.com
+        client_secret: X7TklIJTNFm46yPOKBlg3-dT
+        scope: openid%20profile%20email
+        redirect_uri: /Test/Security/oauth_gsubmit.php
+    linkedin_test:
+        server: linkedin
+        client_id: 0fys926ire4b
+        client_secret: SxHqk6qjOllUoILz
+        scope: r_basicprofile%20r_emailaddress
+        redirect_uri: /Test/Security/oauth_lisubmit.php
+
 security:
     encoders:
         default:
@@ -62,16 +91,21 @@ security:
             salt: 'CHANGE THIS SECRET'
     providers:
         memory:
-            sven: {password: delmania, roles: 'ROLE_USER'}
-            admin: {password: pero, roles: 'ROLE_ADMIN'}
+            john: {password: secret, roles: 'ROLE_USER'}
+            admin: {password: login123, roles: 'ROLE_SUPERADMIN'}
+        oauth2:
+            driver: 'Webiny\Component\Security\User\Providers\OAuth2\OAuth2'
     chain_providers:
-        default_chain: ['memory']
+        default_chain: [oauth2, memory]
     role_hierarchy:
+        ROLE_USER: ROLE_EDITOR
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
     access_control:
-        - {path: ^/admin, roles: ROLE_ADMIN}
-        - {path: ^/login}
+        rules:
+            - {path: ^/admin, roles: ROLE_ADMIN}
+            - {path: ^/Test, roles: [ROLE_ADMIN]}
+        decision_strategy: consensus
     firewalls:
         administration:
             realm_name: 'My administration realm'
@@ -79,14 +113,40 @@ security:
             anonymous: false
             remember_me: true
             #encoder: default
+            security_key: THIS_IS_MY_KEY98
             provider: default_chain
             login:
-                path: '/Test/login.php'
-                submit_path: '/Test/loginsubmit.php'
-                provider: 'Webiny\Component\Security\Authentication\Providers\Http\Http'
+                login_path: '/Test/Security/login.php'
+                failure_path: '/Test/Security/loginfailed.php'
+                target_path: 'Test/Test.php'
+                providers:
+                    form:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\Form\Form'
+                        submit_path: '/Test/Security/form_loginsubmit.php'
+                    http:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\Http\Http'
+                        submit_path: '/Test/Security/http_loginsubmit.php'
+                    facebook:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_fbsubmit.php'
+                        params:
+                            server: webiny_test
+                            roles: [ROLE_ADMIN]
+                    google:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_gsubmit.php'
+                        params:
+                            server: google_test
+                            roles: [ROLE_ADMIN]
+                    linkedin:
+                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
+                        submit_path: '/Test/Security/oauth_lisubmit.php'
+                        params:
+                            server: linkedin_test
+                            roles: [ROLE_ADMIN]
             logout:
-                path: '/logout'
-                target: '/'
+                path: '/Test/Security/logout.php'
+                target: '/Test/Security/logoutsuccess.php'
 
 parameters:
     logger.class: \Webiny\Component\Logger\Logger
@@ -96,6 +156,7 @@ parameters:
     logger.processor.memory_usage.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor
     cache.class: '\Webiny\Component\Cache\Cache'
     crypt.class: '\Webiny\Component\Crypt\Crypt'
+    security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
 
 services:
     crypt:

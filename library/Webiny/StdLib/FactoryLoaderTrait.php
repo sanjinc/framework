@@ -44,7 +44,7 @@ trait FactoryLoaderTrait
 					throw new Exception($e->getMessage());
 				}
 			} else {
-				throw new Exception('FactoryLoder: The class "' . $className . '" does not exist.');
+				throw new Exception('FactoryLoader: The class "' . $className . '" does not exist.');
 			}
 		} catch (\Exception $e) {
 			throw new Exception($e->getMessage());

@@ -34,16 +34,6 @@ interface AuthenticationInterface
 	function getLoginObject($config);
 
 	/**
-	 * This method is triggered when the user opens the login page.
-	 * On this page you must ask the user to provide you his credentials which should then be passed to the login submit page.
-	 *
-	 * @param ConfigObject $config Firewall config
-	 *
-	 * @return mixed
-	 */
-	function triggerLogin($config);
-
-	/**
 	 * This callback is triggered after we validate the given login data from getLoginObject, and the data IS NOT valid.
 	 * Use this callback to clear the submit data from the previous request so that you don't get stuck in an
 	 * infinitive loop between login page and login submit page.

@@ -12,30 +12,87 @@ namespace Webiny\Component\Security\Authentication\Providers;
 /**
  * Login object is a wrapper that holds the username and password submitted by current request.
  *
- * @package		 Webiny\Component\Security\Authentication
+ * @package         Webiny\Component\Security\Authentication
  */
- 
-class Login{
 
+class Login
+{
+
+	/**
+	 * @var string
+	 */
 	private $_username = '';
+	/**
+	 * @var string
+	 */
 	private $_password = '';
+	/**
+	 * @var bool
+	 */
 	private $_rememberMe = false;
+	/**
+	 * @var array
+	 */
+	private $_attributes = [];
 
-	function __construct($username, $password, $rememberMe = false){
+	/**
+	 * Base constructor.
+	 *
+	 * @param string $username   Username.
+	 * @param string $password   Password.
+	 * @param bool   $rememberMe Is rememberMe set or not.
+	 */
+	function __construct($username, $password, $rememberMe = false) {
 		$this->_username = $username;
 		$this->_password = $password;
-		$this->_rememberMe  =$rememberMe;
+		$this->_rememberMe = $rememberMe;
 	}
 
-	function getUsername(){
+	/**
+	 * Sets an optional attribute into the current instance.
+	 *
+	 * @param string $name Attribute name.
+	 * @param mixed $value Attribute value.
+	 */
+	function setAttribute($name, $value) {
+		$this->_attributes[$name] = $value;
+	}
+
+	/**
+	 * Returns the stored attribute for the defined $name.
+	 *
+	 * @param string $name Name of the attribute that you wish to return.
+	 *
+	 * @return null|mixed Null is returned if attribute doesn't exist, otherwise attribute value is returned.
+	 */
+	function getAttribute($name) {
+		return isset($this->_attributes[$name]) ? $this->_attributes[$name] : null;
+	}
+
+	/**
+	 * Returns the username.
+	 *
+	 * @return string
+	 */
+	function getUsername() {
 		return $this->_username;
 	}
 
-	function getPassword(){
+	/**
+	 * Returns the password.
+	 *
+	 * @return string
+	 */
+	function getPassword() {
 		return $this->_password;
 	}
 
-	function getRememberMe(){
+	/**
+	 * Return the status of remember me.
+	 *
+	 * @return bool
+	 */
+	function getRememberMe() {
 		return $this->_rememberMe;
 	}
 }

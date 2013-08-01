@@ -19,7 +19,7 @@ use Webiny\StdLib\StdLibTrait;
  * @package         Webiny\Component\Security\Authorization\Voters
  */
 
-class RoleVoter implements RoleVoterInterface
+class RoleVoter implements VoterInterface
 {
 	use StdLibTrait;
 
@@ -60,7 +60,6 @@ class RoleVoter implements RoleVoterInterface
 	public function vote(UserAbstract $user, array $requestedRoles) {
 		$result = self::ACCESS_ABSTAIN;
 		$userRoles = $user->getRoles();
-
 		foreach ($requestedRoles as $role) {
 			if(!$this->supportsRole($role)) {
 				continue;

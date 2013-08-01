@@ -11,15 +11,16 @@ namespace Webiny\Component\Security\Authentication;
 
 use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\AuthenticationInterface;
 use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Encoder\Encoder;
+use Webiny\Component\Security\SecurityEvent;
 use Webiny\Component\Security\User\AnonymousUser;
 use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\Token\Token;
-use Webiny\Component\Security\User\User;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\FactoryLoaderTrait;
@@ -36,7 +37,7 @@ use Webiny\StdLib\StdLibTrait;
 class Firewall
 {
 
-	use HttpTrait, StdLibTrait, FactoryLoaderTrait;
+	use HttpTrait, StdLibTrait, FactoryLoaderTrait, EventManagerTrait;
 
 	/**
 	 * @var \Webiny\Component\Config\ConfigObject
@@ -74,6 +75,11 @@ class Firewall
 	private $_authProvider;
 
 	/**
+	 * @var \Webiny\Component\Config\ConfigObject
+	 */
+	private $_authProviderConfig;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string       $firewallKey    Name of the current firewall.
@@ -89,6 +95,17 @@ class Firewall
 	}
 
 	/**
+	 * Checks if the auth layer should be installed for current request.
+	 * If we cannot match the current url using the pattern from the config, auth layer will not be installed.
+	 *
+	 * @return bool
+	 */
+	public function isInsideFirewall() {
+		return $this->str($this->request()->getCurrentUrl(true)->getPath())->match($this->getUrlPattern());
+	}
+
+
+	/**
 	 * This method tries to initialize the firewall.
 	 * If firewall doesn't match its url pattern, false is returned, otherwise authentication process is triggered.
 	 * If user is authenticated UserAbstract is returned, otherwise the firewall will redirect the user to the login page.
@@ -96,71 +113,32 @@ class Firewall
 	 * @return bool|UserAbstract
 	 */
 	function init() {
-		// setup authorization layer
-		if(!$this->_setupAuthLayer()) {
-			return false;
-		}
-
 		// init token
 		$this->_initToken();
 
-		// before anything else, let's check if we are on the logout page
-		if($this->_isLogoutPage()){
+		// get user
+		$this->getUser();
+
+		if($this->_isLogoutPage()) {
 			$this->processLogout();
 		}
 
 		// get user
-		return $this->getUser();
+		return $this->_user;
 	}
 
 	/**
 	 * This method is triggered on the request that requires an authenticated user, but the current user in not
 	 * authenticated.
 	 *
+	 * @throws FirewallException
 	 * @return bool|UserAbstract Upon valid authentication an instance of UserAbstract is returned, otherwise false is returned.
 	 */
-	public function setupAuth(){
-		if($this->_isLoginPage()) {
-			$this->_getAuthProvider()->triggerLogin($this->getConfig());
-			// if we enter login page, the user is Anonymous
-			return new AnonymousUser();
-		}else if($this->_isLoginSubmitPage()){
-			$user = $this->_validateLoginPageSubmit();
-			if($user){
-				return $user;
-			}
-		}
+	public function setupAuth() {
 
-		$this->request()->redirect($this->request()->getCurrentUrl(true)
-									   ->setPath($this->getConfig()->login->path));
-	}
-
-	/**
-	 * This method deletes user auth token and calls the logoutCallback on current login provider.
-	 * After that, it replaces the current user instance with an instance of AnonymousUser and redirects the request to
-	 * the logout.target.
-	 */
-	function processLogout(){
-		$this->getToken()->deleteUserToken();
-		$this->_getAuthProvider()->logoutCallback();
-		$this->_user = new AnonymousUser();
-
-		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target), 401);
-	}
-
-	/**
-	 * Checks if current request matches the login submit page. If true, auth provider is initialized and submitted
-	 * credentials are wrapped into a Login object.
-	 * Once we have the login object, method calls the authentication method to validate the credentials.
-	 * If credentials are valid, an instance of UserAbstract is returned, otherwise false.
-	 *
-	 * @return bool|UserAbstract
-	 * @throws FirewallException
-	 */
-	private function _validateLoginPageSubmit() {
 		if($this->_isLoginSubmitPage()) {
-			// get the login object
 			try {
+				// if we are on login page, first try to get the instance of Login object from current auth provider
 				$login = $this->_getAuthProvider()->getLoginObject($this->getConfig());
 				if(!$this->isInstanceOf($login, 'Webiny\Component\Security\Authentication\Providers\Login')) {
 					throw new FirewallException('Login provider must return an instance of
@@ -173,16 +151,44 @@ class Firewall
 			// forward the login object to user providers and validate the credentials
 			if(!($user = $this->_authenticate($login))) { // login failed
 				$this->_getAuthProvider()->invalidLoginProvidedCallback();
+				$this->eventManager()->fire(SecurityEvent::LOGIN_INVALID, new SecurityEvent(new AnonymousUser()));
 
-				return false;
+				// redirect to failure_path
+				$this->request()->redirect($this->request()->getCurrentUrl(true)
+										   ->setPath($this->getConfig()->login->failure_path));
 			} else {
 				$this->_getAuthProvider()->loginSuccessfulCallback($user);
+				$this->eventManager()->fire(SecurityEvent::LOGIN_VALID, new SecurityEvent($user));
 
-				return $user;
+				// redirect to target
+				$url = $this->url($this->request()->getCurrentUrl(true)->getDomain())
+					   ->setPath($this->getConfig()->login->target_path);
+				$this->request()->redirect($url);
+			}
+		} else {
+			if(!$this->_isLoginPage()) {
+				// redirect to login path
+				$this->request()->redirect($this->request()->getCurrentUrl(true)
+										   ->setPath($this->getConfig()->login->login_path));
 			}
 		}
 
-		return false;
+		throw new FirewallException('Error processing authentication.');
+	}
+
+	/**
+	 * This method deletes user auth token and calls the logoutCallback on current login provider.
+	 * After that, it replaces the current user instance with an instance of AnonymousUser and redirects the request to
+	 * the logout.target.
+	 */
+	function processLogout() {
+		$this->getToken()->deleteUserToken();
+		if($this->_user->isAuthenticated()) {
+			$this->_getAuthProvider()->logoutCallback();
+		}
+		$this->_user = new AnonymousUser();
+
+		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target));
 	}
 
 	/**
@@ -197,21 +203,15 @@ class Firewall
 			// get token
 			$this->_user = new AnonymousUser();
 			$tokenData = $this->getToken()->getUserFromToken();
-			if(!$tokenData){
+
+			if(!$tokenData) {
 				return $this->_user;
-			}else{
-				// try to get user object from user providers
-				$user = $this->_getUserFromUserProvider($tokenData->getUsername());
+			} else {
+				$this->_user->populate($tokenData->getUsername(), '', $tokenData->getRoles(), true);
+				$this->_user->setAuthProviderDriver($tokenData->getAuthProviderDriver());
 
-				// check if user object from the provider matches the object from token
-				if($user->isTokenValid($tokenData)){
-					$this->_user = $user;
-				}else{
-					$this->processLogout();
-				}
+				return $this->_user;
 			}
-
-			return $this->_user;
 		} catch (\Exception $e) {
 			throw new FirewallException($e->getMessage());
 		}
@@ -255,18 +255,55 @@ class Firewall
 	}
 
 	/**
-	 * Checks if the auth layer should be installed for current request.
-	 * If we cannot match the current url using the pattern from the config, auth layer will not be installed.
+	 * Returns the config of current auth provider based on current url.
+	 * If current url doesn't match any login auth provider, and exception will be thrown.
 	 *
-	 * @return bool|\Webiny\StdLib\StdObject\ArrayObject\ArrayObject|User
+	 * @throws FirewallException
+	 * @return ConfigObject
 	 */
-	private function _setupAuthLayer() {
-		return $this->str($this->request()->getCurrentUrl(true)->getPath())->match($this->getUrlPattern());
+	private function _getAuthProviderConfig() {
+
+		// have we already fetched the auth config
+		if($this->_authProviderConfig) {
+			return $this->_authProviderConfig;
+		}
+
+		// we match the auth provider based on the current url
+		// every auth provider must have a different 'submit_path'
+		// we can get the auth config only if current request url is on the submit path
+		$currentPath = $this->request()->getCurrentUrl(true)->getPath();
+		$currentAuthDriver = $this->_user->getAuthProviderDriver();
+
+		$providers = $this->getConfig()->get('login.providers', []);
+		foreach ($providers as $pKey => $pData) {
+			$submitPath = $pData->get('submit_path', '');
+			$driver = $pData->get('driver', 'none');
+			if($submitPath == '') {
+				throw new FirewallException('Submit path for auth provider "' . $pKey . '" is not defined.');
+			}
+
+			if($submitPath == $currentPath) {
+				$this->_authProviderConfig = $pData;
+			}
+
+			if($driver == $currentAuthDriver) {
+				$this->_authProviderConfig = $pData;
+				break; // break is only added on this check because the priority has the current auth provider
+			}
+		}
+
+		if(!$this->_authProviderConfig) {
+			throw new FirewallException('Unable to detect the current authentication provider.');
+		}
+
+		return $this->_authProviderConfig;
 	}
 
 	/**
 	 * Method that validates the submitted credentials with defined firewall user providers.
-	 * If authentication is valid, a user object is created and a token is storred.
+	 * If authentication is valid, a user object is created and a token is stored.
+	 * This method just calls the 'authenticate' method on current user object, and if auth method returns true,
+	 * we create a token and return the user instance.
 	 *
 	 * @param Login $login
 	 *
@@ -274,12 +311,18 @@ class Firewall
 	 * @throws FirewallException
 	 */
 	private function _authenticate(Login $login) {
-		$user = $this->_getUserFromUserProvider($login->getUsername());
-		if($user)
-		{
-			// once we have the user, let's validate the credentials
-			if($this->_encoder->verifyPasswordHash($login->getPassword(), $user->getPassword())) {
-				// if credentials are valid, let's create the token
+		try {
+			$user = $this->_getUserFromUserProvider($login);
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		if($user) {
+			if($user->authenticate($login, $this->_encoder)) {
+				// save info about current auth provider into user instance
+				$user->setAuthProviderDriver($this->_getAuthProviderConfig()->get('driver', ''));
+
+				// save token
 				$this->getToken()->saveUser($user);
 
 				return $user;
@@ -292,35 +335,37 @@ class Firewall
 	}
 
 	/**
-	 * Tries to load user object from the registered user providers by its username.
+	 * Tries to load user object from the registered user providers based on the data inside the Login object instance.
 	 *
-	 * @param string $username Username of the user that you wish to load.
+	 * @param Login $login Login object received from authentication provider.
 	 *
 	 * @return UserAbstract|bool Instance of UserAbstract, if user is found, or false if user is not found.
 	 * @throws FirewallException
 	 */
-	private function _getUserFromUserProvider($username) {
+	private function _getUserFromUserProvider(Login $login) {
 		foreach ($this->_userProviders as $provider) {
 			try {
-				$user = $provider->getUserByUsername($username);
-				if($user)
-				{
-					$user->setIsAuthenticated(true);
+				$user = $provider->getUser($login);
+				if($user) {
 					return $user;
 				}
-			}catch (UserNotFoundException $e) {
-				return false;
+			} catch (UserNotFoundException $e) {
+				// next user provider
 			} catch (\Exception $e) {
 				throw new FirewallException($e->getMessage());
 			}
 		}
+
+		return false;
 	}
 
 	/**
 	 * Initializes the Token.
 	 */
 	private function _initToken() {
-		$this->_token = new Token($this->_getTokenName(), $this->getConfig()->remember_me);
+		$this->_token = new Token($this->_getTokenName(),
+								  $this->getConfig()->get('remember_me', false),
+								  $this->getConfig()->get('security_key', ''));
 	}
 
 	/**
@@ -349,13 +394,11 @@ class Firewall
 	 * @throws FirewallException
 	 */
 	private function _isLoginPage() {
-		$currentUrl = $this->request()->getCurrentUrl();
-		if(!isset($this->getConfig()->login->path)) {
-			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "login.path".');
+		if(!isset($this->getConfig()->login->login_path)) {
+			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "login.login_path".');
 		}
-		$loginUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->path)->__toString();
 
-		return ($currentUrl == $loginUrl);
+		return $this->_isOnPath($this->getConfig()->login->login_path);
 	}
 
 	/**
@@ -366,14 +409,12 @@ class Firewall
 	 * @throws FirewallException
 	 */
 	private function _isLoginSubmitPage() {
-		$currentUrl = $this->request()->getCurrentUrl();
-		if(!isset($this->getConfig()->login->submit_path)) {
-			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "login.submit_path".');
+		try {
+			return $this->_isOnPath($this->_getAuthProviderConfig()->submit_path);
+		} catch (\Exception $e) {
+			// if we cannot load the auth provider, we are not on the login submit page
+			return false;
 		}
-		$loginSubmitUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->login->submit_path)
-						  ->__toString();
-
-		return ($currentUrl == $loginSubmitUrl);
 	}
 
 	/**
@@ -384,17 +425,16 @@ class Firewall
 	 * @throws FirewallException
 	 */
 	private function _isLogoutPage() {
-		$currentUrl = $this->request()->getCurrentUrl();
 		if(!isset($this->getConfig()->logout->path)) {
 			throw new FirewallException('Invalid firewall configuration. Missing configuration param: "logout.path".');
 		}
-		$logoutUrl = $this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->path)->__toString();
 
-		return ($currentUrl == $logoutUrl);
+		return $this->_isOnPath($this->getConfig()->logout->path);
 	}
 
 	/**
 	 * Get the authentication provider.
+	 * You must be on the submit_path if you want to get the auth provider.
 	 *
 	 * @return AuthenticationInterface
 	 *
@@ -402,14 +442,39 @@ class Firewall
 	 */
 	private function _getAuthProvider() {
 		if(is_null($this->_authProvider)) {
+			// auth provider config
+			$authProviderConfig = $this->_getAuthProviderConfig();
+
+			// optional params that will be passed to auth provider constructor
+			$params = [];
+			if($authProviderConfig->get('params', false)) {
+				$params = $authProviderConfig->get('params')->toArray();
+			}
+
 			try {
-				$this->_authProvider = $this->factory($this->getConfig()->login->provider,
-													  '\Webiny\Component\Security\Authentication\Providers\AuthenticationInterface');
+				$this->_authProvider = $this->factory($authProviderConfig->driver,
+													  '\Webiny\Component\Security\Authentication\Providers\AuthenticationInterface',
+													  $params
+				);
 			} catch (Exception $e) {
 				throw new FirewallException($e->getMessage());
 			}
 		}
 
 		return $this->_authProvider;
+	}
+
+	/**
+	 * Method that checks if current request is on the given $path.
+	 *
+	 * @param string $path Path to match.
+	 *
+	 * @return bool
+	 */
+	private function _isOnPath($path) {
+		$currentUrl = $this->str($this->request()->getCurrentUrl(true)->getPath())->caseLower();
+		$path = $this->str($path)->caseLower();
+
+		return $currentUrl->equals($path->val());
 	}
 }

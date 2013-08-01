@@ -208,12 +208,19 @@ class WebinyFrameworkBase
 			// we must add the absolute path to the additional libraries
 			$maps = self::$_config->additional_libraries->toArray();
 			foreach ($maps as $k => $v) {
-				$maps[$k] = self::$_frameworkPath . $v;
+				if(strpos($v, '/')===0 || strpos($v, ':')===1){ // linux and windows absolute path
+					$maps[$k] = $v;
+				}else{
+					$maps[$k] = self::$_frameworkPath . $v;
+				}
 			}
 			ClassLoader::getInstance()->registerMap($maps);
 		}
 	}
 
+	/**
+	 * Creates an instance of system logger.
+	 */
 	private function _setupSystemLogger(){
 		try{
 			$this->logger(WF::LOGGER)->info('System up and running');
@@ -234,6 +241,10 @@ class WebinyFrameworkBase
 		}
 	}
 
+	/**
+	 * Initializes the security layer.
+	 * NOTE: This initialization might trigger a redirect.
+	 */
 	private function _setupSecurityLayer(){
 		if(isset(self::$_config->security)){
 			self::$_security = Security::getInstance();

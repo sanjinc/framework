@@ -9,7 +9,6 @@
 
 namespace Webiny\Component\Security\Token;
 
-use Webiny\Component\Security\TokenStorage\TokenStorageInterface;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\StdLib\Exception\Exception;
 use Webiny\StdLib\FactoryLoaderTrait;
@@ -25,22 +24,39 @@ class Token
 {
 	use WebinyTrait, FactoryLoaderTrait;
 
+	// store token into cookie -> only if remember me is TRUE
 	const TOKEN_COOKIE_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
+	// store token into session -> only if remember me is FALSE
 	const TOKEN_SESSION_STORAGE = '\Webiny\Component\Security\Token\Storage\Cookie';
 
 	/**
 	 * @var TokenStorageAbstract
 	 */
 	private $_storage;
+
+	/**
+	 * @var bool
+	 */
 	private $_rememberMe = false;
 
-	function __construct($tokenName, $rememberMe = false) {
+	/**
+	 * Base constructor.
+	 *
+	 * @param string $tokenName   Name of the token.
+	 * @param bool   $rememberMe  Do you want to store the token into cookie, or not. If you don't store it into cookie, the
+	 *                            token is only valid for current session.
+	 * @param string $securityKey Security key that will be used for encryption of token data
+	 *
+	 * @throws TokenException
+	 */
+	function __construct($tokenName, $rememberMe = false, $securityKey) {
 
 		$this->_rememberMe = $rememberMe;
 
 		try {
 			$this->_storage = $this->factory($this->_getStorageName(),
 											 '\Webiny\Component\Security\Token\TokenStorageAbstract');
+			$this->_storage->setSecurityKey($securityKey);
 		} catch (Exception $e) {
 			throw new TokenException($e->getMessage());
 		}

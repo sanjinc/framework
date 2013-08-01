@@ -15,7 +15,7 @@ use Webiny\Component\Security\Token\TokenStorageAbstract;
 use Webiny\Component\Security\User\UserAbstract;
 
 /**
- * Session token provider.
+ * Session token storage.
  *
  * @package         Webiny\Component\Security\User\Token\Storage
  */
@@ -28,7 +28,7 @@ class Session extends TokenStorageAbstract
 	/**
 	 * Save user authentication token.
 	 *
-	 * @param UserAbstract $user             Instance of UserAbstract class that holds the pre-filled object from user provider.
+	 * @param UserAbstract $user Instance of UserAbstract class that holds the pre-filled object from user provider.
 	 *
 	 * @return bool
 	 */
