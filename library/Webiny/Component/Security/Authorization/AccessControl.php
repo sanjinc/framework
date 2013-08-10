@@ -18,7 +18,7 @@ use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\ServiceManager\ServiceManagerTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Access control class talks to the voters and accumulates the vote scoring. Then, based on the selected decision
@@ -54,7 +54,7 @@ class AccessControl
 
 	/**
 	 * Current path - based on current request.
-	 * @var \Webiny\StdLib\StdObject\StringObject\StringObject
+	 * @var \Webiny\Component\StdLib\StdObject\StringObject\StringObject
 	 */
 	protected $_currentPath;
 

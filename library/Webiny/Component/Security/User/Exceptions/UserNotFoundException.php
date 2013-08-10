@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\User\Exceptions;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * User not found exception.

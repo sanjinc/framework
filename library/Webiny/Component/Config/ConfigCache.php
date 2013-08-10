@@ -13,10 +13,10 @@ use Traversable;
 use Webiny\Bridge\Yaml\Spyc\Spyc;
 use Webiny\Component\Config\Drivers\DriverAbstract;
 use Webiny\Component\Config\Drivers\YamlDriver;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * ConfigCache class holds caches data and holds info about original resource

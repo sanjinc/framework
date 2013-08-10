@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Role;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Role Hierarchy class.

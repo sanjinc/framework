@@ -13,8 +13,8 @@ use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\Encoder\Encoder;
 use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\Token\TokenData;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * This is the abstract user class with common helpers functions for UserProviders.

@@ -17,7 +17,7 @@ use Webiny\Component\Security\Authentication\Providers\Login;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\Security\Token\Token;
 use Webiny\Component\Config\ConfigObject;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**

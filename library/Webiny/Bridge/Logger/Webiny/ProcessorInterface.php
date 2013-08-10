@@ -9,7 +9,7 @@
 namespace Webiny\Bridge\Logger\Webiny;
 
 use Webiny\Bridge\Logger\LoggerException;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Interface for processors

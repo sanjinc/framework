@@ -8,7 +8,7 @@
  */
 namespace Webiny\Component\ServiceManager;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * ServiceCreator class is responsible for taking a ServiceConfig and building a service instance.

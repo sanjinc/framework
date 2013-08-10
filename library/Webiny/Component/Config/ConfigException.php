@@ -9,7 +9,7 @@
  */
 namespace Webiny\Component\Config;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Config exception class.

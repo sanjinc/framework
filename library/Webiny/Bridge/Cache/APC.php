@@ -9,7 +9,7 @@
 
 namespace Webiny\Bridge\Cache;
 
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\ValidatorTrait;
 use Webiny\WebinyFrameworkBase;
 use Webiny\WebinyTrait;
 

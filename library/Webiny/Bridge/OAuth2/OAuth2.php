@@ -9,8 +9,8 @@
 
 namespace Webiny\Bridge\OAuth2;
 
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**

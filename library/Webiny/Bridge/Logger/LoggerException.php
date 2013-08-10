@@ -10,7 +10,7 @@
 
 namespace Webiny\Bridge\Logger;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Logger exception class.

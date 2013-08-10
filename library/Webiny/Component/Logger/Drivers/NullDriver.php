@@ -12,7 +12,7 @@ namespace Webiny\Component\Logger\Drivers;
 use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
 use Webiny\Bridge\Logger\LoggerHandlerAbstract;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * NullDriver is used to avoid exceptions when logger you are trying to use is not available.<br />

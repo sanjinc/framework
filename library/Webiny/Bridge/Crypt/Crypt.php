@@ -9,8 +9,8 @@
 
 namespace Webiny\Bridge\Crypt;
 
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**
@@ -62,7 +62,7 @@ class Crypt
 	 * @param $cipherBlock
 	 * @param $cipherInitVector
 	 *
-	 * @throws \Webiny\StdLib\Exception\Exception
+	 * @throws \Webiny\Component\StdLib\Exception\Exception
 	 * @return CryptInterface
 	 */
 	static function getInstance($passwordAlgo, $cipherMode, $cipherBlock, $cipherInitVector) {

@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\EventManager;
 
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * EventProcessor is a class that takes EventListeners and Event object and processes the event.

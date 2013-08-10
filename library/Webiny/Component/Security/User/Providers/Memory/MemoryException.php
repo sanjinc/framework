@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\User\Providers\Memory;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Memory provider exception class.

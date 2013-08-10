@@ -9,7 +9,7 @@
  */
 namespace Webiny\Bridge\Yaml;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Config exception class.

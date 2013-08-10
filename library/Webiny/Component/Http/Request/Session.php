@@ -11,7 +11,7 @@ namespace Webiny\Component\Http\Request;
 
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\Request\Session\SessionException;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Session Http component.

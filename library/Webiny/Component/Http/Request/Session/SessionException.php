@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Http\Request\Session;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Session exception class.

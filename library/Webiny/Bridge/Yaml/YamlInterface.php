@@ -11,8 +11,8 @@ namespace Webiny\Bridge\Yaml;
 
 use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigObject;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Yaml bridge interface

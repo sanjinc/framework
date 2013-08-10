@@ -10,11 +10,11 @@
 namespace Webiny\Component\Config\Drivers;
 
 use Webiny\Component\Config\ConfigException;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * JsonDriver is responsible for parsing JSON config files and returning a config array.

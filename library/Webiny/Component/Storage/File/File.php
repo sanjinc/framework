@@ -13,8 +13,8 @@ use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Storage\Storage;
 use Webiny\Component\Storage\StorageEvent;
 use Webiny\Component\Storage\StorageException;
-use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
-use Webiny\StdLib\StdObjectTrait;
+use Webiny\Component\StdLib\StdObject\DateTimeObject\DateTimeObject;
+use Webiny\Component\StdLib\StdObjectTrait;
 
 /**
  * Basic File object that supports all common storage methods

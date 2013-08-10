@@ -13,9 +13,9 @@ namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
 use Webiny\Bridge\Logger\LoggerException;
 use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\UrlObject\UrlObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\UrlObject\UrlObject;
 use Webiny\WebinyTrait;
 
 /**

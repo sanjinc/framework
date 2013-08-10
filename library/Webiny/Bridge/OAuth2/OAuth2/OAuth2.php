@@ -13,7 +13,7 @@ use OAuth2\Client;
 use Webiny\Bridge\OAuth2\OAuth2Abstract;
 use Webiny\Bridge\OAuth2\OAuth2Exception;
 use Webiny\Component\Http\HttpTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Bridge for OAuth2 library by Charron Pierrick (https://github.com/adoy/PHP-OAuth2)

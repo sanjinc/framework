@@ -9,7 +9,6 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Formatters;
 
-use Webiny\Architecture\Environment;
 use Webiny\Bridge\Logger\Webiny\FormatterAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
 
@@ -21,7 +20,6 @@ use Webiny\Bridge\Logger\Webiny\Record;
  */
 class WebinyTrayFormatter extends FormatterAbstract
 {
-	use Environment;
 
 	/**
 	 * Message date format

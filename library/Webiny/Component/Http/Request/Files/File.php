@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Http\Request\Files;
 
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
 
 /**
  * Description

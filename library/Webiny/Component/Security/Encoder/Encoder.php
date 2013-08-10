@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Security\Encoder;
 
-use Webiny\StdLib\FactoryLoaderTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\FactoryLoaderTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Security encoder class.
