@@ -9,7 +9,7 @@
 
 namespace Webiny\Bridge\OAuth2;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * OAuth2 abstract class.

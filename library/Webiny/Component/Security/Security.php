@@ -18,9 +18,9 @@ use Webiny\Component\Security\Role\RoleHierarchy;
 use Webiny\Component\Security\User\Providers\Memory\MemoryProvider;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\ServiceManager\ServiceManager;
-use Webiny\StdLib\FactoryLoaderTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\FactoryLoaderTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**

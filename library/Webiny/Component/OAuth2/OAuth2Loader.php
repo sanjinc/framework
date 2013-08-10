@@ -10,7 +10,7 @@
 namespace Webiny\Component\OAuth2;
 
 use Webiny\Component\Http\HttpTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**

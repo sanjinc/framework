@@ -10,7 +10,7 @@
 namespace Webiny\Component\Storage\Driver\Local;
 
 use Webiny\Component\Storage\StorageException;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 /**
  * Local storage driver helper

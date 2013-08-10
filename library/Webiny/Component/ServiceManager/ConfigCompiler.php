@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\ServiceManager;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 

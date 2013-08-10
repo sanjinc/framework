@@ -10,7 +10,7 @@
 namespace Webiny\Component\Crypt;
 
 use Webiny\Bridge\Crypt\CryptInterface;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * This is a class for simple cryptographic functions in PHP.

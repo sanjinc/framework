@@ -22,10 +22,10 @@ use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\Token\Token;
 use Webiny\Component\Security\User\UserAbstract;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\FactoryLoaderTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\FactoryLoaderTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * This is the main class for authentication layer.

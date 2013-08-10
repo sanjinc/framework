@@ -9,7 +9,7 @@
  */
 namespace Webiny\Component\Logger;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Logger exception class.

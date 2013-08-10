@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\OAuth2;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * This class is used for building OAuth2 requests.

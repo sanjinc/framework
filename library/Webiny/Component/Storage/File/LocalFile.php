@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Storage\File;
 
-use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
-use Webiny\StdLib\StdObjectTrait;
+use Webiny\Component\StdLib\StdObject\DateTimeObject\DateTimeObject;
+use Webiny\Component\StdLib\StdObjectTrait;
 
 /**
  * LocalFile is used for local disk storage

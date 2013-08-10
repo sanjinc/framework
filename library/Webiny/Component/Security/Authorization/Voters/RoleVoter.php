@@ -11,7 +11,7 @@ namespace Webiny\Component\Security\Authorization\Voters;
 
 use Webiny\Component\Security\Role\Role;
 use Webiny\Component\Security\User\UserAbstract;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * This is the basic role voter that decides, based on users role, if he has access to current area or not.

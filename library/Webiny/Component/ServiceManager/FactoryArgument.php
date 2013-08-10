@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\ServiceManager;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * FactoryArgument class is responsible for handling factory services. It is different from Argument class

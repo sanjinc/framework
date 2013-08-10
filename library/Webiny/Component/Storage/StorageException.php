@@ -10,7 +10,7 @@
 
 namespace Webiny\Component\Storage;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Storage exception class

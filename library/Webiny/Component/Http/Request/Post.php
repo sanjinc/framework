@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Http\Request;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Post Http component.

@@ -17,11 +17,13 @@ bridges:
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
     oauth2: '\Webiny\Bridge\OAuth2\OAuth2\OAuth2'
+    mailer: '\Webiny\Bridge\Mailer\SwiftMailer\SwiftMailer'
 additional_libraries:
     'Jamm\Memory': '../Memory'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
     'OAuth2': '../OAuth2'
+    Swift_: '../SwiftMailer/lib/classes'
 components:
     logger:
         formatters:
@@ -62,6 +64,40 @@ components:
             google: '\Webiny\Component\OAuth2\Server\Google'
             linkedin: '\Webiny\Component\OAuth2\Server\LinkedIn'
             twitter: '\Webiny\Component\OAuth2\Server\Twitter'
+    mailer:
+        webiny:
+            character_set: utf-8
+            max_line_length: 78
+            priority: 2 # high priority
+            sender:
+                email: noreply@webiny.com
+                name: Webiny
+            transport:
+                type: smtp
+                host: mail.webiny.com
+            antiflood:
+                threshold: 99
+                sleep: 1
+            disable_delivery: false
+        default:
+            character_set: utf-8
+            max_line_length: 78
+            priority: 2 # high priority
+            sender:
+                email: sven.alhamad@gmail.com
+                name: Sven Al Hamad
+            transport:
+                type: smtp
+                host: smtp.gmail.com
+                port: 465
+                username: sven.alhamad@gmail.com
+                password: delmania
+                encryption: ssl
+                auth_mode: login
+            antiflood:
+                threshold: 99
+                sleep: 1
+            disable_delivery: false
 
 oauth2:
     webiny_test:
@@ -104,13 +140,13 @@ security:
     access_control:
         rules:
             - {path: ^/admin, roles: ROLE_ADMIN}
-            - {path: ^/Test, roles: [ROLE_ADMIN]}
+            #- {path: ^/Test, roles: [ROLE_ADMIN]}
         decision_strategy: consensus
     firewalls:
         administration:
             realm_name: 'My administration realm'
             url_pattern: '^/Test/'
-            anonymous: false
+            anonymous: true
             remember_me: true
             #encoder: default
             security_key: THIS_IS_MY_KEY98
@@ -157,6 +193,7 @@ parameters:
     cache.class: '\Webiny\Component\Cache\Cache'
     crypt.class: '\Webiny\Component\Crypt\Crypt'
     security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
+    mailer.class: '\Webiny\Component\Mailer\Mailer'
 
 services:
     crypt:

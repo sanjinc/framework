@@ -13,7 +13,7 @@ use OAuth2\Exception;
 use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\OAuth2User;
 use Webiny\Component\OAuth2\ServerAbstract;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Facebook OAuth2 wrapper for the Graph API.

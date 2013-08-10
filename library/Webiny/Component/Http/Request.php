@@ -19,10 +19,10 @@ use Webiny\Component\Http\Request\Query;
 use Webiny\Component\Http\Request\Post;
 use Webiny\Component\Http\Request\Server;
 use Webiny\Component\Http\Request\Session;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\UrlObject\UrlObject;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\UrlObject\UrlObject;
 use Webiny\WebinyTrait;
 
 /**
@@ -242,7 +242,7 @@ class Request
 	 *
 	 * @param bool $asUrlObject In which format you want to get the result, url standard object or a string.
 	 *
-	 * @return string|\Webiny\StdLib\StdObject\UrlObject\UrlObject Current url.
+	 * @return string|\Webiny\Component\StdLib\StdObject\UrlObject\UrlObject Current url.
 	 */
 	function getCurrentUrl($asUrlObject = false) {
 		if($this->_currentUrl == '') {

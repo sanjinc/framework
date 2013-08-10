@@ -11,7 +11,7 @@ namespace Webiny\Component\Cache\Storage;
 
 use Webiny\Bridge\Cache\CacheStorageInterface;
 use Webiny\Component\Cache\CacheStorage;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * Cache APC storage.

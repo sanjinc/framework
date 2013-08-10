@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Registry;
 
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 /**
  * A simple registry class. Use it to store information you want to access from different parts of your application.

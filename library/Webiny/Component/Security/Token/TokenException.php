@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Token;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Token exception class.

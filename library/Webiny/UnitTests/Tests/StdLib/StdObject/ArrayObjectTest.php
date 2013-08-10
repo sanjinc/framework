@@ -3,21 +3,21 @@ namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
 require_once '../../../../../autoloader.php';
 
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
 
 class ArrayObjectTest extends \PHPUnit_Framework_TestCase
 {
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testConstructorException() {
 		$a = new ArrayObject('value');
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testConstructorException2() {
 		$a = new ArrayObject('key', 'value');
@@ -48,7 +48,7 @@ class ArrayObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testConstructorCombine2() {
 		$a = new ArrayObject([
@@ -266,7 +266,7 @@ class ArrayObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testChangeKeyCase2() {
 		$a = new ArrayObject(['k1']);
@@ -297,7 +297,7 @@ class ArrayObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testFilter() {
 		$a = new ArrayObject([]);

@@ -13,8 +13,8 @@ use Webiny\Component\Crypt\CryptTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Token\TokenStorageInterface;
 use Webiny\Component\Security\User\UserAbstract;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Token storage abstract.
