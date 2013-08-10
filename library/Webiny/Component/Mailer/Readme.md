@@ -141,3 +141,46 @@ class MyClass
 	}
 }
 ```
+
+Now if you have multiple senders, and let's say you want to send all of them the same email, but just with a little difference,
+for example that in each email you put the name of the specific user.
+
+```php
+class MyClass
+{
+	use \Webiny\Bridge\Mailer\MailerTrait;
+
+	function sendEmail() {
+		// get the Mailer instance
+		$mailer = $this->mailer('default');
+
+
+		// let's build our message
+		$msg = $mailer->getMessage();
+		$msg->setSubject('Hello email')
+			 ->setBody('Hi {name},
+						   This is your new password: <strong>{password}</strong>.')
+			 ->setTo([
+					'jack@gmail.com',
+					'sara@gmail.com'
+					]);
+
+		// before sending, let's define the decorator replacements
+		$replacements = [
+			'jack@gmail.com' => [
+				'{name}'     => 'Jack',
+				'{password}' => 'seCre!'
+			],
+
+			'sara@gmail.com' => [
+				'{name}'     => 'Sara',
+				'{password}' => 'Log!n'
+			]
+		];
+		$mailer->setDecorators($replacements);
+
+		// send it
+		$mailer->send($msg);
+	}
+}
+```
