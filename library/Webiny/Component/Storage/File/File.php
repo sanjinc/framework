@@ -84,6 +84,7 @@ class File implements FileInterface
 		if($this->_storage->setContents($this->_key, $this->_content)) {
 			$this->_key = $this->_storage->getRecentKey();
 			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
+			return true;
 		}
 
 		return false;
