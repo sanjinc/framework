@@ -10,12 +10,12 @@
 namespace Webiny\Component\Config\Drivers;
 
 use Webiny\Component\Config\ConfigException;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * Abstract Driver class

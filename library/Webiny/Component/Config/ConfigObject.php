@@ -15,12 +15,12 @@ use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
 use Webiny\Component\Config\Drivers\PhpDriver;
 use Webiny\Component\Config\Drivers\YamlDriver;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * ConfigObject class holds config data in an OO way
@@ -217,7 +217,7 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	public function __construct($resource, $cache = true) {
 
 		$driverAbstractClassName = '\Webiny\Component\Config\Drivers\DriverAbstract';
-		$arrayObjectClassName = '\Webiny\StdLib\StdObject\ArrayObject\ArrayObject';
+		$arrayObjectClassName = '\Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject';
 
 		// Validate given resources
 		if(!$this->isArray($resource) && !$this->isInstanceOf($resource,

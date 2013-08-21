@@ -13,7 +13,7 @@ use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
 use Webiny\Bridge\Logger\LoggerException;
 use Webiny\Component\Logger\Drivers\Webiny;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Webiny Logger is used to log any kind of messages.<br />

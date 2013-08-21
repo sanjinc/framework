@@ -13,13 +13,13 @@ use Symfony\Component\Yaml\Yaml;
 use Webiny\Bridge\Yaml\YamlAbstract;
 use Webiny\Bridge\Yaml\YamlInterface;
 use Webiny\Component\Config\Config;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StdObjectAbstract;
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\StdObjectAbstract;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * Bridge for Symfony Yaml parser

@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\EventManager;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 
 /**

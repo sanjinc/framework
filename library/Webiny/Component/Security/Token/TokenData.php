@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Token;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Token data class holds user data that has been decrypted from token storage.

@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Security exception class.

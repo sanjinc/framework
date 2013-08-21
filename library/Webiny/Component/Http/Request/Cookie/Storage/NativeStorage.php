@@ -13,7 +13,7 @@ use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\Request\Cookie\CookieException;
 use Webiny\Component\Http\Request\Cookie\CookieStorageInterface;
 use Webiny\Component\Http\HttpTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Native cookie storage.

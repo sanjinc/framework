@@ -9,9 +9,9 @@
 
 namespace Webiny\Component\EventManager;
 
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * EventManager is responsible for handling events. It is the main class for subscribing to events and firing events.<br />

@@ -4,8 +4,8 @@ namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
 require_once '../../../../../../WebinyFramework.php';
 
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 class StringObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testConstructor4() {
 		$s = new StringObject([]);
@@ -201,7 +201,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException \Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testSubString3() {
 		$s = new StringObject('a b c');
@@ -300,7 +300,7 @@ class StringObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException \Webiny\Component\StdLib\StdObject\StdObjectException
 	 */
 	public function testHash3() {
 		$s = new StringObject('abc');

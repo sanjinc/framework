@@ -12,7 +12,7 @@ namespace Webiny\Component\OAuth2\Server;
 use Webiny\Component\OAuth2\OAuth2User;
 use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\ServerAbstract;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Google OAuth2 API wrapper.
@@ -99,6 +99,7 @@ class Google extends ServerAbstract
 		$user->setLastName($result->key('family_name'));
 		$user->setProfileUrl($result->key('link'));
 		$user->setAvatarUrl($result->key('picture'));
+        $user->setServiceName('google');
 
 		return $user;
 	}

@@ -4,9 +4,9 @@ namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
 require_once '../../../../../../WebinyFramework.php';
 
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
 
 class FileObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -72,7 +72,7 @@ class FileObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: The chmod $mode param must be exactly 4 chars.
 	 */
 	public function testChmod() {
@@ -80,7 +80,7 @@ class FileObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: The chmod $mode param must be exactly 4 chars.
 	 */
 	public function testChmod2() {
@@ -88,7 +88,7 @@ class FileObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage FileObject: $mode must be an integer (octal).
 	 */
 	public function testChmod3() {

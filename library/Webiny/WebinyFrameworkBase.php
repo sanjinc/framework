@@ -9,8 +9,6 @@
 
 namespace Webiny;
 
-use Webiny\Bridge\Cache\CacheStorageInterface;
-use Webiny\Component\Cache\Cache;
 use Webiny\Component\Cache\CacheStorage;
 use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\ClassLoader\ClassLoader;
@@ -20,8 +18,8 @@ use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\Security\Security;
 use Webiny\Component\ServiceManager\ServiceManager;
 use Webiny\Component\ServiceManager\ServiceManagerException;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\SingletonTrait;
 
 /**
  * Webiny Framework Base is a staging class.

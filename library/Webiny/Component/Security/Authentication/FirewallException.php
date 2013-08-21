@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Authentication;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Firewall exception class.

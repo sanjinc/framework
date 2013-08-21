@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Encoder;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Encoder exception class.

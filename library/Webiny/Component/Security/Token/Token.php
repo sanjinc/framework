@@ -10,8 +10,8 @@
 namespace Webiny\Component\Security\Token;
 
 use Webiny\Component\Security\User\UserAbstract;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\FactoryLoaderTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\FactoryLoaderTrait;
 use Webiny\WebinyTrait;
 
 /**

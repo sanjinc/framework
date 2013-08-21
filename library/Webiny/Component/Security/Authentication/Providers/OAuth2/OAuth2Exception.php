@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Security\Authentication\Providers\OAuth2;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * OAuth2 user auth exception class.

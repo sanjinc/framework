@@ -10,9 +10,9 @@
 namespace Webiny\Component\Config\Drivers;
 
 use Webiny\Component\Config\ConfigException;
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Description

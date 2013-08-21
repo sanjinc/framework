@@ -10,7 +10,7 @@
 namespace Webiny\Bridge\Yaml\Spyc;
 
 use Webiny\Bridge\Yaml\YamlException;
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Spyc bridge exception class.

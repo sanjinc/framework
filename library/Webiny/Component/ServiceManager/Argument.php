@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\ServiceManager;
 
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Argument class serves as a wrapper for service arguments.<br />

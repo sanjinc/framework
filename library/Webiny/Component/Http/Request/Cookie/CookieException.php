@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Http\Request\Cookie;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Cookie exception class.

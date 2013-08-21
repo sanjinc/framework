@@ -3,8 +3,8 @@ namespace Webiny\UnitTests\Tests\Component\Config;
 
 use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigObject;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
 
 require_once '../../../../../autoloader.php';
 

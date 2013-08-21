@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\EventManager;
 
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
 /**
  * EventListener is a class that holds event handler information.
  * A new EventListener is created each time you subscribe to an event.

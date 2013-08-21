@@ -116,4 +116,14 @@ class OAuth2User
 	function setLastUpdateTime($timestamp) {
 		$this->lastUpdated = $timestamp;
 	}
+
+    // Hack - service name added to the user object
+    /**
+     * Set the service name that user used to login (like facebook, linkedin etc.)
+     *
+     * @param string $serviceName
+     */
+    function setServiceName($serviceName) {
+        $this->serviceName = $serviceName;
+	}
 }

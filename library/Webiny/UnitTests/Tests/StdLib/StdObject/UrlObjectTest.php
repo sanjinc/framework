@@ -4,8 +4,8 @@ namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
 require_once '../../../../../../WebinyFramework.php';
 
-use Webiny\StdLib\StdObject\StdObjectException;
-use Webiny\StdLib\StdObject\UrlObject\UrlObject;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\UrlObject\UrlObject;
 
 
 class UrlObjectTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +22,7 @@ class UrlObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObject\StdObjectException
 	 * @expectedExceptionMessage UrlObject: Unable to parse the given value
 	 */
 	function testConstuctor2() {

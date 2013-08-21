@@ -9,11 +9,11 @@
 
 namespace Webiny\Bridge\Yaml;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Bridge for Yaml parser

@@ -10,7 +10,7 @@
 namespace Webiny\Component\Cache\Storage;
 
 use Webiny\Bridge\Cache\CacheStorageInterface;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * Redis cache storage.

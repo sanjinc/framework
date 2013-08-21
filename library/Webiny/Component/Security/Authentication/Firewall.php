@@ -22,10 +22,10 @@ use Webiny\Component\Security\User\Exceptions\UserNotFoundException;
 use Webiny\Component\Security\User\Providers\Memory;
 use Webiny\Component\Security\Token\Token;
 use Webiny\Component\Security\User\UserAbstract;
-use Webiny\StdLib\Exception\Exception;
-use Webiny\StdLib\FactoryLoaderTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\Exception\Exception;
+use Webiny\Component\StdLib\FactoryLoaderTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * This is the main class for authentication layer.
@@ -168,8 +168,10 @@ class Firewall
 		} else {
 			if(!$this->_isLoginPage()) {
 				// redirect to login path
+				// !!! Hacked because of .htaccess parameter "r" was passed in redirect,
+				// !!! which caused an error in Weby app
 				$this->request()->redirect($this->request()->getCurrentUrl(true)
-										   ->setPath($this->getConfig()->login->login_path));
+										   ->setPath($this->getConfig()->login->login_path)->setQuery(''));
 			}
 		}
 
@@ -188,7 +190,8 @@ class Firewall
 		}
 		$this->_user = new AnonymousUser();
 
-		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target));
+		// Another hack, the same case like in setupAuth() method
+		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target)->setQuery(''));
 	}
 
 	/**

@@ -16,7 +16,7 @@ use Webiny\Component\Storage\Driver\Local\LocalHelper;
 use Webiny\Component\Storage\Driver\SizeAwareInterface;
 use Webiny\Component\Storage\Driver\TouchableInterface;
 use Webiny\Component\Storage\StorageException;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Local storage

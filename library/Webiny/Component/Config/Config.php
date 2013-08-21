@@ -14,11 +14,11 @@ use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
 use Webiny\Component\Config\Drivers\PhpDriver;
 use Webiny\Component\Config\Drivers\YamlDriver;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
-use Webiny\StdLib\StdObject\StdObjectWrapper;
-use Webiny\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
+use Webiny\Component\StdLib\ValidatorTrait;
 
 /**
  * Config class creates config objects from files, strings and arrays.

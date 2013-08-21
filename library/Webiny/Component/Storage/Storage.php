@@ -15,8 +15,8 @@ use Webiny\Component\Storage\Driver\DirectoryAwareInterface;
 use Webiny\Component\Storage\Driver\SizeAwareInterface;
 use Webiny\Component\Storage\Driver\TouchableInterface;
 use Webiny\Component\Storage\StorageException;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\DateTimeObject\DateTimeObject;
 
 /**
  * Description

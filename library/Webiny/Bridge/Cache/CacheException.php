@@ -9,7 +9,7 @@
 
 namespace Webiny\Bridge\Cache;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Cache bridge exception class.

@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Http\Request\Files;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Files exception class.

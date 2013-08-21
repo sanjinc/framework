@@ -14,8 +14,8 @@ use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
 use Webiny\Component\Logger\Drivers\Webiny\Formatters\FileFormatter;
 use Webiny\Component\Logger\LoggerException;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
 
 /**
  * FileHandler class stores log messages to log file

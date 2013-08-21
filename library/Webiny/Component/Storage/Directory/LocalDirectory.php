@@ -15,7 +15,7 @@ use Webiny\Component\Storage\Driver\Local\LocalHelper;
 use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\Storage;
 use Webiny\Component\Storage\StorageException;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 
 /**

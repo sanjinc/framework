@@ -8,7 +8,7 @@
  */
 namespace Webiny\Component\ServiceManager;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 /**
  * Exception class for the ServiceManager component.

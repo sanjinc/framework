@@ -15,7 +15,7 @@ use Webiny\Component\Security\User\Providers\Memory\MemoryException;
 use Webiny\Component\Security\User\Providers\Memory\User;
 use Webiny\Component\Security\User\UserAbstract;
 use Webiny\Component\Security\User\UserProviderInterface;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Memory user provider.

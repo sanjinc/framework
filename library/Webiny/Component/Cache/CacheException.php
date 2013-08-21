@@ -10,7 +10,7 @@
 
 namespace Webiny\Component\Cache;
 
-use Webiny\StdLib\Exception\ExceptionAbstract;
+use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
 class CacheException extends ExceptionAbstract
 {

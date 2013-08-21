@@ -288,7 +288,7 @@ You can have multiple sets of firewall. Each firewall consists of following para
 - security_key
     - this is the security key that will be used to encrypt the authentication token
     - the key must have a length of 16, 32 or 64 characters
-    - make sure you a phrase that is hard/impossible to guess
+    - make sure you have a phrase that is hard/impossible to guess
 - provider
     - this is the user provider that the firewall will use to ask for user account
     - you can put here a user provider `security.providers`, or a chain provider `security.chain_providers`

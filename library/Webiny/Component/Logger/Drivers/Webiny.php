@@ -16,8 +16,8 @@ use Webiny\Bridge\Logger\LoggerLevel;
 use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
 use Webiny\Bridge\Logger\Webiny\Record;
 use Webiny\Component\Logger\LoggerException;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 /**
  * Webiny logger driver covers most of your logging needs.<br />

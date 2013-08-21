@@ -3,8 +3,8 @@ namespace Webiny\UnitTests\Tests\StdLib\StdObject;
 
 require_once '../../../../../../WebinyFramework.php';
 
-use Webiny\StdLib\StdObject\DateTimeObject\DateTimeObject;
-use Webiny\StdLib\StdObject\StdObjectException;
+use Webiny\Component\StdLib\StdObject\DateTimeObject\DateTimeObject;
+use Webiny\Component\StdLib\StdObject\StdObjectException;
 
 class DateTimeObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -62,7 +62,7 @@ class DateTimeObjectTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Webiny\StdLib\StdObject\StdObjectException
+	 * @expectedException Webiny\Component\StdLib\StdObjectException
 	 * @expectedExceptionMessage Invalid format "m" for "getYear"
 	 */
 	function testGetYear2() {

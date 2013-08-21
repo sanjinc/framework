@@ -11,7 +11,7 @@ namespace Webiny\Component\Http\Request;
 
 use Webiny\Component\Http\Request\Files\File;
 use Webiny\Component\Http\Request\Files\FilesException;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * File Http component.

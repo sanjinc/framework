@@ -5,7 +5,7 @@ use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigException;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Config\Drivers\PhpDriver;
-use Webiny\StdLib\StdObject\FileObject\FileObject;
+use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
 
 require_once '../../../../../../WebinyFramework.php';
 

@@ -13,7 +13,7 @@ use OAuth2\Exception;
 use Webiny\Component\OAuth2\OAuth2Exception;
 use Webiny\Component\OAuth2\OAuth2User;
 use Webiny\Component\OAuth2\ServerAbstract;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Facebook OAuth2 wrapper for the Graph API.
@@ -100,6 +100,7 @@ class Facebook extends ServerAbstract
 		$user->setProfileUrl($result->key('link'));
 		$user->setAvatarUrl('http://graph.facebook.com/' . $user->profileId . '/picture?type=large');
 		$user->setLastUpdateTime(strtotime($result->key('updated_time')));
+		$user->setServiceName('facebook');
 
 		return $user;
 	}
