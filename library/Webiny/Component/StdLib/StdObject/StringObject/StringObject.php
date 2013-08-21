@@ -112,7 +112,10 @@ class StringObject extends StdObjectAbstract
 	 *
 	 * @return int
 	 */
-	public function subStringCount($string, $offset = null, $length = null) {
+	public function subStringCount($string, $offset = 0, $length = null) {
+		if($this->isNull($length)){
+			$length = $this->length();
+		}
 		return substr_count($this->val(), $string, $offset, $length);
 	}
 }

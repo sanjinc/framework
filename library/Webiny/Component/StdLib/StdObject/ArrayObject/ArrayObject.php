@@ -242,4 +242,25 @@ class ArrayObject extends StdObjectAbstract implements \IteratorAggregate, \Arra
 	public function offsetUnset($offset) {
 		unset($this->_value[$offset]);
 	}
+
+	/**
+	 * Get key
+	 * @param $name
+	 *
+	 * @return $this|mixed|StringObject
+	 */
+	function __get($name) {
+		return $this->key($name);
+	}
+
+	/**
+	 * Set array object value
+	 * @param $name
+	 * @param $value
+	 */
+	function __set($name, $value) {
+		$this->key($name, $value);
+	}
+
+
 }
