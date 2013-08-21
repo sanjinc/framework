@@ -99,6 +99,7 @@ class Google extends ServerAbstract
 		$user->setLastName($result->key('family_name'));
 		$user->setProfileUrl($result->key('link'));
 		$user->setAvatarUrl($result->key('picture'));
+        $user->setServiceName('google');
 
 		return $user;
 	}

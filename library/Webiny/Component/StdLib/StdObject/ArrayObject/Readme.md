@@ -5,7 +5,7 @@ It's fully an objective approach to manipulating and validating arrays.
 
 Example usage:
 
-    use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+    use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
     $array = new ArrayObject(['one', 'two', 'three']);
 

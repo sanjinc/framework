@@ -4,7 +4,7 @@ The String class is a helper class for when working with strings.
 
 Example usage:
 
-    use Webiny\StdLib\StdObject\StringObject\StringObject;
+    use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
     $string = new StringObject('Some test string.');
 

@@ -100,6 +100,7 @@ class Facebook extends ServerAbstract
 		$user->setProfileUrl($result->key('link'));
 		$user->setAvatarUrl('http://graph.facebook.com/' . $user->profileId . '/picture?type=large');
 		$user->setLastUpdateTime(strtotime($result->key('updated_time')));
+		$user->setServiceName('facebook');
 
 		return $user;
 	}

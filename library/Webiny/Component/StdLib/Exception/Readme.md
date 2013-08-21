@@ -5,7 +5,7 @@ A library of some common exceptions. You can extend it to create custom exceptio
 
 To use the common exceptions:
 
-    use Webiny\StdLib\Exception\Exception;
+    use Webiny\Component\StdLib\Exception\Exception;
 
     // throw an exception with a custom message
     throw new Exception('My exception message');
@@ -17,7 +17,7 @@ To use the common exceptions:
 
 To extend this library and throw custom exceptions:
 
-    class MyCustomExceptionClass extends Webiny\StdLib\Exception\ExceptionAbstract
+    class MyCustomExceptionClass extends Webiny\Component\StdLib\Exception\ExceptionAbstract
     {
 
     }
@@ -25,7 +25,7 @@ To extend this library and throw custom exceptions:
 
 To define custom exception codes and messages:
 
-    class MyCustomExceptionClass extends Webiny\StdLib\Exception\ExceptionAbstract
+    class MyCustomExceptionClass extends Webiny\Component\StdLib\Exception\ExceptionAbstract
     {
         const MSG_INVALID_URL = 101;
 
@@ -39,6 +39,6 @@ To define custom exception codes and messages:
 
 
 Important rules when defining custom exceptions:
-- Always extend the Webiny\StdLib\Exception\ExceptionAbstract class
+- Always extend the Webiny\Component\StdLib\Exception\ExceptionAbstract class
 - Internal constants that contain the exception code must start from 101. Lower numbers are reserved for core exception messages.
 - You must define static protected $_messages array. $_messages keys must match the numbers in the constants.
