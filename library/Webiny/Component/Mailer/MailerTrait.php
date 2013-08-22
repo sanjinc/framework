@@ -7,7 +7,7 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Bridge\Mailer;
+namespace Webiny\Component\Mailer;
 
 use Webiny\Component\Mailer\Mailer;
 
