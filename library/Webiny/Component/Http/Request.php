@@ -126,7 +126,7 @@ class Request
 	 * @return mixed Value of the given $key.
 	 */
 	function query($key = null, $value = null) {
-		return $this->isNull($key) ? $this->_query->val() : $this->_query->get($key, $value);
+		return $this->isNull($key) ? $this->_query->getAll() : $this->_query->get($key, $value);
 	}
 
 	/**
@@ -139,7 +139,7 @@ class Request
 	 * @return mixed Value of the given $key.
 	 */
 	function post($key = null, $value = null) {
-		return $this->isNull($key) ? $this->_post->val() : $this->_post->get($key, $value);
+		return $this->isNull($key) ? $this->_post->getAll() : $this->_post->get($key, $value);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Request
 	 * @return mixed Value of the given $key.
 	 */
 	function env($key = null, $value = null) {
-		return $this->isNull($key) ? $this->_env->val() : $this->_env->get($key, $value);
+		return $this->isNull($key) ? $this->_env->getAll() : $this->_env->get($key, $value);
 	}
 
 	/**
