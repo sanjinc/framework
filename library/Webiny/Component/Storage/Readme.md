@@ -88,6 +88,7 @@ foreach($dir as $item){
 NOTE: directory files are not being fetched from storage until you actually use the object.
 
 ## Filtering files (recursive mode)
+
 ```php
 // Get your storage service
 $storage = $this->storage('local');
