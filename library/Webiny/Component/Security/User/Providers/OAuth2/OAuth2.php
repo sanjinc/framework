@@ -43,6 +43,8 @@ class OAuth2 implements UserProviderInterface
 		$oauth2 = $login->getAttribute('oauth2_server');
 		try{
 			$oauth2User = $oauth2->request()->getUserDetails();
+            // hack for Weby.io
+            $this->request()->session()->save('oauth2_user', $oauth2User);
 		}catch (\Exception $e){
 			$this->request()->session()->delete('oauth_token');
 			throw new UserNotFoundException($e->getMessage());

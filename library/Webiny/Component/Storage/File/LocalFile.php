@@ -18,7 +18,7 @@ use Webiny\Component\StdLib\StdObjectTrait;
  * @package   Webiny\Component\Storage
  */
 
-class LocalFile extends File implements TouchableInterface
+class LocalFile extends File
 {
 	use StdObjectTrait;
 

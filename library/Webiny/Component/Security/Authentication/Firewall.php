@@ -168,8 +168,10 @@ class Firewall
 		} else {
 			if(!$this->_isLoginPage()) {
 				// redirect to login path
+				// !!! Hacked because of .htaccess parameter "r" was passed in redirect,
+				// !!! which caused an error in Weby app
 				$this->request()->redirect($this->request()->getCurrentUrl(true)
-										   ->setPath($this->getConfig()->login->login_path));
+										   ->setPath($this->getConfig()->login->login_path)->setQuery(''));
 			}
 		}
 
@@ -188,7 +190,8 @@ class Firewall
 		}
 		$this->_user = new AnonymousUser();
 
-		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target));
+		// Another hack, the same case like in setupAuth() method
+		$this->request()->redirect($this->request()->getCurrentUrl(true)->setPath($this->getConfig()->logout->target)->setQuery(''));
 	}
 
 	/**

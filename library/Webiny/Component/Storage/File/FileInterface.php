@@ -68,15 +68,15 @@ interface FileInterface
 	public function getTimeModified($asDateTimeObject = false);
 
 	/**
-	 * Set file content (writes content to storage)<br />
+	 * Set file contents (writes contents to storage)<br />
 	 *
 	 * Fires an event StorageEvent::FILE_SAVED after the file content was written.
 	 *
-	 * @param mixed $content
+	 * @param mixed $contents
 	 *
 	 * @return $this
 	 */
-	public function setContent($content);
+	public function setContents($contents);
 
 	/**
 	 * Rename a file<br />

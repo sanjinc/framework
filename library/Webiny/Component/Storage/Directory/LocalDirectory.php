@@ -40,7 +40,7 @@ class LocalDirectory implements DirectoryInterface, \IteratorAggregate
 	 * @param string      $key               File key
 	 * @param Storage     $storage           Storage to use
 	 * @param bool        $recursive         (Optional) By default, Directory will only read the first level if items.
-	 *                                       If set to false, Directory will read all children items and list them as one-dimensional array.
+	 *                                       If set to true, Directory will read all children items and list them as one-dimensional array.
 	 * @param null|string $filter            (Optional) Filter to use when reading directory items
 	 *
 	 * @throws \Webiny\Component\Storage\StorageException

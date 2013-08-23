@@ -12,7 +12,7 @@ namespace Webiny\Component\Storage\Directory;
 use Webiny\Component\Storage\Storage;
 
 /**
- * Basic File interface
+ * Basic Directory interface
  *
  * @package   Webiny\Component\Storage\Directory
  */

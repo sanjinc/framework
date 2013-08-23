@@ -31,7 +31,7 @@ class File implements FileInterface
 	 */
 	protected $_storage;
 	protected $_key;
-	protected $_content;
+	protected $_contents;
 	protected $_isDirectory;
 	protected $_timeModified;
 	protected $_url;
@@ -79,11 +79,12 @@ class File implements FileInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function setContent($content) {
-		$this->_content = $content;
-		if($this->_storage->setContents($this->_key, $this->_content)) {
+	public function setContents($contents) {
+		$this->_contents = $contents;
+		if($this->_storage->setContents($this->_key, $this->_contents)) {
 			$this->_key = $this->_storage->getRecentKey();
 			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
+			return true;
 		}
 
 		return false;
@@ -93,11 +94,11 @@ class File implements FileInterface
 	 * @inheritdoc
 	 */
 	public function getContents() {
-		if($this->_content == null) {
-			$this->_content = $this->_storage->getContents($this->_key);
+		if($this->_contents == null) {
+			$this->_contents = $this->_storage->getContents($this->_key);
 		}
 
-		return $this->_content;
+		return $this->_contents;
 	}
 
 	/**
