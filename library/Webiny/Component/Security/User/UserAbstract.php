@@ -85,6 +85,9 @@ abstract class UserAbstract implements UserInterface
 				$this->_roles->append(new Role($r));
 			}
 		}
+
+		// append anonymous role
+		$this->_roles->append(new Role('ROLE_ANONYMOUS'));
 	}
 
 	/**
