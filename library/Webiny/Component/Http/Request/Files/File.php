@@ -145,8 +145,8 @@ class File
 	 * @throws FilesException
 	 */
 	function asFileObject() {
-		if(!$this->_storred) {
-			throw new FilesException('You must first store the file, using "store" method before you can use it as FileObject.');
+		if(!$this->_stored) {
+			$this->_storedPath = $this->_tmpName;
 		}
 
 		try {
