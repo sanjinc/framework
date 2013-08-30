@@ -93,13 +93,13 @@ class Facebook extends ServerAbstract
 			throw new Exception($result->key('error')['message']);
 		}
 
-		$user = new OAuth2User($result->key('username'), $result->key('email', '', true));
-		$user->setProfileId($result->key('id'));
-		$user->setFirstName($result->key('first_name'));
-		$user->setLastName($result->key('last_name'));
-		$user->setProfileUrl($result->key('link'));
+		$user = new OAuth2User($result->key('username', '', true), $result->key('email', '', true));
+		$user->setProfileId($result->key('id', '', true));
+		$user->setFirstName($result->key('first_name', '', true));
+		$user->setLastName($result->key('last_name', '', true));
+		$user->setProfileUrl($result->key('link', '', true));
 		$user->setAvatarUrl('http://graph.facebook.com/' . $user->profileId . '/picture?type=large');
-		$user->setLastUpdateTime(strtotime($result->key('updated_time')));
+		$user->setLastUpdateTime(strtotime($result->key('updated_time', '', true)));
 		$user->setServiceName('facebook');
 
 		return $user;

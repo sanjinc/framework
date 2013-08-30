@@ -92,12 +92,12 @@ class LinkedIn extends ServerAbstract
 			throw new OAuth2Exception($result->key('message'));
 		}
 
-		$user = new OAuth2User($result->key('firstName'), $result->key('emailAddress', '', true));
-		$user->setProfileId($result->key('id'));
-		$user->setFirstName($result->key('firstName'));
-		$user->setLastName($result->key('lastName'));
-		$user->setProfileUrl($result->key('publicProfileUrl'));
-		$user->setAvatarUrl($result->key('pictureUrl'));
+		$user = new OAuth2User($result->key('firstName', '', true), $result->key('emailAddress', '', true));
+		$user->setProfileId($result->key('id', '', true));
+		$user->setFirstName($result->key('firstName', '', true));
+		$user->setLastName($result->key('lastName', '', true));
+		$user->setProfileUrl($result->key('publicProfileUrl', '', true));
+		$user->setAvatarUrl($result->key('pictureUrl', '', true));
 
 		return $user;
 	}

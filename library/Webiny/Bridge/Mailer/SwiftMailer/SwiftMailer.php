@@ -55,6 +55,9 @@ class SwiftMailer implements MailerInterface
 
 		if($config->get('sender', false)){
 			$message->setSender($config->get('sender.email', 'me@localhost'), $config->get('sender.name', null));
+
+            // Fix/Hack (wasn't in headers before)
+            $message->setFrom($config->get('sender.email', 'me@localhost'), $config->get('sender.name', null));
 		}
 
 		return $message;
