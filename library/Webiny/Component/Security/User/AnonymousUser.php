@@ -26,7 +26,7 @@ class AnonymousUser extends UserAbstract
 	 * Base constructor.
 	 */
 	function __construct() {
-		parent::populate('anonymous', '', ['ROLE_ANONYMOUS'], false);
+		parent::populate('anonymous', '', [], false);
 	}
 
 	/**
