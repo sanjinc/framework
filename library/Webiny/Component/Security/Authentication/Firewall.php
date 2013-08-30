@@ -119,7 +119,10 @@ class Firewall
 		// get user
 		$this->getUser();
 
-		if($this->_isLogoutPage()) {
+		// check firewall urls
+		if($this->_isLoginSubmitPage()){
+			$this->setupAuth();
+		}else if($this->_isLogoutPage()) {
 			$this->processLogout();
 		}
 
