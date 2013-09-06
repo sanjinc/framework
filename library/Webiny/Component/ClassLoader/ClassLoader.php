@@ -51,6 +51,8 @@ class ClassLoader
 	 */
 	private $_cache = false;
 
+	private $_rules = [];
+
 	private function __construct(){
 		// omit the constructor
 	}
@@ -91,10 +93,10 @@ class ClassLoader
 		$this->_cache = $cache;
 
 		// unregister the old autoloader
-		spl_autoload_unregister([self::$_instance, 'getClass']);
+		//spl_autoload_unregister([self::$_instance, 'getClass']);
 
 		// prepend the new cache autoloader
-		spl_autoload_register([self::$_instance, 'getClassFromCache'], true, true);
+		//spl_autoload_register([self::$_instance, 'getClassFromCache'], true, true);
 	}
 
 	/**
@@ -149,20 +151,38 @@ class ClassLoader
 	 * @param array $maps - Array of maps rules. An example rule is ['Webiny' => '/var/WebinyFramework/library']
 	 */
 	public function registerMap(array $maps){
-		foreach($maps as $prefix=>$locations){
+		$frameworkAbs = dirname(__FILE__).'/../../';
+
+		foreach($maps as $prefix=>$library){
+			// first check the structure of location
+			if(is_array($library)){
+				$path = $library['path'];
+				$this->_rules[$prefix] = $library;
+			}else{
+				$path = $library;
+			}
+
+			// append absolute path
+			if(strpos($path, '/')!==0 && strpos($path, ':')!==1){ // linux and windows absolute path
+				$path = $frameworkAbs . $path;
+			}
+
+			// check if it's a PEAR standard or a namespace
 			$endChar = substr($prefix, -1);
 			if($endChar=='_'){
 				// PEAR standard
-				$this->_prefixes[$prefix] = (array) $locations;
+				$this->_prefixes[$prefix] = (array) $path;
 			}else{
 				// namespace
 				if($prefix[0]=='\\'){
-					$this->_namespaces[substr($prefix, 1)] = (array) $locations;
+					$this->_namespaces[substr($prefix, 1)] = (array) $path;
 				}else{
-					$this->_namespaces[$prefix] = (array) $locations;
+					$this->_namespaces[$prefix] = (array) $path;
 				}
 			}
 		}
+
+		$this->_namespaces;
 	}
 
 	/**
@@ -170,7 +190,7 @@ class ClassLoader
 	 *
 	 * @param string $class Name of the class you are trying to find.
 	 *
-	 * @return bool True is retuned if the class if found and loaded into memory.
+	 * @return bool True is returned if the class if found and loaded into memory.
 	 */
 	public function getClass($class) {
 		if($file = $this->findClass($class)) {
@@ -248,6 +268,18 @@ class ClassLoader
 			foreach ($this->_prefixes as $prefix => $dirs) {
 				if(0 !== strpos($class, $prefix)) {
 					continue;
+				}
+
+				if(isset($this->_rules[$prefix])){
+					if(isset($this->_rules[$prefix]['normalize'])){
+						$normalizedClass = $class.'.php';
+					}
+
+					if(isset($this->_rules[$prefix]['case'])){
+						if($this->_rules[$prefix]['case']=='lower'){
+							$normalizedClass = strtolower($normalizedClass);
+						}
+					}
 				}
 
 				foreach ($dirs as $dir) {

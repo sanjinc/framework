@@ -101,8 +101,9 @@ trait ManipulatorTrait
 			throw new UrlObjectException($e->getMessage());
 		}
 
-		$path->trimLeft('/');
-		$this->_path = '/' . $path->val();
+		//$path->trimLeft('/');
+		//$this->_path = '/' . $path->val();
+		$this->_path = $path->val();
 
 		$this->_buildUrl();
 
