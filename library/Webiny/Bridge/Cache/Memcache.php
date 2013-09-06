@@ -9,7 +9,7 @@
 
 namespace Webiny\Bridge\Cache;
 
-use Webiny\WebinyFrameworkBase;
+use Webiny\WebinyTrait;
 
 /**
  * Memcache cache bridge loader.
@@ -18,7 +18,7 @@ use Webiny\WebinyFrameworkBase;
  */
 class Memcache extends CacheAbstract
 {
-	use WebinyFrameworkBase;
+	use WebinyTrait;
 
 	/**
 	 * Path to the default bridge library for APC.
