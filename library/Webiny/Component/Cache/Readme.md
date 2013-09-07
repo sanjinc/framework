@@ -75,7 +75,7 @@ The driver configuration depends on which driver you are using.
 The `system.cache.{driver_id}.options.status` defines if the driver is caching or not. Set this to `false` when you want
 to turn off the caching by this driver.
 
-The `driver` driver parameter must be a valida callback function that will return an instance of `CacheDriver`.
+The `driver` driver parameter must be a valid callback function that will return an instance of `CacheDriver`.
 
 The benefit of defining cache drivers in this way is that the drivers are initialized the second Webiny Framework is loaded.
 This enables you to access the cache either by 'WebinyTrait' or by 'CacheTrait'.
