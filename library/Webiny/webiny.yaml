@@ -8,6 +8,7 @@
 system:
     display_errors: true
     environment: 'development'
+    cache: false
 bridges:
     cache:
         apc: '\Webiny\Bridge\Cache\Memory\APC'
@@ -17,13 +18,12 @@ bridges:
     yaml: 'Spyc\Spyc'
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
     oauth2: '\Webiny\Bridge\OAuth2\OAuth2\OAuth2'
-    mailer: '\Webiny\Bridge\Mailer\SwiftMailer\SwiftMailer'
 additional_libraries:
     'Jamm\Memory': '../Memory'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
     'OAuth2': '../OAuth2'
-    Swift_: '../SwiftMailer/lib/classes'
+    App:  '/var/www/newwebiny/projects/weby.io/app'
 components:
     logger:
         formatters:
@@ -36,12 +36,12 @@ components:
                 date_format: 'Y-m-d H:i:s'
         handlers:
             udp:
-                host: 192.168.1.6:41234
-        tray: 192.168.1.6:5000
+                host: 192.168.1.28:41234
+        tray: 192.168.1.28:5000
     http:
         session:
             storage:
-                driver: '\Webiny\Component\Http\Request\Session\Storage\CacheStorage'
+                driver: '\Webiny\Component\Http\Request\Session\Storage\NativeStorage'
                 params:
                     cache_id: 'webiny_cache'
             prefix: 'wfs_'
@@ -64,60 +64,20 @@ components:
             google: '\Webiny\Component\OAuth2\Server\Google'
             linkedin: '\Webiny\Component\OAuth2\Server\LinkedIn'
             twitter: '\Webiny\Component\OAuth2\Server\Twitter'
-    mailer:
-        webiny:
-            character_set: utf-8
-            max_line_length: 78
-            priority: 2 # high priority
-            sender:
-                email: noreply@webiny.com
-                name: Webiny
-            transport:
-                type: smtp
-                host: mail.webiny.com
-            antiflood:
-                threshold: 99
-                sleep: 1
-            disable_delivery: false
-        default:
-            character_set: utf-8
-            max_line_length: 78
-            priority: 2 # high priority
-            sender:
-                email: sven.alhamad@gmail.com
-                name: Sven Al Hamad
-            transport:
-                type: smtp
-                host: smtp.gmail.com
-                port: 465
-                username: sven.alhamad@gmail.com
-                password: delmania
-                encryption: ssl
-                auth_mode: login
-            antiflood:
-                threshold: 99
-                sleep: 1
-            disable_delivery: false
 
 oauth2:
-    webiny_test:
+    facebook_auth:
         server: facebook
-        client_id: 102119699873470
-        client_secret: 3a617d0a94f5e805a6e1ad24b6f8a05b
+        client_id: 276232862515995
+        client_secret: fe5855672eeebe2086f7209a3df05922
         scope: email
-        redirect_uri: /Test/Security/oauth_fbsubmit.php
-    google_test:
+        redirect_uri: '/security/login-fb/'
+    google_auth:
         server: google
-        client_id: 280548463887.apps.googleusercontent.com
-        client_secret: X7TklIJTNFm46yPOKBlg3-dT
+        client_id: 716241283877.apps.googleusercontent.com
+        client_secret: KyP8EqnO0Job3mkgiuPFdZYl
         scope: openid%20profile%20email
-        redirect_uri: /Test/Security/oauth_gsubmit.php
-    linkedin_test:
-        server: linkedin
-        client_id: 0fys926ire4b
-        client_secret: SxHqk6qjOllUoILz
-        scope: r_basicprofile%20r_emailaddress
-        redirect_uri: /Test/Security/oauth_lisubmit.php
+        redirect_uri: '/security/login-gp/'
 
 security:
     encoders:
@@ -126,63 +86,42 @@ security:
             params: ['webiny_crypt']
             salt: 'CHANGE THIS SECRET'
     providers:
-        memory:
-            john: {password: secret, roles: 'ROLE_USER'}
-            admin: {password: login123, roles: 'ROLE_SUPERADMIN'}
         oauth2:
             driver: 'Webiny\Component\Security\User\Providers\OAuth2\OAuth2'
-    chain_providers:
-        default_chain: [oauth2, memory]
     role_hierarchy:
         ROLE_USER: ROLE_EDITOR
-        ROLE_ADMIN: ROLE_USER
-        ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
     access_control:
         rules:
-            - {path: ^/admin, roles: ROLE_ADMIN}
-            #- {path: ^/Test, roles: [ROLE_ADMIN]}
-        decision_strategy: consensus
+            - {path: '/^\/((?!about)\S+){2,}$/', roles: ROLE_USER}
     firewalls:
         administration:
-            realm_name: 'My administration realm'
-            url_pattern: '^/Test/'
+            realm_name: 'Weby.io Authentication'
+            url_pattern: ''
             anonymous: true
             remember_me: true
             #encoder: default
-            security_key: THIS_IS_MY_KEY98
-            provider: default_chain
+            security_key: THIS_IS_editor_KEY98
+            provider: oauth2
             login:
-                login_path: '/Test/Security/login.php'
-                failure_path: '/Test/Security/loginfailed.php'
-                target_path: 'Test/Test.php'
+                login_path: '/'
+                failure_path: '/?error=1'
+                target_path: '/security/check-logged-user/'
                 providers:
-                    form:
-                        driver: '\Webiny\Component\Security\Authentication\Providers\Form\Form'
-                        submit_path: '/Test/Security/form_loginsubmit.php'
-                    http:
-                        driver: '\Webiny\Component\Security\Authentication\Providers\Http\Http'
-                        submit_path: '/Test/Security/http_loginsubmit.php'
                     facebook:
                         driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
-                        submit_path: '/Test/Security/oauth_fbsubmit.php'
+                        submit_path: '/security/login-fb/'
                         params:
-                            server: webiny_test
-                            roles: [ROLE_ADMIN]
+                            server: facebook_auth
+                            roles: [ROLE_USER]
                     google:
                         driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
-                        submit_path: '/Test/Security/oauth_gsubmit.php'
+                        submit_path: '/security/login-gp/'
                         params:
-                            server: google_test
-                            roles: [ROLE_ADMIN]
-                    linkedin:
-                        driver: '\Webiny\Component\Security\Authentication\Providers\OAuth2\OAuth2'
-                        submit_path: '/Test/Security/oauth_lisubmit.php'
-                        params:
-                            server: linkedin_test
-                            roles: [ROLE_ADMIN]
+                            server: google_auth
+                            roles: [ROLE_USER]
             logout:
-                path: '/Test/Security/logout.php'
-                target: '/Test/Security/logoutsuccess.php'
+                path: '/logout'
+                target: ''
 
 parameters:
     logger.class: \Webiny\Component\Logger\Logger
@@ -193,14 +132,13 @@ parameters:
     cache.class: '\Webiny\Component\Cache\Cache'
     crypt.class: '\Webiny\Component\Crypt\Crypt'
     security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
-    mailer.class: '\Webiny\Component\Mailer\Mailer'
 
 services:
     crypt:
         webiny_crypt:
             class: %crypt.class%
             arguments: ['Blowfish', 'CCM', 'rijndael-128', '_FOO_VECTOR']
-    cache:
+    #cache:
         webiny_cache:
             factory: "%cache.class%"
             method: "Couchbase"
@@ -219,3 +157,14 @@ services:
             arguments: [System, %logger.driver.class%]
             calls:
                 - [addHandler, [@logger.handlers.udp]]
+    storage:
+        local:
+            class: \Webiny\Component\Storage\Storage
+            arguments:
+                driver:
+                    object: \Webiny\Component\Storage\Driver\Local\Local
+                    object_arguments:
+                        - /var/www/newwebiny/framework/Test/Storage/uploads # Absolute root path
+                        - http://wf.com/Test/Storage/uploads # Web root path
+                        - true # DateFolderStructure
+                        - true # Create folder if it doesn't exist
