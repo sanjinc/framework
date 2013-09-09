@@ -8,6 +8,7 @@
 system:
     display_errors: true
     environment: 'development'
+    cache: false
 bridges:
     cache:
         apc: '\Webiny\Bridge\Cache\Memory\APC'
@@ -18,12 +19,20 @@ bridges:
     crypt: '\Webiny\Bridge\Crypt\CryptLib\CryptLib'
     oauth2: '\Webiny\Bridge\OAuth2\OAuth2\OAuth2'
     mailer: '\Webiny\Bridge\Mailer\SwiftMailer\SwiftMailer'
+    image: '\Webiny\Bridge\Image\Imagine\Imagine'
+    template_engine:
+        smarty: '\Webiny\Bridge\TemplateEngine\Smarty\Smarty'
 additional_libraries:
     'Jamm\Memory': '../Memory'
     'Psr': '../Psr'
     'CryptLib': '../PHP-CryptLib/lib/CryptLib'
     'OAuth2': '../OAuth2'
     Swift_: '../SwiftMailer/lib/classes'
+    Imagine: '../Imagine/lib/Imagine'
+    Smarty_:
+        path: '../Smarty/libs/sysplugins'
+        normalize: false
+        case: lower
 components:
     logger:
         formatters:
@@ -98,6 +107,16 @@ components:
                 threshold: 99
                 sleep: 1
             disable_delivery: false
+    template_engine:
+        engines:
+            smarty:
+                force_compile: false
+                cache_dir: '/var/tmp/smarty/cache'
+                compile_dir: '/var/tmp/smarty/compile'
+                auto_escape_output: false
+    image:
+        library: imagick
+        quality: 90
 
 oauth2:
     webiny_test:
@@ -138,9 +157,9 @@ security:
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPERADMIN: [ROLE_ADMIN, ROLE_CUSTOM]
     access_control:
-        rules:
-            - {path: ^/admin, roles: ROLE_ADMIN}
-            #- {path: ^/Test, roles: [ROLE_ADMIN]}
+        #rules:
+        #    - {path: ^/admin, roles: ROLE_ADMIN}
+        #    - {path: ^/Test, roles: [ROLE_ANONYMOUS]}
         decision_strategy: consensus
     firewalls:
         administration:
@@ -194,6 +213,7 @@ parameters:
     crypt.class: '\Webiny\Component\Crypt\Crypt'
     security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
     mailer.class: '\Webiny\Component\Mailer\Mailer'
+    image.class: '\Webiny\Component\Image'
 
 services:
     crypt:
@@ -203,8 +223,8 @@ services:
     cache:
         webiny_cache:
             factory: "%cache.class%"
-            method: "Couchbase"
-            method_arguments: ["webiny", '', "default"]
+            method: "Memcache"
+            method_arguments: ['192.168.249.128', '11212']
     logger:
         handlers:
             udp:
@@ -219,3 +239,12 @@ services:
             arguments: [System, %logger.driver.class%]
             calls:
                 - [addHandler, [@logger.handlers.udp]]
+    storage:
+        local:
+            class: \Webiny\Component\Storage\Storage    # Main storage class
+            arguments:
+                driver:
+                    object: \Webiny\Component\Storage\Driver\Local\Local    # Local storage driver
+                    object_arguments:
+                        - /var/www/newwebiny/framework/Test/Image/storage      # Absolute root path
+                        - http://wf.com/Test/Image/storage     # Web root path
