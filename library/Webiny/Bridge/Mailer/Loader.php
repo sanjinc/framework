@@ -86,7 +86,7 @@ class Loader
 	/**
 	 * Change the default library used for the driver.
 	 *
-	 * @param string $pathToClass Path to the new driver class. Must be an instance of \Webiny\Bridge\Cache\CacheInterface
+	 * @param string $pathToClass Path to the new driver class. Must be an instance of \Webiny\Bridge\Mailer\MailerInterface
 	 */
 	static function setLibrary($pathToClass) {
 		self::$_library = $pathToClass;
