@@ -46,7 +46,7 @@ $result = $imgInstance->save($destination); // if you don't set the destination,
 ## Using ImageTrait
 
 An easier way of loading the image and creating instances of ImageInterface is using the ImageTrait.
-Here is an example loading the image from the \Webiny\Component\Storage\File\File object:
+Here is an example of loading the image from the \Webiny\Component\Storage\File\File object:
 
 ```php
 class MyClass{
@@ -67,7 +67,7 @@ class MyClass{
 }
 ```
 
-Here another example where we load the image by file storage key and storage driver:
+Here is another example where we load the image by file storage key and storage driver:
 
 ``` php
 class MyClass{
