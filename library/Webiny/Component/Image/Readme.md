@@ -43,6 +43,51 @@ $destination = new \Webiny\Component\Storage\File\LocalFile('embed-rotated.jpg',
 $result = $imgInstance->save($destination); // if you don't set the destination, the original image will be overwritten
 ```
 
+## Using ImageTrait
+
+An easier way of loading the image and creating instances of ImageInterface is using the ImageTrait.
+Here is an example loading the image from the \Webiny\Component\Storage\File\File object:
+
+```php
+class MyClass{
+	use \Webiny\Component\Image\ImageTrait;
+
+	function __construct(){
+		$imageStorage = \Webiny\Component\ServiceManager\ServiceManager::getInstance()->getService('storage.local');
+		$image = new \Webiny\Component\Storage\File\File('embed.jpg', $imageStorage);
+
+		$imgInstance = $this->image($image);
+
+		$imgInstance->resize(800, 800);
+		$imgInstance->crop(200, 200, 50, 40);
+		$imgInstance->rotate(30, 'bfbfbf');
+
+		$imgInstance->show();
+	}
+}
+```
+
+Here another example where we load the image by file storage key and storage driver:
+
+``` php
+class MyClass{
+	use \Webiny\Component\Image\ImageTrait;
+
+	function __construct(){
+		$imgInstance = $this->image('embed.jpg', 'local');
+
+		$imgInstance->resize(800, 800);
+		$imgInstance->crop(200, 200, 50, 40);
+		$imgInstance->rotate(30, 'bfbfbf');
+
+		$imgInstance->show();
+	}
+}
+```
+
+So as you can see, you can load and create ImageInterface instances either by passing directly the File object, or by
+passing the file key together with the name of the storage service.
+
 ## Bridge
 
 The default bridge for image library uses `Imagine` library (https://github.com/avalanche123/Imagine) by Bulat Shakirzyanov
