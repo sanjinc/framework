@@ -60,7 +60,7 @@ class ImageLoader
 	 *
 	 * @return ImageInterface
 	 */
-	static function create(\int $width, \int $height, $bgColor = null) {
+	static function create($width, $height, $bgColor = null) {
 		return self::_getLoader()->create($width, $height, $bgColor);
 	}
 

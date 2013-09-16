@@ -31,7 +31,7 @@ interface ImageLoaderInterface
 	 *
 	 * @return ImageInterface
 	 */
-	function create(\int $width, \int $height, $bgColor = null);
+	function create($width, $height, $bgColor = null);
 
 	/**
 	 * Creates a new ImageInterface instance from the given image at the provided path.

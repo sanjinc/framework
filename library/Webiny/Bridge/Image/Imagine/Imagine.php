@@ -11,6 +11,7 @@ namespace Webiny\Bridge\Image\Imagine;
 
 use Imagine\Image\Box;
 use Imagine\Image\Color;
+use Webiny\Bridge\Image\ImageInterface;
 use Webiny\Bridge\Image\ImageLoaderInterface;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\StdLib\StdLibTrait;
@@ -82,7 +83,7 @@ class Imagine implements ImageLoaderInterface
 	 *
 	 * @return \Webiny\Component\Image\ImageInterface
 	 */
-	function create(\int $width, \int $height, $bgColor = null) {
+	function create($width, $height, $bgColor = null) {
 		$size = new Box($width, $height);
 		$color = new Color($bgColor);
 

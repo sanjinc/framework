@@ -14,6 +14,8 @@ use Imagine\Image\Color;
 use Imagine\Image\Point;
 use Webiny\Bridge\Image\ImageAbstract;
 use Webiny\Component\Image\ArrayObject;
+use Webiny\Component\Image\ImageInterface;
+use Webiny\Component\Image\ImageLoader;
 use Webiny\Component\StdLib\StdLibTrait;
 
 /**
@@ -31,13 +33,12 @@ class Image extends ImageAbstract
 	 */
 	private $_image;
 
-
 	/**
 	 * Base constructor.
 	 *
-	 * @param \Imagine\Imagick\Image $image
+	 * @param \Imagine\Image\ImageInterface $image
 	 */
-	function __construct(\Imagine\Imagick\Image $image) {
+	function __construct(\Imagine\Image\ImageInterface $image) {
 		$this->_image = $image;
 	}
 
@@ -146,5 +147,98 @@ class Image extends ImageAbstract
 	 */
 	function show() {
 		$this->_image->show($this->getFormat());
+	}
+
+	/**
+	 * This is a method that combines resize, crop and paste methods in order to generate a thumbnail from the given image.
+	 * The benefit of using this function is that the function can automatically combine crop and resize methods together
+	 * with the pad feature in order to generate the thumb.
+	 *
+	 * @param int         $width     Thumb width.
+	 * @param int         $height    Thumb height.
+	 * @param bool|string $cropOrPad If you set this to 'crop' the method will first resize the image to preserve the
+	 *                               aspect ratio and then it will crop the extra pixels to fit the defined width and height.
+	 *                               If you set this to 'pad' the method will first do the resize and than
+	 *                               it wil create a blank image that has the size of defined width and height and fill it
+	 *                               with $padColor, then it will paste the resized image in the center of the new image.
+	 * @param null|string $padColor  Parameter that fills the background with the defined color.
+	 *                               Following formats are acceptable
+	 *                            - "fff"
+	 *                            - "ffffff"
+	 *                            - array(255,255,255)
+	 *
+	 * @return $this
+	 */
+	function thumbnail($width, $height, $cropOrPad = false, $padColor = null) {
+		// get the aspect ratio
+		$currentSize = $this->getSize();
+		$ar = round($currentSize['width']/$currentSize['height'], 3);
+
+		// resize so we fit the aspect ratio
+		if($width>$height){
+			$this->resize($width, ($width/$ar));
+		}else{
+			$this->resize(($height/$ar), $height);
+		}
+
+		// crop
+		if($cropOrPad=='crop'){
+			$this->crop($width, $height);
+		}
+
+		// pad
+		if($cropOrPad == 'pad'){
+			$padColor = !empty($padColor) ? $padColor : 'ffffff';
+			$image = ImageLoader::create($width, $height, $padColor);
+
+			// re-calculate the size based on aspect ratio
+			if($width<$height){
+				$newWidth = $width;
+				$newHeight = round($width/$ar, 0);
+			}else{
+				$newWidth = round($height/$ar, 0);
+				$newHeight = $height;
+			}
+
+			// center the padded image
+			$offsetX = ($width-$newWidth)/2;
+			$offsetY = ($height-$newHeight)/2;
+
+			// resize the current image
+			$this->resize($newWidth, $newHeight);
+
+			$image->paste($this, $offsetX, $offsetY);
+			$this->_image = $image->getInstance();
+			unset($image);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Paste another image into this one a the specified dimension.
+	 *
+	 * @param ImageInterface $image   Image to paste.
+	 * @param int            $offsetX Offset on x axis.
+	 * @param int            $offsetY Offset on y axis
+	 *
+	 * @return $this
+	 */
+	function paste(ImageInterface $image, $offsetX = 0, $offsetY = 0) {
+		$point = new Point($offsetX, $offsetY);
+
+		$this->_image->paste($image->getInstance(), $point);
+
+		return $this;
+	}
+
+	/**
+	 * This method returns the instance of the Image object from the bridged library.
+	 * The usage of this method is discouraged, but it's necessary for some internal operations.
+	 *
+	 * @return mixed
+	 */
+	function getInstance(){
+		return $this->_image;
 	}
 }
