@@ -42,10 +42,10 @@ class MyClass
 
 This is an example result:
 
-```txt
+```php
 Array
 (
-    [callback] => blog_tag
+    [callback] => MyApp:Blog:showTag
     [params] => Array
         (
             [tag] => some_tag
@@ -58,7 +58,7 @@ Array
 
 ## Generating routes
 
-With the `Router` your don't have write your urls inside your code or views, instead you can generate the urls from the
+With the `Router` your don't have write the urls inside your code or views, instead you can generate the urls from the
 given routes like this:
 
 ```php
@@ -67,7 +67,6 @@ class MyClass
 	use \Webiny\Component\Router\RouterTrait;
 
 	function __construct(){
-		// generate
 		$url = $this->router()->generate('blog_tag',  ['tag'=>'html5', 'page'=>1]);
 	}
 }
@@ -75,15 +74,21 @@ class MyClass
 
 Output:
 
-```txt
+```php
 http://www.webiny.com/blog/tag/html5/?page=1
 ```
 
 You see that `Router` replaced the `{tag}` parameter with the provided value, in this case it was `html5`. You can also
-notice that we don't have the `page` parameter defined in our route, so the `Router` appended that parameter as a query string.
+notice that the `page` parameter isn't defined in our route, so the `Router` appended that parameter as a query string.
 
 ## Configuration
 
 The `Router` component take only one configuration parameter, and that is the `cache` parameter. If either defines
 the name of the cache service that will be used to cache some of the internal mechanisms, or you can set it to `false` if
 you don't want the component to use cache.
+
+```yaml
+components:
+    router:
+        cache: webiny_cache
+```
