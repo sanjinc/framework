@@ -6,7 +6,7 @@ THIS COMPONENT IS UNDER CONSTRUCTION!!
 on the selected driver. By default the template engine comes with a driver for `Smarty`, but you can easily add
 support for `Twig` or some other template engines.
 
-The provided functionality of every driver is defined by the TemplateEngineInterface which defines the following methods:
+The provided functionality of every driver is defined by the `TemplateEngineInterface` which defines the following methods:
 - **fetch** - fetch the template from the given location, parse it and return the output
 - **render** - fetch the template from the given location, parse it and output the result to the browser
 - **assign** - assign a variable and its value into the template engine
@@ -56,7 +56,7 @@ driver.
 Best practice for expanding the template engine is first to create an extension and then register it as a service
 tagged with the `$driverName.extension`, for example `smarty.extension`.
 
-An `extension` is a package of one or multiple plugins. Plugin type depends on the template engine, for example smarty
+An `extension` is a package of one or multiple plugins. Plugin type depends on the template engine, for example, smarty
 supports these plugin types:
 - **functions** - http://www.smarty.net/docs/en/plugins.functions.tpl
 - **modifiers** - http://www.smarty.net/docs/en/plugins.modifiers.tpl
@@ -126,5 +126,3 @@ And that's it, we can now use the modifier in our templates:
 {'this is my name'|custom_upper}
 // outputs: THIS IS MY NAME
 ```
-
-http://symfony.com/doc/current/book/templating.html
