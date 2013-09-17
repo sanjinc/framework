@@ -51,8 +51,15 @@ class ClassLoader
 	 */
 	private $_cache = false;
 
+	/**
+	 * @var array
+	 */
 	private $_rules = [];
 
+
+	/**
+	 * Base constructor.
+	 */
 	private function __construct(){
 		// omit the constructor
 	}
