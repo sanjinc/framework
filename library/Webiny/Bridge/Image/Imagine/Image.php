@@ -28,6 +28,9 @@ class Image extends ImageAbstract
 {
 	use StdLibTrait;
 
+	const CROP = 'crop';
+	const PAD = 'pad';
+
 	/**
 	 * @var \Imagine\Imagick\Image
 	 */
@@ -172,37 +175,48 @@ class Image extends ImageAbstract
 	function thumbnail($width, $height, $cropOrPad = false, $padColor = null) {
 		// get the aspect ratio
 		$currentSize = $this->getSize();
-		$ar = round($currentSize['width']/$currentSize['height'], 3);
+		$ar = round($currentSize['width'] / $currentSize['height'], 3);
+		$nar = round($width / $height, 3);
 
-		// resize so we fit the aspect ratio
-		if($width>$height){
-			$this->resize($width, ($width/$ar));
-		}else{
-			$this->resize(($height/$ar), $height);
+		$newWidth = $width;
+		$newHeight = $height;
+		if($ar >= 1) {
+			if($nar > $ar) {
+				$newHeight = $width / $ar;
+			} else {
+				$newWidth = $height * $ar;
+			}
+		} else {
+			if($nar > $ar) {
+				$newHeight = $width / $ar;
+			} else {
+				$newWidth = $height * $ar;
+			}
 		}
+		$this->resize($newWidth, $newHeight);
 
 		// crop
-		if($cropOrPad=='crop'){
+		if($cropOrPad == self::CROP) {
 			$this->crop($width, $height);
 		}
 
 		// pad
-		if($cropOrPad == 'pad'){
+		if($cropOrPad == self::PAD) {
 			$padColor = !empty($padColor) ? $padColor : 'ffffff';
 			$image = ImageLoader::create($width, $height, $padColor);
 
 			// re-calculate the size based on aspect ratio
-			if($width<$height){
+			if($width < $height) {
 				$newWidth = $width;
-				$newHeight = round($width/$ar, 0);
-			}else{
-				$newWidth = round($height/$ar, 0);
+				$newHeight = round($width / $ar, 0);
+			} else {
+				$newWidth = round($height / $ar, 0);
 				$newHeight = $height;
 			}
 
 			// center the padded image
-			$offsetX = ($width-$newWidth)/2;
-			$offsetY = ($height-$newHeight)/2;
+			$offsetX = ($width - $newWidth) / 2;
+			$offsetY = ($height - $newHeight) / 2;
 
 			// resize the current image
 			$this->resize($newWidth, $newHeight);
@@ -238,7 +252,7 @@ class Image extends ImageAbstract
 	 *
 	 * @return mixed
 	 */
-	function getInstance(){
+	function getInstance() {
 		return $this->_image;
 	}
 }

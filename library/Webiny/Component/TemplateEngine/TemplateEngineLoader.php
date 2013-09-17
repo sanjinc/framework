@@ -22,7 +22,10 @@ class TemplateEngineLoader
 {
 	use WebinyTrait;
 
-	static $_instances = [];
+	/**
+	 * @var array
+	 */
+	static private $_instances = [];
 
 	/**
 	 * Returns an instance of template engine driver.

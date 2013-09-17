@@ -23,11 +23,31 @@ class Plugin
 {
 	use StdLibTrait;
 
+	/**
+	 * @var string
+	 */
 	private $_name;
+
+	/**
+	 * @var string
+	 */
 	private $_type;
+
+	/**
+	 * @var callable|string
+	 */
 	private $_callbackFunction;
+
+	/**
+	 * @var array
+	 */
 	private $_params;
+
+	/**
+	 * @var \Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject
+	 */
 	private $_attributes;
+
 
 	/**
 	 * Base constructor.
