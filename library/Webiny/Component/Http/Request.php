@@ -287,7 +287,7 @@ class Request
 	 */
 	function getClientIp() {
 		$remoteAddress = $this->server()->remoteAddress();
-		$fwdClientIp = $this->server()->get($this->getTrustedHeaders()['client_id']);
+		$fwdClientIp = $this->server()->get($this->getTrustedHeaders()['client_ip']);
 		if($fwdClientIp && $remoteAddress && in_array($remoteAddress, $this->getTrustedProxies())) {
 			// Use the forwarded IP address, typically set when the
 			// client is using a proxy server.

@@ -81,7 +81,7 @@ class File implements FileInterface
 	 */
 	public function setContents($contents) {
 		$this->_contents = $contents;
-		if($this->_storage->setContents($this->_key, $this->_contents)) {
+		if($this->_storage->setContents($this->_key, $this->_contents) !== false) {
 			$this->_key = $this->_storage->getRecentKey();
 			$this->eventManager()->fire(StorageEvent::FILE_SAVED, new StorageEvent($this));
 			return true;

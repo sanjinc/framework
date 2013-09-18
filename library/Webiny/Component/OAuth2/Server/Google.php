@@ -94,11 +94,11 @@ class Google extends ServerAbstract
 		}
 
 		$user = new OAuth2User($result->key('given_name'), $result->key('email', '', true));
-		$user->setProfileId($result->key('id'));
-		$user->setFirstName($result->key('given_name'));
-		$user->setLastName($result->key('family_name'));
-		$user->setProfileUrl($result->key('link'));
-		$user->setAvatarUrl($result->key('picture'));
+		$user->setProfileId($result->key('id', '', true));
+		$user->setFirstName($result->key('given_name', '', true));
+		$user->setLastName($result->key('family_name', '', true));
+		$user->setProfileUrl($result->key('link', '', true));
+		$user->setAvatarUrl($result->key('picture', '', true));
         $user->setServiceName('google');
 
 		return $user;
