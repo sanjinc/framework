@@ -10,22 +10,35 @@
 namespace Webiny\Component\Cache;
 
 use Webiny\Bridge\Cache\CacheStorageInterface;
+use Webiny\Component\Cache\Storage\Null;
 
 /**
- * Description
+ * CacheStorage is the main instance for working with cache drivers.
+ * The best way to create a CacheStorage instance is over the Cache class.
  *
  * @package         Webiny\Component\Cache
  */
 
 class CacheStorage
 {
+	/**
+	 * @var null|Null
+	 */
 	static private $_nullDriver = null;
 
+	/**
+	 * @var \Webiny\Bridge\Cache\CacheStorageInterface
+	 */
 	private $_driver;
+
+	/**
+	 * @var array
+	 */
 	private $_options = [
 		'status' => true,
 		'ttl'    => 86400
 	];
+
 
 	/**
 	 * Create a cache driver instance.

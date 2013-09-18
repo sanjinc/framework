@@ -1,5 +1,8 @@
 <?php
 namespace Jamm\Memory;
+
+require_once dirname(__FILE__).'/KeyAutoUnlocker.php';
+
 class MemcacheObject extends MemoryObject implements IMemoryStorage
 {
 	protected $prefix = 'K'; //because I love my wife Katya :)

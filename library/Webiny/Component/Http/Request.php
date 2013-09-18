@@ -383,4 +383,22 @@ class Request
 
 		$url->goToUrl($headers);
 	}
+
+	/**
+	 * Checks if current request method is POST.
+	 *
+	 * @return bool True if it's POST.
+	 */
+	function isPost(){
+		return $this->str($this->server()->requestMethod())->equals('POST');
+	}
+
+	/**
+	 * Checks if current request method is GET.
+	 *
+	 * @return bool True if it's GET.
+	 */
+	function isGet(){
+		return $this->str($this->server()->requestMethod())->equals('GET');
+	}
 }

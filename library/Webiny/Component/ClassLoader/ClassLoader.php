@@ -51,8 +51,15 @@ class ClassLoader
 	 */
 	private $_cache = false;
 
+	/**
+	 * @var array
+	 */
 	private $_rules = [];
 
+
+	/**
+	 * Base constructor.
+	 */
 	private function __construct(){
 		// omit the constructor
 	}
@@ -93,10 +100,10 @@ class ClassLoader
 		$this->_cache = $cache;
 
 		// unregister the old autoloader
-		//spl_autoload_unregister([self::$_instance, 'getClass']);
+		spl_autoload_unregister([self::$_instance, 'getClass']);
 
 		// prepend the new cache autoloader
-		//spl_autoload_register([self::$_instance, 'getClassFromCache'], true, true);
+		spl_autoload_register([self::$_instance, 'getClassFromCache'], true, true);
 	}
 
 	/**
@@ -212,16 +219,12 @@ class ClassLoader
 		// from cache
 		if(($file = $this->_cache->read($class))){
 			require $file;
-
-			return true;
 		}
 
 		// from disk
 		if($file = $this->findClass($class)) {
-			$this->_cache->save($class, $file, 600, ['_webiny', '_kernel']);
+			$this->_cache->save('wf.component.class_loader.'.$class, $file, 600, ['_wf', '_component', '_class_loader']);
 			require $file;
-
-			return true;
 		}
 	}
 
