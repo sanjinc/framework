@@ -11,12 +11,14 @@ namespace Webiny\Component\Config;
 
 use Traversable;
 use Webiny\Bridge\Yaml\Spyc\Spyc;
+use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\Config\Drivers\DriverAbstract;
 use Webiny\Component\Config\Drivers\YamlDriver;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
 use Webiny\Component\StdLib\ValidatorTrait;
+use Webiny\WebinyTrait;
 
 /**
  * ConfigCache class holds caches data and holds info about original resource
@@ -25,7 +27,7 @@ use Webiny\Component\StdLib\ValidatorTrait;
  */
 class ConfigCache
 {
-	use StdLibTrait;
+	use StdLibTrait, CacheTrait, WebinyTrait;
 
 	private static $_configCache = null;
 
@@ -43,7 +45,22 @@ class ConfigCache
 
 		$cacheKey = !self::_isMd5($resource) ? self::createCacheKey($resource) : $resource;
 
-		return self::$_configCache->keyExists($cacheKey) ? self::$_configCache->key($cacheKey) : false;
+		if(self::$_configCache->keyExists($cacheKey)) {
+			return self::$_configCache->key($cacheKey);
+		}
+
+		// Try fetching from framework cache
+		if(self::webiny()->getConfig() != null) {
+			$cache = self::cache()->read('wf.component.cache.' . $cacheKey);
+			if($cache) {
+				$config = unserialize($cache);
+				self::setCache($cacheKey, $config);
+
+				return $config;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -57,6 +74,9 @@ class ConfigCache
 			self::$_configCache = self::arr(self::$_configCache);
 		}
 		self::$_configCache->key($cacheKey, $config);
+		if(self::webiny()->getConfig() != null) {
+			self::cache()->save('wf.component.cache.' . $cacheKey, serialize($config));
+		}
 	}
 
 	/**

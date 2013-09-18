@@ -9,6 +9,7 @@
 
 namespace Webiny\Component\Config;
 
+use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\Config\Drivers\DriverAbstract;
 use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
@@ -30,7 +31,7 @@ use Webiny\Component\StdLib\ValidatorTrait;
  */
 class Config
 {
-	use StdLibTrait, SingletonTrait;
+	use StdLibTrait, SingletonTrait, CacheTrait;
 
 	/**
 	 * Get Config object from INI file or string

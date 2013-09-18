@@ -9,27 +9,28 @@
 
 namespace Webiny\Component\Config;
 
+use Serializable;
 use Traversable;
 use Webiny\Component\Config\Drivers\DriverAbstract;
 use Webiny\Component\Config\Drivers\IniDriver;
 use Webiny\Component\Config\Drivers\JsonDriver;
 use Webiny\Component\Config\Drivers\PhpDriver;
 use Webiny\Component\Config\Drivers\YamlDriver;
-use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 use Webiny\Component\StdLib\StdObject\FileObject\FileObject;
 use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
 use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 use Webiny\Component\StdLib\ValidatorTrait;
+use Webiny\Component\StdLib\StdObjectTrait;
 
 /**
  * ConfigObject class holds config data in an OO way
  *
  * @package         Webiny\Component\Config
  */
-class ConfigObject implements \ArrayAccess, \IteratorAggregate
+class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 {
-	use StdLibTrait;
+	use StdObjectTrait, ValidatorTrait;
 
 	const ARRAY_RESOURCE = 'array';
 	const STRING_RESOURCE = 'string';
@@ -110,9 +111,10 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 	/**
 	 * Save config as Yaml
 	 *
-	 * @param      $destination
-	 * @param int  $indent
-	 * @param bool $wordWrap
+	 * @param     $destination
+	 * @param int $indent
+	 *
+	 * @internal param bool $wordWrap
 	 *
 	 * @return $this
 	 */
@@ -248,9 +250,6 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		// Store config to cache
 		if($cache) {
 			$this->_cacheKey = ConfigCache::createCacheKey($originalResource);
-			/**
-			 * @TODO: use real cache
-			 */
 			ConfigCache::setCache($this->_cacheKey, $this);
 		}
 	}
@@ -310,9 +309,6 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 		}
 
 		// Update cache with new value
-		/**
-		 * @TODO: use real cache
-		 */
 		ConfigCache::setCache($this->_cacheKey, $this);
 	}
 
@@ -511,4 +507,44 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate
 			}
 		}
 	}
+
+	public function serialize() {
+		$data = [
+			'data' => [],
+			'fileResource' => $this->_fileResource,
+			'resourceType' => $this->_resourceType,
+			'driverClass' => $this->_driverClass,
+			'cacheKey' => $this->_cacheKey
+		];
+		foreach($this->_data as $k => $v){
+			if(self::isArrayObject($v)){
+				$data['data'][$k] = $v->serialize();
+			} else {
+				$data['data'][$k] = $v;
+			}
+		}
+		return serialize($data);
+	}
+
+	public function unserialize($string) {
+		$data = unserialize($string);
+		$this->_cacheKey = $data['cacheKey'];
+		$this->_fileResource = $data['fileResource'];
+		$this->_driverClass = $data['driverClass'];
+		$this->_resourceType = $data['resourceType'];
+
+		$this->_data = new ArrayObject();
+		foreach($data['data'] as $k => $v){
+			if(self::isArray($v)){
+				$this->_data[$k] = unserialize($v);
+			} else {
+				$this->_data[$k] = $v;
+			}
+		}
+	}
+
+	public  function __wakeup() {
+		ConfigCache::setCache($this->_cacheKey, $this);
+	}
+
 }
