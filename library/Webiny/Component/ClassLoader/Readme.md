@@ -52,7 +52,7 @@ additional_libraries:
         path: '../Smarty/libs/sysplugins'
         normalize: false
         case: lower
-```yaml
+```
 
 You can see that the `Smarty_` library is defined as an array that has `path`, `normalize` and `case` parameter.
 
