@@ -287,7 +287,7 @@ class Request
 	 */
 	function getClientIp() {
 		$remoteAddress = $this->server()->remoteAddress();
-		$fwdClientIp = $this->server()->get($this->getTrustedHeaders()['client_id']);
+		$fwdClientIp = $this->server()->get($this->getTrustedHeaders()['client_ip']);
 		if($fwdClientIp && $remoteAddress && in_array($remoteAddress, $this->getTrustedProxies())) {
 			// Use the forwarded IP address, typically set when the
 			// client is using a proxy server.
@@ -382,5 +382,23 @@ class Request
 		}
 
 		$url->goToUrl($headers);
+	}
+
+	/**
+	 * Checks if current request method is POST.
+	 *
+	 * @return bool True if it's POST.
+	 */
+	function isPost(){
+		return $this->str($this->server()->requestMethod())->equals('POST');
+	}
+
+	/**
+	 * Checks if current request method is GET.
+	 *
+	 * @return bool True if it's GET.
+	 */
+	function isGet(){
+		return $this->str($this->server()->requestMethod())->equals('GET');
 	}
 }

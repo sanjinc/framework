@@ -11,6 +11,12 @@ namespace Webiny\Bridge\Cache;
 
 use Webiny\WebinyTrait;
 
+require_once '/var/www/newwebiny/framework/library/Memory/IMemoryStorage.php';
+require_once '/var/www/newwebiny/framework/library/Memory/MemoryObject.php';
+require_once '/var/www/newwebiny/framework/library/Memory/IKeyLocker.php';
+require_once '/var/www/newwebiny/framework/library/Memory/MemcacheObject.php';
+
+
 /**
  * Memcache cache bridge loader.
  *

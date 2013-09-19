@@ -35,7 +35,7 @@ trait CacheTrait
 	 * @throws \Exception|ServiceManagerException
 	 * @return CacheStorage
 	 */
-	function cache($cacheId = WF::CACHE) {
+	protected static function cache($cacheId = WF::CACHE) {
 		try {
 			return ServiceManager::getInstance()->getService('cache.' . $cacheId);
 		} catch (ServiceManagerException $e) {

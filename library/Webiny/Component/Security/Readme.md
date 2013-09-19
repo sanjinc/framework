@@ -251,7 +251,7 @@ services:
         voters:
             my_voter:
                 class: \MyCustomLib\MyCustomVoter
-                tag: [security.voter]
+                tags: [security.voter]
 ```
 
 ### Decision strategy
