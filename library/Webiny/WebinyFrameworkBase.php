@@ -13,6 +13,7 @@ use Webiny\Component\Cache\CacheStorage;
 use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\ClassLoader\ClassLoader;
 use Webiny\Component\Config\Config;
+use Webiny\Component\Config\ConfigCache;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\Security\Security;
@@ -158,7 +159,14 @@ class WebinyFrameworkBase
 	 * Read the system config and store it into registry
 	 */
 	private function _parseConfigs() {
-		self::$_config = Config::getInstance()->yaml(dirname(__FILE__) . '/webiny.yaml');
+		$parsedConfigPath = realpath(__DIR__).'/webiny.yaml.parsed';
+		if(file_exists($parsedConfigPath)){
+			self::$_config = unserialize(file_get_contents($parsedConfigPath));
+		} else {
+			self::$_config = Config::getInstance()->yaml(dirname(__FILE__) . '/webiny.yaml');
+			file_put_contents($parsedConfigPath, serialize(self::$_config));
+		}
+		ConfigCache::setCache(ConfigCache::createCacheKey(dirname(__FILE__) . '/webiny.yaml'), self::$_config);
 	}
 
 	/**

@@ -381,3 +381,8 @@ Make sure that places, where you need to check or get the current user, are behi
 
 Make sure that the `login_path` is, either under a firewall that allows anonymous access, or outside the firewall.
 All other paths **must be** inside the firewall.
+
+### Tip #3
+
+Make sure that you set `encoder` to `false` on firewalls that are using `memory` or some other provider that contains
+passwords in raw format, that is, where passwords are not encrypted.

@@ -303,7 +303,11 @@ class Security
 	private function _getFirewallEncoder($firewallKey) {
 		$encoder = $this->_getFirewallConfig($firewallKey)->get('encoder', '_null');
 		if(!isset($this->_encoders[$encoder])) {
-			throw new SecurityException('Encoder "' . $encoder . '" is not defined in your security.encoders config.');
+            if($encoder!=''){
+                throw new SecurityException('Encoder "' . $encoder . '" is not defined in your security.encoders config.');
+            }else{
+                return $this->_encoders['_null'];
+            }
 		}
 
 		return $this->_encoders[$encoder];
