@@ -157,8 +157,9 @@ class Firewall
 				$this->eventManager()->fire(SecurityEvent::LOGIN_INVALID, new SecurityEvent(new AnonymousUser()));
 
 				// redirect to failure_path
+                // !!! Hacked again because of parameter "r"
 				$this->request()->redirect($this->request()->getCurrentUrl(true)
-										   ->setPath($this->getConfig()->login->failure_path));
+										   ->setPath($this->getConfig()->login->failure_path)->setQuery(''));
 			} else {
 				$this->_getAuthProvider()->loginSuccessfulCallback($user);
 				$this->eventManager()->fire(SecurityEvent::LOGIN_VALID, new SecurityEvent($user));
