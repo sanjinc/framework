@@ -161,11 +161,13 @@ class WebinyFrameworkBase
 	private function _parseConfigs() {
 		$configPath = dirname(__FILE__) . '/webiny.yaml';
 		$parsedConfigPath = dirname(__FILE__) . '/webiny.yaml.parsed';
+
 		if(file_exists($parsedConfigPath)) {
-			self::$_config = unserialize(file_get_contents($parsedConfigPath));
+			#self::$_config = unserialize(file_get_contents($parsedConfigPath));
+			self::$_config = Config::getInstance()->json($parsedConfigPath);
 		} else {
 			self::$_config = Config::getInstance()->yaml($configPath);
-			file_put_contents($parsedConfigPath, serialize(self::$_config));
+			file_put_contents($parsedConfigPath, json_encode(self::$_config->toArray()));
 		}
 		ConfigCache::setCache(ConfigCache::createCacheKey($configPath), self::$_config);
 	}

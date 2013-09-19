@@ -53,10 +53,10 @@ class ConfigCache
 		if(self::webiny()->getConfig() != null) {
 			$cache = self::cache()->read('wf.component.cache.' . $cacheKey);
 			if($cache) {
-				$config = unserialize($cache);
-				self::setCache($cacheKey, $config);
+				$config = json_decode($cache);
+				//self::setCache($cacheKey, $config);
 
-				return $config;
+				return Config::getInstance()->json($config);
 			}
 		}
 
@@ -75,7 +75,7 @@ class ConfigCache
 		}
 		self::$_configCache->key($cacheKey, $config);
 		if(self::webiny()->getConfig() != null) {
-			self::cache()->save('wf.component.cache.' . $cacheKey, serialize($config));
+			self::cache()->save('wf.component.cache.' . $cacheKey, json_encode($config->toArray()));
 		}
 	}
 

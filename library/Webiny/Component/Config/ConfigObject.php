@@ -517,11 +517,11 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 			'cacheKey' => $this->_cacheKey
 		];
 		foreach($this->_data as $k => $v){
-			if(self::isArrayObject($v)){
+			#if(self::isInstanceOf($v, 'Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject')){
 				$data['data'][$k] = $v->serialize();
-			} else {
-				$data['data'][$k] = $v;
-			}
+			#} else {
+			#	$data['data'][$k] = $v;
+			#}
 		}
 		return serialize($data);
 	}
@@ -533,14 +533,14 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 		$this->_driverClass = $data['driverClass'];
 		$this->_resourceType = $data['resourceType'];
 
-		$this->_data = new ArrayObject();
-		foreach($data['data'] as $k => $v){
+		$this->_data = new ArrayObject($data['data']);
+		/*foreach($data['data'] as $k => $v){
 			if(self::isArray($v)){
 				$this->_data[$k] = unserialize($v);
 			} else {
 				$this->_data[$k] = $v;
 			}
-		}
+		}*/
 	}
 
 	public  function __wakeup() {
