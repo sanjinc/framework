@@ -510,14 +510,18 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 
 	public function serialize() {
 		$data = [
-			'data'         => [],
+			'data' => [],
 			'fileResource' => $this->_fileResource,
 			'resourceType' => $this->_resourceType,
-			'driverClass'  => $this->_driverClass,
-			'cacheKey'     => $this->_cacheKey
+			'driverClass' => $this->_driverClass,
+			'cacheKey' => $this->_cacheKey
 		];
-		foreach ($this->_data as $k => $v) {
-			$data['data'][$k] = $v;
+		foreach($this->_data as $k => $v){
+			#if(self::isInstanceOf($v, 'Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject')){
+				$data['data'][$k] = $v->serialize();
+			#} else {
+			#	$data['data'][$k] = $v;
+			#}
 		}
 		return serialize($data);
 	}
@@ -528,10 +532,19 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 		$this->_fileResource = $data['fileResource'];
 		$this->_driverClass = $data['driverClass'];
 		$this->_resourceType = $data['resourceType'];
+
 		$this->_data = new ArrayObject($data['data']);
+		/*foreach($data['data'] as $k => $v){
+			if(self::isArray($v)){
+				$this->_data[$k] = unserialize($v);
+			} else {
+				$this->_data[$k] = $v;
+			}
+		}*/
 	}
 
-	public function __wakeup() {
+	public  function __wakeup() {
 		ConfigCache::setCache($this->_cacheKey, $this);
 	}
+
 }
