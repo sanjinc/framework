@@ -31,11 +31,11 @@ use Webiny\Component\StdLib\SingletonTrait;
  *
  * Example:
  * class MyClass{
- *        use \Webiny\WebinyTrait;
+ * 		use \Webiny\WebinyTrait;
  *
- *        public function myMethod(){
- *            $appPath = $this->webiny()->getAppPath();
- *        }
+ * 		public function myMethod(){
+ * 			$appPath = $this->webiny()->getAppPath();
+ * 		}
  * }
  *
  * @package         Webiny
@@ -159,17 +159,14 @@ class WebinyFrameworkBase
 	 * Read the system config and store it into registry
 	 */
 	private function _parseConfigs() {
-		$configPath = dirname(__FILE__) . '/webiny.yaml';
-		$parsedConfigPath = dirname(__FILE__) . '/webiny.yaml.parsed';
-
-		if(file_exists($parsedConfigPath)) {
-			#self::$_config = unserialize(file_get_contents($parsedConfigPath));
-			self::$_config = Config::getInstance()->json($parsedConfigPath);
+		$parsedConfigPath = realpath(__DIR__).'/webiny.yaml.parsed';
+		if(file_exists($parsedConfigPath)){
+			self::$_config = unserialize(file_get_contents($parsedConfigPath));
 		} else {
-			self::$_config = Config::getInstance()->yaml($configPath);
-			file_put_contents($parsedConfigPath, json_encode(self::$_config->toArray()));
+			self::$_config = Config::getInstance()->yaml(dirname(__FILE__) . '/webiny.yaml');
+			file_put_contents($parsedConfigPath, serialize(self::$_config));
 		}
-		ConfigCache::setCache(ConfigCache::createCacheKey($configPath), self::$_config);
+		ConfigCache::setCache(ConfigCache::createCacheKey(dirname(__FILE__) . '/webiny.yaml'), self::$_config);
 	}
 
 	/**
@@ -188,10 +185,10 @@ class WebinyFrameworkBase
 	 * @throws \Exception
 	 */
 	private function _checkForCache() {
-		try {
+		try{
 			// we don't have to assign the cache anywhere, it will be stored in global cache registry
-			ServiceManager::getInstance()->getService('cache.' . WF::CACHE);
-		} catch (ServiceManagerException $e) {
+			ServiceManager::getInstance()->getService('cache.'.WF::CACHE);
+		}catch (ServiceManagerException $e){
 			// system cache is not defined => omit the exception
 		}
 	}
@@ -222,10 +219,10 @@ class WebinyFrameworkBase
 	/**
 	 * Creates an instance of system logger.
 	 */
-	private function _setupSystemLogger() {
-		try {
+	private function _setupSystemLogger(){
+		try{
 			$this->logger(WF::LOGGER)->info('System up and running');
-		} catch (\Exception $e) {
+		}catch (\Exception $e){
 			// ignore
 		}
 	}
@@ -234,10 +231,10 @@ class WebinyFrameworkBase
 	 * Tries to get the system cache driver and pass it to ClassLoader component.
 	 */
 	private function _assignCacheToClassLoader() {
-		try {
+		try{
 			$cache = $this->cache(WF::CACHE);
 			ClassLoader::getInstance()->registerCacheDriver($cache);
-		} catch (\Exception $e) {
+		}catch (\Exception $e){
 			// ignore
 		}
 	}
@@ -246,8 +243,8 @@ class WebinyFrameworkBase
 	 * Initializes the security layer.
 	 * NOTE: This initialization might trigger a redirect.
 	 */
-	private function _setupSecurityLayer() {
-		if(isset(self::$_config->security)) {
+	private function _setupSecurityLayer(){
+		if(isset(self::$_config->security)){
 			self::$_security = Security::getInstance();
 		}
 	}
