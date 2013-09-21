@@ -14,10 +14,11 @@ use Webiny\Component\StdLib\StdLibTrait;
 /**
  * Request headers.
  *
- * @package		 Webiny\Component\Http\Request
+ * @package         Webiny\Component\Http\Request
  */
- 
-class Headers{
+
+class Headers
+{
 	use StdLibTrait;
 
 	private $_headerBag;
@@ -26,7 +27,12 @@ class Headers{
 	 * Constructor.
 	 */
 	function __construct() {
-		$headers = getallheaders();
+		if(function_exists('getallheaders')) {
+			$headers = getallheaders();
+		} else {
+			$this->_getAllHeaders();
+		}
+
 		$this->_headerBag = $this->arr($headers);
 	}
 
@@ -49,5 +55,29 @@ class Headers{
 	 */
 	function getAll() {
 		return $this->_headerBag->val();
+	}
+
+	/**
+	 * Returns a list of header information.
+	 *
+	 * @return array
+	 */
+	private function _getAllHeaders() {
+		foreach ($_SERVER as $name => $value) {
+			if(substr($name, 0, 5) == 'HTTP_') {
+				$name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
+				$headers[$name] = $value;
+			} else {
+				if($name == "CONTENT_TYPE") {
+					$headers["Content-Type"] = $value;
+				} else {
+					if($name == "CONTENT_LENGTH") {
+						$headers["Content-Length"] = $value;
+					}
+				}
+			}
+		}
+
+		return $headers;
 	}
 }

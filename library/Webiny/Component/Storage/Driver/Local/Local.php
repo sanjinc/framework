@@ -198,10 +198,9 @@ class Local implements DirectoryAwareInterface, DriverInterface, SizeAwareInterf
 		$path = $this->_buildPath($key);
 
 		if($this->isDirectory($key)) {
-			return rmdir($path);
+			return @rmdir($path);
 		}
-
-		return unlink($path);
+		return @unlink($path);
 	}
 
 	/**
