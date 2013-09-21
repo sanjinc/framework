@@ -30,7 +30,7 @@ class Headers
 		if(function_exists('getallheaders')) {
 			$headers = getallheaders();
 		} else {
-			$this->_getAllHeaders();
+			$headers = $this->_getAllHeaders();
 		}
 
 		$this->_headerBag = $this->arr($headers);
