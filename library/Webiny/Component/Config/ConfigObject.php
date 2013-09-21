@@ -28,7 +28,7 @@ use Webiny\Component\StdLib\StdObjectTrait;
  *
  * @package         Webiny\Component\Config
  */
-class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
+class ConfigObject implements \ArrayAccess, \IteratorAggregate
 {
 	use StdObjectTrait, ValidatorTrait;
 
@@ -516,9 +516,10 @@ class ConfigObject implements \ArrayAccess, \IteratorAggregate, Serializable
 			'driverClass'  => $this->_driverClass,
 			'cacheKey'     => $this->_cacheKey
 		];
-		foreach ($this->_data as $k => $v) {
+		$data['data'] = $this->_data;
+		/*foreach ($this->_data as $k => $v) {
 			$data['data'][$k] = $v;
-		}
+		}*/
 		return serialize($data);
 	}
 
