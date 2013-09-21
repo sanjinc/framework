@@ -78,4 +78,14 @@ class Cache
 	static function Redis($host = '127.0.0.1', $port = 6379, $options = []) {
 		return new CacheStorage(Storage\Redis::getInstance($host, $port), $options);
 	}
+
+	/**
+	 * Create a cache instance with Null cache driver.
+	 * NOTE: Null driver turns off the cache.
+	 *
+	 * @return CacheStorage
+	 */
+	static function Null(){
+		return new CacheStorage(new Storage\Null());
+	}
 }
