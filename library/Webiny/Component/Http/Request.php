@@ -256,11 +256,12 @@ class Request
 			// port, server name and request uri
 			$port = $this->getConnectionPort();
 			$host = $this->getHostName();
-			if($port && $port != "80") {
+			/*if($port && $port != "80") {
 				$pageURL .= $host . ":" . $port . $this->server()->requestUri();
 			} else {
 				$pageURL .= $host . $this->server()->requestUri();
-			}
+			}*/
+			$pageURL .= $host . $this->server()->requestUri();
 
 			// query
 			$query = $this->server()->queryString();
