@@ -81,6 +81,8 @@ class Router
 		if($this->isString($url)) {
 			$urlString = '/' . $this->str($url)->trimLeft('/')->trimRight('/')->val() . '/';
 			$url = $this->url($urlString);
+		} else {
+			$url = $this->url('');
 		}
 
 		// get it from cache
