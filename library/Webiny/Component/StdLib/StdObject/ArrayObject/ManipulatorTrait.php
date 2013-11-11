@@ -127,11 +127,18 @@ trait ManipulatorTrait
 
 	/**
 	 * Removes the last element from the array.
+	 * If $assign parameter is given, the removed value will be assigned to it.
+	 *
+	 * @param null $assign
 	 *
 	 * @return $this
 	 */
-	public function removeLast() {
+	public function removeLast(&$assign = null) {
 		$array = $this->val();
+
+		if(count(func_get_args()) > 0) {
+			$assign = $this->last()->val();
+		}
 		array_pop($array);
 
 		$this->val($array);

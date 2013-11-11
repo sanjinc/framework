@@ -774,7 +774,7 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 */
-	function urlEncode(){
+	public function urlEncode(){
 		$this->val(urlencode($this->val()));
 
 		return $this;
@@ -785,8 +785,32 @@ trait ManipulatorTrait
 	 *
 	 * @return $this
 	 */
-	function urlDecode(){
+	public function urlDecode(){
 		$this->val(urldecode($this->val()));
+
+		return $this;
+	}
+
+	/**
+	 * Base64 encodes current string
+	 *
+	 * @return $this
+	 */
+	public function base64Encode(){
+		$this->val(base64_encode($this->val()));
+
+		return $this;
+	}
+
+	/**
+	 * Base64 decodes current string
+	 *
+	 * @param mixed $default Set this value to the current string if it contains character from outside the base64 alphabet.
+	 *
+	 * @return $this
+	 */
+	public function base64Decode($default = ''){
+		$this->val(base64_decode($this->val(), $default));
 
 		return $this;
 	}
