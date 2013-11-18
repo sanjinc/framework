@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Processors;
 
-use Webiny\Bridge\Logger\Webiny\ProcessorInterface;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Component\Logger\ProcessorInterface;
+use Webiny\Component\Logger\Record;
 
 /**
  * FileLineProcessor adds 'file' and 'line' values to the Record 'extra' data

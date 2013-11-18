@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Formatters;
 
-use Webiny\Bridge\Logger\Webiny\FormatterAbstract;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Component\Logger\FormatterAbstract;
+use Webiny\Component\Logger\Record;
 
 
 /**

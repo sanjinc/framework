@@ -1,12 +1,13 @@
 <?php
 
-use Webiny\Bridge\Logger\Webiny\Record;
 use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigTrait;
 use Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter;
 use Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler;
+use Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor;
+use Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor;
 use Webiny\Component\Logger\Logger;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 define('WF', '/www/webiny/framework');
@@ -22,6 +23,8 @@ class Test
 		$handler = new UDPHandler([], true, true);
 		$formatter = new WebinyTrayFormatter();
 		$handler->setFormatter($formatter);
+		$handler->addProcessor(new FileLineProcessor());
+		$handler->addProcessor(new MemoryUsageProcessor());
 		$logger->addHandler($handler);
 
 

@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Processors;
 
-use Webiny\Bridge\Logger\Webiny\ProcessorInterface;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Component\Logger\ProcessorInterface;
+use Webiny\Component\Logger\Record;
 
 /**
  * MemoryUsageProcessor adds 'memory_usage' (current allocated amount of memory) to the Record 'extra' data

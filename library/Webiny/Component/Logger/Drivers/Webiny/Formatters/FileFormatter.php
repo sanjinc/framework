@@ -9,8 +9,8 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Formatters;
 
-use Webiny\Bridge\Logger\Webiny\FormatterAbstract;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Component\Logger\FormatterAbstract;
+use Webiny\Component\Logger\Record;
 
 
 /**
@@ -71,7 +71,7 @@ class FileFormatter extends FormatterAbstract
 		return $output->val();
 	}
 
-	public function formatRecords(array $records) {
+	public function formatRecords(array $records, Record $record){
 		$message = '';
 		foreach ($records as $record) {
 			$message .= $this->formatRecord($record);

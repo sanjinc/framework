@@ -1,11 +1,11 @@
 <?php
 
-namespace Webiny\Bridge\Logger\Webiny;
+namespace Webiny\Component\Logger;
 
 /**
  * Logger record container class
  *
- * @package Webiny\Bridge\Logger\Webiny
+ * @package Webiny\Component\Logger
  */
 
 class Record implements \IteratorAggregate

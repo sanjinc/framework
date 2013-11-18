@@ -6,14 +6,13 @@
  * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
  * @license   http://www.webiny.com/framework/license
  */
-namespace Webiny\Bridge\Logger\Webiny;
+namespace Webiny\Component\Logger;
 
-use Webiny\Bridge\Logger\LoggerException;
 use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Interface for processors
- * @package Webiny\Bridge\Logger\Webiny
+ * @package Webiny\Component\Logger
  */
 interface ProcessorInterface
 {

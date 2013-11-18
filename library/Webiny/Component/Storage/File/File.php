@@ -124,7 +124,6 @@ class File implements FileInterface
 	public function delete() {
 		if($this->_storage->deleteKey($this->_key)) {
 			$this->eventManager()->fire(StorageEvent::FILE_DELETED, new StorageEvent($this));
-
 			return true;
 		}
 

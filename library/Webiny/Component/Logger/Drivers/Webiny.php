@@ -9,12 +9,12 @@
 
 namespace Webiny\Component\Logger\Drivers;
 
-use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
-use Webiny\Bridge\Logger\LoggerHandlerAbstract;
-use Webiny\Bridge\Logger\LoggerLevel;
-use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Bridge\Logger\LogLevel;
+use Webiny\Component\Logger\LoggerAbstract;
+use Webiny\Component\Logger\LoggerHandlerAbstract;
+use Webiny\Component\Logger\HandlerAbstract;
+use Webiny\Component\Logger\Record;
 use Webiny\Component\Logger\LoggerException;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
@@ -72,7 +72,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function emergency($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::EMERGENCY, $message, $context);
+		$this->_addRecord(LogLevel::EMERGENCY, $message, $context);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function alert($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::ALERT, $message, $context);
+		$this->_addRecord(LogLevel::ALERT, $message, $context);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function critical($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::CRITICAL, $message, $context);
+		$this->_addRecord(LogLevel::CRITICAL, $message, $context);
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function error($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::ERROR, $message, $context);
+		$this->_addRecord(LogLevel::ERROR, $message, $context);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function warning($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::WARNING, $message, $context);
+		$this->_addRecord(LogLevel::WARNING, $message, $context);
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function notice($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::NOTICE, $message, $context);
+		$this->_addRecord(LogLevel::NOTICE, $message, $context);
 	}
 
 	/**
@@ -155,7 +155,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function info($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::INFO, $message, $context);
+		$this->_addRecord(LogLevel::INFO, $message, $context);
 	}
 
 	/**
@@ -167,7 +167,7 @@ class Webiny implements LoggerDriverInterface
 	 * @return null
 	 */
 	public function debug($message, array $context = array()) {
-		$this->_addRecord(LoggerLevel::DEBUG, $message, $context);
+		$this->_addRecord(LogLevel::DEBUG, $message, $context);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Webiny implements LoggerDriverInterface
 			return false;
 		}
 
-		/* @var $handler \Webiny\Bridge\Logger\Webiny\HandlerAbstract */
+		/* @var $handler \Webiny\Component\Logger\HandlerAbstract */
 		foreach($this->_handlers as $handler) {
 			if($handler->canHandle($record)){
 				$bubble = $handler->process(clone $record);

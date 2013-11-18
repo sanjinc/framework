@@ -9,9 +9,9 @@
 
 namespace Webiny\Component\Logger\Drivers;
 
-use Webiny\Bridge\Logger\LoggerAbstract;
 use Webiny\Bridge\Logger\LoggerDriverInterface;
-use Webiny\Bridge\Logger\LoggerHandlerAbstract;
+use Webiny\Component\Logger\LoggerAbstract;
+use Webiny\Component\Logger\LoggerHandlerAbstract;
 use Webiny\Component\StdLib\StdLibTrait;
 
 /**

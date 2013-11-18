@@ -10,9 +10,9 @@
 
 namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
 
-use Webiny\Bridge\Logger\LoggerException;
-use Webiny\Bridge\Logger\Webiny\HandlerAbstract;
-use Webiny\Bridge\Logger\Webiny\Record;
+use Webiny\Component\Logger\LoggerException;
+use Webiny\Component\Logger\HandlerAbstract;
+use Webiny\Component\Logger\Record;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
 use Webiny\Component\StdLib\StdObject\UrlObject\UrlObject;

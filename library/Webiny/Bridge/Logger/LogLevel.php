@@ -10,7 +10,7 @@
 
 namespace Webiny\Bridge\Logger;
 
-use Psr\Log\LogLevel;
+use Psr\Log\LogLevel as PsrLogLevel;
 
 /**
  * Logger message levels
@@ -19,7 +19,7 @@ use Psr\Log\LogLevel;
  * @package Webiny\Bridge\Logger
  */
 
-class LoggerLevel extends LogLevel
+class LogLevel extends PsrLogLevel
 {
 
 }

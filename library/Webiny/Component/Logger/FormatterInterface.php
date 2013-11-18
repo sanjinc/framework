@@ -6,11 +6,11 @@
  * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
  * @license   http://www.webiny.com/framework/license
  */
-namespace Webiny\Bridge\Logger\Webiny;
+namespace Webiny\Component\Logger;
 
 /**
  * Interface for formatters
- * @package Webiny\Bridge\Logger\Webiny
+ * @package Webiny\Component\Logger
  */
 interface FormatterInterface
 {
