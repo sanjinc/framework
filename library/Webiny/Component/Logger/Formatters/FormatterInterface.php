@@ -6,11 +6,13 @@
  * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
  * @license   http://www.webiny.com/framework/license
  */
-namespace Webiny\Component\Logger;
+namespace Webiny\Component\Logger\Formatters;
+
+use Webiny\Component\Logger\Record;
 
 /**
  * Interface for formatters
- * @package Webiny\Component\Logger
+ * @package Webiny\Component\Logger\Formatters
  */
 interface FormatterInterface
 {

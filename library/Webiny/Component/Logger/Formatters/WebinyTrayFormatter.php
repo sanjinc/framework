@@ -7,9 +7,9 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger\Drivers\Webiny\Formatters;
+namespace Webiny\Component\Logger\Formatters;
 
-use Webiny\Component\Logger\FormatterAbstract;
+use Webiny\Component\Logger\Formatters\FormatterAbstract;
 use Webiny\Component\Logger\Record;
 
 

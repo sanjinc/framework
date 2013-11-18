@@ -166,9 +166,9 @@ security:
 parameters:
     logger.class: \Webiny\Component\Logger\Logger
     logger.driver.class: \Webiny\Component\Logger\Drivers\Webiny
-    logger.formatter.tray.class: \Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter
-    logger.processor.file_line.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor
-    logger.processor.memory_usage.class: \Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor
+    logger.formatter.tray.class: \Webiny\Component\Logger\Formatters\WebinyTrayFormatter
+    logger.processor.file_line.class: \Webiny\Component\Logger\Processors\FileLineProcessor
+    logger.processor.memory_usage.class: \Webiny\Component\Logger\Processors\MemoryUsageProcessor
     cache.class: '\Webiny\Component\Cache\Cache'
     crypt.class: '\Webiny\Component\Crypt\Crypt'
     security.voters.test: '\Webiny\Component\Security\Authorization\Voters\TestVoter'
@@ -186,7 +186,7 @@ services:
     logger:
         handlers:
             udp:
-                class: \Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler
+                class: \Webiny\Component\Logger\Handlers\UDPHandler
                 arguments: [[], true, true]
                 calls:
                     - [addProcessor, [%logger.processor.file_line.class%]]

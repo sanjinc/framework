@@ -13,7 +13,7 @@ use Webiny\Bridge\Logger\LoggerDriverInterface;
 use Webiny\Bridge\Logger\LogLevel;
 use Webiny\Component\Logger\LoggerAbstract;
 use Webiny\Component\Logger\LoggerHandlerAbstract;
-use Webiny\Component\Logger\HandlerAbstract;
+use Webiny\Component\Logger\Handlers\HandlerAbstract;
 use Webiny\Component\Logger\Record;
 use Webiny\Component\Logger\LoggerException;
 use Webiny\Component\StdLib\StdLibTrait;

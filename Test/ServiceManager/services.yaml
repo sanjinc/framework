@@ -12,7 +12,7 @@ services:
                     - [setFormatter, [@logger.formatters.Tray]]
         formatters:
             Tray:
-                class: "\Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter"
+                class: "\Webiny\Component\Logger\Formatters\WebinyTrayFormatter"
         TrayLoggerAbstract:
             abstract: true
             class: "%logger.class%"

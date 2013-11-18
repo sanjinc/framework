@@ -2,10 +2,10 @@
 
 use Webiny\Component\Config\Config;
 use Webiny\Component\Config\ConfigTrait;
-use Webiny\Component\Logger\Drivers\Webiny\Formatters\WebinyTrayFormatter;
-use Webiny\Component\Logger\Drivers\Webiny\Handlers\UDPHandler;
-use Webiny\Component\Logger\Drivers\Webiny\Processors\FileLineProcessor;
-use Webiny\Component\Logger\Drivers\Webiny\Processors\MemoryUsageProcessor;
+use Webiny\Component\Logger\Formatters\WebinyTrayFormatter;
+use Webiny\Component\Logger\Handlers\UDPHandler;
+use Webiny\Component\Logger\Processors\FileLineProcessor;
+use Webiny\Component\Logger\Processors\MemoryUsageProcessor;
 use Webiny\Component\Logger\Logger;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;

@@ -7,12 +7,12 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
+namespace Webiny\Component\Logger\Handlers;
 
-use Webiny\Component\Logger\FormatterAbstract;
-use Webiny\Component\Logger\HandlerAbstract;
+use Webiny\Component\Logger\Formatters\FormatterAbstract;
+use Webiny\Component\Logger\Formatters\FileFormatter;
+use Webiny\Component\Logger\Handlers\HandlerAbstract;
 use Webiny\Component\Logger\Record;
-use Webiny\Component\Logger\Drivers\Webiny\Formatters\FileFormatter;
 use Webiny\Component\Logger\LoggerException;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\StdObjectException;
@@ -20,7 +20,7 @@ use Webiny\Component\StdLib\StdObject\StdObjectException;
 /**
  * FileHandler class stores log messages to log file
  *
- * @package         Webiny\Component\Logger\Drivers\Webiny\Handlers
+ * @package         Webiny\Component\Logger\Handlers
  */
 
 class FileHandler extends HandlerAbstract

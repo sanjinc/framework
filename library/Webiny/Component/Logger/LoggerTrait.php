@@ -10,7 +10,7 @@
 namespace Webiny\Component\Logger;
 
 use Webiny\Bridge\Logger\LoggerDriverInterface;
-use Webiny\Component\Logger\Drivers\NullDriver;
+use Webiny\Component\Logger\Drivers\Null;
 use Webiny\Component\ServiceManager\ServiceManager;
 use Webiny\Component\ServiceManager\ServiceManagerException;
 
@@ -38,7 +38,7 @@ trait LoggerTrait
 			return ServiceManager::getInstance()->getService('logger.'.$name);
 		} catch (ServiceManagerException $e) {
 			if($e->getCode() == ServiceManagerException::SERVICE_DEFINITION_NOT_FOUND) {
-				return new Logger($name, new NullDriver());
+				return new Logger($name, new Null());
 			}
 
 			throw $e;

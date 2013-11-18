@@ -7,15 +7,15 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger\Drivers\Webiny\Processors;
+namespace Webiny\Component\Logger\Processors;
 
-use Webiny\Component\Logger\ProcessorInterface;
+use Webiny\Component\Logger\Processors\ProcessorInterface;
 use Webiny\Component\Logger\Record;
 
 /**
  * MemoryUsageProcessor adds 'memory_usage' (current allocated amount of memory) to the Record 'extra' data
  * 
- * @package Webiny\Component\Logger\Drivers\Webiny\Processors
+ * @package Webiny\Component\Logger\Processors
  */
 class MemoryUsageProcessor implements ProcessorInterface
 {

@@ -7,15 +7,15 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger\Drivers\Webiny\Processors;
+namespace Webiny\Component\Logger\Processors;
 
-use Webiny\Component\Logger\ProcessorInterface;
+use Webiny\Component\Logger\Processors\ProcessorInterface;
 use Webiny\Component\Logger\Record;
 
 /**
  * FileLineProcessor adds 'file' and 'line' values to the Record 'extra' data
  * 
- * @package Webiny\Component\Logger\Drivers\Webiny\Processors
+ * @package Webiny\Component\Logger\Processors
  */
 class FileLineProcessor implements ProcessorInterface
 {

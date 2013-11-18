@@ -8,10 +8,10 @@
  */
 
 
-namespace Webiny\Component\Logger\Drivers\Webiny\Handlers;
+namespace Webiny\Component\Logger\Handlers;
 
 use Webiny\Component\Logger\LoggerException;
-use Webiny\Component\Logger\HandlerAbstract;
+use Webiny\Component\Logger\Handlers\HandlerAbstract;
 use Webiny\Component\Logger\Record;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\StdObjectWrapper;
@@ -28,7 +28,7 @@ use Webiny\WebinyTrait;
  *				udp:
  *					host: 192.168.1.10:41234
  *
- * @package Webiny\Component\Logger\Drivers\Webiny\Handlers
+ * @package Webiny\Component\Logger\Handlers
  */
 class UDPHandler extends HandlerAbstract
 {

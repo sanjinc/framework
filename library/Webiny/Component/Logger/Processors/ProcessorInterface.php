@@ -6,13 +6,14 @@
  * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
  * @license   http://www.webiny.com/framework/license
  */
-namespace Webiny\Component\Logger;
+namespace Webiny\Component\Logger\Processors;
 
+use Webiny\Component\Logger\Record;
 use Webiny\Component\StdLib\StdLibTrait;
 
 /**
  * Interface for processors
- * @package Webiny\Component\Logger
+ * @package Webiny\Component\Logger\Processors
  */
 interface ProcessorInterface
 {

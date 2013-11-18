@@ -7,14 +7,15 @@
  * @license   http://www.webiny.com/framework/license
  */
 
-namespace Webiny\Component\Logger;
+namespace Webiny\Component\Logger\Formatters;
 
+use Webiny\Component\Logger\Record;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\WebinyTrait;
 
 /**
  * Base Formatter class providing the Handler structure
- * @package Webiny\Component\Logger
+ * @package Webiny\Component\Logger\Formatters
  */
 abstract class FormatterAbstract implements FormatterInterface
 {
