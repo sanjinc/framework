@@ -46,7 +46,7 @@ trait StdObjectTrait
 	 *
 	 * @return StdObject\UrlObject\UrlObject
 	 */
-	static protected function url(&$url) {
+	static protected function url($url) {
 		return new StdObject\UrlObject\UrlObject($url);
 	}
 
