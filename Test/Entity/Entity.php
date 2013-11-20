@@ -28,26 +28,27 @@ class Person extends EntityAbstract {
 		return $this->getAttribute('salary');
 	}
 
-	protected function _wbEntityStructure(){
+	protected function _entityStructure(){
 		$this->attr('id')
 			->integer('person_id')
-			->label('Person ID')
-			->defaultValue(0)
+				->label('Person ID')
+				->defaultValue(0)
 		->attr('name')
 			->char('person_name')
-			->label('Full name')
+				->label('Full name')
 		->attr('salary')
 			->decimal('person_salary')
-			->label('Desired salary')
-			->digit(8,2)
-			->defaultValue(3000);
+				->label('Desired salary')
+				->digit(8,2)
+				->defaultValue(3000);
 	}
 }
 
 $entity = new Person();
 $data = ['person_id' => 12, 'person_name' => 'Pavel Denisjuk'];
 $entity->populate($data);
-$entity->getName()->setValue('Pero');
+$entity->getId()->value(45);
+$entity->getSalary()->value(4500);
 
 
 var_dump($entity);

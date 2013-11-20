@@ -20,15 +20,19 @@ use Webiny\Component\StdLib\StdLibTrait;
 
 abstract class EntityAbstract
 {
-	use StdLibTrait, EntityAttributeBuilderTrait, EntityAttributeMethodsTrait;
+	use StdLibTrait;
 
 	protected $_validation;
 	protected $_currentAttribute = null;
 	protected $_properties;
 
+	protected abstract function _entityStructure();
+
 	public function __construct(){
 		$this->_validation = $this->arr();
-		$this->_wbEntityStructure();
+		$this->_properties = $this->arr();
+
+		$this->_entityStructure();
 
 		foreach($this->_properties as $attribute => $object){
 			$this->{'_'.$attribute} = $object;
@@ -39,10 +43,10 @@ abstract class EntityAbstract
 
 		/** @var $object TypeAbstract */
 		foreach($this->_properties as $attributeName => $object){
-			if(isset($data[$object->getName()])){
-				$dataValue = $data[$object->getName()];
+			if(isset($data[$object->name()])){
+				$dataValue = $data[$object->name()];
 				try{
-					$object->validate($dataValue)->setValue($dataValue);
+					$object->validate($dataValue)->value($dataValue);
 				} catch(\Exception $e){
 					$this->_validation[$attributeName] = $e;
 				}
@@ -64,8 +68,12 @@ abstract class EntityAbstract
 		return $this->_properties[$attribute];
 	}
 
+	/**
+	 * @param $attribute
+	 *
+	 * @return EntityAttributeBuilder
+	 */
 	protected function attr($attribute){
-		$this->_currentAttribute = $attribute;
-		return $this;
+		return EntityAttributeBuilder::getInstance()->setContext($this->_properties, $attribute);
 	}
 }

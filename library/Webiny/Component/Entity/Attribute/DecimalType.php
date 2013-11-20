@@ -15,13 +15,33 @@ namespace Webiny\Component\Entity\Attribute;
  * @package Webiny\Component\Entity\Attribute
  */
 
-class DecimalType extends TypeAbstract{
+class DecimalType extends TypeAbstract
+{
 
 	protected $_totalLength = 16;
 	protected $_decimalPlaces = 2;
 
-	public function setDigit($totalLength, $decimalPlaces){
+	/**
+	 * Get or set length and decimal places
+	 *
+	 * When getting values, an array wil be returned: [$totalLength, $decimalPlaces]
+	 *
+	 * @param $totalLength
+	 * @param $decimalPlaces
+	 *
+	 * @return $this|array
+	 */
+	public function digit($totalLength = null, $decimalPlaces = null) {
+		if($this->isNull($totalLength) || $this->isNull($decimalPlaces)) {
+			return [
+				$this->_totalLength,
+				$this->_decimalPlaces
+			];
+		}
+
 		$this->_totalLength = $totalLength;
 		$this->_decimalPlaces = $decimalPlaces;
+
+		return $this;
 	}
 }

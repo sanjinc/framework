@@ -24,53 +24,57 @@ class EntityAttributeBuilder
 {
 	use SingletonTrait;
 
+	private $_properties;
+	private $_attribute;
+
 	/**
-	 * @param string    $attribute
+	 * Set EntityAttributeBuilder context: Entity properties array and current attribute
+	 * @param $properties
+	 * @param $attribute
+	 *
+	 * @return $this
+	 */
+	public function setContext($properties, $attribute){
+		$this->_properties = $properties;
+		$this->_attribute = $attribute;
+		return $this;
+	}
+
+	/**
+	 * Create a new attribute
+	 * @param $attribute
+	 *
+	 * @return $this
+	 */
+	public function attr($attribute){
+		$this->_attribute = $attribute;
+		return $this;
+	}
+
+	/**
 	 * @param null 		$name
 	 *
 	 * @return IntegerType
 	 */
-	public function integer($attribute, $name = null) {
-		return new IntegerType($attribute, $name);
+	public function integer($name = null) {
+		return $this->_properties[$this->_attribute] = new IntegerType($this->_attribute, $name);
 	}
 
 	/**
-	 * @param string 	$attribute
 	 * @param null 		$name
 	 *
 	 * @return CharType
 	 */
-	public function char($attribute, $name = null) {
-		return new CharType($attribute, $name);
+	public function char($name = null) {
+		return $this->_properties[$this->_attribute] = new CharType($this->_attribute, $name);
 	}
 
 	/**
-	 * @param string	$attribute
 	 * @param null 		$name
 	 *
 	 * @return DecimalType
 	 */
-	public function decimal($attribute, $name = null) {
-		return new DecimalType($attribute, $name);
-	}
-
-	public function text($attribute) {
-
-	}
-
-	public function date($attribute) {
-
-	}
-
-	public function select($attribute) {
-
-	}
-
-	public function dynamic($attribute) {
-
-	}
-
-	public function many2one($attribute) {
-
+	public function decimal($name = null) {
+		return $this->_properties[$this->_attribute] = new DecimalType($this->_attribute, $name);
 	}
 }

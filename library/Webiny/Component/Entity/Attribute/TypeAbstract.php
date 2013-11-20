@@ -9,6 +9,10 @@
 
 namespace Webiny\Component\Entity\Attribute;
 
+use Webiny\Component\Entity\EntityAttributeBuilder;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\ValidatorTrait;
+
 
 /**
  * TypeAbstract
@@ -17,6 +21,7 @@ namespace Webiny\Component\Entity\Attribute;
 
 class TypeAbstract
 {
+	use ValidatorTrait;
 
 	/**
 	 * @var string
@@ -37,17 +42,26 @@ class TypeAbstract
 	 */
 	function __construct($attribute, $name) {
 		$this->_attribute = $attribute;
-		if($name == null){
+		if($this->isNull($name)){
 			$name = $attribute;
 		}
 		$this->_name = $name;
 	}
 
 	function __toString(){
-		if($this->_value == null){
+		if($this->isNull($this->_value)){
 			return '';
 		}
 		return $this->_value;
+	}
+
+	/**
+	 * @param $attribute
+	 *
+	 * @return EntityAttributeBuilder
+	 */
+	public function attr($attribute){
+		return EntityAttributeBuilder::getInstance()->attr($attribute);
 	}
 
 
@@ -56,17 +70,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setDefaultValue($defaultValue) {
+	public function defaultValue($defaultValue = null) {
+		if($this->isNull($defaultValue)){
+			return $this->_defaultValue;
+		}
 		$this->_defaultValue = $defaultValue;
 
 		return $this;
-	}
-
-	/**
-	 * @return null
-	 */
-	public function getDefaultValue() {
-		return $this->_defaultValue;
 	}
 
 	/**
@@ -74,17 +84,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setHelp($help) {
+	public function help($help = null) {
+		if($this->isNull($help)){
+			return $this->_help;
+		}
 		$this->_help = $help;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getHelp() {
-		return $this->_help;
 	}
 
 	/**
@@ -92,17 +98,14 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setLabel($label) {
+	public function label($label = null) {
+		if($this->isNull($label)){
+			return $this->_label;
+		}
+
 		$this->_label = $label;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getLabel() {
-		return $this->_label;
 	}
 
 	/**
@@ -110,17 +113,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setMessage($message) {
+	public function message($message = null) {
+		if($this->isNull($message)){
+			return $this->_message;
+		}
 		$this->_message = $message;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getMessage() {
-		return $this->_message;
 	}
 
 	/**
@@ -128,17 +127,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setName($name) {
+	public function name($name = null) {
+		if($this->isNull($name)){
+			return $this->_name;
+		}
 		$this->_name = $name;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->_name;
 	}
 
 	/**
@@ -146,17 +141,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setTooltip($tooltip) {
+	public function tooltip($tooltip = null) {
+		if($this->isNull($tooltip)){
+			return $this->_tooltip;
+		}
 		$this->_tooltip = $tooltip;
 
 		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTooltip() {
-		return $this->_tooltip;
 	}
 
 	/**
@@ -164,17 +155,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setValidate($validation) {
+	public function validation($validation = null) {
+		if($this->isNull($validation)){
+			return $this->_validation;
+		}
 		$this->_validation = $validation;
 
 		return $this;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function getValidate() {
-		return $this->_validation;
 	}
 
 	/**
@@ -182,17 +169,13 @@ class TypeAbstract
 	 *
 	 * @return $this
 	 */
-	public function setValue($value) {
+	public function value($value = null) {
+		if($this->isNull($value)){
+			return $this->_value;
+		}
 		$this->_value = $value;
 
 		return $this;
-	}
-
-	/**
-	 * @return null
-	 */
-	public function getValue() {
-		return $this->_value;
 	}
 
 	public function validate($value){
