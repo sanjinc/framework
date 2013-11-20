@@ -211,6 +211,57 @@ services:
 
 In this case, child service `calls` will completely replace parent `calls`.
 
+## Factory services
+
+Factory service will return a product of your factory class, and not the factory class itself. You can define factory service as a static and non-static factory.
+
+### Static factory
+```yaml
+services:   
+    mailer_factory:
+        factory: \My\Mailer\Factory
+        method: getMailer
+        method_arguments: [firstArgument, secondArgument]
+```
+
+In PHP this would look like this:
+```php
+\My\Mailer\Factory::getMailer($firstArgument, $secondArgument);
+```
+
+### Non-static factory
+```yaml
+services:   
+    mailer_factory:
+        factory: \My\Mailer\Factory
+        static: false
+        method: getMailer
+        method_arguments: [firstArgument, secondArgument]
+```
+
+In PHP this would look like this:
+```php
+$factory = new \My\Mailer\Factory();
+return $factory->getMailer($firstArgument, $secondArgument);
+```
+
+You can also provide constructor parameters on non-static factories:
+```yaml
+services:   
+    mailer_factory:
+        factory: \My\Mailer\Factory
+        arguments: [factoryParameter1, factoryParameter2]
+        static: false
+        method: getMailer
+        method_arguments: [firstArgument, secondArgument]
+```
+
+A PHP equivalent of this looks like this:
+```php
+$factory = new \My\Mailer\Factory($factoryParameter1, $factoryParameter2);
+return $factory->getMailer($firstArgument, $secondArgument);
+```
+
 ## Accessing services from PHP
 
 To use `ServiceManager` in your code, the easiest way is to simply use `ServiceManagerTrait`. This will give you access to `$this->service()`.
