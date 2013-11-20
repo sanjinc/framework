@@ -27,8 +27,13 @@ additional_libraries:
     CryptLib: '../PHP-CryptLib/lib/CryptLib'
     OAuth2: '../OAuth2'
     Imagine: '../Imagine/lib/Imagine'
-    App: '/www/webiny/projects/weby.io/app'
+    'App': '/var/www/newwebiny/projects/weby.io/app/'
     Swift_: '../SwiftMailer/lib/classes'
+    Imagine: '../Imagine/lib/Imagine'
+    Smarty_:
+        path: '../Smarty/libs/sysplugins'
+        normalize: false
+        case: lower
 components:
     logger:
         formatters:
@@ -67,15 +72,13 @@ components:
         servers:
             facebook: '\Webiny\Component\OAuth2\Server\Facebook'
             google: '\Webiny\Component\OAuth2\Server\Google'
-            linkedin: '\Webiny\Component\OAuth2\Server\LinkedIn'
-            twitter: '\Webiny\Component\OAuth2\Server\Twitter'
     mailer:
         default:
             character_set: utf-8
             max_line_length: 78
             priority: 2 # high priority
             sender:
-                email: 'welcome@weby.io'
+                email: 'noreply@weby.io'
                 name: 'Weby.io Team'
             transport:
                 type: mail
@@ -98,18 +101,18 @@ components:
                     auto_escape_output: false
     image:
         library: gd
-        quality: 100
+        quality: 90
 oauth2:
     facebook_auth:
         server: facebook
-        client_id: 589844551062032
-        client_secret: 5caa1a62ba17585f1dbc2e12712e9ee7
+        client_id: 276232862515995
+        client_secret: fe5855672eeebe2086f7209a3df05922
         scope: email
         redirect_uri: '/security/login-fb/'
     google_auth:
         server: google
-        client_id: 50628154574.apps.googleusercontent.com
-        client_secret: d7dbtid5X-3wKO9m4dd3T2JB
+        client_id: 716241283877.apps.googleusercontent.com
+        client_secret: KyP8EqnO0Job3mkgiuPFdZYl
         scope: openid%20profile%20email
         redirect_uri: '/security/login-gp/'
 
@@ -134,6 +137,25 @@ security:
             - {path: '/^\/statistics/', roles: ROLE_ANONYMOUS}
         decision_strategy: affirmative
     firewalls:
+        admin:
+            realm_name: 'Weby.io Admin'
+            url_pattern: '/statistics/'
+            anonymous: true
+            remember_me: true
+            #encoder: default
+            security_key: adminxyz
+            provider: memory
+            login:
+                login_path: '/statistics/login'
+                failure_path: '/statistics/login/?error=1'
+                target_path: '/statistics'
+                providers:
+                    http:
+                      driver: '\Webiny\Component\Security\Authentication\Providers\Http\Http'
+                      submit_path: '/statistics/login'
+            logout:
+                path: '/statistics/logout'
+                target: ''
         userarea:
             realm_name: 'Weby.io Authentication'
             url_pattern: ''
@@ -178,11 +200,6 @@ services:
         webiny_crypt:
             class: %crypt.class%
             arguments: ['Blowfish', 'CCM', 'rijndael-128', '_FOO_VECTOR']
-    #cache:
-        webiny_cache:
-            factory: "%cache.class%"
-            method: "Couchbase"
-            method_arguments: ["webiny", '', "default"]
     logger:
         handlers:
             udp:
@@ -204,8 +221,8 @@ services:
                 driver:
                     object: \Webiny\Component\Storage\Driver\Local\Local
                     object_arguments:
-                        - /www/webiny/projects/weby.io/public_html/uploads/webies # Absolute root path
-                        - http://pavel910.homeftp.net/uploads/webies # Web root path
+                        - /var/www/newwebiny/projects/weby.io/public_html/uploads/webies # Absolute root path
+                        - http://weby.com/uploads/webies # Web root path
                         - false # DateFolderStructure
                         - true # Create folder if it doesn't exist
 
@@ -215,12 +232,12 @@ services:
                 driver:
                     object: \Webiny\Component\Storage\Driver\Local\Local
                     object_arguments:
-                        - /www/webiny/projects/weby.io/public_html/uploads/webies # Absolute root path
-                        - http://pavel910.homeftp.net/uploads/webies # Web root path
+                        - /var/www/newwebiny/projects/weby.io/public_html/uploads/webies # Absolute root path
+                        - http://weby.com/uploads/webies # Web root path
                         - true # DateFolderStructure
                         - true # Create folder if it doesn't exist
     cache:
         webiny_cache:
             factory: "%cache.class%"
             method: "Memcache"
-            method_arguments: ['192.168.1.11', '11211']
+            method_arguments: ['192.168.1.29', '11211']
