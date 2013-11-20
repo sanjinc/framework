@@ -23,7 +23,6 @@ abstract class EntityAbstract
 	use StdLibTrait;
 
 	protected $_validation;
-	protected $_currentAttribute = null;
 	protected $_properties;
 
 	protected abstract function _entityStructure();
@@ -33,10 +32,6 @@ abstract class EntityAbstract
 		$this->_properties = $this->arr();
 
 		$this->_entityStructure();
-
-		foreach($this->_properties as $attribute => $object){
-			$this->{'_'.$attribute} = $object;
-		}
 	}
 
 	public function populate($data){
