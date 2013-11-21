@@ -11,10 +11,16 @@ namespace Webiny\Component\Entity\Attribute;
 
 
 /**
- * IntegerType
+ * CharAttribute
  * @package Webiny\Component\Entity\Attribute
  */
 
-class IntegerType extends TypeAbstract{
+class CharAttribute extends AttributeAbstract{
 
+	protected $_format = '';
+
+	public function format($format){
+		$this->_format = $format;
+		return $this;
+	}
 }

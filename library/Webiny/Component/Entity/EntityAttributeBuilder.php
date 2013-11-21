@@ -9,9 +9,9 @@
 
 namespace Webiny\Component\Entity;
 
-use Webiny\Component\Entity\Attribute\CharType;
-use Webiny\Component\Entity\Attribute\DecimalType;
-use Webiny\Component\Entity\Attribute\IntegerType;
+use Webiny\Component\Entity\Attribute\CharAttribute;
+use Webiny\Component\Entity\Attribute\DecimalAttribute;
+use Webiny\Component\Entity\Attribute\IntegerAttribute;
 use Webiny\Component\StdLib\SingletonTrait;
 
 
@@ -52,29 +52,29 @@ class EntityAttributeBuilder
 	}
 
 	/**
-	 * @param null 		$name
+	 * @param null 		$tableColumn
 	 *
-	 * @return IntegerType
+	 * @return IntegerAttribute
 	 */
-	public function integer($name = null) {
-		return $this->_attributes[$this->_attribute] = new IntegerType($this->_attribute, $name);
+	public function integer($tableColumn = null) {
+		return $this->_attributes[$this->_attribute] = new IntegerAttribute($this->_attribute, $tableColumn);
 	}
 
 	/**
-	 * @param null 		$name
+	 * @param null 		$tableColumn
 	 *
-	 * @return CharType
+	 * @return CharAttribute
 	 */
-	public function char($name = null) {
-		return $this->_attributes[$this->_attribute] = new CharType($this->_attribute, $name);
+	public function char($tableColumn = null) {
+		return $this->_attributes[$this->_attribute] = new CharAttribute($this->_attribute, $tableColumn);
 	}
 
 	/**
-	 * @param null 		$name
+	 * @param null 		$tableColumn
 	 *
-	 * @return DecimalType
+	 * @return DecimalAttribute
 	 */
-	public function decimal($name = null) {
-		return $this->_attributes[$this->_attribute] = new DecimalType($this->_attribute, $name);
+	public function decimal($tableColumn = null) {
+		return $this->_attributes[$this->_attribute] = new DecimalAttribute($this->_attribute, $tableColumn);
 	}
 }

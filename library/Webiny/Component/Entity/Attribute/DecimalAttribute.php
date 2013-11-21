@@ -11,11 +11,11 @@ namespace Webiny\Component\Entity\Attribute;
 
 
 /**
- * DecimalType
+ * DecimalAttribute
  * @package Webiny\Component\Entity\Attribute
  */
 
-class DecimalType extends TypeAbstract
+class DecimalAttribute extends AttributeAbstract
 {
 
 	protected $_totalLength = 16;

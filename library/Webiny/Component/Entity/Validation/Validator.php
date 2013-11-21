@@ -9,7 +9,7 @@
 
 namespace Webiny\Component\Entity\Validation;
 
-use Webiny\Component\Entity\Attribute\TypeAbstract;
+use Webiny\Component\Entity\Attribute\AttributeAbstract;
 use Webiny\Component\StdLib\SingletonTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 
@@ -25,7 +25,7 @@ class Validator
 
 	private $_validators;
 
-	public function validate(TypeAbstract $attribute, $value) {
+	public function validate(AttributeAbstract $attribute, $value) {
 		// First build validation rules
 		$this->_validators = $this->arr(Builder::getInstance()->buildValidators($attribute->validation()));
 

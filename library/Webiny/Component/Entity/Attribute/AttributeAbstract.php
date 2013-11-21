@@ -15,19 +15,16 @@ use Webiny\Component\StdLib\StdLibTrait;
 
 
 /**
- * TypeAbstract
+ * AttributeAbstract
  * @package Webiny\Component\Entity\Attribute
  */
 
-abstract class TypeAbstract
+abstract class AttributeAbstract
 {
 	use StdLibTrait;
 
-	/**
-	 * @var string
-	 */
 	protected $_attribute = '';
-	protected $_name = '';
+	protected $_tableColumn = '';
 	protected $_label = '';
 	protected $_message = '';
 	protected $_help = '';
@@ -36,18 +33,19 @@ abstract class TypeAbstract
 	protected $_defaultValue = null;
 	protected $_value = null;
 	protected $_dirty = false;
-	protected $_validators = [];
 
 	/**
 	 * @param string $attribute
-	 * @param string $name
+	 * @param string $tableColumn
+	 *
+	 * @return AttributeAbstract
 	 */
-	function __construct($attribute, $name) {
+	function __construct($attribute, $tableColumn) {
 		$this->_attribute = $attribute;
-		if($this->isNull($name)) {
-			$name = $attribute;
+		if($this->isNull($tableColumn)) {
+			$tableColumn = $attribute;
 		}
-		$this->_name = $name;
+		$this->_tableColumn = $tableColumn;
 	}
 
 	function __toString() {
@@ -56,6 +54,10 @@ abstract class TypeAbstract
 		}
 
 		return $this->_value;
+	}
+
+	public function isDirty(){
+		return  $this->_dirty;
 	}
 
 	/**
@@ -131,12 +133,12 @@ abstract class TypeAbstract
 	}
 
 	/**
-	 * Get attribute name (used for input generation)
+	 * Get attribute table column (used for query building)
 	 *
 	 * @return string
 	 */
-	public function name() {
-		return $this->_name;
+	public function tableColumn() {
+		return $this->_tableColumn;
 	}
 
 	/**
@@ -186,7 +188,6 @@ abstract class TypeAbstract
 
 		$this->validate($value);
 		$this->_value = $value;
-
 		return $this;
 	}
 
