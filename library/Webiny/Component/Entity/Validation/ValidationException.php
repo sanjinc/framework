@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2009-2013 Webiny LTD. (http://www.webiny.com)
  * @license   http://www.webiny.com/framework/license
  */
-namespace Webiny\Component\Entity;
+namespace Webiny\Component\Entity\Validation;
 
 use Webiny\Component\StdLib\Exception\ExceptionAbstract;
 
@@ -15,24 +15,27 @@ use Webiny\Component\StdLib\Exception\ExceptionAbstract;
  *
  * @package         Webiny\Component\ServiceManager
  */
-class EntityException extends ExceptionAbstract
+class ValidationException extends ExceptionAbstract
 {
 
-	const VALIDATION_FAILED = 101;
+	const ATTRIBUTE_VALIDATION_FAILED = 101;
+	const INVALID_VALIDATOR_TYPE = 102;
 
-	protected $_invalidAttributes = [];
+
+	protected $_errorMessages = [];
 
 	static protected $_messages = [
-		101 => "Entity validation failed with '%s' errors."
+		101 => "Invalid data provided for attribute '%s'.",
+		102 => "Invalid validator type: %s"
 	];
 
-	public function setInvalidAttributes($attributes){
-		$this->_invalidAttributes = $attributes;
+	public function setErrorMessages($messages){
+		$this->_errorMessages = $messages;
 		return $this;
 	}
 
-	public function getInvalidAttributes(){
-		return $this->_invalidAttributes;
+	public function getErrorMessages(){
+		return $this->_errorMessages;
 	}
 
 }

@@ -9,9 +9,9 @@
 
 namespace Webiny\Component\Entity\Attribute;
 
+use Webiny\Component\Entity\Validation\Validator;
 use Webiny\Component\Entity\EntityAttributeBuilder;
 use Webiny\Component\StdLib\StdLibTrait;
-use Webiny\Component\StdLib\ValidatorTrait;
 
 
 /**
@@ -19,9 +19,9 @@ use Webiny\Component\StdLib\ValidatorTrait;
  * @package Webiny\Component\Entity\Attribute
  */
 
-class TypeAbstract
+abstract class TypeAbstract
 {
-	use ValidatorTrait;
+	use StdLibTrait;
 
 	/**
 	 * @var string
@@ -35,6 +35,8 @@ class TypeAbstract
 	protected $_validation = false;
 	protected $_defaultValue = null;
 	protected $_value = null;
+	protected $_dirty = false;
+	protected $_validators = [];
 
 	/**
 	 * @param string $attribute
@@ -42,25 +44,31 @@ class TypeAbstract
 	 */
 	function __construct($attribute, $name) {
 		$this->_attribute = $attribute;
-		if($this->isNull($name)){
+		if($this->isNull($name)) {
 			$name = $attribute;
 		}
 		$this->_name = $name;
 	}
 
-	function __toString(){
-		if($this->isNull($this->_value)){
+	function __toString() {
+		if($this->isNull($this->_value)) {
 			return '';
 		}
+
 		return $this->_value;
 	}
 
 	/**
-	 * @param $attribute
+	 * Create new attribute or get name of current attribute
 	 *
-	 * @return EntityAttributeBuilder
+	 * @param null|string $attribute
+	 *
+	 * @return Builder
 	 */
-	public function attr($attribute){
+	public function attr($attribute = null) {
+		if($this->isNull($attribute)){
+			return $this->_attribute;
+		}
 		return EntityAttributeBuilder::getInstance()->attr($attribute);
 	}
 
@@ -71,7 +79,7 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function defaultValue($defaultValue = null) {
-		if($this->isNull($defaultValue)){
+		if($this->isNull($defaultValue)) {
 			return $this->_defaultValue;
 		}
 		$this->_defaultValue = $defaultValue;
@@ -85,7 +93,7 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function help($help = null) {
-		if($this->isNull($help)){
+		if($this->isNull($help)) {
 			return $this->_help;
 		}
 		$this->_help = $help;
@@ -99,7 +107,7 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function label($label = null) {
-		if($this->isNull($label)){
+		if($this->isNull($label)) {
 			return $this->_label;
 		}
 
@@ -114,7 +122,7 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function message($message = null) {
-		if($this->isNull($message)){
+		if($this->isNull($message)) {
 			return $this->_message;
 		}
 		$this->_message = $message;
@@ -123,17 +131,12 @@ class TypeAbstract
 	}
 
 	/**
-	 * @param string $name
+	 * Get attribute name (used for input generation)
 	 *
-	 * @return $this
+	 * @return string
 	 */
-	public function name($name = null) {
-		if($this->isNull($name)){
-			return $this->_name;
-		}
-		$this->_name = $name;
-
-		return $this;
+	public function name() {
+		return $this->_name;
 	}
 
 	/**
@@ -142,7 +145,7 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function tooltip($tooltip = null) {
-		if($this->isNull($tooltip)){
+		if($this->isNull($tooltip)) {
 			return $this->_tooltip;
 		}
 		$this->_tooltip = $tooltip;
@@ -151,15 +154,22 @@ class TypeAbstract
 	}
 
 	/**
-	 * @param boolean $validation
-	 *
+	 * Get or set validation rules
+	 * @throws \Exception
 	 * @return $this
 	 */
-	public function validation($validation = null) {
-		if($this->isNull($validation)){
+	public function validation() {
+		$args = $this->arr(func_get_args());
+
+		if($args->count() == 0) {
 			return $this->_validation;
 		}
-		$this->_validation = $validation;
+
+		if($this->isArray($args[0])) {
+			$args = $args[0];
+		}
+
+		$this->_validation = $args;
 
 		return $this;
 	}
@@ -170,16 +180,27 @@ class TypeAbstract
 	 * @return $this
 	 */
 	public function value($value = null) {
-		if($this->isNull($value)){
+		if($this->isNull($value)) {
 			return $this->_value;
 		}
+
+		$this->validate($value);
 		$this->_value = $value;
 
 		return $this;
 	}
 
-	public function validate($value){
+	/**
+	 * Perform validation against given value
+	 *
+	 * @param $value
+	 *
+	 * @throws ValidationException
+	 * @return $this
+	 */
+	public function validate($value) {
 		// Perform value validation
+		Validator::getInstance()->validate($this, $value);
 		return $this;
 	}
 }

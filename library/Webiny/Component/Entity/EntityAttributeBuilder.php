@@ -24,18 +24,18 @@ class EntityAttributeBuilder
 {
 	use SingletonTrait;
 
-	private $_properties;
+	private $_attributes;
 	private $_attribute;
 
 	/**
-	 * Set EntityAttributeBuilder context: Entity properties array and current attribute
-	 * @param $properties
+	 * Set EntityAttributeBuilder context: Entity attributes array and current attribute
+	 * @param $attributes
 	 * @param $attribute
 	 *
 	 * @return $this
 	 */
-	public function setContext($properties, $attribute){
-		$this->_properties = $properties;
+	public function setContext($attributes, $attribute){
+		$this->_attributes = $attributes;
 		$this->_attribute = $attribute;
 		return $this;
 	}
@@ -57,7 +57,7 @@ class EntityAttributeBuilder
 	 * @return IntegerType
 	 */
 	public function integer($name = null) {
-		return $this->_properties[$this->_attribute] = new IntegerType($this->_attribute, $name);
+		return $this->_attributes[$this->_attribute] = new IntegerType($this->_attribute, $name);
 	}
 
 	/**
@@ -66,7 +66,7 @@ class EntityAttributeBuilder
 	 * @return CharType
 	 */
 	public function char($name = null) {
-		return $this->_properties[$this->_attribute] = new CharType($this->_attribute, $name);
+		return $this->_attributes[$this->_attribute] = new CharType($this->_attribute, $name);
 	}
 
 	/**
@@ -75,6 +75,6 @@ class EntityAttributeBuilder
 	 * @return DecimalType
 	 */
 	public function decimal($name = null) {
-		return $this->_properties[$this->_attribute] = new DecimalType($this->_attribute, $name);
+		return $this->_attributes[$this->_attribute] = new DecimalType($this->_attribute, $name);
 	}
 }

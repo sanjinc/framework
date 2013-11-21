@@ -10,6 +10,7 @@
 namespace Webiny\Component\Entity;
 
 use Webiny\Component\Entity\Attribute\TypeAbstract;
+use Webiny\Component\Entity\Validation\ValidationException;
 use Webiny\Component\StdLib\StdLibTrait;
 
 
@@ -22,45 +23,44 @@ abstract class EntityAbstract
 {
 	use StdLibTrait;
 
-	protected $_validation;
-	protected $_properties;
+	protected $_attributes;
 
 	protected abstract function _entityStructure();
 
 	public function __construct(){
-		$this->_validation = $this->arr();
-		$this->_properties = $this->arr();
+		$this->_attributes = $this->arr();
 
 		$this->_entityStructure();
 	}
 
 	public function populate($data){
-
+		$validation = $this->arr();
 		/** @var $object TypeAbstract */
-		foreach($this->_properties as $attributeName => $object){
+		foreach($this->_attributes as $attributeName => $object){
 			if(isset($data[$object->name()])){
 				$dataValue = $data[$object->name()];
 				try{
 					$object->validate($dataValue)->value($dataValue);
-				} catch(\Exception $e){
-					$this->_validation[$attributeName] = $e;
+				} catch(ValidationException $e){
+					$validation[$attributeName] = $e;
 				}
 			}
 		}
 
-		if($this->_validation->count() > 0){
-			return false;
+		if($validation->count() > 0){
+			$ex = new EntityException(EntityException::VALIDATION_FAILED, [$validation->count()]);
+			throw $ex->setInvalidAttributes($validation);
 		}
 
 		return $this;
 	}
 
-	public function getInvalidProperties(){
-		return $this->_validation;
+	public function getAttribute($attribute){
+		return $this->_attributes[$attribute];
 	}
 
-	public function getAttribute($attribute){
-		return $this->_properties[$attribute];
+	public function getAttributes(){
+		return $this->_attributes;
 	}
 
 	/**
@@ -69,6 +69,6 @@ abstract class EntityAbstract
 	 * @return EntityAttributeBuilder
 	 */
 	protected function attr($attribute){
-		return EntityAttributeBuilder::getInstance()->setContext($this->_properties, $attribute);
+		return EntityAttributeBuilder::getInstance()->setContext($this->_attributes, $attribute);
 	}
 }
