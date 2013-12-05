@@ -21,7 +21,6 @@ use Webiny\WebinyTrait;
 
 /**
  * Router class is the main class that encapsulates all the Router components for easier usage.
- * The Router class also
  *
  * @package         Webiny\Component\Router
  */
