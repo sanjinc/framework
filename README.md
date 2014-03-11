@@ -1,28 +1,13 @@
-framework
+Framework
 =========
 
-Webiny framework repository. Private for now.
+Webiny framework repository.
 
-Testing.
-
-Ovo je promjena.
+This is a set of components for building a (larger) PHP applications. Each of the component has its own documentation, just open open it inside GitHub. For example: https://github.com/Webiny/framework/tree/master/library/Webiny/Component/Cache
 
 Some notes on coding:
 =========
-- before writing any code, make sure you have read Webiny Coding Standard (documentation repo:for-developers\coding-standard)
+- before writing any code, make sure you have read PSR-1 coding standard (http://www.php-fig.org/psr/psr-1/)
 - each package should have its own exception handler
 - prefer the usage of 'use' keyword instead of writing the full class name with namespace
-- config class?
-- *ako funkcija prima StdObject onda i vraća StdObject, i obrnuto ako prima string
 
-
-COMPONENT NOTES:
-================
-The "Http\Response" object must utilize HTTP Cache (http://symfony.com/doc/current/book/http_cache.html)
-
-Components left to build:
-Storage
-EventManager
-TemplateEngine
-QueryBuilder => https://github.com/laravel/laravel/tree/3.0/laravel/database
-Mail => SwiftMail
